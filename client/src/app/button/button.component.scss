@@ -1,0 +1,67 @@
+.button {
+  background-color: #a3c4ff;
+  border-radius: 3px;
+  border: 1px solid #666;
+
+  padding: 5px;
+  margin: 0;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+
+  //-webkit-box-shadow: 7px 10px 24px -8px rgba(0,0,0,0.4);
+  //-moz-box-shadow: 7px 10px 24px -8px rgba(0,0,0,0.4);
+  //box-shadow: 7px 10px 24px -8px rgba(0,0,0,0.4);
+
+  &.disabled {
+    background-color: #999;
+    color: #777;
+  }
+
+  .label {
+
+  }
+}
+
+.animated1 {
+  animation-name: rocket1;
+  animation-duration: 0.2s;
+}
+
+.animated2 {
+  animation-name: rocket2;
+  animation-duration: 0.2s;
+}
+
+@keyframes rocket1 {
+  0% {
+    background-color: #a3c4ff;
+    color: #fff;
+  }
+  50% {
+    background-color: #000;
+    color: #000;
+  }
+  100% {
+    background-color: #a3c4ff;
+    color: #fff;
+  }
+}
+
+@keyframes rocket2 {
+  0% {
+    background-color: #a3c4ff;
+  }
+  50% {
+    background-color: #000;
+  }
+  100% {
+    background-color: #a3c4ff;
+  }
+}

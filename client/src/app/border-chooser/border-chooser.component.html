@@ -1,0 +1,32 @@
+<div class="border-chooser">
+  <div class="cell"></div>
+
+  <div class="cell">
+    <app-button [label]="topLabel" (click)="onTopClick()"></app-button>
+  </div>
+
+  <div class="cell"></div>
+
+  <div class="cell v">
+    <app-button [label]="leftLabel" [disabled]="!partial && hasFull" (click)="onLeftClick()"></app-button>
+  </div>
+
+  <div class="cell">
+    <div class="center-h">
+      <div class="center-v">
+        <app-full-partial-chooser [hidden]="!hasFull" [(partial)]="partial"></app-full-partial-chooser>
+      </div>
+    </div>
+  </div>
+
+  <div class="cell v">
+    <app-button [label]="rightLabel" [disabled]="!partial && hasFull" (click)="onRightClick()"></app-button>
+  </div>
+
+  <div class="cell"></div>
+
+  <div class="cell">
+    <app-button [label]="bottomLabel" (click)="onBottomClick()"></app-button>
+  </div>
+
+</div>

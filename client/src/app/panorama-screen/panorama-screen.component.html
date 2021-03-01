@@ -1,0 +1,21 @@
+<section class="panorama-screen">
+
+  <app-border-chooser
+    class="border-chooser"
+    [hasFull]="true"
+    [partial]="partial"
+    (partialChange)="onPartialChange($event)"
+    [topLabel]="labels.top"
+    [rightLabel]="labels.right"
+    [bottomLabel]="labels.bottom"
+    [leftLabel]="labels.left"
+    (border)="onBorderChange($event)"
+  ></app-border-chooser>
+
+  <app-fov-display
+    [w]="w"
+    [h]="h"
+    class="fov-display"
+  ></app-fov-display>
+
+</section>

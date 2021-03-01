@@ -1,0 +1,12 @@
+.mainscreen {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 100px);
+
+  .cell {
+    //border: 1px solid red;
+    padding: 20px;
+  }
+
+}
+

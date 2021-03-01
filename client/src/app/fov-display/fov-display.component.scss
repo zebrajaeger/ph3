@@ -1,0 +1,27 @@
+.fov-display {
+  border: 1px solid black;
+
+  width: 388px;
+  height: 79px;
+
+  display: grid;
+  grid-template-columns: 40px 349px;
+  grid-template-rows: repeat(2, 40px);
+
+  .cell {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+  }
+
+  .label {
+    font-weight: bold;
+    font-size: 25px;
+    padding: 5px;
+  }
+
+  .value {
+    font-size: 25px;
+    padding: 5px;
+  }
+
+}

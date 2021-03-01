@@ -1,0 +1,8 @@
+<section class="pano-status-grid">
+  <div #canvasWrapper class="canvas-wrapper" (window:resize)="draw()">
+    <canvas id="wfcanvas" #canvasId
+            [height]="canvasWrapper.offsetHeight"
+            [width]="canvasWrapper.offsetWidth">
+    </canvas>
+  </div>
+</section>

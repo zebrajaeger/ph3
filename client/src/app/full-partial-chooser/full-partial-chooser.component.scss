@@ -1,0 +1,19 @@
+.full-partial-chooser {
+  display: flex;
+
+  .full, .partial {
+      font-size: 30px;
+    position: relative;
+    top: 4px;
+  }
+
+  .switch {
+    position: relative;
+      height: 40px;
+    .material-icons {
+      font-size: 60px;
+      position: relative;
+      top: -10px;
+    }
+  }
+}

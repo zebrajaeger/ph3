@@ -1,0 +1,20 @@
+<section class="picture-screen">
+
+  <app-border-chooser
+    class="border-chooser"
+    [hasFull]="false"
+    [partial]="true"
+    [topLabel]="labels.top"
+    [rightLabel]="labels.right"
+    [bottomLabel]="labels.bottom"
+    [leftLabel]="labels.left"
+    (border)="onBorderChange($event)"
+  ></app-border-chooser>
+
+  <app-fov-display
+    [w]="w"
+    [h]="h"
+    class="fov-display"
+  ></app-fov-display>
+
+</section>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {StateService} from './state.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'client';
+
+  constructor(private stateService: StateService) {
+
+  }
+
+  onRouterOutletActivate($event: any): void {
+    this.stateService.currentRouterComponent = $event;
+  }
 }

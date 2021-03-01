@@ -1,0 +1,47 @@
+.statusbar {
+  height: 40px;
+  border-top: 1px solid #666;
+  width: 800px;
+  display: flex;
+
+  .cell {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .v-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 40px;
+  }
+
+  .separator {
+    border-right: 1px solid #666;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .connection {
+    width: 40px;
+  }
+
+  .axis-pos {
+    width: 180px;
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .status {
+    width: 320px;
+    font-size: 25px;
+  }
+
+  .moving {
+    background-color: red;
+  }
+}

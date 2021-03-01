@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+
+body {
+  width: 800px;
+  height: 480px;
+  margin: auto;
+  background-color: #ddd;
+
+  font-family: sans-serif;
+}
+
+.center-h {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100%;
+}
+
+.right-h {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.center-v {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+  url(./MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}

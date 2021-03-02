@@ -1,0 +1,42 @@
+<section class="number-input">
+  <div class="display">
+    <div class="digit">{{_digits[0]}}</div>
+    <div class="digit">{{_digits[1]}}</div>
+    <div class="digit">{{_digits[2]}}</div>
+    <div class="digit">{{_digits[3]}}</div>
+    <div class="digit">{{_digits[4]}}</div>
+    <div class="digit komma">,</div>
+    <div class="digit">{{_digits[5]}}</div>
+    <div class="digit">{{_digits[6]}}</div>
+  </div>
+
+  <div class="keys">
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(7)">7</button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(8)">8</button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(9)">9</button></div>
+
+
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(4)">4</button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(5)">5</button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(6)">6</button></div>
+
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(1)">1</button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(2)">2</button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(3)">3</button></div>
+
+    <div class="cell"><button class="button" mat-raised-button (click)="onClear()"><span class="material-icons">clear</span></button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDigit(0)">0</button></div>
+    <div class="cell"><button class="button" mat-raised-button (click)="onDelete()"><span class="material-icons">backspace</span></button></div>
+  </div>
+
+  <div class="placeholder"></div>
+
+  <div class="buttons">
+    <button class="button button-cancel" mat-raised-button color="warn" (click)="onNoClick()">
+      <span class="material-icons">cancel</span> Cancel
+    </button>
+    <button class="button button-ok" mat-raised-button (click)="onYesClick()">
+      <span class="material-icons">check</span> Ok
+    </button>
+  </div>
+</section>

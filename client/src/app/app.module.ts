@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {InjectionToken, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,12 @@ import { PanoramaScreenComponent } from './panorama-screen/panorama-screen.compo
 import { PictureScreenComponent } from './picture-screen/picture-screen.component';
 import { PlayScreenComponent } from './play-screen/play-screen.component';
 import { PanoStatusGridComponent } from './pano-status-grid/pano-status-grid.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NumberInputComponent } from './number-input/number-input.component';
+import { PanoSettingsScreenComponent } from './pano-settings-screen/pano-settings-screen.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {MatButtonModule} from '@angular/material/button'
 
 @NgModule({
   declarations: [
@@ -28,11 +34,17 @@ import { PanoStatusGridComponent } from './pano-status-grid/pano-status-grid.com
     PanoramaScreenComponent,
     PictureScreenComponent,
     PlayScreenComponent,
-    PanoStatusGridComponent
+    PanoStatusGridComponent,
+    NumberInputComponent,
+    PanoSettingsScreenComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    OverlayModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

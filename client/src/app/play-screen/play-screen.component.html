@@ -1,3 +1,27 @@
 <section class="play-screen">
-  <app-pano-status-grid></app-pano-status-grid>
+  <div class="grid">
+    <app-pano-status-grid [width]="500" [height]="380"></app-pano-status-grid>
+  </div>
+
+  <div class="right">
+
+    <div class="status">
+      <div class="label">x</div>
+      <div class="value">1 / 123</div>
+
+      <div class="label">y</div>
+      <div class="value">1 / 123</div>
+
+      <div class="label">n</div>
+      <div class="value">1 / 123</div>
+    </div>
+    <div class="control">
+      <button mat-flat-button class="play-pause paused" (click)="onPlayPause()">
+        <span class="material-icons">play_arrow</span> / <span class="material-icons">pause</span> <span class="text">Start</span>
+      </button>
+      <button mat-flat-button class="stop" color="red" (click)="onStop()">
+        <span class="material-icons">stop</span> <span class="text">Stop</span>
+      </button>
+    </div>
+  </div>
 </section>

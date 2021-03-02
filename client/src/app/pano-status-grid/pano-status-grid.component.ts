@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-pano-status-grid',
@@ -18,6 +18,14 @@ export class PanoStatusGridComponent
   posX = 5;
   @Input()
   posY = 3;
+
+  @Input()
+  width = 100;
+  @Input()
+  height = 100;
+
+  constructor(private ngZone: NgZone) {
+  }
 
   draw(): void {
     const ctx: CanvasRenderingContext2D = this.canvasRef?.nativeElement.getContext('2d');
@@ -65,6 +73,18 @@ export class PanoStatusGridComponent
   }
 
   ngAfterViewInit(): void {
-    this.draw();
+     this.draw();
+
+    // this.ngZone.runOutsideAngular(() => {
+    //   setInterval(() => {
+    //
+    //     this.draw();
+    //
+    //   }, 1000);
+    // });
+  }
+
+  resize(): void {
+    console.log('RESIZE');
   }
 }

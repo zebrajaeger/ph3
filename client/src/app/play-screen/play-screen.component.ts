@@ -18,4 +18,12 @@ export class PlayScreenComponent {
       }
     });
   }
+
+  onPlayPause(): void {
+
+  }
+
+  onStop(): void {
+
+  }
 }

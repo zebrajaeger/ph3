@@ -22,18 +22,23 @@ export class MainScreenComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onPanoFOV(): void {
-    this.router.navigate(['/panorama']);
-  }
-  onPanoSettings(): void {
-    this.router.navigate(['/pano-settings']);
-  }
-
   onPicture(): void {
     this.router.navigate(['/picture']);
   }
 
+  onPanoFOV(): void {
+    this.router.navigate(['/panorama']);
+  }
+
+  onPanoSettings(): void {
+    this.router.navigate(['/pano-settings']);
+  }
+
   onPlay(): void {
     this.router.navigate(['/play']);
+  }
+
+  onPlaySettings(): void {
+    this.router.navigate(['/play-settings']);
   }
 }

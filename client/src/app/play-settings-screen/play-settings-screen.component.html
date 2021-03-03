@@ -1,0 +1,46 @@
+<section class="play-settings-screen">
+
+  <div class="settings">
+    <div class="cell label top left" (click)="chooseBeforeMoveDelay()">
+      <span>Delay before move</span>
+    </div>
+    <div class="cell value top" (click)="chooseBeforeMoveDelay()">
+      <span>{{settings.beforeMoveDelay}}</span>
+    </div>
+    <div class="cell unit top" (click)="chooseBeforeMoveDelay()">
+      <span>s</span>
+    </div>
+
+    <div class="cell label top left" (click)="chooseAfterMoveDelay()">
+      <span>Delay after move</span>
+    </div>
+    <div class="cell value top" (click)="chooseAfterMoveDelay()">
+      <span>{{settings.afterMoveDelay}}</span>
+    </div>
+    <div class="cell unit top" (click)="chooseAfterMoveDelay()">
+      <span>s</span>
+    </div>
+
+    <div class="cell label top left" (click)="chooseFocusTime()">
+      <span>Focus Time</span>
+    </div>
+    <div class="cell value top" (click)="chooseFocusTime()">
+      <span>{{settings.focusTime}}</span>
+    </div>
+    <div class="cell unit top" (click)="chooseFocusTime()">
+      <span>s</span>
+    </div>
+
+    <div class="cell label top left" (click)="chooseTriggerTime()">
+      <span>Trigger Time</span>
+    </div>
+    <div class="cell value top" (click)="chooseTriggerTime()">
+      <span>{{settings.triggerTime}}</span>
+    </div>
+    <div class="cell unit top" (click)="chooseTriggerTime()">
+      <span>s</span>
+    </div>
+
+  </div>
+
+</section>

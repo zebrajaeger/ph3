@@ -1,17 +1,25 @@
 <section class="pano-settings-screen">
+
   <div class="settings">
-    <div class="cell label" (click)="chooseX()">
+    <div class="cell label top left" (click)="chooseX()">
       <span>Overlap-X</span>
     </div>
-    <div class="cell value" (click)="chooseX()">
+    <div class="cell value top" (click)="chooseX()">
       <span>{{overlap.x}}</span>
     </div>
+    <div class="cell unit top" (click)="chooseX()">
+      <span>%</span>
+    </div>
 
-    <div class="cell label" (click)="chooseY()">
+    <div class="cell label left" (click)="chooseY()">
       <span>Overlap-Y</span>
     </div>
     <div class="cell value" (click)="chooseY()">
       <span>{{overlap.y}}</span>
     </div>
+    <div class="cell unit" (click)="chooseX()">
+      <span>%</span>
+    </div>
   </div>
+
 </section>

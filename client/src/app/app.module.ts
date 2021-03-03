@@ -19,7 +19,8 @@ import { NumberInputComponent } from './number-input/number-input.component';
 import { PanoSettingsScreenComponent } from './pano-settings-screen/pano-settings-screen.component';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {OverlayModule} from '@angular/cdk/overlay';
-import {MatButtonModule} from '@angular/material/button'
+import {MatButtonModule} from '@angular/material/button';
+import { PlaySettingsScreenComponent } from './play-settings-screen/play-settings-screen.component'
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {MatButtonModule} from '@angular/material/button'
     PanoStatusGridComponent,
     NumberInputComponent,
     PanoSettingsScreenComponent,
+    PlaySettingsScreenComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,25 @@
+.text-input {
+
+  .row {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .cell {
+    margin: 3px;
+    .button {
+      width: 70px;
+      height: 60px;
+    }
+  }
+
+  .cell.text mat-form-field{
+    width: 600px;
+    font-size: 30px;
+  }
+  .cell.backspace button{
+    width: 100px;
+    margin-top:20px,
+  }
+
+}

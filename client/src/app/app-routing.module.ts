@@ -6,6 +6,7 @@ import {PictureScreenComponent} from './picture-screen/picture-screen.component'
 import {PlayScreenComponent} from './play-screen/play-screen.component';
 import {PanoSettingsScreenComponent} from './pano-settings-screen/pano-settings-screen.component';
 import {PlaySettingsScreenComponent} from './play-settings-screen/play-settings-screen.component';
+import {ServerSettingsScreenComponent} from './server-settings-screen/server-settings-screen.component';
 
 const routes: Routes = [
   {path: 'picture', component: PictureScreenComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'pano-settings', component: PanoSettingsScreenComponent},
   {path: 'play', component: PlayScreenComponent},
   {path: 'play-settings', component: PlaySettingsScreenComponent},
+  {path: 'server-settings', component: ServerSettingsScreenComponent},
   {path: '**', component: MainScreenComponent}
 ];
 

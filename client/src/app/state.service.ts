@@ -13,6 +13,7 @@ export class StateService {
   _currentRouterComponent = new Subject<any>();
   private _panoFov?: Fov;
   private _pictureFov?: Fov;
+  address = '127.0.0.1';
 
   constructor() {
     this._titlebar = undefined;

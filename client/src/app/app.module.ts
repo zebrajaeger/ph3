@@ -17,10 +17,14 @@ import { PanoStatusGridComponent } from './pano-status-grid/pano-status-grid.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NumberInputComponent } from './number-input/number-input.component';
 import { PanoSettingsScreenComponent } from './pano-settings-screen/pano-settings-screen.component';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule} from '@angular/material/dialog';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MatButtonModule} from '@angular/material/button';
-import { PlaySettingsScreenComponent } from './play-settings-screen/play-settings-screen.component'
+import { PlaySettingsScreenComponent } from './play-settings-screen/play-settings-screen.component';
+import { TextInputComponent } from './text-input/text-input.component';
+import { ServerSettingsScreenComponent } from './server-settings-screen/server-settings-screen.component'
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,8 @@ import { PlaySettingsScreenComponent } from './play-settings-screen/play-setting
     NumberInputComponent,
     PanoSettingsScreenComponent,
     PlaySettingsScreenComponent,
+    TextInputComponent,
+    ServerSettingsScreenComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +52,9 @@ import { PlaySettingsScreenComponent } from './play-settings-screen/play-setting
     BrowserAnimationsModule,
     OverlayModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

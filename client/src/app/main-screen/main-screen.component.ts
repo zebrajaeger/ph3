@@ -41,4 +41,7 @@ export class MainScreenComponent implements OnInit {
   onPlaySettings(): void {
     this.router.navigate(['/play-settings']);
   }
+  onServerSettings(): void {
+    this.router.navigate(['/server-settings']);
+  }
 }

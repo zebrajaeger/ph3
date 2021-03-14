@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {DeviceService} from '../device.service';
-import {StateService} from '../state.service';
+import {StatusBarTitle} from '../titlebar/titlebar.component';
+import {RouterService} from '../router.service';
+import {TitlebarService} from '../titlebar.service';
 
 @Component({
   selector: 'app-play-screen',
@@ -9,13 +11,13 @@ import {StateService} from '../state.service';
 })
 export class PlayScreenComponent {
 
-  constructor(private dataConnectionService: DeviceService, private stateService: StateService) {
-    const self = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      if (screen === self) {
-        stateService.title = 'Play';
-        stateService.backDisabled = false;
-      }
+  constructor(private deviceService: DeviceService,
+              private routerService: RouterService,
+              private titlebarService: TitlebarService) {
+    routerService.onActivate(this, () => {
+      titlebarService.title = 'Play';
+      titlebarService.backEnabled = true;
+      titlebarService.saveEnabled = false;
     });
   }
 
@@ -26,4 +28,5 @@ export class PlayScreenComponent {
   onStop(): void {
 
   }
+
 }

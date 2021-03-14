@@ -8,53 +8,27 @@
     padding-left: 10px;
     font-size: 36px;
     font-weight: bold;
-    background-color: rgba(0,0,0,.12);
+    background-color: rgba(0, 0, 0, .12);
   }
 
-  .button{
-    font-size: 1.2em;
+  .button {
+    font-size: 1.7em;
     font-weight: bold;
-    width:200px;
+    width: 200px;
     height: 100%;
+    .material-icons {
+      font-size: 1.2em;
+      margin-right: 0.3em;
+    }
   }
 
-  //.back {
-  //  &.disabled {
-  //    background-color: #999;
-  //    color: #777;
-  //  }
-  //
-  //  background-color: #a3c4ff;
-  //  width: 240px;
-  //
-  //  .icon1 {
-  //    position: relative;
-  //    top: 2px;
-  //    left: 5px;
-  //  }
-  //
-  //  .icon2 {
-  //    top: 2px;
-  //    position: relative;
-  //    left: -9px;
-  //  }
-  //
-  //  .label {
-  //    left: -9px;
-  //    position: relative;
-  //    font-size: 28px;
-  //    font-weight: bold;
-  //  }
-  //}
-  //
-  //.separator {
-  //  border-right: 1px solid #666;
-  //}
-  //
-  //.v-center {
-  //  display: flex;
-  //  flex-direction: column;
-  //  justify-content: center;
-  //  height: 40px;
-  //}
+  .save-button {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
+  .back-arrow {
+    transform: rotate(180deg);
+  }
+
 }

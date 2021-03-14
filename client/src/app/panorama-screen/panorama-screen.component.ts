@@ -1,46 +1,35 @@
-import {Component, OnInit} from '@angular/core';
-import {StateService} from '../state.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Border} from '../border-chooser/border-chooser.component';
 import {Axis, DeviceService} from '../device.service';
-
-export interface Fov {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-  partial: boolean;
-}
+import {StatusBarTitle} from '../titlebar/titlebar.component';
+import {Fov} from '../pano.service';
+import {RouterService} from '../router.service';
+import {TitlebarService} from '../titlebar.service';
 
 @Component({
   selector: 'app-panorama-screen',
   templateUrl: './panorama-screen.component.html',
   styleUrls: ['./panorama-screen.component.scss']
 })
-export class PanoramaScreenComponent {
+export class PanoramaScreenComponent implements OnInit {
 
   labels = {
     top: '-', right: '-', bottom: '-', left: '-'
   };
 
-  fov: Fov = {bottom: undefined, left: undefined, right: undefined, top: undefined, partial: true};
+  fov = new Fov({partial: true});
 
-  axis?: Axis;
-
-  w?: number;
-  h?: number;
-
-  constructor(private dataConnectionService: DeviceService, private stateService: StateService) {
-    const self = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      if (screen === self) {
-        stateService.title = 'Panorama Bounds';
-        stateService.backDisabled = false;
-      }
+  constructor(private deviceService: DeviceService,
+              private routerService: RouterService,
+              private titlebarService: TitlebarService) {
+    routerService.onActivate(this, () => {
+      titlebarService.title = 'Pano bounds';
+      titlebarService.backEnabled = true;
+      titlebarService.saveEnabled = true;
     });
+  }
 
-    dataConnectionService.axisSubject.subscribe(axis => {
-      this.axis = axis;
-    });
+  ngOnInit(): void {
   }
 
   set partial(partial: boolean) {
@@ -53,56 +42,31 @@ export class PanoramaScreenComponent {
 
   onPartialChange(partial: boolean): void {
     this.partial = partial;
-    this.updateWH();
   }
 
   onBorderChange(border: Border): void {
+    let value;
     switch (border) {
       case Border.Top:
-        if (this.axis?.y) {
-          this.fov.top = this.axis.y;
-          this.labels.top = this.fov.top.toFixed(2);
-        }
+        value = this.deviceService.axis.y;
+        this.fov.y1 = value;
+        this.labels.top = value.toFixed(2);
         break;
       case Border.Bottom:
-        if (this.axis?.y) {
-          this.fov.bottom = this.axis.y;
-          this.labels.bottom = this.fov.bottom.toFixed(2);
-        }
+        value = this.deviceService.axis.y;
+        this.fov.y2 = value;
+        this.labels.bottom = value.toFixed(2);
         break;
       case Border.Left:
-        if (this.axis?.x) {
-          this.fov.left = this.axis.x;
-          this.labels.left = this.fov.left.toFixed(2);
-        }
+        value = this.deviceService.axis.x;
+        this.fov.x1 = value;
+        this.labels.left = value.toFixed(2);
         break;
       case Border.Right:
-        if (this.axis?.x) {
-          this.fov.right = this.axis.x;
-          this.labels.right = this.fov.right.toFixed(2);
-        }
+        value = this.deviceService.axis.x;
+        this.fov.x2 = value;
+        this.labels.right = value.toFixed(2);
         break;
     }
-    this.updateWH();
-  }
-
-  updateWH(): void {
-    if (this.fov.partial) {
-      if (this.fov.left !== undefined && this.fov.right !== undefined) {
-        this.w = Math.abs(this.fov.left - this.fov.right); // TODO consider more than one revolution
-      } else {
-        this.w = undefined;
-      }
-    } else {
-      this.w = 360.0;
-    }
-
-    if (this.fov.top !== undefined && this.fov.bottom !== undefined) {
-      this.h = Math.abs(this.fov.top - this.fov.bottom); // TODO consider more than one revolution
-    } else {
-      this.h = undefined;
-    }
-
-    this.stateService.panoFov = this.fov;
   }
 }

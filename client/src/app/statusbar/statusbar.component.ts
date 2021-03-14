@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {StateService} from '../state.service';
 import {Axis, DeviceService} from '../device.service';
+import {ControllerData, ControllerService} from '../controller.service';
+import {ServerService} from '../server.service';
 
 @Component({
   selector: 'app-statusbar',
@@ -9,29 +10,21 @@ import {Axis, DeviceService} from '../device.service';
 })
 export class StatusbarComponent implements OnInit {
 
-  connected = false;
-  focus = false;
-  trigger = true;
-  movingX = true;
-  movingY = false;
-  _status = '';
+  isConnected = false;
+  status = '';
   axis?: Axis;
+  controllerData?: ControllerData;
 
-  constructor(private dataConnectionService: DeviceService, private stateService: StateService) {
-    stateService.statusbar = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      this.status = '';
-    });
+  constructor(private serverService: ServerService,
+              private controllerService: ControllerService) {
 
-    dataConnectionService.axisSubject.subscribe(axis => {
-      this.axis = axis;
+    serverService.isConnected.subscribe(isConnected => this.isConnected = isConnected);
+
+    controllerService.data.subscribe(data => {
+      this.controllerData = data;
     });
   }
 
   ngOnInit(): void {
-  }
-
-  set status(status: string) {
-    this._status = status;
   }
 }

@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {StatusBarTitle} from '../titlebar/titlebar.component';
 
 @Component({
   selector: 'app-pano-status-grid',
   templateUrl: './pano-status-grid.component.html',
   styleUrls: ['./pano-status-grid.component.scss']
 })
-export class PanoStatusGridComponent
-  implements AfterViewInit {
+export class PanoStatusGridComponent implements AfterViewInit {
 
   @ViewChild('canvasId') canvasRef?: ElementRef;
 
@@ -73,7 +73,7 @@ export class PanoStatusGridComponent
   }
 
   ngAfterViewInit(): void {
-     this.draw();
+    this.draw();
 
     // this.ngZone.runOutsideAngular(() => {
     //   setInterval(() => {

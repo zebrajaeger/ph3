@@ -1,24 +1,24 @@
 <section class="titlebar">
   <div class="title separator v-center">
-    <div>{{_title}}</div>
+    <div>{{title}}</div>
   </div>
 
-<!--  <div class="back v-center" [class.disabled]="_backDisabled" (click)="onBack()">-->
-<!--    <div>-->
-<!--      <span class="material-icons icon1">arrow_back_ios</span>-->
-<!--      <span class="material-icons icon2">arrow_back_ios</span>-->
-<!--      <span class="label">Back</span>-->
-<!--    </div>-->
-<!--  </div>-->
+  <button class="button save-button"
+          [disabled]="!_saveEnabled"
+          mat-flat-button
+          color="warn"
+          (click)="onSave()"
+  >
+    <span>Save</span>
+  </button>
 
-  <button class="button"
-          [disabled]="_backDisabled"
+  <button class="button back-button"
+          [disabled]="!_backEnabled"
           mat-flat-button
           color="primary"
           (click)="onBack()"
   >
-    <span class="material-icons icon1">arrow_back_ios</span>
-    <span class="material-icons icon1">arrow_back_ios</span>
+    <span class="material-icons back-arrow">double_arrow</span>
     <span>Back</span>
   </button>
 </section>

@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {StateService} from '../state.service';
+import {StatusBarTitle} from '../titlebar/titlebar.component';
 import {DeviceService} from '../device.service';
+import {RouterService} from '../router.service';
+import {TitlebarService} from '../titlebar.service';
 
 @Component({
   selector: 'app-server-settings-screen',
@@ -9,15 +11,18 @@ import {DeviceService} from '../device.service';
 })
 export class ServerSettingsScreenComponent implements OnInit {
 
-  constructor(private dataConnectionService: DeviceService, public stateService: StateService) {
-    const self = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      if (screen === self) {
-        stateService.title = 'Server Settings';
-        stateService.backDisabled = false;
-      }
+  address = '127.0.0.1';
+
+  constructor(private deviceService: DeviceService,
+              private routerService: RouterService,
+              private titlebarService: TitlebarService) {
+    routerService.onActivate(this, () => {
+      titlebarService.title = 'Server Settings';
+      titlebarService.backEnabled = true;
+      titlebarService.saveEnabled = true;
     });
   }
+
   ngOnInit(): void {
   }
 

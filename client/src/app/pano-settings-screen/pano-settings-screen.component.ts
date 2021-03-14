@@ -1,8 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {DeviceService} from '../device.service';
-import {StateService} from '../state.service';
 import {MatDialog} from '@angular/material/dialog';
 import {NumberInputComponent} from '../number-input/number-input.component';
+import {StatusBarTitle} from '../titlebar/titlebar.component';
+import {TitlebarService} from '../titlebar.service';
+import {RouterService} from '../router.service';
+import {PanoService, PanoSettings} from '../pano.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-pano-settings-screen',
@@ -11,14 +15,24 @@ import {NumberInputComponent} from '../number-input/number-input.component';
 })
 export class PanoSettingsScreenComponent implements OnInit {
 
-  overlap = {x: 25.0, y: 25.0};
+  settings: PanoSettings = {minOverlapX: 25.0, minOverlapY: 25.0};
 
-  constructor(private dataConnectionService: DeviceService, private stateService: StateService, public dialog: MatDialog) {
-    const self = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      if (screen === self) {
-        stateService.title = 'Panorama Settings';
-        stateService.backDisabled = false;
+  constructor(private titlebarService: TitlebarService,
+              private routerService: RouterService,
+              private panoService: PanoService,
+              public dialog: MatDialog) {
+
+    panoService.panoSettingsObservable.subscribe(settings => this.settings = settings);
+
+    routerService.onActivate(this, () => {
+      titlebarService.title = 'Pano settings';
+      titlebarService.backEnabled = true;
+      titlebarService.saveEnabled = true;
+    });
+
+    titlebarService.onSave(() => {
+      if (routerService.isActive(this)) {
+        this.panoService.panoSettings = this.settings;
       }
     });
   }
@@ -28,24 +42,24 @@ export class PanoSettingsScreenComponent implements OnInit {
 
   chooseX(): void {
     const dialogRef = this.dialog.open(NumberInputComponent, {
-      data: {value: this.overlap.x}
+      data: {value: this.settings.minOverlapX}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(first()).subscribe(result => {
       if (result !== undefined) {
-        this.overlap.x = result.value;
+        this.settings.minOverlapX = result.value;
       }
     });
   }
 
   chooseY(): void {
     const dialogRef = this.dialog.open(NumberInputComponent, {
-      data: {value: this.overlap.y}
+      data: {value: this.settings.minOverlapY}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(first()).subscribe(result => {
       if (result !== undefined) {
-        this.overlap.y = result.value;
+        this.settings.minOverlapY = result.value;
       }
     });
   }

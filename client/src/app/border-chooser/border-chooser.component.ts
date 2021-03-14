@@ -46,7 +46,6 @@ export class BorderChooserComponent {
 
   @Input()
   set partial(partial: boolean) {
-    console.log('SP', partial);
     this._partial = partial;
     this.partialChange.emit(partial);
   }

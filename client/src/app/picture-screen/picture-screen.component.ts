@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Axis, DeviceService} from '../device.service';
-import {StateService} from '../state.service';
 import {Border} from '../border-chooser/border-chooser.component';
-import {Fov} from '../panorama-screen/panorama-screen.component';
+import {RouterService} from '../router.service';
+import {TitlebarService} from '../titlebar.service';
+import {Fov, PanoService} from '../pano.service';
+import {Axis, DeviceService} from '../device.service';
 
 @Component({
   selector: 'app-picture-screen',
@@ -15,70 +16,49 @@ export class PictureScreenComponent {
     top: '-', right: '-', bottom: '-', left: '-'
   };
 
-  fov: Fov = {bottom: undefined, left: undefined, right: undefined, top: undefined, partial: true};
+  fov = new Fov();
 
-  axis?: Axis;
+  constructor(private routerService: RouterService,
+              private titlebarService: TitlebarService,
+              private panoService: PanoService,
+              private deviceService: DeviceService) {
 
-  w?: number;
-  h?: number;
-
-  constructor(private dataConnectionService: DeviceService, private stateService: StateService) {
-    const self = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      if (screen === self) {
-        stateService.title = 'Picture Bounds';
-        stateService.backDisabled = false;
-      }
+    routerService.onActivate(this, () => {
+      titlebarService.title = 'Picture Bounds';
+      titlebarService.backEnabled = true;
+      titlebarService.saveEnabled = true;
     });
 
-    dataConnectionService.axisSubject.subscribe(axis => {
-      this.axis = axis;
+    titlebarService.onSave(() => {
+      if (routerService.isActive(this)) {
+        panoService.cameraFov = this.fov;
+      }
     });
   }
 
   onBorderChange(border: Border): void {
+    let value;
     switch (border) {
       case Border.Top:
-        if (this.axis?.y) {
-          this.fov.top = this.axis.y;
-          this.labels.top = this.fov.top.toFixed(2);
-        }
+        value = this.deviceService.axis.y;
+        this.fov.y1 = value;
+        this.labels.top = value.toFixed(2);
         break;
       case Border.Bottom:
-        if (this.axis?.y) {
-          this.fov.bottom = this.axis.y;
-          this.labels.bottom = this.fov.bottom.toFixed(2);
-        }
+        value = this.deviceService.axis.y;
+        this.fov.y2 = value;
+        this.labels.bottom = value.toFixed(2);
         break;
       case Border.Left:
-        if (this.axis?.x) {
-          this.fov.left = this.axis.x;
-          this.labels.left = this.fov.left.toFixed(2);
-        }
+        value = this.deviceService.axis.x;
+        this.fov.x1 = value;
+        this.labels.left = value.toFixed(2);
         break;
       case Border.Right:
-        if (this.axis?.x) {
-          this.fov.right = this.axis.x;
-          this.labels.right = this.fov.right.toFixed(2);
-        }
+        value = this.deviceService.axis.x;
+        this.fov.x2 = value;
+        this.labels.right = value.toFixed(2);
         break;
     }
-    this.updateWH();
-  }
-
-  updateWH(): void {
-    if (this.fov.left !== undefined && this.fov.right !== undefined) {
-      this.w = Math.abs(this.fov.left - this.fov.right); // TODO consider more than one revolution
-    } else {
-      this.w = undefined;
-    }
-
-    if (this.fov.top !== undefined && this.fov.bottom !== undefined) {
-      this.h = Math.abs(this.fov.top - this.fov.bottom); // TODO consider more than one revolution
-    } else {
-      this.h = undefined;
-    }
-
-    this.stateService.pictureFov = this.fov;
   }
 }

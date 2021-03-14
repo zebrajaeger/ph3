@@ -1,8 +1,10 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {DeviceService} from '../device.service';
-import {StateService} from '../state.service';
 import {MatDialog} from '@angular/material/dialog';
 import {NumberInputComponent} from '../number-input/number-input.component';
+import {StatusBarTitle} from '../titlebar/titlebar.component';
+import {RouterService} from '../router.service';
+import {TitlebarService} from '../titlebar.service';
 
 @Component({
   selector: 'app-play-settings-screen',
@@ -20,15 +22,15 @@ export class PlaySettingsScreenComponent {
   };
 
   constructor(private dataConnectionService: DeviceService,
-              private stateService: StateService,
               public dialog: MatDialog,
-              private changeDetector: ChangeDetectorRef) {
-    const self = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      if (screen === self) {
-        stateService.title = 'Play Settings';
-        stateService.backDisabled = false;
-      }
+              private changeDetector: ChangeDetectorRef,
+              private deviceService: DeviceService,
+              private routerService: RouterService,
+              private titlebarService: TitlebarService) {
+    routerService.onActivate(this, () => {
+      titlebarService.title = 'Play Settings';
+      titlebarService.backEnabled = true;
+      titlebarService.saveEnabled = true;
     });
   }
 

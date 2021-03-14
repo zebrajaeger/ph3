@@ -10,7 +10,7 @@
           "style": "scss"
         },
         "@schematics/angular:application": {
-          "strict": true
+          "strict": false
         }
       },
       "root": "",
@@ -26,6 +26,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
+            "allowedCommonJsDependencies": [
+              "rpc-websockets"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

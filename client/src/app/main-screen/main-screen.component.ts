@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {StateService} from '../state.service';
 import {Router} from '@angular/router';
+import {ComponentActivation, ComponentActivationListener, RouterService} from '../router.service';
+import {TitlebarService} from '../titlebar.service';
 
 @Component({
   selector: 'app-main-screen',
@@ -9,13 +10,13 @@ import {Router} from '@angular/router';
 })
 export class MainScreenComponent implements OnInit {
 
-  constructor(private router: Router, private stateService: StateService) {
-    const self = this;
-    stateService.currentRouterComponentSubject.subscribe(screen => {
-      if (screen === self) {
-        stateService.title = 'Main';
-        stateService.backDisabled = true;
-      }
+  constructor(private router: Router,
+              private routerService: RouterService,
+              private titlebarService: TitlebarService) {
+    this.routerService.onActivate(this, () => {
+      this.titlebarService.backEnabled = false;
+      this.titlebarService.saveEnabled = false;
+      this.titlebarService.title = 'Main';
     });
   }
 
@@ -41,7 +42,12 @@ export class MainScreenComponent implements OnInit {
   onPlaySettings(): void {
     this.router.navigate(['/play-settings']);
   }
+
   onServerSettings(): void {
     this.router.navigate(['/server-settings']);
+  }
+
+  onSandbox(): void {
+    this.router.navigate(['/sandbox']);
   }
 }

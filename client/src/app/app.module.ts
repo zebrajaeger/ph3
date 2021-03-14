@@ -25,6 +25,7 @@ import { TextInputComponent } from './text-input/text-input.component';
 import { ServerSettingsScreenComponent } from './server-settings-screen/server-settings-screen.component'
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import { SandboxScreenComponent } from './sandbox-screen/sandbox-screen.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {MatInputModule} from '@angular/material/input';
     PlaySettingsScreenComponent,
     TextInputComponent,
     ServerSettingsScreenComponent,
+    SandboxScreenComponent,
   ],
   imports: [
     BrowserModule,

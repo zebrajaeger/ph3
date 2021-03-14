@@ -1,6 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {StateService} from '../state.service';
 import {Router} from '@angular/router';
+import {
+  ComponentActivation,
+  ComponentActivationListener,
+  NavigationBackEnableListener,
+  RouterService
+} from '../router.service';
+import {TitlebarService} from '../titlebar.service';
+import {Observable, Subject} from 'rxjs';
+
+export abstract class StatusBarTitle {
+  abstract get statusBarTitle(): string;
+}
 
 @Component({
   selector: 'app-titlebar',
@@ -8,26 +19,62 @@ import {Router} from '@angular/router';
   styleUrls: ['./titlebar.component.scss']
 })
 export class TitlebarComponent implements OnInit {
+  private _title = 'Ich bin der Titel';
+  _backEnabled = true;
+  _saveEnabled = true;
+  _backObservable = new Subject<void>();
+  private _saveObservable = new Subject<void>();
 
-  _title = 'Ich bin der Titel';
-  _backDisabled = false;
-
-  constructor(private router: Router, private stateService: StateService) {
-    stateService.titlebar = this;
+  constructor(private router: Router,
+              private routerService: RouterService,
+              private titlebarService: TitlebarService) {
   }
 
   ngOnInit(): void {
+    // this.routerService.registerComponentActivationListener(this);
+    this.titlebarService.titlebar = this;
+  }
+  //
+  // onComponentActivated(component: any): void {
+  //   if (component instanceof StatusBarTitle) {
+  //     this.title = component.statusBarTitle;
+  //   }
+  // }
+
+  // onComponentDeactivated(component: any): void {
+  //   this.titlebarService.title = '';
+  // }
+
+  set title(value: string) {
+    this._title = value;
   }
 
-  set title(title: string) {
-    this._title = title;
+  get title(): string {
+    return this._title;
   }
 
-  set backDisabled(backDisabled: boolean) {
-    this._backDisabled = backDisabled;
+  get saveObservable(): Subject<void> {
+    return this._saveObservable;
+  }
+
+  get backObservable(): Subject<void> {
+    return this._backObservable;
+  }
+
+  set backEnabled(enabled: boolean) {
+    this._backEnabled = enabled;
+  }
+
+  set saveEnabled(enabled: boolean) {
+    this._saveEnabled = enabled;
   }
 
   onBack(): void {
     this.router.navigate(['/']).then();
+    this._backObservable.next();
+  }
+
+  onSave(): void {
+    this._saveObservable.next();
   }
 }

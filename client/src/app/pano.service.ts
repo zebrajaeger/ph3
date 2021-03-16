@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ServerService} from './server.service';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 export interface PanoSettings {
   minOverlapX: number;
@@ -59,49 +60,63 @@ export class PanoService {
   private _pano: Subject<Pano> = new Subject();
 
   constructor(private server: ServerService) {
-    server.isConnected.subscribe(isConnected => {
-      if (isConnected) {
-        this.server.value('panoSettings').subscribe(value => {
-          this._panoSettings.next(value);
-        });
-        this.server.value('panoFov').subscribe(value => {
-          this._panoFov.next(value);
-        });
-        this.server.value('cameraFov').subscribe(value => {
-          this._cameraFov.next(value);
-        });
-        this.server.value('pano').subscribe(value => {
-          this._pano.next(value);
-        });
-      }
+    this.server.subscribeToValue('panoSettings', value => {
+      this._panoSettings.next(value);
+    });
+    this.server.subscribeToValue('panoFov', value => {
+      this._panoFov.next(value);
+    });
+    this.server.subscribeToValue('cameraFov', value => {
+      this._cameraFov.next(value);
+    });
+    this.server.subscribeToValue('pano', value => {
+      this._pano.next(value);
     });
   }
 
-  get panoSettingsObservable(): Observable<PanoSettings> {
-    return this._panoSettings;
+  // pano-settings
+  onPanoSettings(callback: (data: PanoSettings) => void): void {
+    this._panoSettings.subscribe(callback);
   }
 
-  get cameraFovObservable(): Observable<Fov> {
-    return this._cameraFov;
-  }
-
-  get panoFovObservable(): Observable<Fov> {
-    return this._panoFov;
-  }
-
-  get panoObservable(): Observable<Pano> {
-    return this._pano;
+  requestPanoSettings(callback: (data: PanoSettings) => void): void {
+    this.server.call('getPanoSettings')?.then(callback);
   }
 
   set panoSettings(value: PanoSettings) {
-    this.server.notify('setPanoSettings', value).then();
+    this.server.notify('setPanoSettings', value)?.then();
+  }
+
+
+  // pano
+  onPano(callback: (data: Pano) => void): void {
+    this._pano.subscribe(callback);
+  }
+
+
+  // camera-fov
+  onCameraFov(callback: (data: Fov) => void): void {
+    this._cameraFov.pipe(map(fov => new Fov(fov))).subscribe(callback);
+  }
+
+  requestCameraFov(callback: (data: Fov) => void): void {
+    this.server.call('getCameraFov')?.then(fov => callback(new Fov(fov)));
   }
 
   set cameraFov(value: Fov) {
-    this.server.notify('setCameraFov', value).then();
+    this.server.notify('setCameraFov', value)?.then();
+  }
+
+  // pano-fov
+  onPanoFov(callback: (data: Fov) => void): void {
+    this._panoFov.pipe(map(fov => new Fov(fov))).subscribe(callback);
+  }
+
+  requestPanoFov(callback: (data: Fov) => void): void {
+    this.server.call('getCameraFov')?.then(fov => callback(new Fov(fov)));
   }
 
   set panoFov(value: Fov) {
-    this.server.notify('setCameraFov', value).then();
+    this.server.notify('setCameraFov', value)?.then();
   }
 }

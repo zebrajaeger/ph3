@@ -3,62 +3,103 @@ import {Border} from '../border-chooser/border-chooser.component';
 import {RouterService} from '../router.service';
 import {TitlebarService} from '../titlebar.service';
 import {Fov, PanoService} from '../pano.service';
-import {Axis, DeviceService} from '../device.service';
+import {ControllerData, ControllerService} from '../controller.service';
+import {JoystickService} from '../joystick.service';
 
 @Component({
   selector: 'app-picture-screen',
   templateUrl: './picture-screen.component.html',
   styleUrls: ['./picture-screen.component.scss']
 })
-export class PictureScreenComponent {
+export class PictureScreenComponent implements OnInit {
 
-  labels = {
+  private _fov = new Fov();
+  private _data?: ControllerData;
+  private _labels = {
     top: '-', right: '-', bottom: '-', left: '-'
   };
-
-  fov = new Fov();
 
   constructor(private routerService: RouterService,
               private titlebarService: TitlebarService,
               private panoService: PanoService,
-              private deviceService: DeviceService) {
+              private controllerService: ControllerService,
+              private joystickService: JoystickService) {
 
     routerService.onActivate(this, () => {
       titlebarService.title = 'Picture Bounds';
       titlebarService.backEnabled = true;
       titlebarService.saveEnabled = true;
+      joystickService.jogging = {isJogging: true};
+    });
+
+    routerService.onDeactivate(this, () => {
+      joystickService.jogging = {isJogging: false};
     });
 
     titlebarService.onSave(() => {
       if (routerService.isActive(this)) {
-        panoService.cameraFov = this.fov;
+        panoService.cameraFov = this._fov;
       }
     });
+
+    panoService.onCameraFov(fov => this.fov = fov);
+    panoService.requestCameraFov(fov => this.fov = fov);
+
+    controllerService.onData(data => this._data = data);
+  }
+
+  ngOnInit(): void {
   }
 
   onBorderChange(border: Border): void {
     let value;
     switch (border) {
       case Border.Top:
-        value = this.deviceService.axis.y;
-        this.fov.y1 = value;
-        this.labels.top = value.toFixed(2);
+        if (this._data) {
+          value = this._data?.y.pos;
+          this._fov.y1 = value;
+        }
         break;
       case Border.Bottom:
-        value = this.deviceService.axis.y;
-        this.fov.y2 = value;
-        this.labels.bottom = value.toFixed(2);
+        if (this._data) {
+          value = this._data?.y.pos;
+          this._fov.y2 = value;
+        }
         break;
       case Border.Left:
-        value = this.deviceService.axis.x;
-        this.fov.x1 = value;
-        this.labels.left = value.toFixed(2);
+        if (this._data) {
+          value = this._data?.x.pos;
+          this._fov.x1 = value;
+        }
         break;
       case Border.Right:
-        value = this.deviceService.axis.x;
-        this.fov.x2 = value;
-        this.labels.right = value.toFixed(2);
+        if (this._data) {
+          value = this._data?.x.pos;
+          this._fov.x2 = value;
+        }
         break;
     }
+    this.updateLabels();
+  }
+
+  updateLabels(): void {
+    this._labels.top = this.fov.y1?.toFixed(2) || '-';
+    this._labels.bottom = this.fov.y2?.toFixed(2) || '-';
+    this._labels.left = this.fov.x1?.toFixed(2) || '-';
+    this._labels.right = this.fov.x2?.toFixed(2) || '-';
+  }
+
+  get fov(): Fov {
+    return this._fov;
+  }
+
+
+  set fov(value: Fov) {
+    this._fov = value;
+    this.updateLabels();
+  }
+
+  get labels(): { top: string; left: string; bottom: string; right: string } {
+    return this._labels;
   }
 }

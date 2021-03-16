@@ -18,11 +18,8 @@ export class StatusbarComponent implements OnInit {
   constructor(private serverService: ServerService,
               private controllerService: ControllerService) {
 
-    serverService.isConnected.subscribe(isConnected => this.isConnected = isConnected);
-
-    controllerService.data.subscribe(data => {
-      this.controllerData = data;
-    });
+    serverService.onConnectionChanged(isConnected => this.isConnected = isConnected);
+    controllerService.onData(data => this.controllerData = data);
   }
 
   ngOnInit(): void {

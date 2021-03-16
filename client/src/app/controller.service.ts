@@ -37,19 +37,15 @@ export interface ControllerData {
   providedIn: 'root'
 })
 export class ControllerService {
-  private mData = new Subject<ControllerData>();
+  private _data = new Subject<ControllerData>();
 
   constructor(private server: ServerService) {
-    server.isConnected.subscribe(isConnected => {
-      if (isConnected) {
-        this.server.value('controller').subscribe(data => {
-          this.mData.next(data);
-        });
-      }
+    this.server.subscribeToValue('controller', data => {
+      this._data.next(data);
     });
   }
 
-  get data(): Subject<any> {
-    return this.mData;
+  onData(callback: (data: ControllerData) => void): void {
+    this._data.subscribe(callback);
   }
 }

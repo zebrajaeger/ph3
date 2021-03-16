@@ -22,7 +22,7 @@ export class PanoSettingsScreenComponent implements OnInit {
               private panoService: PanoService,
               public dialog: MatDialog) {
 
-    panoService.panoSettingsObservable.subscribe(settings => this.settings = settings);
+    panoService.onPanoSettings(settings => this.settings = settings);
 
     routerService.onActivate(this, () => {
       titlebarService.title = 'Pano settings';
@@ -38,6 +38,7 @@ export class PanoSettingsScreenComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.panoService.requestPanoSettings(settings => this.settings = settings);
   }
 
   chooseX(): void {

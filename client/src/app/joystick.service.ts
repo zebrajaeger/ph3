@@ -1,19 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ServerService} from './server.service';
-import {Observable, Observer, Subject} from 'rxjs';
-
-// {
-//   x: {
-//     threshold: 0.05,
-//       raw: { value: 494, min: 104, center: 495, max: 884 },
-//     calculated: { value: 0.49872122762148335, capped: 0.5 }
-//   },
-//   y: {
-//     threshold: 0.05,
-//       raw: { value: 551, min: 104, center: 552, max: 975 },
-//     calculated: { value: 0.49888392857142855, capped: 0.5 }
-//   }
-// }
+import {Observable, Subject} from 'rxjs';
 
 export interface RawValue {
   value: number;
@@ -27,7 +14,6 @@ export interface CalculatedValue {
   capped: number;
 }
 
-
 export interface AxisData {
   threshold: number;
   raw: RawValue;
@@ -39,47 +25,53 @@ export interface JoystickData {
   y: AxisData;
 }
 
+export interface Jogging {
+  isJogging: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class JoystickService {
-  private mIsJogging = new Subject<boolean>();
-  private mData = new Subject<JoystickData>();
+  private _isJogging = new Subject<Jogging>();
+  private _data = new Subject<JoystickData>();
 
   constructor(private server: ServerService) {
-    server.isConnected.subscribe(isConnected => {
-      if (isConnected) {
-        this.server.subscribe('isJogging').subscribe(isJogging => {
-          this.mIsJogging.next(isJogging);
-        });
-        this.server.call('getJogging', null).then(isJogging => {
-          this.mIsJogging.next(isJogging);
-        });
-        this.server.subscribe('joystick').subscribe(data => {
-          this.mData.next(data);
-        });
-      }
+    this.server.subscribeToValue('jogging', (isJogging: Jogging) => {
+      this._isJogging.next(isJogging);
     });
+    this.server.call('getJogging', null)?.then(isJogging => {
+      this._isJogging.next(isJogging);
+    });
+    this.server.subscribeToValue('joystick', data => {
+        this._data.next(data);
+      }
+    );
   }
 
-  get isJogging(): Observable<boolean> {
-    return this.mIsJogging;
+
+  onJogging(callback: (data: Jogging) => void): void {
+    this._isJogging.subscribe(callback);
   }
 
-  get data(): Subject<JoystickData> {
-    return this.mData;
+  onJoystickData(callback: (data: JoystickData) => void): void {
+    this._data.subscribe(callback);
   }
 
-  setJogging(value: boolean): Promise<boolean> {
-    return this.server.call('setJogging', value === true);
+  set jogging(jogging: Jogging) {
+    this.server.notify('setJogging', jogging)?.then();
   }
 
-  resetCalibration(): Promise<any> {
-    return this.server.call('setJoystickCalibrationReset', null);
-  }
-
-  saveCalibration(): Promise<any> {
-    return this.server.call('setSaveJoystickCalibrationData', null);
-  }
+  // setJogging(value: boolean): Promise<boolean> {
+  //   return this.server.call('setJogging', value === true);
+  // }
+  //
+  // resetCalibration(): Promise<any> {
+  //   return this.server.call('setJoystickCalibrationReset', null);
+  // }
+  //
+  // saveCalibration(): Promise<any> {
+  //   return this.server.call('setSaveJoystickCalibrationData', null);
+  // }
 }
 

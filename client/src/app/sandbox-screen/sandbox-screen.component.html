@@ -1,5 +1,8 @@
 Pano: {{pano | json}}<br>
 CameraFov: {{cameraFov | json}}<br>
 PanoFov: {{panoFov | json}}<br>
+Joystick: {{_joystick?.x?.calculated?.capped}}, {{_joystick?.y?.calculated?.capped}}<br>
+Jogging: {{isJogging}}<br>
+
 <br>
 <button class="button" mat-flat-button color="warn" (click)="onTest()">Test</button>

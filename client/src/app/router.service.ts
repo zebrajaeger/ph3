@@ -93,7 +93,12 @@ export class RouterService {
 
   onActivate(component: any, callback: () => void): void {
     this.componentCallbacks.getCallback(component).activate.subscribe(() => {
-      let a = 0;
+      callback();
+    });
+  }
+
+  onDeactivate(component: any, callback: () => void): void {
+    this.componentCallbacks.getCallback(component).deactivate.subscribe(() => {
       callback();
     });
   }

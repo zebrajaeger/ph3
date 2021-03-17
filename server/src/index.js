@@ -148,18 +148,7 @@ wsServer.register('getCameraFov', async (data) => {
 
 wsServer.register('setCameraFov', async (data) => {
     console.log('setCameraFov', data);
-    if (data.x1 !== undefined) {
-        cameraFOV.x1 = data.x1;
-    }
-    if (data.x2 !== undefined) {
-        cameraFOV.x2 = data.x2;
-    }
-    if (data.y1 !== undefined) {
-        cameraFOV.y1 = data.y1;
-    }
-    if (data.y2 !== undefined) {
-        cameraFOV.y2 = data.y2;
-    }
+    cameraFOV = data;
     config.set(CONFIG_CAMERA_FOV, cameraFOV);
     wsServer.emit('cameraFov', cameraFOV);
 
@@ -190,18 +179,7 @@ wsServer.register('getPanoFov', async (data) => {
 
 wsServer.register('setPanoFov', async (data) => {
     console.log('setPanoFov', data);
-    if (data.x1 !== undefined) {
-        panoFOV.x1 = data.x1;
-    }
-    if (data.x2 !== undefined) {
-        panoFOV.x2 = data.x2;
-    }
-    if (data.y1 !== undefined) {
-        panoFOV.y1 = data.y1;
-    }
-    if (data.y2 !== undefined) {
-        panoFOV.y2 = data.y2;
-    }
+    panoFOV = data;
     config.set(CONFIG_PANO_FOV, panoFOV);
     wsServer.emit('panoFov', panoFOV);
     recalcPanoAndNotifyClients();

@@ -13,7 +13,7 @@ import {JoystickService} from '../joystick.service';
 })
 export class PictureScreenComponent implements OnInit {
 
-  private _fov = new Fov();
+  private _fov = new Fov({partial: true});
   private _data?: ControllerData;
   private _labels = {
     top: '-', right: '-', bottom: '-', left: '-'
@@ -38,12 +38,15 @@ export class PictureScreenComponent implements OnInit {
 
     titlebarService.onSave(() => {
       if (routerService.isActive(this)) {
+        this._fov.partial = true;
         panoService.cameraFov = this._fov;
       }
     });
 
     panoService.onCameraFov(fov => this.fov = fov);
-    panoService.requestCameraFov(fov => this.fov = fov);
+    panoService.requestCameraFov(fov => {
+      this.fov = fov;
+    });
 
     controllerService.onData(data => this._data = data);
   }
@@ -96,6 +99,7 @@ export class PictureScreenComponent implements OnInit {
 
   set fov(value: Fov) {
     this._fov = value;
+    this._fov.partial = true;
     this.updateLabels();
   }
 

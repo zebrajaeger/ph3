@@ -32,8 +32,8 @@ export class Fov {
   }
 
   get w(): number | undefined {
-    if (this.partial === true) {
-      return 360;
+    if (this.partial !== true) {
+      return undefined;
     }
 
     if (this.x1 !== undefined && this.x2 !== undefined) {
@@ -113,10 +113,10 @@ export class PanoService {
   }
 
   requestPanoFov(callback: (data: Fov) => void): void {
-    this.server.call('getCameraFov')?.then(fov => callback(new Fov(fov)));
+    this.server.call('getPanoFov')?.then(fov => callback(new Fov(fov)));
   }
 
   set panoFov(value: Fov) {
-    this.server.notify('setCameraFov', value)?.then();
+    this.server.notify('setPanoFov', value)?.then();
   }
 }

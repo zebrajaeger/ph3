@@ -10,7 +10,7 @@ const {Controller} = require('./controller');
 const {Row} = require('./calc')
 // -----------
 
-const config = new Configstore(packageJson.name, {foo: 'bar'});
+const config = new Configstore(packageJson.name);
 const i2c = new HttpI2C('192.168.178.69', 8080);
 const wsServer = new WebSocketServer({port: 8080, host: 'localhost'});
 
@@ -82,10 +82,11 @@ joystick.on('value', data => {
 
 
 // JOYSTICK.calibraion
-if (config.get('joystick.calibration')) {
+const CONFIG_JOYSTICK_CALIBRATION = 'joystick.calibration'
+if (config.get(CONFIG_JOYSTICK_CALIBRATION)) {
     joystick.autoCalibrationEnabled = false;
-    joystick.calibration = config.get('joystick.calibration');
-    console.log('JOYSTICK.calibraion', joystick.calibration)
+    joystick.calibration = config.get(CONFIG_JOYSTICK_CALIBRATION);
+    console.log(CONFIG_JOYSTICK_CALIBRATION, joystick.calibration)
 } else {
     joystick.autoCalibrationEnabled = true;
 }
@@ -99,8 +100,8 @@ wsServer.register('setSaveJoystickCalibrationData', () => {
     console.log('setSaveJoystickCalibrationData');
     joystick.autoCalibrationEnabled = false;
     joystick.setCurrentPositionAsCenter();
-    console.log('JOYSTICK.calibration', joystick.calibration)
-    config.set('joystick.calibration', joystick.calibration);
+    console.log(CONFIG_JOYSTICK_CALIBRATION, joystick.calibration)
+    config.set(CONFIG_JOYSTICK_CALIBRATION, joystick.calibration);
     return null;
 })
 
@@ -126,14 +127,15 @@ function recalcPanoAndNotifyClients() {
 }
 
 // CAMERA-FOV
+const CONFIG_CAMERA_FOV = 'camera.fov'
 let cameraFOV = {x1: null, y1: null, x2: null, y2: null}
 {
     // init
-    if (config.has('camera.fov')) {
-        cameraFOV = config.get('camera.fov')
-        console.log('camera.fov', 'from config', cameraFOV)
+    if (config.has(CONFIG_CAMERA_FOV)) {
+        cameraFOV = config.get(CONFIG_CAMERA_FOV)
+        console.log(CONFIG_CAMERA_FOV, 'from config', cameraFOV)
     } else {
-        console.log('camera.fov', 'default', cameraFOV)
+        console.log(CONFIG_CAMERA_FOV, 'default', cameraFOV)
     }
     wsServer.event('cameraFov');
     wsServer.emit('cameraFov', cameraFOV);
@@ -158,7 +160,7 @@ wsServer.register('setCameraFov', async (data) => {
     if (data.y2 !== undefined) {
         cameraFOV.y2 = data.y2;
     }
-    config.set('camera.fov', cameraFOV);
+    config.set(CONFIG_CAMERA_FOV, cameraFOV);
     wsServer.emit('cameraFov', cameraFOV);
 
     recalcPanoAndNotifyClients();
@@ -168,8 +170,18 @@ wsServer.register('setCameraFov', async (data) => {
 
 // PANO-FOV
 let panoFOV = {x1: null, y1: null, x2: null, y2: null}
-
-wsServer.event('panoFov');
+const CONFIG_PANO_FOV = 'pano.fov'
+{
+    // init
+    if (config.has(CONFIG_PANO_FOV)) {
+        panoFOV = config.get(CONFIG_CAMERA_FOV)
+        console.log(CONFIG_PANO_FOV, 'from config', panoFOV)
+    } else {
+        console.log(CONFIG_PANO_FOV, 'default', panoFOV)
+    }
+    wsServer.event('panoFov');
+    wsServer.emit('panoFov', panoFOV);
+}
 
 wsServer.register('getPanoFov', async (data) => {
     console.log('getPanoFov', panoFOV);
@@ -190,6 +202,7 @@ wsServer.register('setPanoFov', async (data) => {
     if (data.y2 !== undefined) {
         panoFOV.y2 = data.y2;
     }
+    config.set(CONFIG_PANO_FOV, panoFOV);
     wsServer.emit('panoFov', panoFOV);
     recalcPanoAndNotifyClients();
     return panoFOV;
@@ -198,8 +211,19 @@ wsServer.register('setPanoFov', async (data) => {
 
 // PANO-SETTINGS
 let panoSettings = {minOverlapX: 25, minOverlapY: 25}
-
-wsServer.event('panoSettings');
+const CONFIG_PANO_SETTINGS = 'pano.settings'
+{
+    // init
+    if (config.has(CONFIG_PANO_SETTINGS)) {
+        panoSettings = config.get(CONFIG_PANO_SETTINGS)
+        console.log(CONFIG_PANO_SETTINGS, 'from config', panoSettings)
+    } else {
+        console.log(CONFIG_PANO_SETTINGS, 'default', panoSettings)
+    }
+    wsServer.event('panoSettings');
+    wsServer.emit('panoSettings', panoSettings);
+    recalcPanoAndNotifyClients();
+}
 
 wsServer.register('getPanoSettings', async (data) => {
     console.log('getPanoSettings', panoSettings);
@@ -210,6 +234,7 @@ wsServer.register('setPanoSettings', async (data) => {
     // TODO check type/values
     console.log('setPanoSettings to ', data);
     panoSettings = data;
+    config.set(CONFIG_PANO_SETTINGS, panoSettings)
     wsServer.emit('panoSettings', data)
     recalcPanoAndNotifyClients();
 })

@@ -110,7 +110,7 @@ wsServer.register('setSaveJoystickCalibrationData', () => {
 
 // PANO
 
-let pano = {o: 0.25, x: {n: null, o: null}, y: {n: null, o: null}}
+let pano = {overlap: 0.25, x: {n: null, overlap: null}, y: {n: null, overlap: null}}
 
 wsServer.event('pano');
 
@@ -120,11 +120,18 @@ function recalcPanoAndNotifyClients() {
         pano.x = tempPano.x;
         pano.y = tempPano.y;
     } else {
-        pano.x = {n: null, o: null}
-        pano.y = {n: null, o: null}
+        pano.x = {n: null, overlap: null}
+        pano.y = {n: null, overlap: null}
     }
+    console.log('recalcPanoAndNotifyClients', pano);
     wsServer.emit('pano', pano)
 }
+
+wsServer.register('getPano', async (data) => {
+    console.log('getPano', pano);
+    return pano;
+})
+
 
 // CAMERA-FOV
 const CONFIG_CAMERA_FOV = 'camera.fov'
@@ -163,7 +170,7 @@ const CONFIG_PANO_FOV = 'pano.fov'
 {
     // init
     if (config.has(CONFIG_PANO_FOV)) {
-        panoFOV = config.get(CONFIG_CAMERA_FOV)
+        panoFOV = config.get(CONFIG_PANO_FOV)
         console.log(CONFIG_PANO_FOV, 'from config', panoFOV)
     } else {
         console.log(CONFIG_PANO_FOV, 'default', panoFOV)
@@ -223,25 +230,26 @@ function calcPano() {
     const p = calcPanoView();
     if ((c !== null) && (p !== null)) {
         const row = new Row();
-        const tempPano = {o: pano.o, x: {n: null, o: null}, y: {n: null, o: null}};
+        const tempPano = {overlap: pano.overlap, x: {n: null, overlap: null}, y: {n: null, overlap: null}};
         // W
         row.sourceSize = c.w;
         row.targetSize = p.w;
-        row.overlap = tempPano.o;
-        let v = row.calc();
-        tempPano.x.n = v.n;
-        tempPano.x.o = v.o;
+        row.overlap = tempPano.overlap;
+        let v1 = row.calc();
+        tempPano.x.n = v1.n;
+        tempPano.x.overlap = v1.overlap;
         row.reset();
 
         // H
         row.sourceSize = c.h;
         row.targetSize = p.h;
-        row.overlap = tempPano.o;
-        v = row.calc();
-        tempPano.y.n = v.n;
-        tempPano.y.o = v.o;
+        row.overlap = tempPano.overlap;
+        let v2 = row.calc();
+        tempPano.y.n = v2.n;
+        tempPano.y.overlap = v2.overlap;
 
-        return pano;
+        console.log('RECALC PANO', {v1, v2, c, p, tempPano})
+        return tempPano;
     } else {
         return null;
     }
@@ -258,14 +266,14 @@ function calcCameraView() {
 function calcPanoView() {
     if (panoFOV.x1 != null && panoFOV.y1 != null && panoFOV.y2 != null && panoFOV.x2 != null) {
         let x1, x2, y1, y2;
-        if (panoFOV.x1 > panoFOV.x2) {
+        if (panoFOV.x1 < panoFOV.x2) {
             x1 = panoFOV.x1;
             x2 = panoFOV.x2;
         } else {
             x1 = panoFOV.x2;
             x2 = panoFOV.x1;
         }
-        if (panoFOV.y1 > panoFOV.y2) {
+        if (panoFOV.y1 < panoFOV.y2) {
             y1 = panoFOV.y1;
             y2 = panoFOV.y2;
         } else {

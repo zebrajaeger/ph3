@@ -93,6 +93,10 @@ export class PanoService {
     this._pano.subscribe(callback);
   }
 
+  requestPano(callback: (data: Pano) => void): void {
+    this.server.call('getPano')?.then(pano => callback(pano));
+  }
+
 
   // camera-fov
   onCameraFov(callback: (data: Fov) => void): void {

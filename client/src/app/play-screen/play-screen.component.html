@@ -1,6 +1,12 @@
 <section class="play-screen">
   <div class="grid">
-    <app-pano-status-grid [width]="500" [height]="380"></app-pano-status-grid>
+    <app-pano-status-grid [width]="500"
+                          [height]="380"
+                          [gridX]="pano?.x?.n || 1"
+                          [gridY]="pano?.y?.n || 2"
+                          [posX]="panoHeadPos.x"
+                          [posY]="panoHeadPos.y"
+    ></app-pano-status-grid>
   </div>
 
   <div class="right">

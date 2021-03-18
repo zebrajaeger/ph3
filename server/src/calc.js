@@ -29,9 +29,9 @@ class Row {
 
     calc() {
         const n = this.calcN();
-        const o = this.calcO(n);
+        const overlap = this.calcOverlap(n);
 
-        return {n, o};
+        return {n, overlap};
     }
 
     calcPos(o, index) {
@@ -52,17 +52,17 @@ class Row {
         return Math.ceil(n);
     }
 
-    calcO(n) {
+    calcOverlap(n) {
         const b = this.sourceSize;
         const d = this.targetSize;
 
-        let o;
+        let overlap;
         if (this.isPartial) {
-            o = (-b * n + d) / (-b * n + b)
+            overlap = (-b * n + d) / (-b * n + b)
         } else {
-            o = (b * n - d) / (b * n)
+            overlap = (b * n - d) / (b * n)
         }
-        return o;
+        return overlap;
     }
 
     get isPartial() {

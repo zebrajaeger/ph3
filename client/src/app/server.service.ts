@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Client} from 'rpc-websockets';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +61,7 @@ export class ServerService {
 
     let subject = this._valueSubscriptions.get(name);
     if (!subject) {
-      subject = new BehaviorSubject(false);
+      subject = new Subject();
       this._valueSubscriptions.set(name, subject);
 
       if (this.isAvailable()) {

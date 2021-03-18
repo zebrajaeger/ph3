@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {StatusBarTitle} from '../titlebar/titlebar.component';
 
 @Component({
@@ -6,7 +16,7 @@ import {StatusBarTitle} from '../titlebar/titlebar.component';
   templateUrl: './pano-status-grid.component.html',
   styleUrls: ['./pano-status-grid.component.scss']
 })
-export class PanoStatusGridComponent implements AfterViewInit {
+export class PanoStatusGridComponent implements AfterViewInit, OnChanges {
 
   @ViewChild('canvasId') canvasRef?: ElementRef;
 
@@ -24,7 +34,16 @@ export class PanoStatusGridComponent implements AfterViewInit {
   @Input()
   height = 100;
 
+  viewInitialized = false;
+
   constructor(private ngZone: NgZone) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.viewInitialized) {
+      return;
+    }
+    this.draw();
   }
 
   draw(): void {
@@ -35,6 +54,8 @@ export class PanoStatusGridComponent implements AfterViewInit {
 
     const sizeWidth = ctx.canvas.clientWidth;
     const sizeHeight = ctx.canvas.clientHeight;
+    ctx.clearRect(0, 0, sizeWidth, sizeHeight);
+
     // console.log('xxx', {sizeWidth, sizeHeight});
     ctx.beginPath();
     for (let x = 0; x <= this.gridX; ++x) {
@@ -73,15 +94,8 @@ export class PanoStatusGridComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.viewInitialized = true;
     this.draw();
-
-    // this.ngZone.runOutsideAngular(() => {
-    //   setInterval(() => {
-    //
-    //     this.draw();
-    //
-    //   }, 1000);
-    // });
   }
 
   resize(): void {

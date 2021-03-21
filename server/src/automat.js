@@ -154,9 +154,12 @@ class Automat {
     }
 
     #execCommand(command) {
-        if ()
+        if (this._stopRequest) {
+            this._commandIndex = undefined;
+            this.#notifyFinish()
+        }
 
-            this.#notifyCommand(command);
+        this.#notifyCommand(command);
 
         if (command instanceof GoToPosCommand) {
             this.#notifyGoToPos(command.pos);
@@ -225,7 +228,6 @@ class Automat {
     registerWaitListener(callback) {
         this._waitListeners.subscribe(callback)
     }
-
     //</editor-fold>
 
 

@@ -16,22 +16,24 @@ x = b*(1-0) * index;
  */
 class Row {
     _isPartial = false;
+    _targetStartPoint;
     _targetSize;
     _sourceSize;
     _overlap;
 
     reset() {
         this._isPartial = false;
-        this._targetSize = null;
-        this._sourceSize = null;
-        this._overlap = null;
+        this._targetStartPoint = undefined;
+        this._targetSize = undefined;
+        this._sourceSize = undefined;
+        this._overlap = undefined;
     }
 
     calc() {
         const n = this.calcN();
         const overlap = this.calcOverlap(n);
-
-        return {n, overlap};
+        const startPositions = this.calcStartPositions(n, overlap);
+        return {n, overlap, startPositions};
     }
 
     calcPos(o, index) {
@@ -63,6 +65,14 @@ class Row {
             overlap = (b * n - d) / (b * n)
         }
         return overlap;
+    }
+
+    calcStartPositions(n, overlap) {
+        const result = [];
+        for (let i = 0; i < n; ++i) {
+            result.push(this._targetStartPoint + (this.sourceSize * (1 - overlap) * i / n));
+        }
+        return result;
     }
 
     get isPartial() {
@@ -99,6 +109,14 @@ class Row {
 
     get count() {
         return this._count;
+    }
+
+    get targetStartPoint() {
+        return this._targetStartPoint;
+    }
+
+    set targetStartPoint(value) {
+        this._targetStartPoint = value;
     }
 }
 

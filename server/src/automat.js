@@ -1,5 +1,6 @@
 const {Subject} = require('rxjs')
 
+//<editor-fold desc="Commands">
 class Command {
     _description;
     _index;
@@ -69,6 +70,8 @@ class WaitCommand extends Command {
     }
 }
 
+//</editor-fold>
+
 class TakeShotSettings {
     focusTime = 1000;
     shotTime = 1000;
@@ -89,12 +92,14 @@ class CommandListGenerator {
         let index = 0;
 
         // columns
-        for (let y = 0; y < pano.y.n; ++y) {
+        for (let iy = 0; iy < pano.y.n; ++iy) {
+            const y = pano.y.startPositions[iy];
 
             // rows
-            for (let x = 0; x < pano.x.n; ++x) {
+            for (let ix = 0; ix < pano.x.n; ++ix) {
+                const x = pano.x.startPositions[ix];
 
-                const pos = {x: 0, y: 0} // TODO
+                const pos = {x, y}
                 this.commands.push(new GoToPosCommand(index++, 'GoTo', pos))
                 this.commands.push(new WaitCommand(index++, 'WaitAfterMove', takePanoSettings.waitAfterMove))
 
@@ -116,11 +121,12 @@ class CommandListGenerator {
 }
 
 class Automat {
-    _generator;
     _commands;
     _commandIndex;
 
     _stopRequest = false;
+    _pauseRequest = false;
+    _isRunning = false;
 
     _startListeners = new Subject();
     _commandListeners = new Subject();
@@ -130,35 +136,53 @@ class Automat {
     _finishListeners = new Subject();
 
     constructor() {
-        this._generator = new CommandListGenerator();
-        this._commands = [];
+        this.#reset();
+    }
+
+    #reset() {
         this._commandIndex = undefined;
+        this._stopRequest = false;
+        this._pauseRequest = false;
+        this._isRunning = false;
     }
 
     #execNextCommand() {
+        if (!this.isRunning) {
+            return;
+        }
+
+        if (this.stopRequest) {
+            this.#notifyFinish()
+            this.#reset();
+        }
+
+        if (this.pauseRequest) {
+            this._isRunning = false;
+            return;
+        }
+
         if (this.commandIndex !== undefined) {
+            // execute first command after start
             this._commandIndex = 0;
             this.#notifyStart();
         } else {
-            this.commandIndex++;
+            this._commandIndex++;
             if (this.commands.length > this.commandIndex) {
+                // yes, has another command -> execute
                 const command = this._commands[this._commandIndex];
                 setInterval(() => {
                     this.#execCommand(command);
                 }, 0)
             } else {
+                // not further command available -> stop
                 this._commandIndex = undefined;
                 this.#notifyFinish()
+                this.#reset()
             }
         }
     }
 
     #execCommand(command) {
-        if (this._stopRequest) {
-            this._commandIndex = undefined;
-            this.#notifyFinish()
-        }
-
         this.#notifyCommand(command);
 
         if (command instanceof GoToPosCommand) {
@@ -169,44 +193,56 @@ class Automat {
 
         } else if (command instanceof WaitCommand) {
             setInterval(() => {
-                this.#execNextCommand();
+                this.onWaitDone()
             }, command.timeMs)
         } else {
             throw Error(`Unknown command: "${command}"`)
         }
     }
 
-    //<editor-fold desc="Outside triggers">
     start(commandList) {
-        if (this._commandIndex === undefined) {
+        if (!this.isRunning) {
+            this.#reset();
             this._commands = commandList;
-            this._commandIndex = undefined;
+            this._isRunning = true;
         } else {
-            throw Error('already running')
+            throw Error('Already running')
         }
     }
 
     stop() {
-        if (this._commandIndex !== undefined) {
+        if (this.isRunning) {
             this._stopRequest = true;
         }
     }
 
-    onPosReached() {
-        const command = this.command;
-        if (command && command instanceof GoToPosCommand) {
-            this.#execNextCommand();
+    pauseResume() {
+        if (!this.stopRequest) {
+            return;
         }
+
+        if (this.isRunning) {
+            this._pauseRequest = !this._pauseRequest;
+        } else {
+            // stopped. we need to restart.maybe.
+            this._pauseRequest = !this._pauseRequest
+            if (this.pauseRequest) {
+                this.#execNextCommand();
+            }
+        }
+    }
+
+    onPosReached() {
+        this.ifCommandAvailable(GoToPosCommand, (command) => this.#execNextCommand());
     }
 
     onShotDone() {
-        const command = this.command;
-        if (command && command instanceof TakeShotCommand) {
-            this.#execNextCommand();
-        }
+        this.ifCommandAvailable(TakeShotCommand, (command) => this.#execNextCommand());
     }
 
-    //</editor-fold>
+    onWaitDone() {
+        this.ifCommandAvailable(WaitCommand, (command) => this.#execNextCommand());
+    }
 
     //<editor-fold desc="register to events">
     registerStartListener(callback) {
@@ -228,8 +264,8 @@ class Automat {
     registerWaitListener(callback) {
         this._waitListeners.subscribe(callback)
     }
-    //</editor-fold>
 
+    //</editor-fold>
 
     //<editor-fold desc="notifications">
     #notifyStart() {
@@ -255,9 +291,6 @@ class Automat {
     //</editor-fold>
 
     //<editor-fold desc="getter/setter">
-    get generator() {
-        return this._generator;
-    }
 
     get commands() {
         return this._commands;
@@ -270,9 +303,31 @@ class Automat {
         return undefined;
     }
 
+    ifCommandAvailable(type, callback) {
+        if (this.commandIndex !== undefined && this.commandIndex > this.commands.length) {
+            const command = this.commands[this.commandIndex];
+            if (command instanceof type) {
+                callback()
+            }
+        }
+    }
+
     get commandIndex() {
         return this._commandIndex;
     }
 
-    //</editor-fold>
+
+    get stopRequest() {
+        return this._stopRequest;
+    }
+
+    get pauseRequest() {
+        return this._pauseRequest;
+    }
+
+    get isRunning() {
+        return this._isRunning;
+    }
+
+//</editor-fold>
 }

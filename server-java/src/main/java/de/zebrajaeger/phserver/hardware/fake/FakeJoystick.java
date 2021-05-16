@@ -1,6 +1,6 @@
-package de.zebrajaeger.phserver.fakehardware;
+package de.zebrajaeger.phserver.hardware.fake;
 
-import de.zebrajaeger.phserver.Joystick;
+import de.zebrajaeger.phserver.hardware.Joystick;
 import de.zebrajaeger.phserver.data.RawPosition;
 
 public class FakeJoystick implements Joystick {

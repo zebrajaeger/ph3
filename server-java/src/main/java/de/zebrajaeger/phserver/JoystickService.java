@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver;
 
 import de.zebrajaeger.phserver.data.JoystickPosition;
 import de.zebrajaeger.phserver.data.RawPosition;
+import de.zebrajaeger.phserver.hardware.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;

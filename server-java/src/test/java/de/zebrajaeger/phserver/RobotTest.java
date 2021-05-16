@@ -2,7 +2,8 @@ package de.zebrajaeger.phserver;
 
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.Shot;
-import de.zebrajaeger.phserver.fakehardware.FakeService;
+import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.hardware.fake.FakeService;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.GoToPosCommand;
 import de.zebrajaeger.phserver.pano.RobotService;

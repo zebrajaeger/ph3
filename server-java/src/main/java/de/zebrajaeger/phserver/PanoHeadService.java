@@ -5,6 +5,7 @@ import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.event.JoggingEvent;
 import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
+import de.zebrajaeger.phserver.hardware.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;

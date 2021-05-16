@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.data;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class RawPosition {
     private final int x;
@@ -21,6 +22,6 @@ public class RawPosition {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

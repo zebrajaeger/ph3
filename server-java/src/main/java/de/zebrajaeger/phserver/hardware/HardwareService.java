@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.hardware;
 
 public interface HardwareService {
     Joystick getJoystick();

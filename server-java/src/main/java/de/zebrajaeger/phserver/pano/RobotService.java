@@ -1,6 +1,6 @@
 package de.zebrajaeger.phserver.pano;
 
-import de.zebrajaeger.phserver.HardwareService;
+import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.Translator;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.RawPosition;

@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.fakehardware;
+package de.zebrajaeger.phserver.hardware.fake;
 
 class FakeActorAxis {
     private int maxSpeed;

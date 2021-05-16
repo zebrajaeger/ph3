@@ -1,7 +1,8 @@
 package de.zebrajaeger.phserver;
 
 import de.zebrajaeger.phserver.data.ActorAxis;
-import de.zebrajaeger.phserver.fakehardware.FakeService;
+import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.hardware.fake.FakeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.hardware;
 
 import de.zebrajaeger.phserver.data.PanoHeadData;
 

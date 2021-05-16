@@ -1,6 +1,6 @@
-package de.zebrajaeger.phserver.fakehardware;
+package de.zebrajaeger.phserver.hardware.fake;
 
-import de.zebrajaeger.phserver.PanoHead;
+import de.zebrajaeger.phserver.hardware.PanoHead;
 import de.zebrajaeger.phserver.data.ActorAxis;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 

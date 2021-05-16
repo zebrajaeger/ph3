@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver;
 
 import de.zebrajaeger.phserver.data.Actor;
 import de.zebrajaeger.phserver.data.PanoHeadData;
+import de.zebrajaeger.phserver.hardware.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,8 +1,8 @@
-package de.zebrajaeger.phserver.fakehardware;
+package de.zebrajaeger.phserver.hardware.fake;
 
-import de.zebrajaeger.phserver.HardwareService;
-import de.zebrajaeger.phserver.Joystick;
-import de.zebrajaeger.phserver.PanoHead;
+import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.hardware.Joystick;
+import de.zebrajaeger.phserver.hardware.PanoHead;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,0 +1,14 @@
+:host {
+  display: grid;
+  grid-template-rows: repeat(3, 100px);
+  grid-template-columns: repeat(3, 100px);
+  padding: 20px;
+}
+
+button {
+  width: 90px;
+  height: 90px;
+  margin: 5px;
+  background-color: unset;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}

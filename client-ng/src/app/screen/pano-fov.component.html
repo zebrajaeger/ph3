@@ -1,0 +1,28 @@
+<div class="buttons">
+    <div></div>
+    <div>
+        <button (click)="onTop()">Top</button>
+    </div>
+    <div></div>
+
+    <div>
+        <button [class.disabled]="!fov?.partial" [disabled]="!fov?.partial" (click)="onLeft()">Left</button>
+    </div>
+    <div>
+        <button (click)="onPartial()">Partial</button>
+    </div>
+    <div>
+        <button [class.disabled]="!fov?.partial" [disabled]="!fov?.partial" (click)="onRight()">Right</button>
+    </div>
+
+    <div>&nbsp;</div>
+    <div>
+        <button (click)="onBottom()">Bottom</button>
+    </div>
+    <div>&nbsp;</div>
+</div>
+
+<div class="info">
+    <pre>{{calc | json}}</pre>
+<!--    <pre>{{fov | json}}</pre>-->
+</div>

@@ -4,18 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.5</version>
-        <relativePath/>
+        <groupId>de.zebrajaeger</groupId>
+        <artifactId>ph3-root</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>de.zebrajaeger</groupId>
-    <artifactId>ph-server-test</artifactId>
+    <artifactId>ph2-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
         <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>2.4.5</spring-boot.version>
     </properties>
 
     <build>
@@ -32,12 +32,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
             </plugin>
         </plugins>
     </build>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>de.zebrajaeger</groupId>
+                <artifactId>ph2-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.lwjgl</groupId>
                 <artifactId>lwjgl-bom</artifactId>
@@ -49,6 +55,17 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>de.zebrajaeger</groupId>
+            <artifactId>ph2-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-core -->
         <dependency>
             <groupId>com.pi4j</groupId>
@@ -59,6 +76,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
@@ -148,6 +166,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

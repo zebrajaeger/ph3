@@ -1,10 +1,10 @@
 package de.zebrajaeger.phserver;
 
 public class Translator {
-    protected int stepsPerStepperRevolution = 200 * 256;
-    protected double translation = 19d + (38d / 187d);
-    protected double beltGear = 5d;
-    protected double stepsPerRevolution;
+    private final int stepsPerStepperRevolution = 200 * 256;
+    private final double translation = 19d + (38d / 187d);
+    private final double beltGear = 5d;
+    private final double stepsPerRevolution;
 
     public Translator() {
         stepsPerRevolution = translation * beltGear * stepsPerStepperRevolution;

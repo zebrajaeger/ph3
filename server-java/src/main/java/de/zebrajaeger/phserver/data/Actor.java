@@ -7,7 +7,6 @@ public class Actor {
     protected ActorAxis x = new ActorAxis();
     protected ActorAxis y = new ActorAxis();
 
-
     public ActorAxis getX() {
         return x;
     }

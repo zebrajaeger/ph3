@@ -1,22 +1,25 @@
 package de.zebrajaeger.phserver.hardware.fake;
 
-import de.zebrajaeger.phserver.hardware.PanoHead;
 import de.zebrajaeger.phserver.data.ActorAxis;
 import de.zebrajaeger.phserver.data.PanoHeadData;
+import de.zebrajaeger.phserver.hardware.PanoHead;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class FakePanoHead implements PanoHead {
-    // TODO put to test/aplication.propoerties
-    public static final int TICS_PER_SEC = 200;
+    public final int ticsPerSec;
 
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private final PanoHeadData panoHeadData = new PanoHeadData();
 
     private final FakeActorAxis x = new FakeActorAxis();
     private final FakeActorAxis y = new FakeActorAxis();
+
+    public FakePanoHead(int ticsPerSec) {
+        this.ticsPerSec = ticsPerSec;
+    }
 
     public void reset() {
         x.reset();
@@ -84,13 +87,13 @@ public class FakePanoHead implements PanoHead {
     }
 
     public void update() {
-        x.update(TICS_PER_SEC);
+        x.update(ticsPerSec);
         ActorAxis dataX = panoHeadData.getActor().getX();
         dataX.setMoving(x.isMoving());
         dataX.setAtTargetPos(x.isAtPos());
         dataX.setPos(x.getPos());
 
-        y.update(TICS_PER_SEC);
+        y.update(ticsPerSec);
         ActorAxis dataY = panoHeadData.getActor().getY();
         dataY.setMoving(y.isMoving());
         dataY.setAtTargetPos(y.isAtPos());

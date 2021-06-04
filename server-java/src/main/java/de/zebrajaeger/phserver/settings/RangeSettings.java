@@ -1,37 +1,29 @@
-package de.zebrajaeger.phserver.data;
+package de.zebrajaeger.phserver.settings;
 
+import de.zebrajaeger.phserver.data.Range;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Optional;
-
-public class Range {
+public class RangeSettings {
     private Double from;
     private Double to;
 
-    public Range() {
+    public RangeSettings() {
     }
 
-    public Range(Range range) {
-        this.from = range.from;
-        this.to = range.to;
-    }
-
-    public Range(Double from, Double to) {
+    public RangeSettings(Double from, Double to) {
         this.from = from;
         this.to = to;
     }
 
-    public boolean isComplete() {
-        return from != null && to != null;
+    public void getAll(Range range) {
+        range.setFrom(from);
+        range.setTo(to);
     }
 
-    public Optional<Double> getSize() {
-        return isComplete() ? Optional.of(to - from) : Optional.empty();
-    }
-
-    public Range createNormalized() {
-        return (isComplete() && from > to) ? new Range(to, from) : new Range(from, to);
+    public void setAll(Range range) {
+        this.from = range.getFrom();
+        this.to = range.getTo();
     }
 
     //<editor-fold desc="boilerplate">

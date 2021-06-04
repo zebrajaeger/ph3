@@ -1,6 +1,7 @@
-package de.zebrajaeger.phserver.pano;
+package de.zebrajaeger.phserver.data;
 
-import de.zebrajaeger.phserver.data.Pano;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class CalculatedPano extends Pano {
         super(pano);
     }
 
+    //<editor-fold desc="boilerplate">
     public List<Double> getHorizontalPositions() {
         return horizontalPositions;
     }
@@ -50,4 +52,11 @@ public class CalculatedPano extends Pano {
     public void setVerticalOverlap(double verticalOverlap) {
         this.verticalOverlap = verticalOverlap;
     }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+    //</editor-fold>
+
 }

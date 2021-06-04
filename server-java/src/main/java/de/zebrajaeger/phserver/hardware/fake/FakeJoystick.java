@@ -1,16 +1,40 @@
 package de.zebrajaeger.phserver.hardware.fake;
 
-import de.zebrajaeger.phserver.hardware.Joystick;
 import de.zebrajaeger.phserver.data.RawPosition;
+import de.zebrajaeger.phserver.hardware.Joystick;
+import org.lwjgl.glfw.GLFW;
+import org.springframework.util.Assert;
+
+import java.nio.FloatBuffer;
 
 public class FakeJoystick implements Joystick {
+    private static final int RESOLUTION = 1024;
 
-    public void reset() {
+    private int joystickIndex = GLFW.GLFW_JOYSTICK_1;
+    private int xAxisIndex = 0;
+    private int yAxisIndex = 1;
 
+    public FakeJoystick() {
+    }
+
+    public FakeJoystick(int joystickIndex, int xAxisIndex, int yAxisIndex) {
+        this.joystickIndex = joystickIndex;
+        this.xAxisIndex = xAxisIndex;
+        this.yAxisIndex = yAxisIndex;
     }
 
     @Override
     public RawPosition read() {
-        return new RawPosition((int) (Math.random() * 100) - 50, (int) (Math.random() * 100) - 50);
+        FloatBuffer fb = GLFW.glfwGetJoystickAxes(joystickIndex);
+        Assert.notNull(fb, "No Joystick found for id: " + joystickIndex);
+        return new RawPosition((int) (fb.get(xAxisIndex) * RESOLUTION), (int) (fb.get(yAxisIndex) * RESOLUTION));
+    }
+
+    public void init() {
+        GLFW.glfwInit();
+    }
+
+    public void destroy() {
+        GLFW.glfwTerminate();
     }
 }

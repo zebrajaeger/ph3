@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class Pano {
 
-    private FieldOfView fieldOfView;
+    private FieldOfViewPartial fieldOfViewPartial;
     private double horizontalMinimumOverlap = 0.25d;
     private double verticalMinimumOverlap = 0.25d;
 
@@ -12,23 +12,23 @@ public class Pano {
     }
 
     public Pano(Pano pano) {
-        this.fieldOfView = new FieldOfView(pano.fieldOfView);
+        this.fieldOfViewPartial = new FieldOfViewPartial(pano.fieldOfViewPartial);
         this.horizontalMinimumOverlap = pano.horizontalMinimumOverlap;
         this.verticalMinimumOverlap = pano.verticalMinimumOverlap;
     }
 
-    public Pano(FieldOfView fieldOfView, double horizontalMinimumOverlap, double verticalMinimumOverlap) {
-        this.fieldOfView = fieldOfView;
+    public Pano(FieldOfViewPartial fieldOfViewPartial, double horizontalMinimumOverlap, double verticalMinimumOverlap) {
+        this.fieldOfViewPartial = fieldOfViewPartial;
         this.horizontalMinimumOverlap = horizontalMinimumOverlap;
         this.verticalMinimumOverlap = verticalMinimumOverlap;
     }
 
-    public FieldOfView getFieldOfView() {
-        return fieldOfView;
+    public FieldOfViewPartial getFieldOfViewPartial() {
+        return fieldOfViewPartial;
     }
 
-    public void setFieldOfView(FieldOfView fieldOfView) {
-        this.fieldOfView = fieldOfView;
+    public void setFieldOfViewPartial(FieldOfViewPartial fieldOfViewPartial) {
+        this.fieldOfViewPartial = fieldOfViewPartial;
     }
 
     public double getHorizontalMinimumOverlap() {

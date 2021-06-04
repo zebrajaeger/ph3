@@ -1,9 +1,9 @@
 package de.zebrajaeger.phserver.event;
 
-public class JoggingEvent {
+public class JoggingChangedEvent {
     private boolean jogging;
 
-    public JoggingEvent(boolean jogging) {
+    public JoggingChangedEvent(boolean jogging) {
         this.jogging = jogging;
     }
 

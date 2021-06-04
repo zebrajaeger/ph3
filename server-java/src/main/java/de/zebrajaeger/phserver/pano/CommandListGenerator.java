@@ -1,6 +1,8 @@
 package de.zebrajaeger.phserver.pano;
 
+import de.zebrajaeger.phserver.data.CalculatedPano;
 import de.zebrajaeger.phserver.data.DelaySettings;
+import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
 import de.zebrajaeger.phserver.data.Position;
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class CommandListGenerator {
 
@@ -29,18 +32,22 @@ public class CommandListGenerator {
         return createCommands(calculatedPano, shots, delaySettings);
     }
 
-    public CalculatedPano calculateMissingValues(Pano pano, Image image) {
-
+    public static CalculatedPano calculateMissingValues(Pano pano, Image image) {
         CalculatedPano result = new CalculatedPano(pano);
 
         Calc calc = new Calc();
 
         calc.reset();
         calc.setSourceSize(image.getWidth());
-        if (pano.getFieldOfView().getHorizontal() != null) {
-            calc.setPartial(true);
-            calc.setTargetSize(pano.getFieldOfView().getHorizontal().getSize());
-            calc.setTargetStartPoint(pano.getFieldOfView().getHorizontal().getFrom());
+        FieldOfViewPartial fov = pano.getFieldOfViewPartial();
+        if (fov.getHorizontal() != null) {
+            calc.setPartial(fov.isPartial());
+            Optional<Double> hSize = fov.getHorizontal().getSize();
+            if (hSize.isEmpty()) {
+                throw new IllegalArgumentException(String.format("Pano FOV error: '%s'", fov));
+            }
+            calc.setTargetSize(hSize.get());
+            calc.setTargetStartPoint(fov.getHorizontal().getFrom());
         }
         calc.setOverlap(pano.getHorizontalMinimumOverlap());
         Calc.Result hResult = calc.calc();
@@ -50,10 +57,14 @@ public class CommandListGenerator {
 
         calc.reset();
         calc.setSourceSize(image.getHeight());
-        if (pano.getFieldOfView().getVertical() != null) {
-            calc.setPartial(true);
-            calc.setTargetSize(pano.getFieldOfView().getVertical().getSize());
-            calc.setTargetStartPoint(pano.getFieldOfView().getVertical().getFrom());
+        if (fov.getVertical() != null) {
+            calc.setPartial(fov.isPartial());
+            Optional<Double> vSize = fov.getVertical().getSize();
+            if (vSize.isEmpty()) {
+                throw new IllegalArgumentException(String.format("Pano FOV error: '%s'", fov));
+            }
+            calc.setTargetSize(vSize.get());
+            calc.setTargetStartPoint(fov.getVertical().getFrom());
         }
         calc.setOverlap(pano.getVerticalMinimumOverlap());
         Calc.Result vResult = calc.calc();
@@ -66,7 +77,6 @@ public class CommandListGenerator {
 
     public List<Command> createCommands(CalculatedPano pano, List<Shot> shots, DelaySettings delaySettings) {
         List<Command> commands = new LinkedList<>();
-        int index = 0;
 
         // rows
         int rowIndex = 0;
@@ -78,23 +88,23 @@ public class CommandListGenerator {
 
                 Position position = new Position(row, col);
 
-                commands.add(new GoToPosCommand(index++, String.format("GoTo: %d,%d", colIndex, rowIndex), position));
+                commands.add(new GoToPosCommand(String.format("GoTo: %d,%d", colIndex, rowIndex), position));
                 if (delaySettings.getWaitAfterMove() > 0) {
-                    commands.add(new WaitCommand(index++, "WaitAfterMove", delaySettings.getWaitAfterMove()));
+                    commands.add(new WaitCommand("WaitAfterMove", delaySettings.getWaitAfterMove()));
                 }
 
                 // shots
                 for (int i = 0; i < shots.size(); ++i) {
                     Shot shot = shots.get(i);
-                    commands.add(new TakeShotCommand(index++, String.format("Shot: %d of %d", (i + 1), shots.size()), shot));
+                    commands.add(new TakeShotCommand(String.format("Shot: %d of %d", (i + 1), shots.size()), shot));
 
                     if (i < shots.size() && delaySettings.getWaitBetweenShots() > 0) {
-                        commands.add(new WaitCommand(index++, "WaitBetweenShots", delaySettings.getWaitBetweenShots()));
+                        commands.add(new WaitCommand("WaitBetweenShots", delaySettings.getWaitBetweenShots()));
                     }
                 }
 
                 if (delaySettings.getWaitAfterShot() > 0) {
-                    commands.add(new WaitCommand(index++, "WaitAfterShot", delaySettings.getWaitAfterShot()));
+                    commands.add(new WaitCommand("WaitAfterShot", delaySettings.getWaitAfterShot()));
                 }
                 colIndex++;
             }

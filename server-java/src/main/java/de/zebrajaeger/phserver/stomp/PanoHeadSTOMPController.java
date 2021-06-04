@@ -1,7 +1,9 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.stomp;
 
+import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.AxisValue;
 import de.zebrajaeger.phserver.data.PanoHeadData;
+import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -27,6 +29,7 @@ public class PanoHeadSTOMPController {
         this.template = template;
     }
 
+    //<editor-fold desc="Actor">
     @MessageMapping("/actor")
     public void getActorRpc(@Header("correlation-id") String id, @Header("reply-to") String destination) {
         HashMap<String, Object> header = new HashMap<>();
@@ -34,28 +37,36 @@ public class PanoHeadSTOMPController {
         template.convertAndSend(destination, panoHeadService.getData().getActor(), header);
     }
 
-    @MessageMapping("actor/limit")
+    @MessageMapping("/actor/limit")
     public void limit(@Payload AxisValue limit) throws IOException {
         hardwareService.getPanoHead().setLimit(limit.getAxisIndex(), limit.getValue());
     }
 
-    @MessageMapping("actor/pos/{axisIndex}")
-    public void pos(@Payload AxisValue pos) throws IOException {
-        hardwareService.getPanoHead().setTargetPos(pos.getAxisIndex(), pos.getValue());
-    }
+//    @MessageMapping("/actor/pos")
+//    public void pos(@Payload AxisValue pos) throws IOException {
+//        hardwareService.getPanoHead().setTargetPos(pos.getAxisIndex(), pos.getValue());
+//    }
+//
+//    @MessageMapping("/actor/velocity")
+//    public void velocity(@Payload AxisValue velocity) throws IOException {
+//        hardwareService.getPanoHead().setTargetVelocity(velocity.getAxisIndex(), velocity.getValue());
+//    }
 
-    @MessageMapping("actor/velocity/{axisIndex}")
-    public void velocity(@Payload AxisValue velocity) throws IOException {
-        hardwareService.getPanoHead().setTargetVelocity(velocity.getAxisIndex(), velocity.getValue());
+    @EventListener
+    public void onPanoHeadChanged(PanoHeadData panoHeadData) {
+        template.convertAndSend("/topic/actor/", panoHeadData.getActor());
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Control">
     @MessageMapping("/actor/jogging")
     public void setJogging(@Payload boolean jogging) throws IOException {
         panoHeadService.setJogging(jogging);
     }
 
     @EventListener
-    public void onPanoHeadChanged(PanoHeadData panoHeadData) {
-        template.convertAndSend("/topic/actor/", panoHeadData.getActor());
+    public void onJoggingChanged(JoggingChangedEvent joggingChangedEvent) {
+        template.convertAndSend("/topic/actor/jogging/", joggingChangedEvent.isJogging());
     }
+    //</editor-fold>
 }

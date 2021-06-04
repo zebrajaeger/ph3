@@ -1,5 +1,6 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.stomp;
 
+import de.zebrajaeger.phserver.JoystickService;
 import de.zebrajaeger.phserver.data.JoystickPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -8,6 +9,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @Controller
@@ -30,12 +32,12 @@ public class JoystickSTOMPController {
     }
 
     @MessageMapping("/joystick/center")
-    public void center() {
+    public void center() throws IOException {
         joystickService.setCurrentPositionAsCenter();
     }
 
     @MessageMapping("/joystick/reset")
-    public void reset() {
+    public void reset() throws IOException {
         joystickService.reset();
     }
 

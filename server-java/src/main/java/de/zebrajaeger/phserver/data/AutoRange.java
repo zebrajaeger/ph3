@@ -47,6 +47,12 @@ public class AutoRange {
         return rawMax;
     }
 
+    public void setAll(float rawMin, float rawCenter, float rawMax){
+        this.rawMin = rawMin;
+        this.rawCenter = rawCenter;
+        this.rawMax = rawMax;
+    }
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this);

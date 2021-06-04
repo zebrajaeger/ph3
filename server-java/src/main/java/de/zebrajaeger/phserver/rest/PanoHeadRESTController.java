@@ -1,5 +1,6 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.rest;
 
+import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.Actor;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.hardware.HardwareService;

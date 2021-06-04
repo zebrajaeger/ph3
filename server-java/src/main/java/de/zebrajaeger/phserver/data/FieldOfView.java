@@ -1,10 +1,11 @@
 package de.zebrajaeger.phserver.data;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class FieldOfView {
-    private Range horizontal;
-    private Range vertical;
+    private Range horizontal = new Range();
+    private Range vertical = new Range();
 
     public FieldOfView() {
     }
@@ -18,16 +19,12 @@ public class FieldOfView {
         }
     }
 
-    public FieldOfView(Range horizontal, Range vertical) {
-        this.horizontal = horizontal;
-        this.vertical = vertical;
-    }
-
     public FieldOfView(double hFrom, double hTo, double vFrom, double vTo) {
         this.horizontal = new Range(hFrom, hTo);
         this.vertical = new Range(vFrom, vTo);
     }
 
+    //<editor-fold desc="boilerplate">
     public Range getHorizontal() {
         return horizontal;
     }
@@ -46,6 +43,7 @@ public class FieldOfView {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+    //</editor-fold>
 }

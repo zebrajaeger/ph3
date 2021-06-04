@@ -1,5 +1,6 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.rest;
 
+import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.Camera;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;

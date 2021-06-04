@@ -3,10 +3,10 @@ package de.zebrajaeger.phserver.pano;
 import de.zebrajaeger.phserver.data.Shot;
 
 public class TakeShotCommand extends Command {
-    private Shot shot;
+    private final Shot shot;
 
-    public TakeShotCommand(int index, String description, Shot shot) {
-        super(index, description);
+    public TakeShotCommand(String description, Shot shot) {
+        super(description);
         this.shot = shot;
     }
 

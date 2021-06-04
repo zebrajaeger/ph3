@@ -1,5 +1,6 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.stomp;
 
+import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.hardware.HardwareService;

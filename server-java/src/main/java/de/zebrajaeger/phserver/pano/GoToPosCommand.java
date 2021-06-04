@@ -3,10 +3,10 @@ package de.zebrajaeger.phserver.pano;
 import de.zebrajaeger.phserver.data.Position;
 
 public class GoToPosCommand extends Command {
-    private Position position;
+    private final Position position;
 
-    public GoToPosCommand(int index, String description, Position position) {
-        super(index, description);
+    public GoToPosCommand(String description, Position position) {
+        super(description);
         this.position = position;
     }
 

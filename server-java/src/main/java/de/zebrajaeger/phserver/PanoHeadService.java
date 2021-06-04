@@ -1,8 +1,10 @@
 package de.zebrajaeger.phserver;
 
+import de.zebrajaeger.phserver.data.Camera;
 import de.zebrajaeger.phserver.data.JoystickPosition;
 import de.zebrajaeger.phserver.data.PanoHeadData;
-import de.zebrajaeger.phserver.event.JoggingEvent;
+import de.zebrajaeger.phserver.event.CameraChangedEvent;
+import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
@@ -28,15 +30,15 @@ public class PanoHeadService {
     private final PreviousState previousState = new PreviousState();
 
     static class PreviousState {
-        private boolean cameraActive = false;
+        private Camera camera;
         private boolean actorActive = false;
 
-        public boolean isCameraActive() {
-            return cameraActive;
+        public Camera getCamera() {
+            return camera;
         }
 
-        public void setCameraActive(boolean cameraActive) {
-            this.cameraActive = cameraActive;
+        public void setCamera(Camera camera) {
+            this.camera = camera;
         }
 
         public boolean isActorActive() {
@@ -66,15 +68,20 @@ public class PanoHeadService {
         boolean cameraActive = panoHeadData.getCamera().isActive();
         boolean actorActive = panoHeadData.getActor().isActive();
 
-        if (previousState.isCameraActive() && !cameraActive) {
-            applicationEventPublisher.publishEvent(new ShotDoneEvent());
+        Camera camera = panoHeadData.getCamera();
+        if (!camera.equals(previousState.getCamera())) {
+            if (previousState.getCamera() == null || (!camera.isTrigger() && previousState.getCamera().isTrigger())) {
+                applicationEventPublisher.publishEvent(new ShotDoneEvent());
+            }
+            previousState.setCamera(new Camera(camera));
+            applicationEventPublisher.publishEvent(new CameraChangedEvent(camera));
         }
+
 
         if (previousState.isActorActive() && !actorActive) {
             applicationEventPublisher.publishEvent(new MovementStoppedEvent());
         }
 
-        previousState.setCameraActive(cameraActive);
         previousState.setActorActive(actorActive);
     }
 
@@ -94,6 +101,9 @@ public class PanoHeadService {
         return jogging;
     }
 
+    /**
+     * Also publishes JoggingChangedEvent
+     */
     public void setJogging(boolean jogging) throws IOException {
         if (jogging == this.jogging) {
             return;
@@ -105,6 +115,6 @@ public class PanoHeadService {
             hardwareService.getPanoHead().setTargetVelocity(1, 0);
         }
 
-        applicationEventPublisher.publishEvent(new JoggingEvent(jogging));
+        applicationEventPublisher.publishEvent(new JoggingChangedEvent(jogging));
     }
 }

@@ -9,17 +9,46 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ph2-client</artifactId>
+    <artifactId>ph3-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <build>
-        <resources>
-            <resource>
-                <directory>dist/ph3-client</directory>
-            </resource>
-        </resources>
-
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>dist</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>dist/ph3-client</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- https://mvnrepository.com/artifact/com.github.eirslett/frontend-maven-plugin -->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
@@ -56,4 +85,30 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>all</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>node</directory>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                                <fileset>
+                                    <directory>node_modules</directory>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

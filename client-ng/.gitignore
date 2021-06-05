@@ -3,3 +3,5 @@ node
 node_modules
 **/*.spec.ts
 dist
+package-lock.json
+yarn-error.log

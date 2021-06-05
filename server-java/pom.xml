@@ -9,12 +9,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ph2-server</artifactId>
+    <artifactId>ph3-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
         <java.version>11</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>2.4.5</spring-boot.version>
     </properties>
 
@@ -51,11 +50,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>de.zebrajaeger</groupId>
-                <artifactId>ph2-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.lwjgl</groupId>
                 <artifactId>lwjgl-bom</artifactId>
                 <version>3.2.3</version>
@@ -68,7 +62,7 @@
     <dependencies>
         <dependency>
             <groupId>de.zebrajaeger</groupId>
-            <artifactId>ph2-client</artifactId>
+            <artifactId>ph3-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

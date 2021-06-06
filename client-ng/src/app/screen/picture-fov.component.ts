@@ -12,8 +12,16 @@ import {PanoHeadService} from '../panohead.service';
     styleUrls: ['./picture-fov.component.scss']
 })
 export class PictureFovComponent implements OnInit {
-    public fov: FieldOfView;
+    public fov_: FieldOfView;
     public fovSubscription: Subscription;
+
+    public hFromText?: string;
+    public hToText?: string;
+    public hText?: string;
+
+    public vText?: string;
+    public vFromText?: string;
+    public vToText?: string;
 
     constructor(private panoService: PanoService,
                 private panoHeadService: PanoHeadService,
@@ -25,6 +33,24 @@ export class PictureFovComponent implements OnInit {
             panoService
                 .pictureFov()
                 .subscribe(fov => this.fov = fov);
+    }
+
+    set fov(fov: FieldOfView) {
+        this.fov_ = fov;
+        this.hText = this.revToString(fov.horizontal.size);
+        this.hFromText = this.revToString(fov.horizontal.from);
+        this.hToText = this.revToString(fov.horizontal.to);
+        this.vText = this.revToString(fov.vertical.size);
+        this.vFromText = this.revToString(fov.vertical.from);
+        this.vToText = this.revToString(fov.vertical.to);
+    }
+
+    private revToString(rev: number): string {
+        if (rev) {
+            const size = Math.abs(rev);
+            return size.toFixed(3) + ' (' + (size * 360).toFixed(1) + 'deg)';
+        }
+        return '';
     }
 
     ngOnInit(): void {

@@ -5,6 +5,7 @@ import {PictureFovComponent} from './screen/picture-fov.component';
 import {PanoFovComponent} from './screen/pano-fov.component';
 import {CameraComponent} from './screen/camera.component';
 import {MainComponent} from './screen/main.component';
+import {RecordComponent} from './screen/record.component';
 
 const routes: Routes = [
     {path: 'joystick', component: JoystickComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
     {path: 'picture-fov', component: PictureFovComponent},
     {path: 'pano-fov', component: PanoFovComponent},
     {path: 'pano-fov', component: PanoFovComponent},
+    {path: 'record', component: RecordComponent},
     {path: '**', component: MainComponent}
 ];
 

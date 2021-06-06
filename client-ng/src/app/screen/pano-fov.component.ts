@@ -12,9 +12,17 @@ import {UiService} from '../ui.service';
     styleUrls: ['./pano-fov.component.scss']
 })
 export class PanoFovComponent implements OnInit {
-    public fov: FieldOfViewPartial;
+    private _fov_: FieldOfViewPartial;
     public calc: CalculatedPano;
     public fovSubscription: Subscription;
+
+    public hFromText?: string;
+    public hToText?: string;
+    public hText?: string;
+
+    public vText?: string;
+    public vFromText?: string;
+    public vToText?: string;
 
     constructor(private panoService: PanoService,
                 private panoHeadService: PanoHeadService,
@@ -36,7 +44,30 @@ export class PanoFovComponent implements OnInit {
             });
     }
 
+
+    get fov(): FieldOfViewPartial {
+        return this._fov_;
+    }
+
+    set fov(fov: FieldOfViewPartial) {
+        this._fov_ = fov;
+        this.hText = this.revToString(fov.horizontal.size);
+        this.hFromText = this.revToString(fov.horizontal.from);
+        this.hToText = this.revToString(fov.horizontal.to);
+        this.vText = this.revToString(fov.vertical.size);
+        this.vFromText = this.revToString(fov.vertical.from);
+        this.vToText = this.revToString(fov.vertical.to);
+    }
+
     ngOnInit(): void {
+    }
+
+    private revToString(rev: number): string {
+        if (rev) {
+            const size = Math.abs(rev);
+            return size.toFixed(3) + ' (' + (size * 360).toFixed(1) + 'deg)';
+        }
+        return '';
     }
 
     onTop(): void {

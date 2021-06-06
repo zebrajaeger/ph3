@@ -14,14 +14,6 @@
   margin: 10px;
 }
 
-.info {
-  box-sizing: border-box;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin: 10px;
-  width: 400px;
-}
-
 button {
   width: 96px;
   height: 95px;
@@ -49,5 +41,23 @@ button {
     background: #555;
     color: white;
     box-shadow: unset;
+  }
+}
+
+.info {
+  font-size: 1.4em;
+
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 10px;
+  width: 400px;
+
+  display: grid;
+  grid-template-rows: repeat(8, 40px);
+  grid-template-columns: 100px auto;
+
+  .value {
+    font-weight: bold;
   }
 }

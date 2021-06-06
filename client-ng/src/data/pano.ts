@@ -1,6 +1,8 @@
 export class Range {
     from: number;
     to: number;
+    size?: number;
+    complete?: boolean;
 }
 
 export class FieldOfView {

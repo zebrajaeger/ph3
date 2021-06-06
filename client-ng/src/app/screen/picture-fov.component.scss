@@ -1,8 +1,17 @@
 :host {
+  display: flex;
+}
+
+.buttons {
   display: grid;
-  grid-template-rows: repeat(3, 100px);
-  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 110px);
+  grid-template-columns: repeat(3, 110px);
   padding: 20px;
+  width: 390px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 10px;
 }
 
 button {
@@ -11,4 +20,22 @@ button {
   margin: 5px;
   background-color: unset;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.info {
+  font-size: 1.4em;
+
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 10px;
+  width: 400px;
+
+  display: grid;
+  grid-template-rows: repeat(8, 40px);
+  grid-template-columns: 100px auto;
+
+  .value {
+    font-weight: bold;
+  }
 }

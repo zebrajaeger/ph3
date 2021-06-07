@@ -40,7 +40,7 @@ public class PanoService {
     private double minimumOverlapV = 0.25;
     private List<Shot> shots = new LinkedList<>();
     private DelaySettings delaySettings = new DelaySettings();
-    private Optional<CalculatedPano> calculatedPano;
+    private Optional<CalculatedPano> calculatedPano = Optional.empty();
 
     @Autowired
     public PanoService(PanoHeadService panoHeadService,
@@ -99,9 +99,11 @@ public class PanoService {
         }
 
         Image image = new Image(width, height);
-        Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
-        calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(pano, image));
-        calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
+        if(getPanoFOV().isComplete()){
+            Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
+            calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(pano, image));
+            calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
+        }
 
         return calculatedPano;
     }
@@ -185,4 +187,7 @@ public class PanoService {
         applicationEventPublisher.publishEvent(new DelaySettingsChangedEvent(this.delaySettings));
     }
 
+    public Optional<CalculatedPano> getCalculatedPano() {
+        return calculatedPano;
+    }
 }

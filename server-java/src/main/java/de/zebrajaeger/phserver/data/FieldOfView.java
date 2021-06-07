@@ -24,6 +24,10 @@ public class FieldOfView {
         this.vertical = new Range(vFrom, vTo);
     }
 
+    public boolean isComplete() {
+        return horizontal.isComplete() && vertical.isComplete();
+    }
+
     //<editor-fold desc="boilerplate">
     public Range getHorizontal() {
         return horizontal;

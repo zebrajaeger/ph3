@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PanoService} from '../pano.service';
-import {Border, FieldOfView} from '../../data/pano';
+import {Border, FieldOfView, FieldOfViewPartial} from '../../data/pano';
 import {Subscription} from 'rxjs';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
@@ -14,10 +14,10 @@ import {OnDestroy} from '@angular/core/core';
     styleUrls: ['./picture-fov.component.scss']
 })
 export class PictureFovComponent implements OnInit, OnDestroy {
-    public openSubscription: Subscription;
+    private openSubscription: Subscription;
 
-    public fov_: FieldOfView;
-    public fovSubscription: Subscription;
+    public fov_: FieldOfViewPartial;
+    private fovSubscription: Subscription;
 
     public hFromText?: string;
     public hToText?: string;
@@ -38,19 +38,15 @@ export class PictureFovComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.routerService.onActivate(this, () => this.onActivate());
         this.openSubscription = this.connectionService.subscribeOpen(() => this.onActivate());
-        this.fovSubscription = this.panoService.subscribePictureFov(fov => this.fov = fov);
+        this.fovSubscription = this.panoService.subscribePanoFov(fov => this.fov = fov);
     }
 
     ngOnDestroy(): void {
-        if (this.openSubscription) {
-            this.openSubscription.unsubscribe();
-        }
-        if (this.fovSubscription) {
-            this.fovSubscription.unsubscribe();
-        }
+        this.openSubscription?.unsubscribe();
+        this.fovSubscription?.unsubscribe();
     }
 
-    set fov(fov: FieldOfView) {
+    set fov(fov: FieldOfViewPartial ) {
         this.fov_ = fov;
         this.hText = this.revToString(fov.horizontal.size);
         this.hFromText = this.revToString(fov.horizontal.from);
@@ -90,6 +86,6 @@ export class PictureFovComponent implements OnInit, OnDestroy {
         this.uiService.backButton.next(true);
         this.panoHeadService.jogging(true);
 
-        this.panoService.requestPictureFov(fov => this.fov = fov);
+        this.panoService.requestPanoFov(fov => this.fov = fov);
     }
 }

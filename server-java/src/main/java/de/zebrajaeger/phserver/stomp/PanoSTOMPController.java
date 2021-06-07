@@ -3,7 +3,10 @@ package de.zebrajaeger.phserver.stomp;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.PanoService;
 import de.zebrajaeger.phserver.data.Border;
+import de.zebrajaeger.phserver.data.CalculatedPano;
+import de.zebrajaeger.phserver.data.Empty;
 import de.zebrajaeger.phserver.data.FieldOfView;
+import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
 import de.zebrajaeger.phserver.event.PanoFOVChangedEvent;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api")
@@ -45,7 +49,7 @@ public class PanoSTOMPController {
     }
 
     @MessageMapping("/rpc/picture/fov")
-    public void rpcPictureBorder(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+    public void rpcPictureFov(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
         FieldOfView fov = new FieldOfView(panoService.getPictureFOV());
         StompUtils.rpcSendResponse(template, id, destination, fov);
     }
@@ -71,6 +75,12 @@ public class PanoSTOMPController {
         panoService.updateCalculatedPano();
     }
 
+    @MessageMapping("/rpc/pano/fov")
+    public void rpcPanoFov(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+        FieldOfView fov = new FieldOfViewPartial(panoService.getPanoFOV());
+        StompUtils.rpcSendResponse(template, id, destination, fov);
+    }
+
     @EventListener
     public void onPanoFovChanged(PanoFOVChangedEvent panoFOVChangedEvent) {
         template.convertAndSend("/topic/pano/fov", panoFOVChangedEvent.getPanoFOV());
@@ -78,10 +88,20 @@ public class PanoSTOMPController {
     //</editor-fold>
 
     //<editor-fold desc="Calculated Pano">
+    @MessageMapping("/rpc/pano/calculated")
+    public void rpcCalculatedPano(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+        Optional<CalculatedPano> calculatedPano = panoService.getCalculatedPano();
+        if (calculatedPano.isPresent()) {
+            StompUtils.rpcSendResponse(template, id, destination, calculatedPano.get());
+        } else {
+            StompUtils.rpcSendEmptyResponse(template, id, destination);
+        }
+    }
+
     @EventListener
     public void onCalculatedEvent(CalculatedPanoChangedEvent calculatedPanoChangedEvent) {
         LOG.info("Calculated Pano: '{}'", calculatedPanoChangedEvent.getCalculatedPano());
-        template.convertAndSend("/topic/pano/calculated", calculatedPanoChangedEvent);
+        template.convertAndSend("/topic/pano/calculated", calculatedPanoChangedEvent.getCalculatedPano());
     }
     //</editor-fold>
 

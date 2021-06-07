@@ -20,6 +20,13 @@ import { RecordComponent } from './screen/record.component';
 import { MainComponent } from './screen/main.component';
 import { TopComponent } from './bar/top.component';
 import { BottomComponent } from './bar/bottom.component';
+import {UiService} from './ui.service';
+import {PanoService} from './pano.service';
+import {CameraService} from './camera.service';
+import {ConnectionService} from './connection.service';
+import {JoystickService} from './joystick.service';
+import {PanoHeadService} from './panohead.service';
+import {RouterService} from './router.service';
 
 @NgModule({
     declarations: [
@@ -54,7 +61,14 @@ import { BottomComponent } from './bar/bottom.component';
             provide: RxStompRPCService,
             useFactory: (config: InjectableRxStompRPCConfig, service: RxStompService) => new RxStompRPCService(service, config),
             deps: [InjectableRxStompRPCConfig, RxStompService],
-        }
+        },
+        CameraService,
+        ConnectionService,
+        JoystickService,
+        PanoService,
+        PanoHeadService,
+        RouterService,
+        UiService
     ],
     bootstrap: [AppComponent]
 })

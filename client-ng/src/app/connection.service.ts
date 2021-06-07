@@ -24,6 +24,12 @@ export class ConnectionService {
             .pipe(filter(isOpen => isOpen));
     }
 
+    public subscribeOpen(cb: () => void): Subscription {
+        return this.open_
+            .pipe(filter(isOpen => isOpen))
+            .subscribe(cb);
+    }
+
     public stateName(): BehaviorSubject<string> {
         return this.stateName_;
     }

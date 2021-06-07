@@ -1,15 +1,19 @@
 package de.zebrajaeger.phserver.stomp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.PanoService;
 import de.zebrajaeger.phserver.data.Border;
+import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
 import de.zebrajaeger.phserver.event.PanoFOVChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
+import de.zebrajaeger.phserver.util.StompUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +42,12 @@ public class PanoSTOMPController {
         panoService.setCurrentPositionAsPictureBorder(borders);
         panoService.publishPictureFOVChange();
         panoService.updateCalculatedPano();
+    }
+
+    @MessageMapping("/rpc/picture/fov")
+    public void rpcPictureBorder(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+        FieldOfView fov = new FieldOfView(panoService.getPictureFOV());
+        StompUtils.rpcSendResponse(template, id, destination, fov);
     }
 
     @EventListener

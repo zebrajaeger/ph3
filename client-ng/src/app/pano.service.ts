@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Border, CalculatedPano, FieldOfView, FieldOfViewPartial} from '../data/pano';
 
@@ -9,14 +9,31 @@ import {Border, CalculatedPano, FieldOfView, FieldOfViewPartial} from '../data/p
 })
 export class PanoService {
 
-    constructor(private rxStompService: RxStompService) {
+    constructor(private rxStompService: RxStompService, private rxStompRPCService: RxStompRPCService) {
     }
 
+    // <editor-fold desc="PictureFOV">
     pictureFov(): Observable<FieldOfView> {
         return this.rxStompService
             .watch('/topic/picture/fov')
             .pipe(map(msg => JSON.parse(msg.body) as FieldOfView));
     }
+
+    subscribePictureFov(cb: (fov: FieldOfView) => void): Subscription {
+        return this.rxStompService
+            .watch('/topic/picture/fov')
+            .pipe(map(msg => JSON.parse(msg.body) as FieldOfView))
+            .subscribe(cb);
+    }
+
+    requestPictureFov(cb: (fov: FieldOfView) => void): void {
+        this.rxStompRPCService
+            .rpc({destination: '/rpc/picture/fov'})
+            .pipe(map(msg => JSON.parse(msg.body) as FieldOfView))
+            .subscribe(cb);
+    }
+
+    // </editor-fold>
 
     calculatedPano(): Observable<CalculatedPano> {
         return this.rxStompService

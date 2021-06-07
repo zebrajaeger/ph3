@@ -42,11 +42,11 @@ public class CommandListGenerator {
         FieldOfViewPartial fov = pano.getFieldOfViewPartial();
         if (fov.getHorizontal() != null) {
             calc.setPartial(fov.isPartial());
-            Optional<Double> hSize = fov.getHorizontal().getSize();
-            if (hSize.isEmpty()) {
+            Double hSize = fov.getHorizontal().getSize();
+            if (hSize == null) {
                 throw new IllegalArgumentException(String.format("Pano FOV error: '%s'", fov));
             }
-            calc.setTargetSize(hSize.get());
+            calc.setTargetSize(hSize);
             calc.setTargetStartPoint(fov.getHorizontal().getFrom());
         }
         calc.setOverlap(pano.getHorizontalMinimumOverlap());
@@ -59,11 +59,11 @@ public class CommandListGenerator {
         calc.setSourceSize(image.getHeight());
         if (fov.getVertical() != null) {
             calc.setPartial(fov.isPartial());
-            Optional<Double> vSize = fov.getVertical().getSize();
-            if (vSize.isEmpty()) {
+            Double vSize = fov.getVertical().getSize();
+            if (vSize == null) {
                 throw new IllegalArgumentException(String.format("Pano FOV error: '%s'", fov));
             }
-            calc.setTargetSize(vSize.get());
+            calc.setTargetSize(vSize);
             calc.setTargetStartPoint(fov.getVertical().getFrom());
         }
         calc.setOverlap(pano.getVerticalMinimumOverlap());

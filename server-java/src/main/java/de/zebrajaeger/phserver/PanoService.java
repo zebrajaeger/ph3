@@ -92,13 +92,13 @@ public class PanoService {
 
     public Optional<CalculatedPano> updateCalculatedPano() {
         FieldOfView cameraFOV = getPictureFOV();
-        Optional<Double> height = cameraFOV.getVertical().getSize();
-        Optional<Double> width = cameraFOV.getHorizontal().getSize();
-        if (height.isEmpty() || width.isEmpty()) {
+        Double height = cameraFOV.getVertical().getSize();
+        Double width = cameraFOV.getHorizontal().getSize();
+        if (height == null || width == null) {
             throw new IllegalArgumentException(String.format("Camera FOV error: '%s'", cameraFOV));
         }
 
-        Image image = new Image(width.get(), height.get());
+        Image image = new Image(width, height);
         Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
         calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(pano, image));
         calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
@@ -114,9 +114,9 @@ public class PanoService {
         if (calculatedPano.isPresent()) {
             CalculatedPano cp = this.calculatedPano.get();
             FieldOfView cameraFOV = getPictureFOV();
-            Optional<Double> height = cameraFOV.getVertical().getSize();
-            Optional<Double> width = cameraFOV.getHorizontal().getSize();
-            Image image = new Image(width.get(), height.get());
+            Double height = cameraFOV.getVertical().getSize();
+            Double width = cameraFOV.getHorizontal().getSize();
+            Image image = new Image(width, height);
             Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
             CommandListGenerator generator = new CommandListGenerator(image, pano, getShots(), getDelaySettings());
             result = generator.createCommands(cp, getShots(), getDelaySettings());

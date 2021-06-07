@@ -5,13 +5,17 @@ import {Subscription} from 'rxjs';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
+import {ConnectionService} from '../connection.service';
+import {OnDestroy} from '@angular/core/core';
 
 @Component({
     selector: 'app-picture-fov',
     templateUrl: './picture-fov.component.html',
     styleUrls: ['./picture-fov.component.scss']
 })
-export class PictureFovComponent implements OnInit {
+export class PictureFovComponent implements OnInit, OnDestroy {
+    public openSubscription: Subscription;
+
     public fov_: FieldOfView;
     public fovSubscription: Subscription;
 
@@ -23,16 +27,27 @@ export class PictureFovComponent implements OnInit {
     public vFromText?: string;
     public vToText?: string;
 
-    constructor(private panoService: PanoService,
+    constructor(private connectionService: ConnectionService,
+                private panoService: PanoService,
                 private panoHeadService: PanoHeadService,
                 private routerService: RouterService,
-                private uiService: UiService) {
-        routerService.onActivate(this, () => this.onActivate());
+                private uiService: UiService
+    ) {
+    }
 
-        this.fovSubscription =
-            panoService
-                .pictureFov()
-                .subscribe(fov => this.fov = fov);
+    ngOnInit(): void {
+        this.routerService.onActivate(this, () => this.onActivate());
+        this.openSubscription = this.connectionService.subscribeOpen(() => this.onActivate());
+        this.fovSubscription = this.panoService.subscribePictureFov(fov => this.fov = fov);
+    }
+
+    ngOnDestroy(): void {
+        if (this.openSubscription) {
+            this.openSubscription.unsubscribe();
+        }
+        if (this.fovSubscription) {
+            this.fovSubscription.unsubscribe();
+        }
     }
 
     set fov(fov: FieldOfView) {
@@ -53,8 +68,6 @@ export class PictureFovComponent implements OnInit {
         return '';
     }
 
-    ngOnInit(): void {
-    }
 
     onTop(): void {
         this.panoService.setPictureBorder(Border.TOP);
@@ -76,5 +89,7 @@ export class PictureFovComponent implements OnInit {
         this.uiService.title.next('Camera FOV');
         this.uiService.backButton.next(true);
         this.panoHeadService.jogging(true);
+
+        this.panoService.requestPictureFov(fov => this.fov = fov);
     }
 }

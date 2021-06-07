@@ -3,8 +3,6 @@ package de.zebrajaeger.phserver.data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Optional;
-
 public class Range {
     private Double from;
     private Double to;
@@ -26,8 +24,8 @@ public class Range {
         return from != null && to != null;
     }
 
-    public Optional<Double> getSize() {
-        return isComplete() ? Optional.of(to - from) : Optional.empty();
+    public Double getSize() {
+        return isComplete() ? to - from : null;
     }
 
     public Range createNormalized() {

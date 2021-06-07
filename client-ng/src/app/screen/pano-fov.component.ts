@@ -94,7 +94,7 @@ export class PanoFovComponent implements OnInit, OnDestroy {
     private onActivate(): void {
         this.uiService.title.next('Pano FOV');
         this.uiService.backButton.next(true);
-        this.panoHeadService.jogging(true);
+        this.panoHeadService.sendJogging(true);
 
         this.panoService.requestPanoFov(fov => this.fov = fov);
         this.panoService.requestCalculatedPano(calculatedPano => this.calc = calculatedPano);

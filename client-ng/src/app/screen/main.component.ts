@@ -43,6 +43,6 @@ export class MainComponent implements OnInit {
     private onActivate(): void {
         this.uiService.title.next('main');
         this.uiService.backButton.next(false);
-        this.panoHeadService.jogging(false);
+        this.panoHeadService.sendJogging(false);
     }
 }

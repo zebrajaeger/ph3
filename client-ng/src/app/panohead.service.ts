@@ -32,9 +32,25 @@ export class PanoHeadService {
             .pipe(map(msg => JSON.parse(msg.body) as Actor))
             .subscribe(cb);
     }
+
     // </editor-fold>
 
     sendJogging(isJogging: boolean): void {
         this.rxStompService.publish({destination: '/actor/jogging', body: isJogging.toString()});
     }
+
+    // <editor-fold desc="Record">
+    sendStartRecord(): void {
+        this.rxStompService.publish({destination: '/record/start'});
+    }
+
+    sendStopRecord(): void {
+        this.rxStompService.publish({destination: '/record/stop'});
+    }
+
+    sendPauseResumeRecord(): void {
+        this.rxStompService.publish({destination: '/record/pause'});
+    }
+
+    // </editor-fold>
 }

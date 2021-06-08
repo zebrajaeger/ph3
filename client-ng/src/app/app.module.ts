@@ -12,14 +12,14 @@ import {
 } from '@stomp/ng2-stompjs';
 import {myRxStompConfig} from './my-rx-stomp.config';
 import {myRxStompRtcConfig} from './my-rx-stomp-rpc.config';
-import { JoystickComponent } from './screen/joystick.component';
-import { CameraComponent } from './screen/camera.component';
-import { PictureFovComponent } from './screen/picture-fov.component';
-import { PanoFovComponent } from './screen/pano-fov.component';
-import { RecordComponent } from './screen/record.component';
-import { MainComponent } from './screen/main.component';
-import { TopComponent } from './bar/top.component';
-import { BottomComponent } from './bar/bottom.component';
+import {JoystickComponent} from './screen/joystick.component';
+import {CameraComponent} from './screen/camera.component';
+import {PictureFovComponent} from './screen/picture-fov.component';
+import {PanoFovComponent} from './screen/pano-fov.component';
+import {RecordComponent} from './screen/record.component';
+import {MainComponent} from './screen/main.component';
+import {TopComponent} from './bar/top.component';
+import {BottomComponent} from './bar/bottom.component';
 import {UiService} from './ui.service';
 import {PanoService} from './pano.service';
 import {CameraService} from './camera.service';
@@ -27,6 +27,10 @@ import {ConnectionService} from './connection.service';
 import {JoystickService} from './joystick.service';
 import {PanoHeadService} from './panohead.service';
 import {RouterService} from './router.service';
+import {NumberPadComponent} from './ui/number-pad.component';
+import {ModalComponent} from './ui/modal.component';
+import {ModalService} from './ui/modal.service';
+import { PanoSettingsComponent } from './screen/pano-settings.component';
 
 @NgModule({
     declarations: [
@@ -38,7 +42,10 @@ import {RouterService} from './router.service';
         RecordComponent,
         MainComponent,
         TopComponent,
-        BottomComponent
+        BottomComponent,
+        NumberPadComponent,
+        ModalComponent,
+        PanoSettingsComponent
     ],
     imports: [
         BrowserModule,
@@ -68,7 +75,8 @@ import {RouterService} from './router.service';
         PanoService,
         PanoHeadService,
         RouterService,
-        UiService
+        UiService,
+        ModalService
     ],
     bootstrap: [AppComponent]
 })

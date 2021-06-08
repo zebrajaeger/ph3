@@ -16,14 +16,13 @@ export class JoystickComponent implements OnInit, OnDestroy {
 
     constructor(private joystickService: JoystickService, private routerService: RouterService, private uiService: UiService) {
         routerService.onActivate(this, () => this.onActivate());
-
-        this.joystickPositionSubscription =
-            joystickService
-                .position()
-                .subscribe(joystickPosition => this.joystickPosition = joystickPosition);
     }
 
     ngOnInit(): void {
+        this.joystickPositionSubscription =
+            this.joystickService
+                .position()
+                .subscribe(joystickPosition => this.joystickPosition = joystickPosition);
     }
 
     ngOnDestroy(): void {

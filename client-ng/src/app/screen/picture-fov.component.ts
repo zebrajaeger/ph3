@@ -31,12 +31,11 @@ export class PictureFovComponent implements OnInit, OnDestroy {
                 private panoService: PanoService,
                 private panoHeadService: PanoHeadService,
                 private routerService: RouterService,
-                private uiService: UiService
-    ) {
+                private uiService: UiService) {
+        this.routerService.onActivate(this, () => this.onActivate());
     }
 
     ngOnInit(): void {
-        this.routerService.onActivate(this, () => this.onActivate());
         this.openSubscription = this.connectionService.subscribeOpen(() => this.onActivate());
         this.fovSubscription = this.panoService.subscribePanoFov(fov => this.fov = fov);
     }

@@ -1,0 +1,23 @@
+<div class="number-pad">
+    <div class="display">
+        <div class="digits">{{valueString}}</div>
+    </div>
+
+    <div class="numbers">
+        <button class="button number" (click)="onNumber(1)">1</button>
+        <button class="button number" (click)="onNumber(2)">2</button>
+        <button class="button number" (click)="onNumber(3)">3</button>
+
+        <button class="button number" (click)="onNumber(4)">4</button>
+        <button class="button number" (click)="onNumber(5)">5</button>
+        <button class="button number" (click)="onNumber(6)">6</button>
+
+        <button class="button number" (click)="onNumber(7)">7</button>
+        <button class="button number" (click)="onNumber(8)">8</button>
+        <button class="button number" (click)="onNumber(9)">9</button>
+
+        <div></div>
+        <button class="button number" (click)="onNumber(0)">0</button>
+        <button class="button number delete" (click)="onDelete()">«</button>
+    </div>
+</div>

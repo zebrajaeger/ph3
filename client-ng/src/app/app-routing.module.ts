@@ -6,12 +6,14 @@ import {PanoFovComponent} from './screen/pano-fov.component';
 import {CameraComponent} from './screen/camera.component';
 import {MainComponent} from './screen/main.component';
 import {RecordComponent} from './screen/record.component';
+import {PanoSettingsComponent} from './screen/pano-settings.component';
 
 const routes: Routes = [
     {path: 'joystick', component: JoystickComponent},
     {path: 'camera', component: CameraComponent},
     {path: 'picture-fov', component: PictureFovComponent},
     {path: 'pano-fov', component: PanoFovComponent},
+    {path: 'pano-settings', component: PanoSettingsComponent},
     {path: 'pano-fov', component: PanoFovComponent},
     {path: 'record', component: RecordComponent},
     {path: '**', component: MainComponent}

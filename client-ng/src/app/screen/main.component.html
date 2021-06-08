@@ -1,8 +1,8 @@
-<button class="button" (click)="onJoystick()">Joystick</button>
-<button class="button" (click)="onCamera()">Camera</button>
+<button class="button" [routerLink]="['/joystick']">Joystick</button>
+<button class="button" [routerLink]="['/camera']">Camera</button>
 
-<button class="button" (click)="onPictureFOV()">PictureFOV</button>
-<button class="button" (click)="onPanoFOV()">PanoFOV</button>
+<button class="button" [routerLink]="['/picture-fov']">PictureFOV</button>
+<button class="button" [routerLink]="['/pano-fov']">PanoFOV</button>
 
-<button class="button" (click)="onRecord()">Record</button>
-<div></div>
+<button class="button" [routerLink]="['/pano-settings']">Settings</button>
+<button class="button" [routerLink]="['/record']">Record</button>

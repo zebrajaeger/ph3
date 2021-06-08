@@ -34,10 +34,10 @@ export class PanoFovComponent implements OnInit, OnDestroy {
                 private panoHeadService: PanoHeadService,
                 private routerService: RouterService,
                 private uiService: UiService) {
+        this.routerService.onActivate(this, () => this.onActivate());
     }
 
     ngOnInit(): void {
-        this.routerService.onActivate(this, () => this.onActivate());
         this.openSubscription = this.connectionService.subscribeOpen(() => this.onActivate());
         this.fovSubscription = this.panoService.subscribePanoFov(fov => this.fov = fov);
         this.calculatedPanoSubscription = this.panoService.subscribeCalculatedPano(calculatedPano => this.calc = calculatedPano);

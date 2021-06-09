@@ -3,6 +3,7 @@
   border: 2px solid black;
   width: 244px;
   padding: 10px;
+  caret-color: transparent;
 }
 
 .display {
@@ -12,8 +13,13 @@
   width: 222px;
   height: 50px;
   margin-bottom: 10px;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
 
   .digits {
+    box-sizing: border-box;
+    margin-top:3px;
     font-size: 2em;
     font-weight: bold;
     font-family: Monaco, "Lucida Console", monospace;

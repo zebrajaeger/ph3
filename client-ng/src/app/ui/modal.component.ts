@@ -1,5 +1,4 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
-import {OnDestroy} from '@angular/core/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
 import {ModalService} from './modal.service';
 
 /**
@@ -26,7 +25,7 @@ export class ModalComponent implements OnInit, OnDestroy {
         }
 
         // move element to bottom of page (just before </body>) so it can be displayed above everything else
-        document.body.appendChild(this.element);
+        // document.body.appendChild(this.element);
 
         // close modal on background click
         this.element.addEventListener('click', el => {

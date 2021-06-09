@@ -14,11 +14,13 @@ import {OnDestroy} from '@angular/core/core';
 export class PanoSettingsComponent implements OnInit, OnDestroy {
     private openSubscription: Subscription;
     public focusTime = 1.23;
+    public triggerTime = 1.23;
+    public delayAfterMove = 1.23;
 
     constructor(private uiService: UiService,
                 private connectionService: ConnectionService,
                 private routerService: RouterService,
-                private modalService: ModalService) {
+                public modalService: ModalService) {
         this.routerService.onActivate(this, () => this.onActivate());
     }
 
@@ -28,14 +30,6 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.openSubscription?.unsubscribe();
-    }
-
-    openModal(id: string): void {
-        this.modalService.open(id);
-    }
-
-    closeModal(id: string): void {
-        this.modalService.close(id);
     }
 
     private onActivate(): void {

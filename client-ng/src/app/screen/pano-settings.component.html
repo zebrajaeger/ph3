@@ -1,15 +1,25 @@
+<div class="fields">
+    <div class="label">Focus Time[s]:</div>
+    <input class="input" (click)="modalService.open('focusTime')" type="text" readonly [value]="focusTime">
 
-<button (click)="openModal('narf')">P</button>
+    <div class="label">Trigger Time[s]:</div>
+    <input class="input" (click)="modalService.open('triggerTime')" type="text" readonly [value]="triggerTime">
 
-<!--<app-modal id="narf">-->
-<!--    <app-number-pad></app-number-pad>-->
-<!--    <button (click)="closeModal('narf');">Close</button>-->
-<!--</app-modal>-->
+    <div class="label">Delay after move[s]:</div>
+    <input class="input" (click)="modalService.open('delayAfterMove')" type="text" readonly [value]="delayAfterMove">
+</div>
 
-<app-modal class="modal-num-pad" id="narf">
-<app-number-pad [(value)]="focusTime" >
-</app-number-pad>
+<app-modal class="modal-num-pad" id="focusTime">
+    <app-number-pad [(value)]="focusTime">
+    </app-number-pad>
 </app-modal>
 
+<app-modal class="modal-num-pad" id="triggerTime">
+    <app-number-pad [(value)]="triggerTime">
+    </app-number-pad>
+</app-modal>
 
-AA {{focusTime}}AA
+<app-modal class="modal-num-pad" id="delayAfterMove">
+    <app-number-pad [(value)]="delayAfterMove">
+    </app-number-pad>
+</app-modal>

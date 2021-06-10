@@ -28,3 +28,9 @@ export class CalculatedPano {
     horizontalOverlap: number;
     verticalOverlap: number;
 }
+
+export class Delay {
+    waitAfterMove: number;
+    waitAfterShot: number;
+    waitBetweenShots: number;
+}

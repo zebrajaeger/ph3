@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ModalService} from './modal.service';
 
 /**
@@ -12,6 +12,9 @@ import {ModalService} from './modal.service';
 export class ModalComponent implements OnInit, OnDestroy {
     @Input() id: string;
     private readonly element: any;
+
+    @Output()
+    public close = new EventEmitter<number>();
 
     constructor(private modalService: ModalService, private el: ElementRef) {
         this.element = el.nativeElement;
@@ -30,7 +33,7 @@ export class ModalComponent implements OnInit, OnDestroy {
         // close modal on background click
         this.element.addEventListener('click', el => {
             if (el.target.className === 'jw-modal') {
-                this.close();
+                this.closeModal();
             }
         });
 
@@ -45,14 +48,15 @@ export class ModalComponent implements OnInit, OnDestroy {
     }
 
     // open modal
-    open(): void {
+    openModal(): void {
         this.element.style.display = 'block';
         document.body.classList.add('jw-modal-open');
     }
 
     // close modal
-    close(): void {
+    closeModal(): void {
         this.element.style.display = 'none';
         document.body.classList.remove('jw-modal-open');
+        this.close.emit();
     }
 }

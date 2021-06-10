@@ -145,7 +145,7 @@ public class PanoSTOMPController {
     //</editor-fold>
 
     //<editor-fold desc="Shots">
-    @MessageMapping("/robot/shot/{id}/focusTimeMs")
+    @MessageMapping("/shot/{id}/focusTimeMs")
     public void setShotFocusTime(@DestinationVariable String id, int focusTimeMs) {
         Shot shot = panoService.getShots().get(id);
         if (shot == null) {
@@ -156,7 +156,7 @@ public class PanoSTOMPController {
         panoService.publishShotsChange();
     }
 
-    @MessageMapping("/robot/shot/{id}/triggerTimeMs")
+    @MessageMapping("/shot/{id}/triggerTimeMs")
     public void setShotTriggerTime(@DestinationVariable String id, int triggerTimeMs) {
         Shot shot = panoService.getShots().get(id);
         if (shot == null) {
@@ -167,7 +167,7 @@ public class PanoSTOMPController {
         panoService.publishShotsChange();
     }
 
-    @MessageMapping("/robot/shot/{id}")
+    @MessageMapping("/shot/{id}")
     public void setShot(@DestinationVariable String id, @Payload Shot shot) {
         panoService.getShots().put(id, shot);
         panoService.publishShotsChange();

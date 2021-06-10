@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
 import {Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Border, CalculatedPano, FieldOfView, FieldOfViewPartial} from '../data/pano';
+import {Border, CalculatedPano, Delay, FieldOfView, FieldOfViewPartial} from '../data/pano';
 import {Shots} from '../data/camera';
 
 @Injectable({
@@ -14,6 +14,20 @@ export class PanoService {
     }
 
     // <editor-fold desc="Delay">
+    subscribeDelay(cb: (delay: Delay) => void): Subscription {
+        return this.rxStompService
+            .watch('/topic/delay')
+            .pipe(map(msg => JSON.parse(msg.body) as Delay))
+            .subscribe(cb);
+    }
+
+    requestDelay(cb: (delay: Delay) => void): void {
+        this.rxStompRPCService
+            .rpc({destination: '/rpc/delay'})
+            .pipe(map(msg => JSON.parse(msg.body) as Delay))
+            .subscribe(cb);
+    }
+
     setDelayWaitAfterMoveMs(waitAfterMoveMs: number): void {
         const body = waitAfterMoveMs.toString();
         this.rxStompService.publish({destination: '/delay/waitAfterMoveMs', body});
@@ -83,14 +97,14 @@ export class PanoService {
     subscribeShots(cb: (shots: Shots) => void): Subscription {
         return this.rxStompService
             .watch('/topic/shot')
-            .pipe(map(msg => JSON.parse(msg.body) as Shots))
+            .pipe(map(msg => new Map(Object.entries(JSON.parse(msg.body))) as Shots))
             .subscribe(cb);
     }
 
     requestShots(cb: (shots: Shots) => void): Subscription {
         return this.rxStompRPCService
             .rpc({destination: '/rpc/shot'})
-            .pipe(map(msg => JSON.parse(msg.body) as Shots))
+            .pipe(map(msg => new Map(Object.entries(JSON.parse(msg.body))) as Shots))
             .subscribe(cb);
     }
 

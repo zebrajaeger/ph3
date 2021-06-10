@@ -9,19 +9,18 @@
     <input class="input" (click)="modalService.open('delayAfterMove')" type="text" readonly [value]="delayAfterMove">
 </div>
 
-<app-modal class="modal-num-pad" id="focusTime">
+<app-modal class="modal-num-pad" id="focusTime" (close)="onFocusTimeClose()">
     <app-number-pad [(value)]="focusTime">
     </app-number-pad>
 </app-modal>
 
-<app-modal class="modal-num-pad" id="triggerTime">
+<app-modal class="modal-num-pad" id="triggerTime" (close)="onTriggerTimeClose()">
     <app-number-pad [(value)]="triggerTime">
     </app-number-pad>
 </app-modal>
 
-<app-modal class="modal-num-pad" id="delayAfterMove">
+<app-modal class="modal-num-pad" id="delayAfterMove" (close)="onDelayAfterMoveClose()">
     <app-number-pad [(value)]="delayAfterMove">
     </app-number-pad>
 </app-modal>
 
-AA{{this.shots | json}}AA

@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.RobotState;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class RobotStateEvent {
     private final RobotState robotState;
@@ -26,6 +27,6 @@ public class RobotStateEvent {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

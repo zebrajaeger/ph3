@@ -1,17 +1,15 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.Shot;
-
-import java.util.List;
+import de.zebrajaeger.phserver.data.Shots;
 
 public class ShotsChangedEvent {
-    private final List<Shot> shots;
+    private final Shots shots;
 
-    public ShotsChangedEvent(List<Shot> shots) {
+    public ShotsChangedEvent(Shots shots) {
         this.shots = shots;
     }
 
-    public List<Shot> getShots() {
+    public Shots getShots() {
         return shots;
     }
 }

@@ -1,19 +1,28 @@
-package de.zebrajaeger.phserver.data;
+package de.zebrajaeger.phserver.settings;
 
+import de.zebrajaeger.phserver.data.Delay;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class DelaySettings {
-    private int waitAfterMove = 0;
+    private int waitAfterMove = 1000;
     private int waitAfterShot = 0;
     private int waitBetweenShots = 0;
 
     public DelaySettings() {
     }
 
-    public DelaySettings(int waitAfterMove, int waitAfterShot, int waitBetweenShots) {
-        this.waitAfterMove = waitAfterMove;
-        this.waitAfterShot = waitAfterShot;
-        this.waitBetweenShots = waitBetweenShots;
+    public void setAll(Delay delay) {
+        waitAfterMove = delay.getWaitAfterMove();
+        waitAfterShot = delay.getWaitAfterShot();
+        waitBetweenShots = delay.getWaitBetweenShots();
+    }
+
+    public Delay getAll(Delay delay) {
+        delay.setWaitAfterMove(waitAfterMove);
+        delay.setWaitAfterShot(waitAfterShot);
+        delay.setWaitBetweenShots(waitBetweenShots);
+        return delay;
     }
 
     public int getWaitAfterMove() {
@@ -42,6 +51,7 @@ public class DelaySettings {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
 }

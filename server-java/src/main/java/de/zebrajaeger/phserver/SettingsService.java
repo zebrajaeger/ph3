@@ -2,10 +2,12 @@ package de.zebrajaeger.phserver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.zebrajaeger.phserver.settings.Settings;
+import de.zebrajaeger.phserver.settings.ShotSetting;
 import dev.dirs.ProjectDirectories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +22,10 @@ public class SettingsService {
 
     @Value("${settings.file:#{null}}")
     private File settingsFile;
+
+    @Value("${settings.autosave.delay:10}")
+    private int autosaveDelay;
+    private int autosaveCounter = 0;
 
     private Settings settings = new Settings();
     private final ObjectMapper mapper = new ObjectMapper();
@@ -52,11 +58,17 @@ public class SettingsService {
     public void load() throws IOException {
         if (settingsFile.exists()) {
             settings = mapper.readValue(settingsFile, Settings.class);
+            if (settings.getShots().get("default") == null) {
+                LOG.info("Add default shot to loaded settings");
+                settings.getShots().put("default", new ShotSetting());
+                setDirty();
+            }
         }
     }
 
-    public void save() throws IOException {
+    private void save() throws IOException {
         // TODO delayed save after some ms  (1000 or something like that)
+        LOG.info("Save config to '{}'", settingsFile.getAbsolutePath());
         mapper.writerWithDefaultPrettyPrinter().writeValue(settingsFile, settings);
     }
 
@@ -66,5 +78,19 @@ public class SettingsService {
 
     public void setSettings(Settings settings) {
         this.settings = settings;
+    }
+
+    public void setDirty() {
+        autosaveCounter = autosaveDelay;
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void checkSave() throws IOException {
+        if (autosaveCounter == 0) {
+            save();
+            autosaveCounter = -1;
+        } else if (autosaveCounter > 0) {
+            autosaveCounter--;
+        }
     }
 }

@@ -1,6 +1,6 @@
 package de.zebrajaeger.phserver;
 
-import de.zebrajaeger.phserver.data.DelaySettings;
+import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
@@ -20,9 +20,9 @@ public class GeneratorTest {
         Pano pano = new Pano(new FieldOfViewPartial(0, 0.5, 0, 0.5, true), 0.25, 0.25);
         List<Shot> shots = new LinkedList<>();
         shots.add(new Shot(1000, 1000));
-        DelaySettings delaySettings = new DelaySettings(0, 0, 0);
+        Delay delay = new Delay(0, 0, 0);
 
-        CommandListGenerator generator = new CommandListGenerator(image, pano, shots, delaySettings);
+        CommandListGenerator generator = new CommandListGenerator(image, pano, shots, delay);
         List<Command> commands = generator.generate();
         for (Command c : commands) {
             System.out.println(c);

@@ -6,11 +6,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.HashMap;
 
-/**
- * @author Lars Brandt, Silpion IT Solutions GmbH
- */
 public class StompUtils {
     private static final Empty EMPTY = new Empty();
+
     private StompUtils() {
     }
 
@@ -21,6 +19,7 @@ public class StompUtils {
         String message = MappingUtils.toJson(o);
         template.convertAndSend(destination, message, header);
     }
+
     public static void rpcSendEmptyResponse(SimpMessagingTemplate template, String id, String destination) throws JsonProcessingException {
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);

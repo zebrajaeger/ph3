@@ -3,7 +3,6 @@ package de.zebrajaeger.phserver;
 import de.zebrajaeger.phserver.data.JoystickPosition;
 import de.zebrajaeger.phserver.data.RawPosition;
 import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.settings.JoystickSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,7 +30,7 @@ public class JoystickService {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         settingsService.getSettings().getJoystick().getAll(position);
     }
 
@@ -49,12 +48,12 @@ public class JoystickService {
     public void reset() throws IOException {
         position.reset();
         settingsService.getSettings().getJoystick().setAll(position);
-        settingsService.save();
+        settingsService.setDirty();
     }
 
     public void setCurrentPositionAsCenter() throws IOException {
         position.setCenterWithRawValues(rawPosition.getX(), rawPosition.getY());
         settingsService.getSettings().getJoystick().setAll(position);
-        settingsService.save();
+        settingsService.setDirty();
     }
 }

@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-/**
- * @author Lars Brandt, Silpion IT Solutions GmbH
- */
 public class MappingUtils {
     private final static ObjectMapper mapper;
 

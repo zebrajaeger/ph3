@@ -3,17 +3,14 @@ package de.zebrajaeger.phserver.rest;
 import de.zebrajaeger.phserver.PanoService;
 import de.zebrajaeger.phserver.RobotService;
 import de.zebrajaeger.phserver.data.Border;
-import de.zebrajaeger.phserver.data.DelaySettings;
+import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.RobotState;
-import de.zebrajaeger.phserver.data.Shot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -68,50 +65,50 @@ public class RecordRESTController {
         robotService.PauseResume();
     }
 
-    // shots
-    @GetMapping("/robot/shots")
-    public List<Shot> getShots() {
-        return panoService.getShots();
-    }
-
-    @PutMapping("/robot/shots")
-    public void setShots(List<Shot> shots) {
-        panoService.setShots(shots);
-    }
-
-    @PutMapping("/robot/shots/add")
-    public void setShots(Shot shot) {
-        panoService.getShots().add(shot);
-    }
-
-    @PutMapping("/robot/shots/clear")
-    public void clearShots() {
-        panoService.getShots().clear();
-    }
+//    // shots
+//    @GetMapping("/robot/shots")
+//    public List<Shot> getShots() {
+//        return panoService.getShots();
+//    }
+//
+//    @PutMapping("/robot/shots")
+//    public void setShots(List<Shot> shots) {
+//        panoService.setShots(shots);
+//    }
+//
+//    @PutMapping("/robot/shots/add")
+//    public void setShots(Shot shot) {
+//        panoService.getShots().add(shot);
+//    }
+//
+//    @PutMapping("/robot/shots/clear")
+//    public void clearShots() {
+//        panoService.getShots().clear();
+//    }
 
     // delay
     @GetMapping("/robot/delay")
-    public DelaySettings getDelay() {
-        return panoService.getDelaySettings();
+    public Delay getDelay() {
+        return panoService.getDelay();
     }
 
     @PutMapping("/robot/delay/")
-    public void setDelay(DelaySettings delaySettings) {
-        panoService.setDelaySettings(delaySettings);
+    public void setDelay(Delay delay) {
+        panoService.setDelay(delay);
     }
 
     @PutMapping("/robot/delay/waitAfterMove")
     public void delayWaitAfterMove(int waitAfterMove) {
-        panoService.getDelaySettings().setWaitAfterMove(waitAfterMove);
+        panoService.getDelay().setWaitAfterMove(waitAfterMove);
     }
 
     @PutMapping("/robot/delay/waitAfterShot")
     public void delayWaitAfterShot(int waitAfterShot) {
-        panoService.getDelaySettings().setWaitAfterShot(waitAfterShot);
+        panoService.getDelay().setWaitAfterShot(waitAfterShot);
     }
 
     @PutMapping("/robot/delay/waitBetweenShots")
     public void delayWaitBetweenShots(int waitBetweenShots) {
-        panoService.getDelaySettings().setWaitBetweenShots(waitBetweenShots);
+        panoService.getDelay().setWaitBetweenShots(waitBetweenShots);
     }
 }

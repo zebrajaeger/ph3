@@ -1,18 +1,34 @@
-package de.zebrajaeger.phserver.data;
+package de.zebrajaeger.phserver.settings;
 
+import de.zebrajaeger.phserver.data.Shot;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class Shot {
+public class ShotSetting {
     private int focusTimeMs = 1000;
     private int triggerTimeMs = 1000;
 
-    public Shot() {
+    public ShotSetting() {
     }
 
-    public Shot(int focusTimeMs, int triggerTimeMs) {
+    public ShotSetting(Shot shot) {
+        setAll(shot);
+    }
+
+    public ShotSetting(int focusTimeMs, int triggerTimeMs) {
         this.focusTimeMs = focusTimeMs;
         this.triggerTimeMs = triggerTimeMs;
+    }
+
+    public Shot getAll(Shot shot) {
+        shot.setFocusTimeMs(this.focusTimeMs);
+        shot.setTriggerTimeMs(this.triggerTimeMs);
+        return shot;
+    }
+
+    public void setAll(Shot shot) {
+        this.focusTimeMs = shot.getFocusTimeMs();
+        this.triggerTimeMs = shot.getTriggerTimeMs();
     }
 
     public int getFocusTimeMs() {
@@ -35,4 +51,5 @@ public class Shot {
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
 }

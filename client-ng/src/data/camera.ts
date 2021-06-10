@@ -7,3 +7,7 @@ export class Shot {
     public focusTimeMs: number;
     public triggerTimeMs: number;
 }
+
+export class Shots extends Map<string, Shot> {
+
+}

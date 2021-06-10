@@ -4,26 +4,29 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.PanoService;
 import de.zebrajaeger.phserver.data.Border;
 import de.zebrajaeger.phserver.data.CalculatedPano;
-import de.zebrajaeger.phserver.data.Empty;
+import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
+import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.PanoFOVChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
+import de.zebrajaeger.phserver.event.ShotsChangedEvent;
 import de.zebrajaeger.phserver.util.StompUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -105,23 +108,79 @@ public class PanoSTOMPController {
     }
     //</editor-fold>
 
+    //<editor-fold desc="Delay">
+    @MessageMapping("/delay/waitAfterMoveMs")
+    public void setDelayWaitAfterMoveMs(int waitAfterMoveMs) {
+        panoService.getDelay().setWaitAfterMove(waitAfterMoveMs);
+        panoService.publishDelayChange();
+    }
+
+    @MessageMapping("/delay/waitBetweenShotsMs")
+    public void setDelayWaitBetweenShotsMs(int waitBetweenShotsMs) {
+        panoService.getDelay().setWaitBetweenShots(waitBetweenShotsMs);
+        panoService.publishDelayChange();
+    }
+
+    @MessageMapping("/delay/waitAfterShotMs")
+    public void setDelayWaitAfterShotMs(int waitAfterShotMs) {
+        panoService.getDelay().setWaitAfterShot(waitAfterShotMs);
+        panoService.publishDelayChange();
+    }
+
+    @MessageMapping("/delay")
+    public void setDelay(Delay delay) {
+        panoService.setDelay(delay);
+        panoService.publishDelayChange();
+    }
+
+    @MessageMapping("/rpc/delay")
+    public void rpcDelay(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+        StompUtils.rpcSendResponse(template, id, destination, panoService.getDelay());
+    }
+
+    @EventListener
+    public void onDelay(DelaySettingsChangedEvent delaySettingsChangedEvent) {
+        template.convertAndSend("/topic/delay", delaySettingsChangedEvent.getDelay());
+    }
+    //</editor-fold>
+
     //<editor-fold desc="Shots">
-    @MessageMapping("/robot/shots")
-    public void setShots(List<Shot> shots) {
-        panoService.setShots(shots);
+    @MessageMapping("/robot/shot/{id}/focusTimeMs")
+    public void setShotFocusTime(@DestinationVariable String id, int focusTimeMs) {
+        Shot shot = panoService.getShots().get(id);
+        if (shot == null) {
+            shot = new Shot();
+            panoService.getShots().put(id, shot);
+        }
+        shot.setFocusTimeMs(focusTimeMs);
         panoService.publishShotsChange();
     }
 
-    @MessageMapping("/robot/shots/add")
-    public void setShots(Shot shot) {
-        panoService.getShots().add(shot);
+    @MessageMapping("/robot/shot/{id}/triggerTimeMs")
+    public void setShotTriggerTime(@DestinationVariable String id, int triggerTimeMs) {
+        Shot shot = panoService.getShots().get(id);
+        if (shot == null) {
+            shot = new Shot();
+            panoService.getShots().put(id, shot);
+        }
+        shot.setTriggerTimeMs(triggerTimeMs);
         panoService.publishShotsChange();
     }
 
-    @MessageMapping("/robot/shots/clear")
-    public void clearShots() {
-        panoService.getShots().clear();
+    @MessageMapping("/robot/shot/{id}")
+    public void setShot(@DestinationVariable String id, @Payload Shot shot) {
+        panoService.getShots().put(id, shot);
         panoService.publishShotsChange();
+    }
+
+    @MessageMapping("/rpc/shot")
+    public void rpcShot(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+        StompUtils.rpcSendResponse(template, id, destination, panoService.getShots());
+    }
+
+    @EventListener
+    public void onShots(ShotsChangedEvent shotsChangedEvent) {
+        template.convertAndSend("/topic/shot", shotsChangedEvent.getShots());
     }
     //</editor-fold>
 }

@@ -1,15 +1,15 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.DelaySettings;
+import de.zebrajaeger.phserver.data.Delay;
 
 public class DelaySettingsChangedEvent {
-    private final DelaySettings delaySettings;
+    private final Delay delay;
 
-    public DelaySettingsChangedEvent(DelaySettings delaySettings) {
-        this.delaySettings = delaySettings;
+    public DelaySettingsChangedEvent(Delay delay) {
+        this.delay = delay;
     }
 
-    public DelaySettings getDelaySettings() {
-        return delaySettings;
+    public Delay getDelay() {
+        return delay;
     }
 }

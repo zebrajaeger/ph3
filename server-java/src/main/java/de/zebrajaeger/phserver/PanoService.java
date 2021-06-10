@@ -3,12 +3,12 @@ package de.zebrajaeger.phserver;
 import de.zebrajaeger.phserver.data.Actor;
 import de.zebrajaeger.phserver.data.Border;
 import de.zebrajaeger.phserver.data.CalculatedPano;
-import de.zebrajaeger.phserver.data.DelaySettings;
+import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
-import de.zebrajaeger.phserver.data.Shot;
+import de.zebrajaeger.phserver.data.Shots;
 import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.OverlapChangedEvent;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +37,8 @@ public class PanoService {
     private final FieldOfViewPartial panoFOV = new FieldOfViewPartial();
     private double minimumOverlapH = 0.25;
     private double minimumOverlapV = 0.25;
-    private List<Shot> shots = new LinkedList<>();
-    private DelaySettings delaySettings = new DelaySettings();
+    private Shots shots = new Shots();
+    private Delay delay = new Delay();
     private Optional<CalculatedPano> calculatedPano = Optional.empty();
 
     @Autowired
@@ -54,6 +53,8 @@ public class PanoService {
     @PostConstruct
     public void init() {
         settingsService.getSettings().getPictureFov().getAll(pictureFOV);
+        settingsService.getSettings().getShots().getAll(shots);
+        settingsService.getSettings().getDelay().getAll(delay);
         publishPictureFOVChange();
 
         // just to set a value for client
@@ -87,7 +88,7 @@ public class PanoService {
             }
         }
         settingsService.getSettings().getPictureFov().setAll(fov);
-        settingsService.save();
+        settingsService.setDirty();
     }
 
     public Optional<CalculatedPano> updateCalculatedPano() {
@@ -99,7 +100,7 @@ public class PanoService {
         }
 
         Image image = new Image(width, height);
-        if(getPanoFOV().isComplete()){
+        if (getPanoFOV().isComplete()) {
             Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
             calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(pano, image));
             calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
@@ -120,8 +121,8 @@ public class PanoService {
             Double width = cameraFOV.getHorizontal().getSize();
             Image image = new Image(width, height);
             Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
-            CommandListGenerator generator = new CommandListGenerator(image, pano, getShots(), getDelaySettings());
-            result = generator.createCommands(cp, getShots(), getDelaySettings());
+            CommandListGenerator generator = new CommandListGenerator(image, pano, getShots(), getDelay());
+            result = generator.createCommands(cp, getShots(), getDelay());
         }
         return Optional.ofNullable(result);
     }
@@ -162,30 +163,35 @@ public class PanoService {
         applicationEventPublisher.publishEvent(new PanoFOVChangedEvent(panoFOV));
     }
 
-
-    public List<Shot> getShots() {
+    public Shots getShots() {
         return shots;
     }
 
-    public void setShots(List<Shot> shots) {
+    public void setShots(Shots shots) {
         this.shots = shots;
     }
 
     public void publishShotsChange() {
-        applicationEventPublisher.publishEvent(new ShotsChangedEvent(this.shots));
+        settingsService.getSettings().getShots().setAll(shots);
+        settingsService.setDirty();
+        applicationEventPublisher.publishEvent(new ShotsChangedEvent(shots));
     }
 
-    public DelaySettings getDelaySettings() {
-        return delaySettings;
+    // <editor-fold desc="delay">
+    public Delay getDelay() {
+        return delay;
     }
 
-    public void setDelaySettings(DelaySettings delaySettings) {
-        this.delaySettings = delaySettings;
+    public void setDelay(Delay delay) {
+        this.delay = delay;
     }
 
     public void publishDelayChange() {
-        applicationEventPublisher.publishEvent(new DelaySettingsChangedEvent(this.delaySettings));
+        settingsService.getSettings().getDelay().setAll(delay);
+        settingsService.setDirty();
+        applicationEventPublisher.publishEvent(new DelaySettingsChangedEvent(delay));
     }
+    // </editor-fold>
 
     public Optional<CalculatedPano> getCalculatedPano() {
         return calculatedPano;

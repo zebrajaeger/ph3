@@ -1,0 +1,13 @@
+
+${AnsiColor.YELLOW}ooooooooo.                                   ooooo   ooooo                           .o8 ${AnsiColor.BRIGHT_RED}     .oooo.
+${AnsiColor.YELLOW}`888   `Y88.                                 `888'   `888'                          "888 ${AnsiColor.BRIGHT_RED}   .dP""Y88b
+${AnsiColor.YELLOW} 888   .d88'  .oooo.   ooo. .oo.    .ooooo.   888     888   .ooooo.   .oooo.    .oooo888 ${AnsiColor.BRIGHT_RED}         ]8P'
+${AnsiColor.YELLOW} 888ooo88P'  `P  )88b  `888P"Y88b  d88' `88b  888ooooo888  d88' `88b `P  )88b  d88' `888 ${AnsiColor.BRIGHT_RED}       <88b.
+${AnsiColor.YELLOW} 888          .oP"888   888   888  888   888  888     888  888ooo888  .oP"888  888   888 ${AnsiColor.BRIGHT_RED}        `88b.
+${AnsiColor.YELLOW} 888         d8(  888   888   888  888   888  888     888  888    .o d8(  888  888   888 ${AnsiColor.BRIGHT_RED}   o.   .88P
+${AnsiColor.YELLOW}o888o        `Y888""8o o888o o888o `Y8bod8P' o888o   o888o `Y8bod8P' `Y888""8o `Y8bod88P"${AnsiColor.BRIGHT_RED}   `8bd88P'
+
+${AnsiColor.WHITE}
+by 'zebrajaeger' Lars Brandt / ${application.title} ${application.version}
+Powered by Spring Boot ${spring-boot.version}
+${AnsiColor.BRIGHT_WHITE}

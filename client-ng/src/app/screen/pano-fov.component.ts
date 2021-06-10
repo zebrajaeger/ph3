@@ -7,6 +7,7 @@ import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
 import {OnDestroy} from '@angular/core/core';
 import {ConnectionService} from '../connection.service';
+import {revToString} from '../utils';
 
 @Component({
     selector: 'app-pano-fov',
@@ -55,20 +56,12 @@ export class PanoFovComponent implements OnInit, OnDestroy {
 
     set fov(fov: FieldOfViewPartial) {
         this._fov_ = fov;
-        this.hText = this.revToString(fov.horizontal.size);
-        this.hFromText = this.revToString(fov.horizontal.from);
-        this.hToText = this.revToString(fov.horizontal.to);
-        this.vText = this.revToString(fov.vertical.size);
-        this.vFromText = this.revToString(fov.vertical.from);
-        this.vToText = this.revToString(fov.vertical.to);
-    }
-
-    private revToString(rev: number): string {
-        if (rev === null || rev === undefined) {
-            return '-';
-        }
-        const size = Math.abs(rev);
-        return size.toFixed(3) + ' (' + (size * 360).toFixed(1) + 'deg)';
+        this.hText = revToString(fov.horizontal.size);
+        this.hFromText = revToString(fov.horizontal.from);
+        this.hToText = revToString(fov.horizontal.to);
+        this.vText = revToString(fov.vertical.size);
+        this.vFromText = revToString(fov.vertical.from);
+        this.vToText = revToString(fov.vertical.to);
     }
 
     onTop(): void {

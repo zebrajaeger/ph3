@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {PanoService} from '../pano.service';
-import {Border, FieldOfView, FieldOfViewPartial} from '../../data/pano';
+import {Border, FieldOfView} from '../../data/pano';
 import {Subscription} from 'rxjs';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
 import {ConnectionService} from '../connection.service';
 import {OnDestroy} from '@angular/core/core';
+import {revToString} from '../utils';
 
 @Component({
     selector: 'app-picture-fov',
@@ -16,7 +17,7 @@ import {OnDestroy} from '@angular/core/core';
 export class PictureFovComponent implements OnInit, OnDestroy {
     private openSubscription: Subscription;
 
-    public fov_: FieldOfViewPartial;
+    public fov_: FieldOfView;
     private fovSubscription: Subscription;
 
     public hFromText?: string;
@@ -37,7 +38,7 @@ export class PictureFovComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.openSubscription = this.connectionService.subscribeOpen(() => this.onActivate());
-        this.fovSubscription = this.panoService.subscribePanoFov(fov => this.fov = fov);
+        this.fovSubscription = this.panoService.subscribePictureFov(fov => this.fov = fov);
     }
 
     ngOnDestroy(): void {
@@ -45,24 +46,15 @@ export class PictureFovComponent implements OnInit, OnDestroy {
         this.fovSubscription?.unsubscribe();
     }
 
-    set fov(fov: FieldOfViewPartial ) {
+    set fov(fov: FieldOfView) {
         this.fov_ = fov;
-        this.hText = this.revToString(fov.horizontal.size);
-        this.hFromText = this.revToString(fov.horizontal.from);
-        this.hToText = this.revToString(fov.horizontal.to);
-        this.vText = this.revToString(fov.vertical.size);
-        this.vFromText = this.revToString(fov.vertical.from);
-        this.vToText = this.revToString(fov.vertical.to);
+        this.hText = revToString(fov.horizontal.size);
+        this.hFromText = revToString(fov.horizontal.from);
+        this.hToText = revToString(fov.horizontal.to);
+        this.vText = revToString(fov.vertical.size);
+        this.vFromText = revToString(fov.vertical.from);
+        this.vToText = revToString(fov.vertical.to);
     }
-
-    private revToString(rev: number): string {
-        if (rev) {
-            const size = Math.abs(rev);
-            return size.toFixed(3) + ' (' + (size * 360).toFixed(1) + 'deg)';
-        }
-        return '';
-    }
-
 
     onTop(): void {
         this.panoService.setPictureBorder(Border.TOP);
@@ -85,6 +77,6 @@ export class PictureFovComponent implements OnInit, OnDestroy {
         this.uiService.backButton.next(true);
         this.panoHeadService.sendJogging(true);
 
-        this.panoService.requestPanoFov(fov => this.fov = fov);
+        this.panoService.requestPictureFov(fov => this.fov = fov);
     }
 }

@@ -31,6 +31,8 @@ import {NumberPadComponent} from './ui/number-pad.component';
 import {ModalComponent} from './ui/modal.component';
 import {ModalService} from './ui/modal.service';
 import { PanoSettingsComponent } from './screen/pano-settings.component';
+import { MsToSecondPipe } from './ms-to-second.pipe';
+import { FormatSecondPipe } from './format-second.pipe';
 
 @NgModule({
     declarations: [
@@ -45,7 +47,9 @@ import { PanoSettingsComponent } from './screen/pano-settings.component';
         BottomComponent,
         NumberPadComponent,
         ModalComponent,
-        PanoSettingsComponent
+        PanoSettingsComponent,
+        MsToSecondPipe,
+        FormatSecondPipe
     ],
     imports: [
         BrowserModule,

@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.data.Shots;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 public class ShotsSettings extends HashMap<String, List<ShotSetting>> {
 
+    @JsonIgnore
     public void setDefaultShot(ShotSetting shot) {
         List<ShotSetting> def = get("default");
         if (def == null) {
@@ -20,6 +22,7 @@ public class ShotsSettings extends HashMap<String, List<ShotSetting>> {
         def.add(shot);
     }
 
+    @JsonIgnore
     public boolean isDefaultShotOk() {
         List<ShotSetting> def = get("default");
         if (def == null) {
@@ -28,6 +31,7 @@ public class ShotsSettings extends HashMap<String, List<ShotSetting>> {
         return def.size() == 1;
     }
 
+    @JsonIgnore
     public void setAll(Shots shots) {
         clear();
         for (Shots.Entry<String, List<Shot>> e : shots.entrySet()) {
@@ -39,6 +43,7 @@ public class ShotsSettings extends HashMap<String, List<ShotSetting>> {
         }
     }
 
+    @JsonIgnore
     public void getAll(Shots shots) {
         shots.clear();
         for (ShotsSettings.Entry<String, List<ShotSetting>> e : entrySet()) {

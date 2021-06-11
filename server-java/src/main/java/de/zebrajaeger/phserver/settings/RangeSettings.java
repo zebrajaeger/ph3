@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.zebrajaeger.phserver.data.Range;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,11 +17,13 @@ public class RangeSettings {
         this.to = to;
     }
 
+    @JsonIgnore
     public void getAll(Range range) {
         range.setFrom(from);
         range.setTo(to);
     }
 
+    @JsonIgnore
     public void setAll(Range range) {
         this.from = range.getFrom();
         this.to = range.getTo();

@@ -5,8 +5,9 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 public class Settings {
     private JoystickSettings joystick = new JoystickSettings();
     private FovSettings pictureFov = new FovSettings();
+    private FovSettings panoFov = new FovSettings();
     private ShotsSettings shots = new ShotsSettings();
-    private DelaySettings delaySettings = new DelaySettings();
+    private DelaySettings delay = new DelaySettings();
 
     //<editor-fold desc="boilerplate">
     public JoystickSettings getJoystick() {
@@ -34,11 +35,19 @@ public class Settings {
     }
 
     public DelaySettings getDelay() {
-        return delaySettings;
+        return delay;
     }
 
     public void setDelay(DelaySettings delaySettings) {
-        this.delaySettings = delaySettings;
+        this.delay = delaySettings;
+    }
+
+    public FovSettings getPanoFov() {
+        return panoFov;
+    }
+
+    public void setPanoFov(FovSettings panoFov) {
+        this.panoFov = panoFov;
     }
 
     @Override

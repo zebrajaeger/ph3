@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.zebrajaeger.phserver.data.Shot;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -20,12 +21,14 @@ public class ShotSetting {
         this.triggerTimeMs = triggerTimeMs;
     }
 
+    @JsonIgnore
     public Shot getAll(Shot shot) {
         shot.setFocusTimeMs(this.focusTimeMs);
         shot.setTriggerTimeMs(this.triggerTimeMs);
         return shot;
     }
 
+    @JsonIgnore
     public void setAll(Shot shot) {
         this.focusTimeMs = shot.getFocusTimeMs();
         this.triggerTimeMs = shot.getTriggerTimeMs();

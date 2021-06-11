@@ -54,12 +54,16 @@ public class PanoService {
     @PostConstruct
     public void init() {
         settingsService.getSettings().getPictureFov().getAll(pictureFOV);
-        settingsService.getSettings().getShots().getAll(shots);
-        settingsService.getSettings().getDelay().getAll(delay);
         publishPictureFOVChange();
 
-        // just to set a value for client
+        settingsService.getSettings().getPanoFov().getAll(panoFOV);
         publishPanoFOVChange();
+
+        settingsService.getSettings().getShots().getAll(shots);
+        publishShotsChange();
+
+        settingsService.getSettings().getDelay().getAll(delay);
+        publishDelayChange();
     }
 
     public void setCurrentPositionAsPictureBorder(Border... borders) throws IOException {
@@ -88,8 +92,6 @@ public class PanoService {
                     break;
             }
         }
-        settingsService.getSettings().getPictureFov().setAll(fov);
-        settingsService.setDirty();
     }
 
     public Optional<CalculatedPano> updateCalculatedPano() {
@@ -154,6 +156,8 @@ public class PanoService {
     }
 
     public void publishPictureFOVChange() {
+        settingsService.getSettings().getPictureFov().setAll(pictureFOV);
+        settingsService.setDirty();
         applicationEventPublisher.publishEvent(new PictureFOVChangedEvent(pictureFOV));
     }
 
@@ -162,6 +166,8 @@ public class PanoService {
     }
 
     public void publishPanoFOVChange() {
+        settingsService.getSettings().getPanoFov().setAll(panoFOV);
+        settingsService.setDirty();
         applicationEventPublisher.publishEvent(new PanoFOVChangedEvent(panoFOV));
     }
 

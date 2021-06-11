@@ -173,15 +173,18 @@ public class RobotService {
 
     @EventListener
     public void onMovementStopped(MovementStoppedEvent event) {
+        LOG.debug("onMovementStopped()");
         next();
     }
 
     @EventListener
     public void onShotDone(ShotDoneEvent event) {
+        LOG.debug("onShotDone()");
         next();
     }
 
     private void onTimer() {
+        LOG.debug("onTimer()");
         next();
     }
 

@@ -8,6 +8,6 @@ export class Shot {
     public triggerTimeMs: number;
 }
 
-export class Shots extends Map<string, Shot> {
+export class Shots extends Map<string, Shot[]> {
 
 }

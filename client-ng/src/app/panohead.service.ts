@@ -41,7 +41,7 @@ export class PanoHeadService {
 
     // <editor-fold desc="Record">
     sendStartRecord(): void {
-        this.rxStompService.publish({destination: '/record/start'});
+        this.rxStompService.publish({destination: '/record/start/default'});
     }
 
     sendStopRecord(): void {

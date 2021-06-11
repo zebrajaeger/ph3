@@ -3,6 +3,7 @@ package de.zebrajaeger.phserver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.zebrajaeger.phserver.settings.Settings;
 import de.zebrajaeger.phserver.settings.ShotSetting;
+import de.zebrajaeger.phserver.settings.ShotsSettings;
 import dev.dirs.ProjectDirectories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,9 +59,10 @@ public class SettingsService {
     public void load() throws IOException {
         if (settingsFile.exists()) {
             settings = mapper.readValue(settingsFile, Settings.class);
-            if (settings.getShots().get("default") == null) {
-                LOG.info("Add default shot to loaded settings");
-                settings.getShots().put("default", new ShotSetting());
+            ShotsSettings shots = settings.getShots();
+            if (!shots.isDefaultShotOk()) {
+                LOG.info("Add/replace default shot to loaded settings");
+                shots.setDefaultShot(new ShotSetting());
                 setDirty();
             }
         }

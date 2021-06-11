@@ -145,31 +145,23 @@ public class PanoSTOMPController {
     //</editor-fold>
 
     //<editor-fold desc="Shots">
-    @MessageMapping("/shot/{id}/focusTimeMs")
-    public void setShotFocusTime(@DestinationVariable String id, int focusTimeMs) {
-        Shot shot = panoService.getShots().get(id);
-        if (shot == null) {
-            shot = new Shot();
-            panoService.getShots().put(id, shot);
-        }
+    @MessageMapping("/shot/{shotsName}/{index}/focusTimeMs")
+    public void setShotFocusTime(@DestinationVariable String shotsName,@DestinationVariable int index, int focusTimeMs) {
+        Shot shot = panoService.getShots().getShot(shotsName, index);
         shot.setFocusTimeMs(focusTimeMs);
         panoService.publishShotsChange();
     }
 
-    @MessageMapping("/shot/{id}/triggerTimeMs")
-    public void setShotTriggerTime(@DestinationVariable String id, int triggerTimeMs) {
-        Shot shot = panoService.getShots().get(id);
-        if (shot == null) {
-            shot = new Shot();
-            panoService.getShots().put(id, shot);
-        }
+    @MessageMapping("/shot/{shotsName}/{index}/triggerTimeMs")
+    public void setShotTriggerTime(@DestinationVariable String shotsName,@DestinationVariable int index,int triggerTimeMs) {
+        Shot shot = panoService.getShots().getShot(shotsName, index);
         shot.setTriggerTimeMs(triggerTimeMs);
         panoService.publishShotsChange();
     }
 
-    @MessageMapping("/shot/{id}")
-    public void setShot(@DestinationVariable String id, @Payload Shot shot) {
-        panoService.getShots().put(id, shot);
+    @MessageMapping("/shot/{shotsName}/add")
+    public void setShot(@DestinationVariable String shotsName, @Payload Shot shot) {
+        panoService.getShots().add(shotsName, shot);
         panoService.publishShotsChange();
     }
 

@@ -7,6 +7,7 @@ import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +29,10 @@ public class RecordSTOMPController {
     }
 
     //<editor-fold desc="Record">
-    @MessageMapping("/record/start")
-    public void start() {
+    @MessageMapping("/record/start/{shotsName}")
+    public void start(@DestinationVariable String shotsName) {
         panoService
-                .createCommands()
+                .createCommands(shotsName)
                 .ifPresent(robotService::start);
     }
 

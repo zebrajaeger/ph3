@@ -53,10 +53,13 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
 
     set shots(shots: Shots) {
         this._shots = shots;
-        const defaultShot = shots.get('default');
-        if (defaultShot) {
-            this.focusTime = defaultShot.focusTimeMs / 1000;
-            this.triggerTime = defaultShot.triggerTimeMs / 1000;
+        const defaultShots = shots.get('default');
+        if (defaultShots) {
+            const defaultShot = defaultShots[0];
+            if (defaultShot) {
+                this.focusTime = defaultShot.focusTimeMs / 1000;
+                this.triggerTime = defaultShot.triggerTimeMs / 1000;
+            }
         }
     }
 
@@ -82,12 +85,11 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
     }
 
     onFocusTimeClose(): void {
-        console.log('aaaaa', this.focusTime)
-        this.panoService.setShotFocusTimeMs('default', this.focusTime * 1000);
+        this.panoService.setShotFocusTimeMs('default', 0, this.focusTime * 1000);
     }
 
     onTriggerTimeClose(): void {
-        this.panoService.setShotTriggerTimeMs('default', this.triggerTime * 1000);
+        this.panoService.setShotTriggerTimeMs('default', 0, this.triggerTime * 1000);
     }
 
     onDelayAfterMoveClose(): void {

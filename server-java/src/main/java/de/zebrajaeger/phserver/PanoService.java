@@ -8,6 +8,7 @@ import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
+import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.data.Shots;
 import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
@@ -109,12 +110,13 @@ public class PanoService {
         return calculatedPano;
     }
 
-    public Optional<List<Command>> createCommands() {
+    public Optional<List<Command>> createCommands(String shotsName) {
         updateCalculatedPano();
 
         List<Command> result = null;
+        List<Shot> shots = getShots().get(shotsName);
 
-        if (calculatedPano.isPresent()) {
+        if (calculatedPano.isPresent() && shots!=null && !shots.isEmpty()) {
             CalculatedPano cp = this.calculatedPano.get();
             FieldOfView cameraFOV = getPictureFOV();
             Double height = cameraFOV.getVertical().getSize();
@@ -122,7 +124,7 @@ public class PanoService {
             Image image = new Image(width, height);
             Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
             CommandListGenerator generator = new CommandListGenerator(image, pano, getShots(), getDelay());
-            result = generator.createCommands(cp, getShots(), getDelay());
+            result = generator.createCommands(cp, shots, getDelay());
         }
         return Optional.ofNullable(result);
     }

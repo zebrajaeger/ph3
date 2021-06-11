@@ -108,12 +108,14 @@ export class PanoService {
             .subscribe(cb);
     }
 
-    setShotFocusTimeMs(shotId: string, focusTimeMs: number): void {
-        this.rxStompService.publish({destination: `/shot/${shotId}/focusTimeMs`, body: focusTimeMs.toString()});
+    setShotFocusTimeMs(shotsName: string, shotIndex: number, focusTimeMs: number): void {
+        const destination = `/shot/${shotsName}/${shotIndex}/focusTimeMs`;
+        this.rxStompService.publish({destination, body: focusTimeMs.toString()});
     }
 
-    setShotTriggerTimeMs(shotId: string, triggerTimeMs: number): void {
-        this.rxStompService.publish({destination: `/shot/${shotId}/triggerTimeMs`, body: triggerTimeMs.toString()});
+    setShotTriggerTimeMs(shotsName: string, shotIndex: number, triggerTimeMs: number): void {
+        const destination = `/shot/${shotsName}/${shotIndex}/triggerTimeMs`;
+        this.rxStompService.publish({destination, body: triggerTimeMs.toString()});
     }
 
     setShot(shotId: string, focusTimeMs: number, triggerTimeMs: number): void {

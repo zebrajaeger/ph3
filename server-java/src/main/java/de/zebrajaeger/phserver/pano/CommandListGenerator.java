@@ -27,9 +27,13 @@ public class CommandListGenerator {
         this.delay = delay;
     }
 
-    public List<Command> generate() {
+    public List<Command> generate(String shotName) {
+        List<Shot> shotList = this.shots.get(shotName);
+        if (shotList == null) {
+            throw new IllegalArgumentException(String.format("No shots with name '%s' available", shotName));
+        }
         CalculatedPano calculatedPano = calculateMissingValues(pano, image);
-        return createCommands(calculatedPano, shots, delay);
+        return createCommands(calculatedPano, shotList, delay);
     }
 
     public static CalculatedPano calculateMissingValues(Pano pano, Image image) {
@@ -75,7 +79,7 @@ public class CommandListGenerator {
         return result;
     }
 
-    public List<Command> createCommands(CalculatedPano pano, Shots shots, Delay delay) {
+    public List<Command> createCommands(CalculatedPano pano, List<Shot> shots, Delay delay) {
         List<Command> commands = new LinkedList<>();
 
         // rows

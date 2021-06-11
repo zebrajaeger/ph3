@@ -48,22 +48,22 @@ public class RecordRESTController {
         return robotService.getRobotState();
     }
 
-    @PutMapping("/robot/start")
-    public void start() {
-        panoService
-                .createCommands()
-                .ifPresent(robotService::start);
-    }
+//    @PutMapping("/robot/start")
+//    public void start() {
+//        panoService
+//                .createCommands()
+//                .ifPresent(robotService::start);
+//    }
 
-    @PutMapping("/robot/stop")
-    public void stop() {
-        robotService.stop();
-    }
-
-    @PutMapping("/robot/pause")
-    public void pauseResume() {
-        robotService.PauseResume();
-    }
+//    @PutMapping("/robot/stop")
+//    public void stop() {
+//        robotService.stop();
+//    }
+//
+//    @PutMapping("/robot/pause")
+//    public void pauseResume() {
+//        robotService.PauseResume();
+//    }
 
 //    // shots
 //    @GetMapping("/robot/shots")

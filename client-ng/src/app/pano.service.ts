@@ -125,7 +125,6 @@ export class PanoService {
 
     // </editor-fold>
 
-
     // <editor-fold desc="Calculated Pano">
     subscribeCalculatedPano(cb: (calculatedPano: CalculatedPano) => void): Subscription {
         return this.rxStompService

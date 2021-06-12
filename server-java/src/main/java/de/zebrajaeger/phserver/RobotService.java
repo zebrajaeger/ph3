@@ -75,7 +75,9 @@ public class RobotService {
     }
 
     private void sendUpdate(Exception error) {
-        applicationEventPublisher.publishEvent(new RobotStateEvent(this.robotState, error));
+        RobotStateEvent event = new RobotStateEvent(this.robotState, error);
+        LOG.debug("State changed to '{}'", event);
+        applicationEventPublisher.publishEvent(event);
     }
 
     public void start(List<Command> commands) {

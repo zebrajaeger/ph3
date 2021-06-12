@@ -1,13 +1,16 @@
 package de.zebrajaeger.phserver.stomp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.PanoService;
 import de.zebrajaeger.phserver.RobotService;
 import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
+import de.zebrajaeger.phserver.util.StompUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +47,11 @@ public class RecordSTOMPController {
     @MessageMapping("/record/pause")
     public void pauseResume() {
         robotService.PauseResume();
+    }
+
+    @MessageMapping("/rpc/robot/state")
+    public void rpcRobotState(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+        StompUtils.rpcSendResponse(template, id, destination, robotService.getRobotState());
     }
 
     @EventListener

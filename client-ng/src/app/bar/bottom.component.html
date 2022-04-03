@@ -1,1 +1,9 @@
-{{actorPos}} - {{state?.command?.description}} - {{state?.commandIndex + 1}}/{{state?.commandCount}}
+Pos: ({{actorPos}})
+Pano: ({{calc?.horizontalPositions?.length}},{{calc?.verticalPositions?.length}})
+Power: ({{gaugeString}})<br>
+<span *ngIf="state">
+State: {{state?.automateState}}<span *ngIf="!isStopped()">:
+    ({{state?.pauseState}} - "{{state?.command?.description}}") -
+        ({{state?.commandIndex + 1}}/{{state?.commandCount}})
+    </span>
+</span>

@@ -1,3 +1,10 @@
-<button class="button" (click)="onStart()">Start</button>
-<button class="button" (click)="onStop()">Stop</button>
-<button class="button" (click)="onPause()">Pause / Resume</button>
+<div class="buttons">
+    <button class="button" (click)="onStart()">Start</button>
+    <button class="button" (click)="onStop()">Stop</button>
+    <button class="button" (click)="onPause()">Pause / Resume</button>
+</div>
+
+<div class="infos">
+    Command: <span class="info">{{state?.command?.description}}</span>
+    <span class="info">{{state?.commandIndex + 1}}/{{state?.commandCount}}</span>
+</div>

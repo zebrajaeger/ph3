@@ -10,7 +10,9 @@ import {UiService} from '../ui.service';
 })
 export class CameraComponent implements OnInit, OnDestroy {
 
-    constructor(private cameraService: CameraService, private routerService: RouterService, private uiService: UiService) {
+    constructor(private cameraService: CameraService,
+                private routerService: RouterService,
+                private uiService: UiService) {
         routerService.onActivate(this, () => this.onActivate());
     }
 

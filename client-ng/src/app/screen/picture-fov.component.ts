@@ -7,7 +7,7 @@ import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
 import {ConnectionService} from '../connection.service';
 import {OnDestroy} from '@angular/core/core';
-import {revToString} from '../utils';
+import {degToString, revToString} from '../utils';
 
 @Component({
     selector: 'app-picture-fov',
@@ -48,12 +48,12 @@ export class PictureFovComponent implements OnInit, OnDestroy {
 
     set fov(fov: FieldOfView) {
         this.fov_ = fov;
-        this.hText = revToString(fov.horizontal.size);
-        this.hFromText = revToString(fov.horizontal.from);
-        this.hToText = revToString(fov.horizontal.to);
-        this.vText = revToString(fov.vertical.size);
-        this.vFromText = revToString(fov.vertical.from);
-        this.vToText = revToString(fov.vertical.to);
+        this.hText = degToString(Math.abs(fov.horizontal.size));
+        this.hFromText = degToString(fov.horizontal.from);
+        this.hToText = degToString(fov.horizontal.to);
+        this.vText = degToString(Math.abs(fov.vertical.size));
+        this.vFromText = degToString(fov.vertical.from);
+        this.vToText = degToString(fov.vertical.to);
     }
 
     onTop(): void {

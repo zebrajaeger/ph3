@@ -4,11 +4,7 @@ import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.util.Console;
-import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.hardware.Joystick;
-import de.zebrajaeger.phserver.hardware.JoystickDevice;
-import de.zebrajaeger.phserver.hardware.PanoHead;
-import de.zebrajaeger.phserver.hardware.PanoHeadDevice;
+import de.zebrajaeger.phserver.hardware.*;
 import de.zebrajaeger.phserver.hardware.remote.RemoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +21,19 @@ import java.util.Arrays;
 public class PiService implements HardwareService {
     private static final Logger LOG = LoggerFactory.getLogger(RemoteService.class);
 
-    @Value("${i2c.address.joystick:0x31}")
-    private int i2cJoystickAddress;
-    @Value("${i2c.address.panohead:0x30}")
+    /**
+     * #define I2C_ADDRESS 0x33
+     */
+    @Value("${i2c.address.panohead:0x33}")
     private int i2cPanoHeadAddress;
+    @Value("${i2c.address.ina219:0x40}")
+    private int i2cIna219Address;
+    @Value("${i2c.address.adxl345:0x53}")
+    private int i2cAccelerationSensorAddress;
 
-    private Joystick joystick;
     private PanoHead panoHead;
+    private PowerGauge powerGauge;
+    private AccelerationSensor accelerationSensor;
 
     @PostConstruct
     public void init() throws IOException, I2CFactory.UnsupportedBusNumberException {
@@ -40,18 +42,24 @@ public class PiService implements HardwareService {
         console.println("Found follow I2C busses: " + Arrays.toString(ids));
         I2CBus bus = I2CFactory.getInstance(1);
         scan(bus);
-        joystick = new JoystickDevice(new PiDevice(bus.getDevice(i2cJoystickAddress)));
         panoHead = new PanoHeadDevice(new PiDevice(bus.getDevice(i2cPanoHeadAddress)));
-    }
-
-    @Override
-    public Joystick getJoystick() {
-        return joystick;
+        powerGauge = new PowerGaugeDeviceIna219(new PiDevice(bus.getDevice(i2cIna219Address)));
+        accelerationSensor = new AccelerationSensorDeviceAdxl345(new PiDevice(bus.getDevice(i2cAccelerationSensorAddress)));
     }
 
     @Override
     public PanoHead getPanoHead() {
         return panoHead;
+    }
+
+    @Override
+    public PowerGauge getPowerGauge() {
+        return powerGauge;
+    }
+
+    @Override
+    public AccelerationSensor getAccelerationSensor() {
+        return accelerationSensor;
     }
 
     private void scan(I2CBus bus) {

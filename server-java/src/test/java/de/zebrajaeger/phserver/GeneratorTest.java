@@ -1,11 +1,6 @@
 package de.zebrajaeger.phserver;
 
-import de.zebrajaeger.phserver.data.Delay;
-import de.zebrajaeger.phserver.data.FieldOfViewPartial;
-import de.zebrajaeger.phserver.data.Image;
-import de.zebrajaeger.phserver.data.Pano;
-import de.zebrajaeger.phserver.data.Shot;
-import de.zebrajaeger.phserver.data.Shots;
+import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.CommandListGenerator;
 import org.junit.jupiter.api.Test;
@@ -18,13 +13,13 @@ public class GeneratorTest {
     public void foo() {
         Image image = new Image(0.1, 0.1);
         Pano pano = new Pano(new FieldOfViewPartial(0, 0.5, 0, 0.5, true), 0.25, 0.25);
-
+        Position currentPos = new Position(0, 0);
         Shots shots = new Shots();
         shots.add("default", new Shot());
 
         Delay delay = new Delay(0, 0, 0);
 
-        CommandListGenerator generator = new CommandListGenerator(image, pano, shots, delay);
+        CommandListGenerator generator = new CommandListGenerator(currentPos, image, pano, shots, delay);
         List<Command> commands = generator.generate("default");
         for (Command c : commands) {
             System.out.println(c);

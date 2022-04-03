@@ -24,6 +24,17 @@ public class FieldOfView {
         this.vertical = new Range(vFrom, vTo);
     }
 
+    public FieldOfView(Range horizontal, Range vertical) {
+        this.horizontal = horizontal;
+        this.vertical = vertical;
+    }
+
+    public FieldOfView normalize() {
+        return new FieldOfView(
+                getHorizontal() == null ? null : getHorizontal().normalize(),
+                getVertical() == null ? null : getVertical().normalize());
+    }
+
     public boolean isComplete() {
         return horizontal.isComplete() && vertical.isComplete();
     }

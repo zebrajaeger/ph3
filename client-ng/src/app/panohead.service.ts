@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {Actor} from '../data/panohead';
+import {Actor, ActorState, Position, Power} from '../data/panohead';
 import {RecordState} from '../data/record';
 
 @Injectable({
@@ -14,10 +14,24 @@ export class PanoHeadService {
     }
 
     // <editor-fold desc="Actor status">
-    public subscribeActor(cb: (actor: Actor) => void): Subscription {
+    public subscribePowerGauge(cb: (actorState: Power) => void): Subscription {
         return this.rxStompService
-            .watch('/topic/actor/')
-            .pipe(map(msg => JSON.parse(msg.body) as Actor))
+            .watch('/topic/power/')
+            .pipe(map(msg => new Power(msg.body)))
+            .subscribe(cb);
+    }
+
+    public subscribeActorState(cb: (actorState: ActorState) => void): Subscription {
+        return this.rxStompService
+            .watch('/topic/actor/state/')
+            .pipe(map(msg => JSON.parse(msg.body) as ActorState))
+            .subscribe(cb);
+    }
+
+    public subscribeActorPosition(cb: (actorState: ActorState) => void): Subscription {
+        return this.rxStompService
+            .watch('/topic/actor/position/')
+            .pipe(map(msg => JSON.parse(msg.body) as Position))
             .subscribe(cb);
     }
 
@@ -29,6 +43,9 @@ export class PanoHeadService {
     }
 
     // </editor-fold>
+    sendSetToZero(): void {
+        this.rxStompService.publish({destination: '/actor/setToZero'});
+    }
 
     sendJogging(isJogging: boolean): void {
         this.rxStompService.publish({destination: '/actor/jogging', body: isJogging.toString()});
@@ -38,14 +55,14 @@ export class PanoHeadService {
     public subscribeRecordState(cb: (actor: RecordState) => void): Subscription {
         return this.rxStompService
             .watch('/topic/robot/state')
-            .pipe(map(msg => JSON.parse(msg.body) as RecordState))
+            .pipe(map(msg => new RecordState(msg.body)))
             .subscribe(cb);
     }
 
     public requestRecordState(cb: (actor: RecordState) => void): Subscription {
         return this.rxStompRPCService
             .rpc({destination: '/rpc/robot/state'})
-            .pipe(map(msg => JSON.parse(msg.body) as RecordState))
+            .pipe(map(msg => new RecordState(msg.body)))
             .subscribe(cb);
     }
 
@@ -60,6 +77,7 @@ export class PanoHeadService {
     sendPauseResumeRecord(): void {
         this.rxStompService.publish({destination: '/record/pause'});
     }
+
 
     // </editor-fold>
 }

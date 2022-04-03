@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.data;
 
+import de.zebrajaeger.phserver.StepsToDeg;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class PanoHeadData {
@@ -23,6 +24,12 @@ public class PanoHeadData {
 
     public Actor getActor() {
         return actor;
+    }
+
+    public Position getCurrentPosDeg() {
+        return new Position(
+                StepsToDeg.INSTANCE.translate(actor.getX().getPos()),
+                StepsToDeg.INSTANCE.translate(actor.getY().getPos()));
     }
 
     public int getMovementRaw() {

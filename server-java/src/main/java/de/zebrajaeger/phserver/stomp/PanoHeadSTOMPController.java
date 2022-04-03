@@ -2,8 +2,10 @@ package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.AxisValue;
-import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
+import de.zebrajaeger.phserver.event.PanoHeadDataEvent;
+import de.zebrajaeger.phserver.event.PositionEvent;
+import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -53,12 +55,18 @@ public class PanoHeadSTOMPController {
 //    }
 
     @EventListener
-    public void onPanoHeadChanged(PanoHeadData panoHeadData) {
-        template.convertAndSend("/topic/actor/", panoHeadData.getActor());
+    public void onPanoHeadChanged(PositionEvent positionEvent) {
+        template.convertAndSend("/topic/actor/position/", positionEvent.getPosition());
     }
     //</editor-fold>
 
     //<editor-fold desc="Control">
+
+    @MessageMapping("/actor/setToZero")
+    public void setToZero() throws IOException {
+        panoHeadService.setToZero();
+    }
+
     @MessageMapping("/actor/jogging")
     public void setJogging(@Payload boolean jogging) throws IOException {
         panoHeadService.setJogging(jogging);
@@ -69,4 +77,9 @@ public class PanoHeadSTOMPController {
         template.convertAndSend("/topic/actor/jogging/", joggingChangedEvent.isJogging());
     }
     //</editor-fold>
+
+    @EventListener
+    public void onPowerConsumption(PowerMeasureEvent powerMeasureEvent) {
+        template.convertAndSend("/topic/power/", powerMeasureEvent.getPower());
+    }
 }

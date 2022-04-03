@@ -26,7 +26,10 @@ public class FakeJoystick implements Joystick {
     @Override
     public RawPosition read() {
         FloatBuffer fb = GLFW.glfwGetJoystickAxes(joystickIndex);
-        Assert.notNull(fb, "No Joystick found for id: " + joystickIndex);
+        if(fb==null){
+            return new RawPosition(0,0);
+        }
+        //Assert.notNull(fb, "No Joystick found for id: " + joystickIndex);
         return new RawPosition((int) (fb.get(xAxisIndex) * RESOLUTION), (int) (fb.get(yAxisIndex) * RESOLUTION));
     }
 

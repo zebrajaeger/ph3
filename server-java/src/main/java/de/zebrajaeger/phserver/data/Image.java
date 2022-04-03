@@ -14,6 +14,14 @@ public class Image {
         this.height = height;
     }
 
+    public Image normalized(){
+        return new Image(Math.abs(width), Math.abs(height));
+    }
+
+    public boolean isComplete(){
+        return width!=0d && height !=0d;
+    }
+
     public double getWidth() {
         return width;
     }

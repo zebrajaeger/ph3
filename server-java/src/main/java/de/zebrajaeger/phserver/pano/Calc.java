@@ -59,9 +59,12 @@ public class Calc {
         double d = targetSize;
         double o = overlap;
 
+
         double n;
         if (partial) {
-            n = (-b * o + d) / (-b * o + b);
+            n = (targetSize < sourceSize)
+                    ? 1
+                    : (-b * o + d) / (-b * o + b);
         } else {
             n = d / (-b * o + b);
         }
@@ -72,18 +75,19 @@ public class Calc {
         double b = this.sourceSize;
         double d = this.targetSize;
 
+        double overlap;
         if (partial) {
-            double overlap;
-            overlap = (-b * n + d) / (-b * n + b);
-            return overlap;
+//            overlap = (-b * n + d) / (-b * n + b);
+            overlap = (-b * n + d) / n;
         } else {
 //            double allSourceImages = this.sourceSize * n;
 //            double overlapAll = allSourceImages - this.targetSize;
 //            double overlapPerSource = overlapAll / n;
 //            double result = overlapPerSource / this.sourceSize;
 //            return result;
-            return (b * n - d) / (b * n);
+            overlap = (b * n - d) / (b * n);
         }
+        return Math.max(0, overlap);
     }
 
     public List<Double> calcStartPositions(int n, double overlap) {

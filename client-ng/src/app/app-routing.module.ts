@@ -7,8 +7,10 @@ import {CameraComponent} from './screen/camera.component';
 import {MainComponent} from './screen/main.component';
 import {RecordComponent} from './screen/record.component';
 import {PanoSettingsComponent} from './screen/pano-settings.component';
+import {AlignComponent} from './screen/align.component';
 
 const routes: Routes = [
+    {path: 'align', component: AlignComponent},
     {path: 'joystick', component: JoystickComponent},
     {path: 'camera', component: CameraComponent},
     {path: 'picture-fov', component: PictureFovComponent},

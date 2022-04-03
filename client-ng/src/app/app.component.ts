@@ -11,19 +11,19 @@ import {OnInit} from '@angular/core/core';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-    public panoHeadData: Actor;
-    public panoHeadDataSubscription: Subscription;
+    // public panoHeadData: Actor;
+    // public panoHeadDataSubscription: Subscription;
 
     constructor(private routerService: RouterService,
                 private panoHeadService: PanoHeadService) {
     }
 
     ngOnInit(): void {
-        this.panoHeadDataSubscription = this.panoHeadService.subscribeActor(panoHeadData => this.panoHeadData = panoHeadData);
+        // this.panoHeadDataSubscription = this.panoHeadService.subscribeActor(panoHeadData => this.panoHeadData = panoHeadData);
     }
 
     ngOnDestroy(): void {
-        this.panoHeadDataSubscription?.unsubscribe();
+        // this.panoHeadDataSubscription?.unsubscribe();
     }
 
     onRouterOutletActivate($event: any): void {

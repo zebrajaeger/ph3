@@ -1,10 +1,6 @@
 package de.zebrajaeger.phserver.hardware.remote;
 
-import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.hardware.Joystick;
-import de.zebrajaeger.phserver.hardware.JoystickDevice;
-import de.zebrajaeger.phserver.hardware.PanoHead;
-import de.zebrajaeger.phserver.hardware.PanoHeadDevice;
+import de.zebrajaeger.phserver.hardware.*;
 import de.zebrajaeger.phserver.util.HexUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -26,28 +22,37 @@ public class RemoteService implements HardwareService {
 
     @Value("${i2c.remote.host}")
     private String host;
-    @Value("${i2c.address.joystick:0x30}")
-    private int i2cJoystickAddress;
-    @Value("${i2c.address.panohead:0x31}")
+    @Value("${i2c.address.panohead:0x33}")
     private int i2cPanoHeadAddress;
+    @Value("${i2c.address.ina219:0x40}")
+    private int i2cIna219Address;
+    @Value("${i2c.address.adxl345:0x53}")
+    private int i2cAccelerationSensorAddress;
 
-    private Joystick joystick;
     private PanoHead panoHead;
+    private PowerGauge powerGauge;
+    private AccelerationSensor accelerationSensor;
 
     @PostConstruct
     public void init() {
-        joystick = new JoystickDevice(new RemoteDevice(this, i2cJoystickAddress));
         panoHead = new PanoHeadDevice(new RemoteDevice(this, i2cPanoHeadAddress));
-    }
-
-    @Override
-    public Joystick getJoystick() {
-        return joystick;
+        powerGauge = new PowerGaugeDeviceIna219(new RemoteDevice(this, i2cIna219Address));
+        accelerationSensor = new AccelerationSensorDeviceAdxl345(new RemoteDevice(this, i2cAccelerationSensorAddress));
     }
 
     @Override
     public PanoHead getPanoHead() {
         return panoHead;
+    }
+
+    @Override
+    public PowerGauge getPowerGauge() {
+        return powerGauge;
+    }
+
+    @Override
+    public AccelerationSensor getAccelerationSensor() {
+        return accelerationSensor;
     }
 
     protected byte[] read(int address, int count) throws IOException {
@@ -57,6 +62,7 @@ public class RemoteService implements HardwareService {
         URL url = new URL(String.format("http://%s/read?address=%d&count=%d", host, address, count));
         LOG.trace("Request '{}'", url);
         String response = IOUtils.toString(url, StandardCharsets.UTF_8);
+        // TODO catch java.net.ConnectException and Restart connectio
         return HexUtils.decodeHexString(response);
     }
 
@@ -66,6 +72,8 @@ public class RemoteService implements HardwareService {
 
         String hex = HexUtils.encodeHexString(data);
         URL url = new URL(String.format("http://%s/write?address=%d&data=%s", host, address, hex));
+
+        // TODO catch java.net.ConnectException and Restart connectio
         return IOUtils.toString(url, StandardCharsets.UTF_8);
     }
 }

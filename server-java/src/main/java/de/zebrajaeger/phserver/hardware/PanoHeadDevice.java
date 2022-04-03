@@ -2,13 +2,33 @@ package de.zebrajaeger.phserver.hardware;
 
 import de.zebrajaeger.phserver.data.Actor;
 import de.zebrajaeger.phserver.data.PanoHeadData;
+import de.zebrajaeger.phserver.util.NumberConverter;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class PanoHeadDevice implements PanoHead{
+/**
+ * <pre>
+ * enum command_t {
+ *   stepperWriteLimit = 0x20,
+ *   stepperWriteVelocity = 0x21,
+ *   stepperWriteTargetPos = 0x22,
+ *   stepperStopAll = 0x23,
+ *
+ *   stepperWriteActualPos = 0x28,
+ *   stepperResetPos = 0x29,
+ *
+ *   cameraStartFocus = 0x30,
+ *   cameraStartTrigger = 0x31,
+ *   cameraStartShot = 0x32,
+ *
+ *   unknown = 127
+ * };
+ * </pre>
+ */
+public class PanoHeadDevice implements PanoHead {
     private final HardwareDevice hardwareDevice;
 
     public PanoHeadDevice(HardwareDevice hardwareDevice) {
@@ -22,10 +42,10 @@ public class PanoHeadDevice implements PanoHead{
 
         result.setMovementRaw(buffer.get());
         Actor actor = result.getActor();
-        actor.getX().setPos(buffer.getInt());
-        actor.getX().setSpeed(buffer.getShort());
-        actor.getY().setPos(buffer.getInt());
-        actor.getY().setSpeed(buffer.getShort());
+        actor.getX().setPos(NumberConverter.unsigned24ToSigned(buffer.getInt()));
+        actor.getX().setSpeed(NumberConverter.unsigned16ToSigned(buffer.getShort()));
+        actor.getY().setPos(NumberConverter.unsigned24ToSigned(buffer.getInt()));
+        actor.getY().setSpeed(NumberConverter.unsigned16ToSigned(buffer.getShort()));
         result.setCameraRaw(buffer.get());
 
         result.init();
@@ -56,28 +76,49 @@ public class PanoHeadDevice implements PanoHead{
 
     public void setLimit(int axisIndex, int limit) throws IOException {
         Assert.state(axisIndex == 0 || axisIndex == 1, "Illegal axis index: " + axisIndex);
-            ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
-            buffer.put((byte) 0x20);
-            buffer.put((byte) axisIndex);
-            buffer.putInt(limit);
-            hardwareDevice.write(buffer.array());
+        ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put((byte) 0x20);
+        buffer.put((byte) axisIndex);
+        buffer.putInt(NumberConverter.int32toInt24(limit));
+        hardwareDevice.write(buffer.array());
     }
 
     public void setTargetVelocity(int axisIndex, int velocity) throws IOException {
         Assert.state(axisIndex == 0 || axisIndex == 1, "Illegal axis index: " + axisIndex);
-            ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
-            buffer.put((byte) 0x21);
-            buffer.put((byte) axisIndex);
-            buffer.putInt(velocity);
-            hardwareDevice.write(buffer.array());
+        ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put((byte) 0x21);
+        buffer.put((byte) axisIndex);
+        buffer.putInt(NumberConverter.int32toInt24(velocity));
+        hardwareDevice.write(buffer.array());
     }
 
     public void setTargetPos(int axisIndex, int pos) throws IOException {
         Assert.state(axisIndex == 0 || axisIndex == 1, "Illegal axis index: " + axisIndex);
-            ByteBuffer buffer = ByteBuffer.allocate(6);
-            buffer.put((byte) 0x22);
-            buffer.put((byte) axisIndex);
-        buffer.putInt(pos);
+        ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put((byte) 0x22);
+        buffer.put((byte) axisIndex);
+        buffer.putInt(NumberConverter.int32toInt24(pos));
+        hardwareDevice.write(buffer.array());
+    }
+
+    public void stopAll() throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(1);
+        buffer.put((byte) 0x23);
+        hardwareDevice.write(buffer.array());
+    }
+
+    public void setActualPos(int axisIndex, int pos) throws IOException {
+        Assert.state(axisIndex == 0 || axisIndex == 1, "Illegal axis index: " + axisIndex);
+        ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put((byte) 0x28);
+        buffer.put((byte) axisIndex);
+        buffer.putInt(NumberConverter.int32toInt24(pos));
+        hardwareDevice.write(buffer.array());
+    }
+
+    public void resetPos() throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(1);
+        buffer.put((byte) 0x29);
         hardwareDevice.write(buffer.array());
     }
 }

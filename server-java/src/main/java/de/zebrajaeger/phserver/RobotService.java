@@ -1,11 +1,6 @@
 package de.zebrajaeger.phserver;
 
-import de.zebrajaeger.phserver.data.AutomateState;
-import de.zebrajaeger.phserver.data.PauseState;
-import de.zebrajaeger.phserver.data.Position;
-import de.zebrajaeger.phserver.data.RawPosition;
-import de.zebrajaeger.phserver.data.RobotState;
-import de.zebrajaeger.phserver.data.Shot;
+import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
@@ -34,7 +29,6 @@ public class RobotService {
     private static final Logger LOG = LoggerFactory.getLogger(RobotService.class);
 
     private final HardwareService hardwareService;
-    private final Translator translator;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private List<Command> commands = new LinkedList<>();
@@ -44,9 +38,8 @@ public class RobotService {
     private final RobotState robotState = new RobotState(AutomateState.STOPPED, PauseState.RUNNING, null);
 
     @Autowired
-    public RobotService(HardwareService hardwareService, Translator translator, ApplicationEventPublisher applicationEventPublisher) {
+    public RobotService(HardwareService hardwareService, ApplicationEventPublisher applicationEventPublisher) {
         this.hardwareService = hardwareService;
-        this.translator = translator;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -91,9 +84,21 @@ public class RobotService {
         }
     }
 
+    private void stopAll() {
+        setAutomateState(AutomateState.STOPPING).setPauseState(PauseState.RUNNING).sendUpdate();
+        try {
+            hardwareService.getPanoHead().setTargetVelocity(0, 0);
+            hardwareService.getPanoHead().setTargetVelocity(1, 0);
+            setAutomateState(AutomateState.STOPPED).setPauseState(PauseState.RUNNING).sendUpdate();
+            setCommand(null, 0).sendUpdate();
+        } catch (IOException e) {
+            setAutomateState(AutomateState.STOPPED_WITH_ERROR).setPauseState(PauseState.RUNNING).sendUpdate();
+        }
+    }
+
     public void stop() {
         if (this.robotState.getAutomateState() != AutomateState.STOPPED && this.robotState.getAutomateState() != AutomateState.STOPPED_WITH_ERROR) {
-            setAutomateState(AutomateState.STOPPING).setPauseState(PauseState.RUNNING).sendUpdate();
+            stopAll();
         }
     }
 
@@ -114,7 +119,15 @@ public class RobotService {
 
     private void next() {
         // Command state
-        if (this.robotState.getAutomateState() == AutomateState.STOPPED || this.robotState.getAutomateState() == AutomateState.STOPPED_WITH_ERROR) {
+
+        // STOPPING
+        if (this.robotState.getAutomateState() == AutomateState.STOPPING) {
+            stopAll();
+            return;
+        }
+
+        // STOPPED
+        if (this.robotState.getAutomateState() == AutomateState.STOPPED) {
             return;
         }
 
@@ -192,8 +205,8 @@ public class RobotService {
 
     private RawPosition translatePos(Position position) {
         return new RawPosition(
-                (int) translator.degToSteps(position.getX()),
-                (int) translator.degToSteps(position.getY()));
+                (int) StepsToDeg.REVERSE.translate(position.getX()),
+                (int) StepsToDeg.REVERSE.translate(position.getY()));
     }
 
     public RobotState getRobotState() {

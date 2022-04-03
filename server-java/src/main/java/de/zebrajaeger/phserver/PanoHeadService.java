@@ -1,12 +1,7 @@
 package de.zebrajaeger.phserver;
 
-import de.zebrajaeger.phserver.data.Camera;
-import de.zebrajaeger.phserver.data.JoystickPosition;
-import de.zebrajaeger.phserver.data.PanoHeadData;
-import de.zebrajaeger.phserver.event.CameraChangedEvent;
-import de.zebrajaeger.phserver.event.JoggingChangedEvent;
-import de.zebrajaeger.phserver.event.MovementStoppedEvent;
-import de.zebrajaeger.phserver.event.ShotDoneEvent;
+import de.zebrajaeger.phserver.data.*;
+import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +21,11 @@ public class PanoHeadService {
 
     private boolean jogging;
     private PanoHeadData panoHeadData;
+    private final SigmoidCalculator sigmoid = new SigmoidCalculator();
 
     private final PreviousState previousState = new PreviousState();
+//    private RawPosition positionOffset;
+    private Position currentPosition;
 
     static class PreviousState {
         private Camera camera;
@@ -56,12 +54,38 @@ public class PanoHeadService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    @Scheduled(initialDelay = 0, fixedRateString = "${controller.period:100}")
+    @Scheduled(initialDelay = 0, fixedRateString = "${controller.power.period:250}")
+    public void updatePowerConsumption() throws IOException {
+        double u = hardwareService.getPowerGauge().readVoltageInMillivolt() / 1000d;
+        double i = hardwareService.getPowerGauge().readCurrentInMilliampere() / 1000d;
+        Power power = new Power(u, i);
+        applicationEventPublisher.publishEvent(new PowerMeasureEvent(power));
+    }
+
+    @Scheduled(initialDelay = 0, fixedRateString = "${controller.acceleration.period:500}")
+    public void updateAccelerationSensor() throws IOException {
+        hardwareService.getAccelerationSensor().foo();
+    }
+
+    @Scheduled(initialDelay = 0, fixedRateString = "${controller.main.period:100}")
     public void update() throws IOException {
 
         panoHeadData = hardwareService.getPanoHead().read();
+        applicationEventPublisher.publishEvent(new PanoHeadDataEvent(panoHeadData));
 
-        applicationEventPublisher.publishEvent(panoHeadData);
+        RawPosition rawPos = new RawPosition(
+                panoHeadData.getActor().getX().getPos(),
+                panoHeadData.getActor().getY().getPos());
+//        if (positionOffset != null) {
+//            rawPos = new RawPosition(
+//                    rawPos.getX() - positionOffset.getX(),
+//                    rawPos.getY() - positionOffset.getY());
+//        }
+        currentPosition = new Position(
+                StepsToDeg.INSTANCE.translate(rawPos.getX()),
+                StepsToDeg.INSTANCE.translate(rawPos.getY()));
+        applicationEventPublisher.publishEvent(new PositionEvent(rawPos, currentPosition));
+
         // TODO set focus/trigger on start shot
         // TODO same with movement
 
@@ -86,10 +110,13 @@ public class PanoHeadService {
     }
 
     @EventListener
-    public void onJoystickPosChanged(JoystickPosition joystickPosition) throws IOException {
+    public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) throws IOException {
         if (isJogging()) {
-            hardwareService.getPanoHead().setTargetVelocity(0, (int) (joystickPosition.getX().getCutValue() * joggingSpeed));
-            hardwareService.getPanoHead().setTargetVelocity(1, (int) (joystickPosition.getY().getCutValue() * joggingSpeed));
+            Position p = joystickPosition.getPosition();
+            int x = (int) (sigmoid.value(p.getX()) * joggingSpeed);
+            int y = (int) (sigmoid.value(p.getY()) * joggingSpeed);
+            hardwareService.getPanoHead().setTargetVelocity(0, x);
+            hardwareService.getPanoHead().setTargetVelocity(1, y);
         }
     }
 
@@ -99,6 +126,19 @@ public class PanoHeadService {
 
     public boolean isJogging() {
         return jogging;
+    }
+
+    public void setToZero() throws IOException {
+//        positionOffset = new RawPosition(panoHeadData.getActor().getX().getPos(), panoHeadData.getActor().getY().getPos());
+        hardwareService.getPanoHead().resetPos();
+    }
+
+//    public RawPosition getPositionOffset() {
+//        return positionOffset;
+//    }
+
+    public Position getCurrentPosition() {
+        return currentPosition;
     }
 
     /**

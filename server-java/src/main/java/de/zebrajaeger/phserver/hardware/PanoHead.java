@@ -18,4 +18,10 @@ public interface PanoHead {
     void setTargetVelocity(int axis, int velocity) throws IOException;
 
     void setTargetPos(int axis, int pos) throws IOException;
+
+    void stopAll() throws IOException;
+
+    void setActualPos(int axisIndex, int pos) throws IOException;
+
+    void resetPos() throws IOException;
 }

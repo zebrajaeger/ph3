@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.JoystickService;
 import de.zebrajaeger.phserver.data.JoystickPosition;
+import de.zebrajaeger.phserver.event.JoystickPositionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -31,18 +32,18 @@ public class JoystickSTOMPController {
         template.convertAndSend(destination, joystickService.getPosition(), header);
     }
 
-    @MessageMapping("/joystick/center")
-    public void center() throws IOException {
-        joystickService.setCurrentPositionAsCenter();
-    }
-
-    @MessageMapping("/joystick/reset")
-    public void reset() throws IOException {
-        joystickService.reset();
-    }
+//    @MessageMapping("/joystick/center")
+//    public void center() throws IOException {
+//        joystickService.setCurrentPositionAsCenter();
+//    }
+//
+//    @MessageMapping("/joystick/reset")
+//    public void reset() throws IOException {
+//        joystickService.reset();
+//    }
 
     @EventListener
-    public void onJoystickPosChanged(JoystickPosition joystickPosition) {
-        template.convertAndSend("/topic/joystick/position", joystickPosition);
+    public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) {
+        template.convertAndSend("/topic/joystick/position", joystickPosition.getPosition());
     }
 }

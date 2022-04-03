@@ -33,6 +33,7 @@ import {ModalService} from './ui/modal.service';
 import { PanoSettingsComponent } from './screen/pano-settings.component';
 import { MsToSecondPipe } from './ms-to-second.pipe';
 import { FormatSecondPipe } from './format-second.pipe';
+import { AlignComponent } from './screen/align.component';
 
 @NgModule({
     declarations: [
@@ -49,7 +50,8 @@ import { FormatSecondPipe } from './format-second.pipe';
         ModalComponent,
         PanoSettingsComponent,
         MsToSecondPipe,
-        FormatSecondPipe
+        FormatSecondPipe,
+        AlignComponent
     ],
     imports: [
         BrowserModule,

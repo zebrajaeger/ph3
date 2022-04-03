@@ -28,7 +28,7 @@ public class Range {
         return isComplete() ? to - from : null;
     }
 
-    public Range createNormalized() {
+    public Range normalize() {
         return (isComplete() && from > to) ? new Range(to, from) : new Range(from, to);
     }
 

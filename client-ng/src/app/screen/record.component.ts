@@ -13,7 +13,7 @@ import {OnDestroy} from '@angular/core/core';
 })
 export class RecordComponent implements OnInit, OnDestroy {
     private recordStateSubscription: Subscription;
-    private _state: RecordState;
+    public _state: RecordState;
 
     constructor(private routerService: RouterService,
                 private panoHeadService: PanoHeadService,

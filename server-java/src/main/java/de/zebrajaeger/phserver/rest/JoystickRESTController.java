@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.rest;
 
 import de.zebrajaeger.phserver.JoystickService;
 import de.zebrajaeger.phserver.data.JoystickPosition;
+import de.zebrajaeger.phserver.data.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,17 +23,17 @@ public class JoystickRESTController {
     }
 
     @GetMapping("/joystick")
-    public JoystickPosition getJoystickPosition() {
+    public Position getJoystickPosition() {
         return joystickService.getPosition();
     }
 
-    @PutMapping("/joystick/center")
-    public void center() throws IOException {
-        joystickService.setCurrentPositionAsCenter();
-    }
-
-    @PutMapping("/joystick/reset")
-    public void reset() throws IOException {
-        joystickService.reset();
-    }
+//    @PutMapping("/joystick/center")
+//    public void center() throws IOException {
+//        joystickService.setCurrentPositionAsCenter();
+//    }
+//
+//    @PutMapping("/joystick/reset")
+//    public void reset() throws IOException {
+//        joystickService.reset();
+//    }
 }

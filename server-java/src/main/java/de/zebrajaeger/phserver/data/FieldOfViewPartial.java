@@ -17,6 +17,18 @@ public class FieldOfViewPartial extends FieldOfView {
         this.partial = fov.partial;
     }
 
+    public FieldOfViewPartial(Range horizontal, Range vertical, boolean partial) {
+        super(horizontal, vertical);
+        this.partial = partial;
+    }
+
+    public FieldOfViewPartial normalize() {
+        return new FieldOfViewPartial(
+                getHorizontal() == null ? null : getHorizontal().normalize(),
+                getVertical() == null ? null : getVertical().normalize(),
+                partial);
+    }
+
     public boolean isPartial() {
         return partial;
     }

@@ -4,6 +4,7 @@ import de.zebrajaeger.phserver.data.ActorAxis;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.hardware.PanoHead;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -84,6 +85,24 @@ public class FakePanoHead implements PanoHead {
         } else {
             throw new IllegalArgumentException("Wrong axis index: " + axis);
         }
+    }
+
+    @Override
+    public void stopAll() throws IOException {
+        x.setVelocity(0);
+        x.setVelocity(1);
+    }
+
+    @Override
+    public void setActualPos(int axisIndex, int pos) throws IOException {
+        // TODO
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public void resetPos() throws IOException {
+        x.reset();
+        y.reset();
     }
 
     public void update() {

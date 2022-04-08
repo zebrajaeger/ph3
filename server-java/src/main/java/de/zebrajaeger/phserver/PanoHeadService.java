@@ -24,7 +24,6 @@ public class PanoHeadService {
     private final SigmoidCalculator sigmoid = new SigmoidCalculator();
 
     private final PreviousState previousState = new PreviousState();
-//    private RawPosition positionOffset;
     private Position currentPosition;
 
     static class PreviousState {
@@ -62,10 +61,10 @@ public class PanoHeadService {
         applicationEventPublisher.publishEvent(new PowerMeasureEvent(power));
     }
 
-    @Scheduled(initialDelay = 0, fixedRateString = "${controller.acceleration.period:500}")
-    public void updateAccelerationSensor() throws IOException {
-        hardwareService.getAccelerationSensor().foo();
-    }
+//    @Scheduled(initialDelay = 0, fixedRateString = "${controller.acceleration.period:500}")
+//    public void updateAccelerationSensor() throws IOException {
+//        hardwareService.getAccelerationSensor().foo();
+//    }
 
     @Scheduled(initialDelay = 0, fixedRateString = "${controller.main.period:100}")
     public void update() throws IOException {
@@ -76,11 +75,7 @@ public class PanoHeadService {
         RawPosition rawPos = new RawPosition(
                 panoHeadData.getActor().getX().getPos(),
                 panoHeadData.getActor().getY().getPos());
-//        if (positionOffset != null) {
-//            rawPos = new RawPosition(
-//                    rawPos.getX() - positionOffset.getX(),
-//                    rawPos.getY() - positionOffset.getY());
-//        }
+
         currentPosition = new Position(
                 StepsToDeg.INSTANCE.translate(rawPos.getX()),
                 StepsToDeg.INSTANCE.translate(rawPos.getY()));
@@ -129,13 +124,8 @@ public class PanoHeadService {
     }
 
     public void setToZero() throws IOException {
-//        positionOffset = new RawPosition(panoHeadData.getActor().getX().getPos(), panoHeadData.getActor().getY().getPos());
         hardwareService.getPanoHead().resetPos();
     }
-
-//    public RawPosition getPositionOffset() {
-//        return positionOffset;
-//    }
 
     public Position getCurrentPosition() {
         return currentPosition;

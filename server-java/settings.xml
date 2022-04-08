@@ -1,0 +1,13 @@
+<settings>
+    <servers>
+        <server>
+            <id>ssh-repository</id>
+            <username>pi</username>
+            <privateKey>C:\Users\l\.ssh\id_rsa.h</privateKey>
+            <configuration>
+                <sshExecutable>plink</sshExecutable>
+                <scpExecutable>pscp</scpExecutable>
+            </configuration>
+        </server>
+    </servers>
+</settings>

@@ -2,7 +2,6 @@ package de.zebrajaeger.phserver.hardware;
 
 import de.zebrajaeger.phserver.data.Actor;
 import de.zebrajaeger.phserver.data.PanoHeadData;
-import de.zebrajaeger.phserver.util.NumberConverter;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -42,10 +41,10 @@ public class PanoHeadDevice implements PanoHead {
 
         result.setMovementRaw(buffer.get());
         Actor actor = result.getActor();
-        actor.getX().setPos(NumberConverter.unsigned24ToSigned(buffer.getInt()));
-        actor.getX().setSpeed(NumberConverter.unsigned16ToSigned(buffer.getShort()));
-        actor.getY().setPos(NumberConverter.unsigned24ToSigned(buffer.getInt()));
-        actor.getY().setSpeed(NumberConverter.unsigned16ToSigned(buffer.getShort()));
+        actor.getX().setPos(buffer.getInt());
+        actor.getX().setSpeed(buffer.getShort());
+        actor.getY().setPos(buffer.getInt());
+        actor.getY().setSpeed(buffer.getShort());
         result.setCameraRaw(buffer.get());
 
         result.init();
@@ -79,7 +78,7 @@ public class PanoHeadDevice implements PanoHead {
         ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put((byte) 0x20);
         buffer.put((byte) axisIndex);
-        buffer.putInt(NumberConverter.int32toInt24(limit));
+        buffer.putInt(limit);
         hardwareDevice.write(buffer.array());
     }
 
@@ -88,7 +87,7 @@ public class PanoHeadDevice implements PanoHead {
         ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put((byte) 0x21);
         buffer.put((byte) axisIndex);
-        buffer.putInt(NumberConverter.int32toInt24(velocity));
+        buffer.putInt(velocity);
         hardwareDevice.write(buffer.array());
     }
 
@@ -97,7 +96,7 @@ public class PanoHeadDevice implements PanoHead {
         ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put((byte) 0x22);
         buffer.put((byte) axisIndex);
-        buffer.putInt(NumberConverter.int32toInt24(pos));
+        buffer.putInt(pos);
         hardwareDevice.write(buffer.array());
     }
 
@@ -112,7 +111,7 @@ public class PanoHeadDevice implements PanoHead {
         ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put((byte) 0x28);
         buffer.put((byte) axisIndex);
-        buffer.putInt(NumberConverter.int32toInt24(pos));
+        buffer.putInt(pos);
         hardwareDevice.write(buffer.array());
     }
 

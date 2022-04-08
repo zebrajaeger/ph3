@@ -104,6 +104,10 @@ void onWriteVelocity()
   u8_t axis;
   u32_t velocity;
   if (WireUtils::read8(axis) && WireUtils::read32(velocity)) {
+    Serial.print("V: ");
+    Serial.print(axis.uint8);
+    Serial.print(",");
+    Serial.println(velocity.int32);
     stepperDriver.setVelocity(axis, velocity);
   } else {
     Serial.println(F("; NOT ENOUGH DATA"));

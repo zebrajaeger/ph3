@@ -7,6 +7,8 @@ import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.Optional;
 
 @Service
 public class JInputJoystickService implements JoystickService {
+    private final static Logger LOG = LoggerFactory.getLogger(JInputJoystickService.class);
+
     private final static long RESCAN_PERIOD = 2000;
     private final static Position ZERO_POSITION = new Position(0, 0);
 
@@ -37,7 +41,7 @@ public class JInputJoystickService implements JoystickService {
     @Scheduled(initialDelay = 0, fixedRateString = "${joystick.usb.period:50}")
     private void update() {
         if (readNewPosition()) {
-            System.out.println(position);
+            LOG.debug("Position update to {}", position);
             applicationEventPublisher.publishEvent(new JoystickPositionEvent(position));
         }
     }
@@ -48,7 +52,7 @@ public class JInputJoystickService implements JoystickService {
             long now = System.currentTimeMillis();
             if (nextRescan < now) {
                 // TODO log
-                System.out.println("Rescan Controller");
+                LOG.info("Rescan Controller");
                 nextRescan = now + RESCAN_PERIOD;
                 Optional<Controller> c = scanForGameController();
                 c.ifPresent(value -> controller = value);

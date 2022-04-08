@@ -45,7 +45,7 @@ public class PanoSTOMPController {
 
     //<editor-fold desc="Picture FOV">
     @MessageMapping("/picture/border")
-    public void pictureBorder(Border[] borders) throws IOException {
+    public void pictureBorder(Border[] borders){
         panoService.setCurrentPositionAsPictureBorder(borders);
         panoService.publishPictureFOVChange();
         panoService.updateCalculatedPano();

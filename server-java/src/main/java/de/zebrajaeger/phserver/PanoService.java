@@ -78,23 +78,23 @@ public class PanoService {
         }
     }
 
-    public void updateCalculatedPano() {
+    public boolean updateCalculatedPano() {
         FieldOfView cameraFOV = getPictureFOV();
         Double height = cameraFOV.getVertical().getSize();
         Double width = cameraFOV.getHorizontal().getSize();
-        if (height == null || width == null) {
-            throw new IllegalArgumentException(String.format("Camera FOV error: '%s'", cameraFOV));
+        if (height != null && width != null) {
+            Image image = new Image(width, height).normalized();
+            FieldOfViewPartial panoFOV = getPanoFOV().normalize();
+            if (panoFOV.isComplete() && image.isComplete()) {
+                System.out.println("Recalculate pano");
+                Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
+                Position currentPosDeg = panoHeadService.getData().getCurrentPosDeg();
+                calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(currentPosDeg, pano, image));
+                calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
+                return true;
+            }
         }
-
-        Image image = new Image(width, height).normalized();
-        FieldOfViewPartial panoFOV = getPanoFOV().normalize();
-        if (panoFOV.isComplete() && image.isComplete()) {
-            System.out.println("Recalculate pano");
-            Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
-            Position currentPosDeg = panoHeadService.getData().getCurrentPosDeg();
-            calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(currentPosDeg, pano, image));
-            calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
-        }
+        return false;
     }
 
     public Optional<List<Command>> createCommands(String shotsName) {

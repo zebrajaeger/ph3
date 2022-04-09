@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.pano;
 
 import de.zebrajaeger.phserver.data.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.math3.util.Precision;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -79,8 +80,23 @@ public class CommandListGenerator {
         return result;
     }
 
+    private GoToPosCommand createInitialGoTo(CalculatedPano pano) {
+        // first command: move 5° left
+        double x1 = currentPosDeg.getX();
+        double x2 = pano.getHorizontalPositions().get(0) - 5;
+        double y = pano.getVerticalPositions().get(0);
+        if (Precision.equals(x1, x2, 1d)) {
+            // to close together start extra 2° left (=7°)
+            x2 -= 2d;
+        }
+        Position position = new Position(x2, y);
+        return new GoToPosCommand(String.format("GoToIdx: %d,%d", -1, 0), position);
+    }
+
     public List<Command> createCommands(CalculatedPano pano, List<Shot> shots, Delay delay) {
         List<Command> commands = new LinkedList<>();
+
+        commands.add(createInitialGoTo(pano));
 
         // rows
         int rowIndex = 0;

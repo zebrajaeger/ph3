@@ -62,7 +62,7 @@ public class RemoteService implements HardwareService {
         URL url = new URL(String.format("http://%s/read?address=%d&count=%d", host, address, count));
         LOG.trace("Request '{}'", url);
         String response = IOUtils.toString(url, StandardCharsets.UTF_8);
-        // TODO catch java.net.ConnectException and Restart connectio
+        // TODO catch java.net.ConnectException and Restart connection
         return HexUtils.decodeHexString(response);
     }
 
@@ -73,7 +73,7 @@ public class RemoteService implements HardwareService {
         String hex = HexUtils.encodeHexString(data);
         URL url = new URL(String.format("http://%s/write?address=%d&data=%s", host, address, hex));
 
-        // TODO catch java.net.ConnectException and Restart connectio
+        // TODO catch java.net.ConnectException and Restart connection
         return IOUtils.toString(url, StandardCharsets.UTF_8);
     }
 }

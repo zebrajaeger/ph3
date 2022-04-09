@@ -31,15 +31,23 @@ enum command_t {
   unknown = 127
 };
 
+bool debug = true;
 StepperDriver stepperDriver;
 Camera camera;
 command_t command_ = unknown;
 
+uint32_t loopCounter = 0;
+unsigned long lastLoopTime = 0;
+
 class StatisticTimer : public IntervalTimer {
   virtual void onTimer() {
-    // Serial.println("stat(A)");
+    unsigned long now = millis();
+    uint32_t diff = now - lastLoopTime;
+    Serial.print("LPS: ");
+    Serial.println(loopCounter * 1000 / diff);
+    loopCounter = 0;
+    lastLoopTime = now;
     stepperDriver.statistic();
-    // Serial.println("stat(B)");
   }
 };
 StatisticTimer statisticTimer;
@@ -87,10 +95,12 @@ void onWriteTargetPos()
   u8_t axis;
   u32_t pos;
   if (WireUtils::read8(axis) && WireUtils::read32(pos)) {
+    if (debug) {
       Serial.print("Write Target Pos: ");
       Serial.print(axis.uint8);
       Serial.print(": ");
       Serial.println(pos.uint32);
+    }
     stepperDriver.setPos(axis, pos);
   } else {
     Serial.println(F("; NOT ENOUGH DATA"));
@@ -104,10 +114,12 @@ void onWriteVelocity()
   u8_t axis;
   u32_t velocity;
   if (WireUtils::read8(axis) && WireUtils::read32(velocity)) {
-    Serial.print("V: ");
-    Serial.print(axis.uint8);
-    Serial.print(",");
-    Serial.println(velocity.int32);
+    if (debug) {
+      Serial.print("V: ");
+      Serial.print(axis.uint8);
+      Serial.print(",");
+      Serial.println(velocity.int32);
+    }
     stepperDriver.setVelocity(axis, velocity);
   } else {
     Serial.println(F("; NOT ENOUGH DATA"));
@@ -323,9 +335,8 @@ void setup()
 void loop()
 // -----------------------------------------------------------------------------
 {
-//   Serial.println("L(A)");
+  loopCounter++;
   stepperDriver.loop();
-//   Serial.println("L(B)");
   digitalWrite(LED_MOVE_PIN_X, stepperDriver.getStepper(0).speed.uint16 != 0);
   digitalWrite(LED_MOVE_PIN_Y, stepperDriver.getStepper(1).speed.uint16 != 0);
   digitalWrite(LED_PIN_A, stepperDriver.isMoving());

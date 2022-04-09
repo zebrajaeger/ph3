@@ -31,15 +31,16 @@ bool StepperDriver::setup(uint8_t pinCS, uint8_t clockMHz, Limit_t limits[3])
 void StepperDriver::loop()
 //------------------------------------------------------------------------------
 {
+  // read Status
   status_ = tmc429_.getStatus();
   steppers_[0].isAtTargetPos = status_.at_target_position_0;
-  steppers_[0].pos.uint32 = tmc429_.getActualPosition(0);
-  steppers_[0].speed.uint16 = tmc429_.getActualVelocityInHz(0);
+  steppers_[0].pos.int32 = tmc429_.getActualPosition(0);
+  steppers_[0].speed.int16 = tmc429_.getActualVelocityInHz(0);
   steppers_[1].isAtTargetPos = status_.at_target_position_1;
-  steppers_[1].pos.uint32 = tmc429_.getActualPosition(1);
-  steppers_[1].speed.uint16 = tmc429_.getActualVelocityInHz(1);
+  steppers_[1].pos.int32 = tmc429_.getActualPosition(1);
+  steppers_[1].speed.int16 = tmc429_.getActualVelocityInHz(1);
 
-  // -----
+  // Set Limit
   if (cmd_limit_axis_0_available) {
     tmc429_.setLimitsInHz(0, cmd_limit_axis_0_value.velocityMinHz,
                           cmd_limit_axis_0_value.velocityMaxHz,
@@ -51,6 +52,7 @@ void StepperDriver::loop()
                           cmd_limit_axis_1_value.acceleration_max_hz_per_s);
   }
 
+  // Set Velocity
   if (cmd_velocity_axis_0_available) {
     // Serial.println("cmd_velocity_axis_0_available");
     // Serial.println(cmd_velocity_axis_0_velocity.int32);
@@ -58,7 +60,6 @@ void StepperDriver::loop()
     tmc429_.setTargetVelocityInHz(0, cmd_velocity_axis_0_velocity.int32);
     cmd_velocity_axis_0_available = false;
   }
-
   if (cmd_velocity_axis_1_available) {
     // Serial.print("cmd_velocity_axis_1_available: ");
     // Serial.println(cmd_velocity_axis_1_velocity.int32);
@@ -66,7 +67,8 @@ void StepperDriver::loop()
     tmc429_.setTargetVelocityInHz(1, cmd_velocity_axis_1_velocity.int32);
     cmd_velocity_axis_1_available = false;
   }
-  // -----
+
+  // Set Position
   if (cmd_pos_axis_0_available) {
     // Serial.println("cmd_pos_axis_0_available");
     // Serial.println(cmd_pos_axis_0_pos.int32);
@@ -75,7 +77,6 @@ void StepperDriver::loop()
 
     cmd_pos_axis_0_available = false;
   }
-
   if (cmd_pos_axis_1_available) {
     // Serial.print("cmd_pos_axis_1_available: ");
     // Serial.println(cmd_pos_axis_0_pos.int32);
@@ -84,12 +85,14 @@ void StepperDriver::loop()
     cmd_pos_axis_1_available = false;
   }
 
+  // Reset Position
   if (cmd_reset_pos_available) {
     tmc429_.setActualPosition(0, 0);
     tmc429_.setActualPosition(1, 0);
     cmd_reset_pos_available = false;
   }
 
+  // Stop All
   if (cmd_stop_all_available) {
     tmc429_.stopAll();
     cmd_stop_all_available = false;
@@ -184,7 +187,7 @@ void StepperDriver::statistic()
 {
   Serial.print("Steppers: {0:");
   Serial.print(steppers_[0].pos.uint32);
-  Serial.print(",1:");
+  Serial.print(", 1:");
   Serial.print(steppers_[1].pos.uint32);
   Serial.println("}");
 }

@@ -5,6 +5,7 @@ import {PanoHeadService} from '../panohead.service';
 import {RecordState} from '../../data/record';
 import {Subscription} from 'rxjs';
 import {OnDestroy} from '@angular/core/core';
+import {PanoService} from '../pano.service';
 
 @Component({
     selector: 'app-record',
@@ -17,6 +18,7 @@ export class RecordComponent implements OnInit, OnDestroy {
 
     constructor(private routerService: RouterService,
                 private panoHeadService: PanoHeadService,
+                private panoService: PanoService,
                 private uiService: UiService) {
         routerService.onActivate(this, () => this.onActivate());
     }
@@ -56,5 +58,6 @@ export class RecordComponent implements OnInit, OnDestroy {
         this.uiService.backButton.next(true);
 
         this.panoHeadService.requestRecordState(state => this.state = state);
+        this.panoService.requestRecalculatePano();
     }
 }

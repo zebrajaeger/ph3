@@ -85,10 +85,11 @@ public class PanoService {
         if (height != null && width != null) {
             Image image = new Image(width, height).normalized();
             FieldOfViewPartial panoFOV = getPanoFOV().normalize();
-            if (panoFOV.isComplete() && image.isComplete()) {
+            PanoHeadData data = panoHeadService.getData();
+            if (panoFOV.isComplete() && image.isComplete() && data !=null) {
                 System.out.println("Recalculate pano");
                 Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
-                Position currentPosDeg = panoHeadService.getData().getCurrentPosDeg();
+                Position currentPosDeg = data.getCurrentPosDeg();
                 calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(currentPosDeg, pano, image));
                 calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
                 return true;

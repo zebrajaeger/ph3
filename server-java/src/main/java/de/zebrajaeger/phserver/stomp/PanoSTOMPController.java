@@ -2,17 +2,8 @@ package de.zebrajaeger.phserver.stomp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.PanoService;
-import de.zebrajaeger.phserver.data.Border;
-import de.zebrajaeger.phserver.data.CalculatedPano;
-import de.zebrajaeger.phserver.data.Delay;
-import de.zebrajaeger.phserver.data.FieldOfView;
-import de.zebrajaeger.phserver.data.FieldOfViewPartial;
-import de.zebrajaeger.phserver.data.Shot;
-import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
-import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
-import de.zebrajaeger.phserver.event.PanoFOVChangedEvent;
-import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
-import de.zebrajaeger.phserver.event.ShotsChangedEvent;
+import de.zebrajaeger.phserver.data.*;
+import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.util.StompUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +17,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -45,7 +35,7 @@ public class PanoSTOMPController {
 
     //<editor-fold desc="Picture FOV">
     @MessageMapping("/picture/border")
-    public void pictureBorder(Border[] borders){
+    public void pictureBorder(Border[] borders) {
         panoService.setCurrentPositionAsPictureBorder(borders);
         panoService.publishPictureFOVChange();
         panoService.updateCalculatedPano();
@@ -93,12 +83,18 @@ public class PanoSTOMPController {
     //<editor-fold desc="Calculated Pano">
     @MessageMapping("/rpc/pano/calculated")
     public void rpcCalculatedPano(@Header("correlation-id") String id, @Header("reply-to") String destination) throws JsonProcessingException {
+        panoService.updateCalculatedPano();
         Optional<CalculatedPano> calculatedPano = panoService.getCalculatedPano();
         if (calculatedPano.isPresent()) {
             StompUtils.rpcSendResponse(template, id, destination, calculatedPano.get());
         } else {
             StompUtils.rpcSendEmptyResponse(template, id, destination);
         }
+    }
+
+    @MessageMapping("/rpc/pano/recalculate")
+    public void rpcRecalculatePano() {
+        panoService.updateCalculatedPano();
     }
 
     @EventListener
@@ -146,14 +142,14 @@ public class PanoSTOMPController {
 
     //<editor-fold desc="Shots">
     @MessageMapping("/shot/{shotsName}/{index}/focusTimeMs")
-    public void setShotFocusTime(@DestinationVariable String shotsName,@DestinationVariable int index, int focusTimeMs) {
+    public void setShotFocusTime(@DestinationVariable String shotsName, @DestinationVariable int index, int focusTimeMs) {
         Shot shot = panoService.getShots().getShot(shotsName, index);
         shot.setFocusTimeMs(focusTimeMs);
         panoService.publishShotsChange();
     }
 
     @MessageMapping("/shot/{shotsName}/{index}/triggerTimeMs")
-    public void setShotTriggerTime(@DestinationVariable String shotsName,@DestinationVariable int index,int triggerTimeMs) {
+    public void setShotTriggerTime(@DestinationVariable String shotsName, @DestinationVariable int index, int triggerTimeMs) {
         Shot shot = panoService.getShots().getShot(shotsName, index);
         shot.setTriggerTimeMs(triggerTimeMs);
         panoService.publishShotsChange();

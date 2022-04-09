@@ -78,6 +78,7 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
         this.uiService.backButton.next(true);
         this.panoService.requestShots(shots => this.shots = shots);
         this.panoService.requestDelay(delay => this.delay = delay);
+        this.panoService.requestRecalculatePano();
     }
 
     onFocusTime(value: number): void {

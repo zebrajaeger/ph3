@@ -5,6 +5,7 @@ import {JoystickService} from '../joystick.service';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
+import {PanoService} from '../pano.service';
 
 @Component({
     selector: 'app-align',
@@ -18,6 +19,7 @@ export class AlignComponent implements OnInit, OnDestroy {
     constructor(private routerService: RouterService,
                 private joystickService: JoystickService,
                 private panoHeadService: PanoHeadService,
+                private panoService: PanoService,
                 private uiService: UiService) {
         routerService.onActivate(this, () => this.onActivate());
     }
@@ -47,6 +49,7 @@ export class AlignComponent implements OnInit, OnDestroy {
         this.uiService.title.next('Align Panohead');
         this.uiService.backButton.next(true);
         this.panoHeadService.sendJogging(true);
+        this.panoService.requestRecalculatePano();
     }
 
     setAsZero(): void {

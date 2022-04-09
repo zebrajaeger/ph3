@@ -76,7 +76,7 @@ export class PictureFovComponent implements OnInit, OnDestroy {
         this.uiService.title.next('Camera FOV');
         this.uiService.backButton.next(true);
         this.panoHeadService.sendJogging(true);
-
         this.panoService.requestPictureFov(fov => this.fov = fov);
+        this.panoService.requestRecalculatePano();
     }
 }

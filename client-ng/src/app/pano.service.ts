@@ -140,5 +140,10 @@ export class PanoService {
             .subscribe(cb);
     }
 
+    requestRecalculatePano(): void {
+        console.log("REQUEST RECALCULATION");
+        this.rxStompRPCService.rpc({destination: '/rpc/pano/recalculate'}).toPromise().then();
+    }
+
     // </editor-fold>
 }

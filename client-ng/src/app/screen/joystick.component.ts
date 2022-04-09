@@ -4,6 +4,7 @@ import {JoystickPosition} from '../../data/joystick';
 import {Subscription} from 'rxjs';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
+import {PanoService} from '../pano.service';
 
 @Component({
     selector: 'app-joystick',
@@ -14,7 +15,10 @@ export class JoystickComponent implements OnInit, OnDestroy {
     public joystickPosition: JoystickPosition;
     public joystickPositionSubscription: Subscription;
 
-    constructor(private joystickService: JoystickService, private routerService: RouterService, private uiService: UiService) {
+    constructor(private joystickService: JoystickService,
+                private panoService: PanoService,
+                private routerService: RouterService,
+                private uiService: UiService) {
         routerService.onActivate(this, () => this.onActivate());
     }
 
@@ -42,5 +46,6 @@ export class JoystickComponent implements OnInit, OnDestroy {
     private onActivate(): void {
         this.uiService.title.next('Joystick');
         this.uiService.backButton.next(true);
+        this.panoService.requestRecalculatePano();
     }
 }

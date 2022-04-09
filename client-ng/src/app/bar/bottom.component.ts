@@ -38,7 +38,7 @@ export class BottomComponent implements OnInit, OnDestroy {
             this.state = state;
             console.log('foo', this.state);
         });
-        this.panoService.requestCalculatedPano(calculatedPano => this.calc = calculatedPano);
+        this.panoService.subscribeCalculatedPano(calculatedPano => this.calc = calculatedPano);
         this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {
             this.gauge = power;
             this.gaugeString = power.toString();

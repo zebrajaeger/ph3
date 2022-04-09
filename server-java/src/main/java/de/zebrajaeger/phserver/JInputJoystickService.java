@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver;
 
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;
+import de.zebrajaeger.phserver.util.MathUtils;
 import net.java.games.input.Component.Identifier.Axis;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
@@ -9,6 +10,7 @@ import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,12 @@ import java.util.Optional;
 public class JInputJoystickService implements JoystickService {
     private final static Logger LOG = LoggerFactory.getLogger(JInputJoystickService.class);
 
-    private final static long RESCAN_PERIOD = 2000;
     private final static Position ZERO_POSITION = new Position(0, 0);
 
+    @Value("${joystick.rescan.period:2000}")
+    private long rescanPeriod;
+    @Value("${joystick.border:0.05}")
+    private float joystickBorder;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private Controller controller;
@@ -46,6 +51,16 @@ public class JInputJoystickService implements JoystickService {
         }
     }
 
+    private float mapToBorder(float value) {
+        if (value > joystickBorder) {
+            return MathUtils.map(value, joystickBorder, 1f, 0f, 1f);
+        } else if (value < -joystickBorder) {
+            return MathUtils.map(value, -joystickBorder, -1f, 0f, -1f);
+        }
+
+        return 0;
+    }
+
     private boolean readNewPosition() {
         // check for controller and rescan if needed
         if (controller == null) {
@@ -53,7 +68,7 @@ public class JInputJoystickService implements JoystickService {
             if (nextRescan < now) {
                 // TODO log
                 LOG.info("Rescan Controller");
-                nextRescan = now + RESCAN_PERIOD;
+                nextRescan = now + rescanPeriod;
                 Optional<Controller> c = scanForGameController();
                 c.ifPresent(value -> controller = value);
             }
@@ -83,22 +98,26 @@ public class JInputJoystickService implements JoystickService {
             }
 
             if (hasX && hasY) {
-                position = new Position(x, y);
+                // new x and y
+                position = new Position(mapToBorder(x), mapToBorder(y));
                 return true;
             } else if (!hasX && !hasY) {
+                // no x and no y
                 return false;
             } else {
                 if (hasX) {
+                    // new x only
                     if (position != null) {
-                        position = new Position(x, position.getY());
+                        position = new Position(mapToBorder(x), position.getY());
                     } else {
-                        position = new Position(x, 0);
+                        position = new Position(mapToBorder(x), 0);
                     }
                 } else {
+                    // new y only
                     if (position != null) {
-                        position = new Position(position.getX(), y);
+                        position = new Position(position.getX(), mapToBorder(y));
                     } else {
-                        position = new Position(0, y);
+                        position = new Position(0, mapToBorder(y));
                     }
                 }
                 return true;
@@ -119,10 +138,7 @@ public class JInputJoystickService implements JoystickService {
      * Find first game controller
      */
     private Optional<Controller> scanForGameController() {
-        return readControllerEnvironment().flatMap(controllerEnvironment ->
-                Arrays.stream(controllerEnvironment.getControllers())
-                        .filter(c -> c.getType() == Controller.Type.GAMEPAD || c.getType() == Controller.Type.STICK)
-                        .findFirst());
+        return readControllerEnvironment().flatMap(controllerEnvironment -> Arrays.stream(controllerEnvironment.getControllers()).filter(c -> c.getType() == Controller.Type.GAMEPAD || c.getType() == Controller.Type.STICK).findFirst());
     }
 
     /**

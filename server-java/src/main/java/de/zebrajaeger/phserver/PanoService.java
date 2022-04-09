@@ -78,7 +78,8 @@ public class PanoService {
         }
     }
 
-    public boolean updateCalculatedPano() {
+    public void updateCalculatedPano() {
+        System.out.println("updateCalculatedPano() - CALL");
         FieldOfView cameraFOV = getPictureFOV();
         Double height = cameraFOV.getVertical().getSize();
         Double width = cameraFOV.getHorizontal().getSize();
@@ -87,15 +88,13 @@ public class PanoService {
             FieldOfViewPartial panoFOV = getPanoFOV().normalize();
             PanoHeadData data = panoHeadService.getData();
             if (panoFOV.isComplete() && image.isComplete() && data !=null) {
-                System.out.println("Recalculate pano");
+                System.out.println("updateCalculatedPano() - RECALCULATE");
                 Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
                 Position currentPosDeg = data.getCurrentPosDeg();
                 calculatedPano = Optional.of(CommandListGenerator.calculateMissingValues(currentPosDeg, pano, image));
                 calculatedPano.ifPresent(value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
-                return true;
             }
         }
-        return false;
     }
 
     public Optional<List<Command>> createCommands(String shotsName) {

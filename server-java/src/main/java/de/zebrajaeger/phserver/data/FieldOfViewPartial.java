@@ -36,4 +36,11 @@ public class FieldOfViewPartial extends FieldOfView {
     public void setPartial(boolean partial) {
         this.partial = partial;
     }
+
+    @Override
+    public boolean isComplete() {
+        return partial
+                ? super.isComplete()
+                : getVertical().isComplete();
+    }
 }

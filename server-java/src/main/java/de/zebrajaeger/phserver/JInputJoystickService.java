@@ -66,7 +66,6 @@ public class JInputJoystickService implements JoystickService {
         if (controller == null) {
             long now = System.currentTimeMillis();
             if (nextRescan < now) {
-                // TODO log
                 LOG.info("Rescan Controller");
                 nextRescan = now + rescanPeriod;
                 Optional<Controller> c = scanForGameController();

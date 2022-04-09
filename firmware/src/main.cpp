@@ -10,11 +10,6 @@
 #include "types.h"
 #include "wireutils.h"
 
-// TODO
-// update to 1.3.1
-// void stopAll();
-//  void setActualPosition(size_t motor,    int32_t position);
-
 enum command_t {
   stepperWriteLimit = 0x20,
   stepperWriteVelocity = 0x21,

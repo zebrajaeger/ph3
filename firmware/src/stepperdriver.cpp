@@ -186,9 +186,9 @@ void StepperDriver::statistic()
 //------------------------------------------------------------------------------
 {
   Serial.print("Steppers: {0:");
-  Serial.print(steppers_[0].pos.uint32);
+  Serial.print(steppers_[0].pos.int32);
   Serial.print(", 1:");
-  Serial.print(steppers_[1].pos.uint32);
+  Serial.print(steppers_[1].pos.int32);
   Serial.println("}");
 }
 

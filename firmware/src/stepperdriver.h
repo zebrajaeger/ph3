@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include <TMC429.h>
+#include "tmc429.h"
 
 #include "types.h"
 

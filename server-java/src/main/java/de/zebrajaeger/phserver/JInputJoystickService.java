@@ -45,9 +45,13 @@ public class JInputJoystickService implements JoystickService {
 
     @Scheduled(initialDelay = 0, fixedRateString = "${joystick.usb.period:50}")
     private void update() {
-        if (readNewPosition()) {
-            LOG.debug("Position update to {}", position);
-            applicationEventPublisher.publishEvent(new JoystickPositionEvent(position));
+        try {
+            if (readNewPosition()) {
+                LOG.debug("Position update to {}", position);
+                applicationEventPublisher.publishEvent(new JoystickPositionEvent(position));
+            }
+        } catch (IllegalStateException e) {
+            LOG.info("Cannot read Joystick Position", e);
         }
     }
 

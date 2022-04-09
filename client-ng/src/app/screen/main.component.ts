@@ -18,7 +18,7 @@ export class MainComponent {
     }
 
     private onActivate(): void {
-        this.uiService.title.next('main');
+        this.uiService.title.next('Panohead');
         this.uiService.backButton.next(false);
         this.panoHeadService.sendJogging(false);
     }

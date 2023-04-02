@@ -67,3 +67,15 @@ Try to run
    tvservice -o
    
 That switches HDMI off
+
+## Kiosk
+
+    sudo nano /etc/xdg/lxsession/LXDE-pi/autostarts
+
+And
+
+    @unclutter -idle 0
+    @xset s off
+    @xset -dpms
+    @xset s noblank
+    @chromium-browser --incognito --kiosk http://localhost:8080

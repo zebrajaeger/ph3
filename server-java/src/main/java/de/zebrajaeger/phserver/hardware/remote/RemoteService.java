@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.hardware.remote;
 
 import de.zebrajaeger.phserver.hardware.*;
 import de.zebrajaeger.phserver.util.HexUtils;
+import java.util.Optional;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,18 +42,23 @@ public class RemoteService implements HardwareService {
     }
 
     @Override
-    public PanoHead getPanoHead() {
-        return panoHead;
+    public Optional<PanoHead> getPanoHead() {
+        return Optional.of(panoHead);
     }
 
     @Override
-    public PowerGauge getPowerGauge() {
-        return powerGauge;
+    public Optional<PowerGauge> getPowerGauge() {
+        return Optional.of(powerGauge);
     }
 
     @Override
-    public AccelerationSensor getAccelerationSensor() {
-        return accelerationSensor;
+    public Optional<AccelerationSensor> getAccelerationSensor() {
+        return Optional.of(accelerationSensor);
+    }
+
+    @Override
+    public Optional<SystemDevice> getSystemDevice() {
+        return Optional.empty();
     }
 
     protected byte[] read(int address, int count) throws IOException {

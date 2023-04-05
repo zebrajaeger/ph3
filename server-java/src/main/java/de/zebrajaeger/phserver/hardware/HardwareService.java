@@ -1,9 +1,12 @@
 package de.zebrajaeger.phserver.hardware;
 
+import java.util.Optional;
+
 public interface HardwareService {
-    PanoHead getPanoHead();
+    Optional<PanoHead> getPanoHead();
 
-    PowerGauge getPowerGauge();
+    Optional<PowerGauge> getPowerGauge();
 
-    AccelerationSensor getAccelerationSensor();
+    Optional<AccelerationSensor> getAccelerationSensor();
+    Optional<SystemDevice> getSystemDevice();
 }

@@ -6,6 +6,8 @@ import de.zebrajaeger.phserver.hardware.AccelerationSensor;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.hardware.PanoHead;
 import de.zebrajaeger.phserver.hardware.PowerGauge;
+import de.zebrajaeger.phserver.hardware.SystemDevice;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,18 +29,23 @@ public class FakeService implements HardwareService {
     private int updatesPerSecond;
 
     @Override
-    public PanoHead getPanoHead() {
-        return panoHead;
+    public Optional<PanoHead> getPanoHead() {
+        return Optional.of(panoHead);
     }
 
     @Override
-    public PowerGauge getPowerGauge() {
-        return null;
+    public Optional<PowerGauge> getPowerGauge() {
+        return Optional.empty();
     }
 
     @Override
-    public AccelerationSensor getAccelerationSensor() {
-        return null;
+    public Optional<AccelerationSensor> getAccelerationSensor() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<SystemDevice> getSystemDevice() {
+        return Optional.empty();
     }
 
     @Scheduled(fixedRateString = "${develop.updatesPerSecond:5}")

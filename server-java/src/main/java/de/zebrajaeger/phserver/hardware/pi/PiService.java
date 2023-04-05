@@ -6,6 +6,7 @@ import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.util.Console;
 import de.zebrajaeger.phserver.hardware.*;
 import de.zebrajaeger.phserver.hardware.remote.RemoteService;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,8 @@ public class PiService implements HardwareService {
     private PowerGauge powerGauge;
     private AccelerationSensor accelerationSensor;
 
+    private PiSystem piSystem;
+
     @PostConstruct
     public void init() throws IOException, I2CFactory.UnsupportedBusNumberException {
         final Console console = new Console();
@@ -45,21 +48,27 @@ public class PiService implements HardwareService {
         panoHead = new PanoHeadDevice(new PiDevice(bus.getDevice(i2cPanoHeadAddress)));
         powerGauge = new PowerGaugeDeviceIna219(new PiDevice(bus.getDevice(i2cIna219Address)));
         accelerationSensor = new AccelerationSensorDeviceAdxl345(new PiDevice(bus.getDevice(i2cAccelerationSensorAddress)));
+        piSystem = new PiSystem();
     }
 
     @Override
-    public PanoHead getPanoHead() {
-        return panoHead;
+    public Optional<PanoHead> getPanoHead() {
+        return Optional.of(panoHead);
     }
 
     @Override
-    public PowerGauge getPowerGauge() {
-        return powerGauge;
+    public Optional<PowerGauge> getPowerGauge() {
+        return Optional.of(powerGauge);
     }
 
     @Override
-    public AccelerationSensor getAccelerationSensor() {
-        return accelerationSensor;
+    public Optional<AccelerationSensor> getAccelerationSensor() {
+        return Optional.of(accelerationSensor);
+    }
+
+    @Override
+    public Optional<SystemDevice> getSystemDevice() {
+        return Optional.empty();
     }
 
     private void scan(I2CBus bus) {

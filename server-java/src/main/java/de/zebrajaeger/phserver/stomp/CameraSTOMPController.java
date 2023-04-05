@@ -4,6 +4,8 @@ import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.hardware.PanoHead;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -37,17 +39,27 @@ public class CameraSTOMPController {
 
     @MessageMapping("camera/focus")
     public void focus(@Payload int focusTimeMs) throws IOException {
-        hardwareService.getPanoHead().startFocus(focusTimeMs);
+        final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+        if (panoHead.isPresent()) {
+            panoHead.get().startFocus(focusTimeMs);
+        }
+
     }
 
     @MessageMapping("camera/trigger")
     public void trigger(@Payload int triggerTimeMs) throws IOException {
-        hardwareService.getPanoHead().startTrigger(triggerTimeMs);
+        final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+        if (panoHead.isPresent()) {
+            panoHead.get().startTrigger(triggerTimeMs);
+        }
     }
 
     @MessageMapping("camera/shot")
     public void trigger(@Payload Shot shot) throws IOException {
-        hardwareService.getPanoHead().startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+        final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+        if (panoHead.isPresent()) {
+            panoHead.get().startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+        }
     }
 
     @EventListener

@@ -27,6 +27,7 @@ import {ConnectionService} from './connection.service';
 import {JoystickService} from './joystick.service';
 import {PanoHeadService} from './panohead.service';
 import {RouterService} from './router.service';
+import {SystemService} from './system.service';
 import {NumberPadComponent} from './ui/number-pad.component';
 import {ModalComponent} from './ui/modal.component';
 import {ModalService} from './ui/modal.service';
@@ -82,7 +83,8 @@ import { AlignComponent } from './screen/align.component';
         PanoHeadService,
         RouterService,
         UiService,
-        ModalService
+        ModalService,
+        SystemService
     ],
     bootstrap: [AppComponent]
 })

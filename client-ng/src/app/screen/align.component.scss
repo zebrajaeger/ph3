@@ -1,17 +1,54 @@
+.control {
+  display: grid;
+  grid-template-columns: repeat(7, 114px);
+  grid-template-rows: repeat(7, 58px);
+}
+
+
 .button {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 2em;
   font-weight: bold;
-  margin:10px;
 
   background-color: unset;
   box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;
   border: 1px solid black;
   border-radius: 5px;
-  padding: 10px;
+  text-align: center;
+  margin: 3px;
+  padding: 7px;
 
   &:active {
     transform: translateX(4px) translateY(4px);
     box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 3px 3px 6px;
   }
 }
+
+.setaszero{
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+.joystick {
+  grid-column-start: 6;
+  grid-column-end: 8;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  margin: 2px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.h-center{
+  grid-column-start: 4;
+}
+.h-left{
+  grid-column-start: 0;
+}
+.v-center{
+  grid-row-start: 4;
+}
+
+

@@ -56,6 +56,14 @@ export class PanoHeadService {
         this.rxStompService.publish({destination: '/actor/manualMove', body: JSON.stringify(relPosition)});
     }
 
+    sendManualMoveByJoystick(speed : Position): void {
+        this.rxStompService.publish({destination: '/actor/manualMoveByJoystick', body: JSON.stringify(speed)});
+    }
+
+    sendManualMoveByJoystickStop(): void {
+        this.rxStompService.publish({destination: '/actor/manualMoveByJoystickStop'});
+    }
+
     // <editor-fold desc="Record">
     public subscribeRecordState(cb: (actor: RecordState) => void): Subscription {
         return this.rxStompService

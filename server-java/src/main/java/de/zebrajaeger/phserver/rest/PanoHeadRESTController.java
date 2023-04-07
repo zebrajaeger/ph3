@@ -35,13 +35,13 @@ public class PanoHeadRESTController {
 
   @GetMapping("jogging")
   public boolean getJogging() {
-    return panoHeadService.isJogging();
+    return panoHeadService.isJoggingEnabled();
   }
 
   @PutMapping("jogging")
   public boolean setJogging(@RequestParam boolean jogging) throws IOException {
-    panoHeadService.setJogging(jogging);
-    return panoHeadService.isJogging();
+    panoHeadService.setJoggingEnabled(jogging);
+    return panoHeadService.isJoggingEnabled();
   }
 
   @GetMapping("actor")

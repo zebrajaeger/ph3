@@ -70,7 +70,7 @@ public class JInputJoystickService implements JoystickService {
         if (controller == null) {
             long now = System.currentTimeMillis();
             if (nextRescan < now) {
-                LOG.info("Rescan Controller");
+                LOG.trace("Rescan Controller");
                 nextRescan = now + rescanPeriod;
                 Optional<Controller> c = scanForGameController();
                 c.ifPresent(value -> controller = value);
@@ -141,11 +141,13 @@ public class JInputJoystickService implements JoystickService {
      * Find first game controller
      */
     private Optional<Controller> scanForGameController() {
-        return readControllerEnvironment().flatMap(controllerEnvironment -> Arrays.stream(controllerEnvironment.getControllers()).filter(c -> c.getType() == Controller.Type.GAMEPAD || c.getType() == Controller.Type.STICK).findFirst());
+        return readControllerEnvironment()
+            .flatMap(controllerEnvironment -> Arrays.stream(controllerEnvironment.getControllers())
+                .filter(c -> c.getType() == Controller.Type.GAMEPAD || c.getType() == Controller.Type.STICK).findFirst());
     }
 
     /**
-     * code partial from https://github.com/sgothel/jinput/blob/6e0238be1829a0663b2bf70fe79faf32f589ab2a/coreAPI/src/java/net/java/games/input/DefaultControllerEnvironment.java#L136
+     * code partial from <a href="https://github.com/sgothel/jinput/blob/6e0238be1829a0663b2bf70fe79faf32f589ab2a/coreAPI/src/java/net/java/games/input/DefaultControllerEnvironment.java#L136">here</a>
      */
     private Optional<ControllerEnvironment> readControllerEnvironment() {
         String osName = System.getProperty("os.name", "").trim();

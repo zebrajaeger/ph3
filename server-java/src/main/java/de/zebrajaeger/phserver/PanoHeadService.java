@@ -18,6 +18,8 @@ import de.zebrajaeger.phserver.hardware.PanoHead;
 import de.zebrajaeger.phserver.hardware.PowerGauge;
 import java.io.IOException;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,17 +30,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class PanoHeadService {
 
+  private static final Logger LOG = LoggerFactory.getLogger(PanoHeadService.class);
   private final HardwareService hardwareService;
   private final ApplicationEventPublisher applicationEventPublisher;
   @Value("${jogging.speed:1000}")
   private float joggingSpeed;
 
-  private boolean jogging;
+  private boolean joggingEnabled;
   private PanoHeadData panoHeadData;
   private final SigmoidCalculator sigmoid = new SigmoidCalculator();
 
   private final PreviousState previousState = new PreviousState();
   private Position currentPosition;
+
+  private long lastManualMove = 0;
+  private boolean jogByJoystick = false;
 
   static class PreviousState {
 
@@ -105,7 +111,7 @@ public class PanoHeadService {
     // TODO set focus/trigger on start shot
     // TODO same with movement
 
-    boolean cameraActive = panoHeadData.getCamera().isActive();
+//    boolean cameraActive = panoHeadData.getCamera().isActive();
     boolean actorActive = panoHeadData.getActor().isActive();
 
     Camera camera = panoHeadData.getCamera();
@@ -125,26 +131,12 @@ public class PanoHeadService {
     previousState.setActorActive(actorActive);
   }
 
-  @EventListener
-  public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) throws IOException {
-    if (isJogging()) {
-      Position p = joystickPosition.getPosition();
-      int x = (int) (sigmoid.value(p.getX()) * joggingSpeed);
-      int y = (int) (sigmoid.value(p.getY()) * joggingSpeed);
-      final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-      if (panoHead.isPresent()) {
-        panoHead.get().setTargetVelocity(0, x);
-        panoHead.get().setTargetVelocity(1, y);
-      }
-    }
-  }
-
   public PanoHeadData getData() {
     return panoHeadData;
   }
 
-  public boolean isJogging() {
-    return jogging;
+  public boolean isJoggingEnabled() {
+    return joggingEnabled;
   }
 
   public void setToZero() throws IOException {
@@ -161,25 +153,28 @@ public class PanoHeadService {
   /**
    * Also publishes JoggingChangedEvent
    */
-  public void setJogging(boolean jogging) throws IOException {
-    if (jogging == this.jogging) {
+  public void setJoggingEnabled(boolean joggingEnabled) throws IOException {
+    if (joggingEnabled == this.joggingEnabled) {
       return;
     }
 
-    this.jogging = jogging;
-    if (!isJogging()) {
-      final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-      if (panoHead.isPresent()) {
-        panoHead.get().setTargetVelocity(0, 0);
-        panoHead.get().setTargetVelocity(1, 0);
-      }
+    this.joggingEnabled = joggingEnabled;
+
+    // if jogging is disabled now, we stop the movement
+    if (!isJoggingEnabled()) {
+      stopMovement();
     }
 
-    applicationEventPublisher.publishEvent(new JoggingChangedEvent(jogging));
+    applicationEventPublisher.publishEvent(new JoggingChangedEvent(joggingEnabled));
   }
 
+  /**
+   * Move the head for the given degrees, based on current Position
+   *
+   * @param relPosition way to move in deg
+   */
   public void manualMove(Position relPosition) throws IOException {
-    if (!isJogging()) {
+    if (!isJoggingEnabled()) {
       return;
     }
 
@@ -189,6 +184,63 @@ public class PanoHeadService {
       final Position newPosition = currentPosition.add(relPosition);
       panoHead.get().setTargetPos(0, (int) StepsToDeg.REVERSE.translate(newPosition.getX()));
       panoHead.get().setTargetPos(1, (int) StepsToDeg.REVERSE.translate(newPosition.getY()));
+    }
+  }
+
+  @EventListener
+  public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) throws IOException {
+    manualMoveByJoystick(joystickPosition.getPosition());
+  }
+
+  public void manualMoveByJoystick(Position joystickPosition) throws IOException {
+    if (!isJoggingEnabled()) {
+      return;
+    }
+
+    jogByJoystick = true;
+
+    // reset watchdog timeout
+    lastManualMove = System.currentTimeMillis();
+    setSigmoidSpeed(joystickPosition);
+  }
+
+  public void manualMoveByJoystickStop() throws IOException {
+    if (!isJoggingEnabled()) {
+      return;
+    }
+
+    jogByJoystick = false;
+    stopMovement();
+  }
+
+  @Scheduled(fixedDelay = 100)
+  public void checkJoystickMovementTimeout() throws IOException {
+    long now = System.currentTimeMillis();
+
+    // emergency stop ?
+    if (jogByJoystick && now - lastManualMove > 200) {
+      jogByJoystick = false;
+      LOG.warn("Emergency stop. Reason: Joystick event timeout");
+      stopMovement();
+    }
+  }
+
+  private void setSigmoidSpeed(Position speed) throws IOException {
+    Position speed1 = speed.withBorderOfOne();
+    int x = (int) (sigmoid.value(speed1.getX()) * joggingSpeed);
+    int y = (int) (sigmoid.value(speed1.getY()) * joggingSpeed);
+    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+    if (panoHead.isPresent()) {
+      panoHead.get().setTargetVelocity(0, x);
+      panoHead.get().setTargetVelocity(1, y);
+    }
+  }
+
+  private void stopMovement() throws IOException {
+    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+    if (panoHead.isPresent()) {
+      panoHead.get().setTargetVelocity(0, 0);
+      panoHead.get().setTargetVelocity(1, 0);
     }
   }
 }

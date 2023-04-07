@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {JoystickComponent} from './screen/joystick.component';
@@ -26,6 +25,7 @@ import {PanoSettingsComponent} from './screen/pano-settings.component';
 import {MsToSecondPipe} from './ms-to-second.pipe';
 import {FormatSecondPipe} from './format-second.pipe';
 import {AlignComponent} from './screen/align.component';
+import {NgxJoystickModule} from "ngx-joystick";
 
 @NgModule({
   declarations: [
@@ -47,17 +47,10 @@ import {AlignComponent} from './screen/align.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxJoystickModule
   ],
   providers: [
-    // {
-    //   provide: RxStompConfig,
-    //   useValue: myRxStompConfig,
-    // },
-    // {
-    //   provide: RxStompRPCConfig,
-    //   useValue: myRxStompRtcConfig,
-    // },
     CameraService,
     ConnectionService,
     JoystickService,

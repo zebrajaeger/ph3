@@ -40,6 +40,20 @@ public class Position {
     return new Position(x + other.x, y + other.y);
   }
 
+  public Position withBorderOfOne() {
+    return new Position(withBorder(x, -1, 1), withBorder(y, -1, 1));
+  }
+
+  private double withBorder(double value,
+      @SuppressWarnings("SameParameterValue") double min,
+      @SuppressWarnings("SameParameterValue") double max) {
+    if (value < min) {
+      return min;
+    }
+    return Math.min(value, max);
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

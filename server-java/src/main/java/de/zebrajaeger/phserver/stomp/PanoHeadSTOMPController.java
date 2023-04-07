@@ -66,12 +66,22 @@ public class PanoHeadSTOMPController {
 
   @MessageMapping("/actor/jogging")
   public void setJogging(@Payload boolean jogging) throws IOException {
-    panoHeadService.setJogging(jogging);
+    panoHeadService.setJoggingEnabled(jogging);
   }
 
   @MessageMapping("/actor/manualMove")
   public void manualMove(@Payload Position relPosition) throws IOException {
     panoHeadService.manualMove(relPosition);
+  }
+
+  @MessageMapping("/actor/manualMoveByJoystick")
+  public void manualMoveByJoystick(@Payload Position relSpeed) throws IOException {
+    panoHeadService.manualMoveByJoystick(relSpeed);
+  }
+
+  @MessageMapping("/actor/manualMoveByJoystickStop")
+  public void manualMoveByJoystickStop() throws IOException {
+    panoHeadService.manualMoveByJoystickStop();
   }
 
   @EventListener

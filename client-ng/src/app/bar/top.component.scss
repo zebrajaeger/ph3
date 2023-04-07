@@ -41,18 +41,27 @@
     font-size: 1.5em;
   }
 
-  &.button {
-    width: 120px;
-    .back{
-      background-color: #ddf;
-      box-sizing: border-box;
-      outline: unset;
-      border: none;
-      margin:0;
-      padding: 0;
-      width: 125px;
-      height: 35px;
+  &.back-button {
+    width: 139px;
+    height: 39px;
+    background-color: #fdd;
+    position: relative;
+
+    .text-wrapper {
+      margin-bottom: 7px;
+
+    .back-arrow {
+      position: relative;
+      top: -1px;
+      font-weight: bold;
+      font-size: 2em;
     }
+
+    .back-text {
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+  }
   }
 }
 

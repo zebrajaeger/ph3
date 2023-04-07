@@ -1,33 +1,37 @@
-<div class="control">
-  <button (click)="setAsZero()" class="setaszero button">Set as Zero</button>
-<!--  <pre class="joystick-status">{{joystickPosition | json}}</pre>-->
+<movement-controller>
+  <button top-left class="top-left set-as-zero button" (click)="setAsZero()">Set as Zero</button>
+</movement-controller>
 
-  <!--  +y-->
-  <div class="button h-center" (click)="manualMove(0,10)">+10</div>
-  <div class="button h-center" (click)="manualMove(0,1)">+1</div>
-  <div class="button h-center" (click)="manualMove(0,0.1)">+0.1</div>
+<!--<div class="control">-->
+<!--  <button (click)="setAsZero()" class="setaszero button">Set as Zero</button>-->
+<!--&lt;!&ndash;  <pre class="joystick-status">{{joystickPosition | json}}</pre>&ndash;&gt;-->
 
-  <!--  +x-->
-  <div class="button h-left v-center" (click)="manualMove(10,0)">+10</div>
-  <div class="button v-center" (click)="manualMove(1,0)">+1</div>
-  <div class="button v-center" (click)="manualMove(0.1,0)">+0.1</div>
+<!--  &lt;!&ndash;  +y&ndash;&gt;-->
+<!--  <div class="button h-center" (click)="manualMove(0,10)">+10</div>-->
+<!--  <div class="button h-center" (click)="manualMove(0,1)">+1</div>-->
+<!--  <div class="button h-center" (click)="manualMove(0,0.1)">+0.1</div>-->
 
-  <div class="joystick v-center zone">
-    <ngx-joystick #dynamicJoystick [options]="{
-        mode: 'dynamic',
-        size: 300,
-        position: { left: '50%', top: '50%' },
-        color: 'blue',
-        shape: 'square'
-      }" (move)="onMove($event)" (start)="onJoystickStart()" (end)="onJoystickEnd()"></ngx-joystick>
-  </div>
+<!--  &lt;!&ndash;  +x&ndash;&gt;-->
+<!--  <div class="button h-left v-center" (click)="manualMove(10,0)">+10</div>-->
+<!--  <div class="button v-center" (click)="manualMove(1,0)">+1</div>-->
+<!--  <div class="button v-center" (click)="manualMove(0.1,0)">+0.1</div>-->
 
-  <!--  -x-->
-  <div class="button v-center" (click)="manualMove(-0.1,0)">-0.1</div>
-  <div class="button v-center" (click)="manualMove(-1,0)">-1</div>
-  <div class="button v-center" (click)="manualMove(-10,0)">-10</div>
+<!--  <div class="joystick v-center zone">-->
+<!--    <ngx-joystick #dynamicJoystick [options]="{-->
+<!--        mode: 'dynamic',-->
+<!--        size: 300,-->
+<!--        position: { left: '50%', top: '50%' },-->
+<!--        color: 'blue',-->
+<!--        shape: 'square'-->
+<!--      }" (move)="onMove($event)" (start)="onJoystickStart()" (end)="onJoystickEnd()"></ngx-joystick>-->
+<!--  </div>-->
 
-  <div class="button h-center" (click)="manualMove(0, -0.1)">-0.1</div>
-  <div class="button h-center" (click)="manualMove(0, -1)">-1</div>
-  <div class="button h-center" (click)="manualMove(0, -10)">-10</div>
-</div>
+<!--  &lt;!&ndash;  -x&ndash;&gt;-->
+<!--  <div class="button v-center" (click)="manualMove(-0.1,0)">-0.1</div>-->
+<!--  <div class="button v-center" (click)="manualMove(-1,0)">-1</div>-->
+<!--  <div class="button v-center" (click)="manualMove(-10,0)">-10</div>-->
+
+<!--  <div class="button h-center" (click)="manualMove(0, -0.1)">-0.1</div>-->
+<!--  <div class="button h-center" (click)="manualMove(0, -1)">-1</div>-->
+<!--  <div class="button h-center" (click)="manualMove(0, -10)">-10</div>-->
+<!--</div>-->

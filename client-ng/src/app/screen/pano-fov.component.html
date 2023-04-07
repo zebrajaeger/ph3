@@ -1,40 +1,48 @@
-<div class="buttons">
-    <div></div>
-    <div>
-        <button (click)="onTop()">Top</button>
+<movement-controller>
+
+  <div top-left class="info-border" (click)="modalService.open('pano-fov-set')">
+    <div class="top center-content"><span class="value">{{vFromText}}</span></div>
+    <div class="bottom center-content"><span class="value">{{vToText}}</span></div>
+    <div class="left center-content" *ngIf="fov?.partial"><span class="value">{{hFromText}}</span>
     </div>
-    <div></div>
-
-    <div>
-        <button [class.disabled]="!fov?.partial" [disabled]="!fov?.partial" (click)="onLeft()">Left</button>
+    <div class="right center-content" *ngIf="fov?.partial"><span class="value">{{hToText}}</span>
     </div>
-    <div>
-        <button (click)="onPartial()">Partial</button>
+  </div>
+
+  <div top-right class="info-range">
+    <div class="left-center-content h-label">
+      <span class="value">H:</span>
     </div>
-    <div>
-        <button [class.disabled]="!fov?.partial" [disabled]="!fov?.partial" (click)="onRight()">Right</button>
+    <div class="left-center-content h-value" *ngIf="fov?.partial">
+      <span class="value">{{hText}}</span>
+    </div>
+    <div class="left-center-content v-label"><span class="value">V:</span></div>
+    <div class="left-center-content v-value"><span class="value">{{vText}}</span></div>
+  </div>
+
+  <div bottom-left class="set-partial center-content">
+    <button class="button" (click)="onPartial()"><span *ngIf="fov?.partial">✓</span> Partial
+    </button>
+  </div>
+
+  <div bottom-right class="pano-calc">
+    <div class="left-center-content h-label"><span class="value">Columns:</span></div>
+    <div class="left-center-content h-value"><span class="value">{{calc?.horizontalPositions?.length}}</span>
     </div>
 
-    <div>&nbsp;</div>
-    <div>
-        <button (click)="onBottom()">Bottom</button>
+    <div class="left-center-content v-label"><span class="value">Rows:</span></div>
+    <div class="left-center-content v-value"><span class="value">{{calc?.verticalPositions?.length}}</span></div>
+  </div>
+</movement-controller>
+
+<app-modal class="modal-system-dialog" id="pano-fov-set">
+  <div class="set-dialog center-content">
+    <div class="set-dialog-content">
+      <button class="button top" (click)="onTop()">Top</button>
+      <button class="button left" (click)="onLeft()" *ngIf="fov?.partial">Left</button>
+      <button class="close-button button center" (click)="onClosePopup()">X</button>
+      <button class="button right" (click)="onRight()" *ngIf="fov?.partial">Right</button>
+      <button class="button bottom" (click)="onBottom()">Bottom</button>
     </div>
-    <div>&nbsp;</div>
-</div>
-
-<div class="info">
-    <div *ngIf="fov?.partial" class="line label">H-size:</div>
-    <div *ngIf="fov?.partial" class="line value">{{hText}} ({{hFromText}} ... {{hToText}})</div>
-
-    <div class="line label">V-size:</div>
-    <div class="line value">{{vText}} ({{vFromText}} ... {{vToText}})</div>
-
-    <div></div>
-    <div></div>
-
-    <div class="line label">Columns:</div>
-    <div class="line value">{{calc?.horizontalPositions?.length}}</div>
-
-    <div class="line label">Rows:</div>
-    <div class="line value">{{calc?.verticalPositions?.length}}</div>
-</div>
+  </div>
+</app-modal>

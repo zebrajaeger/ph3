@@ -2,6 +2,8 @@
 
 <div class="box title">{{title}}</div>
 
-<div class="box button">
-    <button class="button back" [hidden]="!backButton" (click)="onBack()">Back</button>
+<div class="box back-button center-content" [hidden]="!backButton" (click)="onBack()">
+  <div class="text-wrapper">
+    <span class="back-arrow">«</span>&nbsp;<span class="back-text">Back</span>
+  </div>
 </div>

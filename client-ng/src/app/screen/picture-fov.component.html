@@ -1,29 +1,27 @@
-<div class="buttons">
-    <div>&nbsp;</div>
-    <div>
-        <button (click)="onTop()">Top</button>
-    </div>
-    <div>&nbsp;</div>
+<movement-controller>
+  <div top-left class="info-border" (click)="modalService.open('picture-fov-set')">
+    <div class="top center-content"><span class="value">{{vFromText}}</span></div>
+    <div class="bottom center-content"><span class="value">{{vToText}}</span></div>
+    <div class="left center-content"><span class="value">{{hFromText}}</span></div>
+    <div class="right center-content"><span class="value">{{hToText}}</span></div>
+  </div>
 
-    <div>
-        <button (click)="onLeft()">Left</button>
-    </div>
-    <div>&nbsp;</div>
-    <div>
-        <button (click)="onRight()">Right</button>
-    </div>
+  <div top-right class="info-range">
+    <div class="left-center-content h-label"><span class="value">H:</span></div>
+    <div class="left-center-content h-value"><span class="value">{{hText}}</span></div>
+    <div class="left-center-content v-label"><span class="value">V:</span></div>
+    <div class="left-center-content v-value"><span class="value">{{vText}}</span></div>
+  </div>
+</movement-controller>
 
-    <div>&nbsp;</div>
-    <div>
-        <button (click)="onBottom()">Bottom</button>
+<app-modal class="modal-system-dialog" id="picture-fov-set">
+  <div class="set-dialog center-content">
+    <div class="set-dialog-content">
+      <button class="button top" (click)="onTop()">Top</button>
+      <button class="button left" (click)="onLeft()">Left</button>
+      <button class="close-button button center" (click)="onClosePopup()">X</button>
+      <button class="button right" (click)="onRight()">Right</button>
+      <button class="button bottom" (click)="onBottom()">Bottom</button>
     </div>
-    <div>&nbsp;</div>
-</div>
-
-<div class="info">
-    <div class="line label">H-size:</div>
-    <div class="line value">{{hText}} [{{hFromText}} ... {{hToText}}]</div>
-
-    <div class="line label">V-size:</div>
-    <div class="line value">{{vText}} [{{vFromText}} ... {{vToText}}]</div>
-</div>
+  </div>
+</app-modal>

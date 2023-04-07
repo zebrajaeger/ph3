@@ -1,13 +1,9 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {JoystickPosition} from '../../data/joystick';
-import {Subscription} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {JoystickService} from '../joystick.service';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
 import {PanoService} from '../pano.service';
-import {NgxJoystickComponent} from "ngx-joystick";
-import {Position} from "../../data/panohead";
 
 @Component({
   selector: 'app-align',
@@ -15,12 +11,6 @@ import {Position} from "../../data/panohead";
   styleUrls: ['./align.component.scss']
 })
 export class AlignComponent implements OnInit, OnDestroy {
-  @ViewChild('dynamicJoystick') dynamicJoystick!: NgxJoystickComponent;
-  public joystickPosition: JoystickPosition;
-  public joystickPositionSubscription: Subscription;
-  private timer;
-  private joystickPos: Position = {x: 0, y: 0};
-
   constructor(private routerService: RouterService,
               private joystickService: JoystickService,
               private panoHeadService: PanoHeadService,
@@ -30,24 +20,9 @@ export class AlignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.joystickPositionSubscription =
-        this.joystickService
-        .position()
-        .subscribe(joystickPosition => this.joystickPosition = joystickPosition);
   }
 
   ngOnDestroy(): void {
-    if (this.joystickPositionSubscription) {
-      this.joystickPositionSubscription.unsubscribe();
-    }
-  }
-
-  onCenter(): void {
-    this.joystickService.center();
-  }
-
-  onReset(): void {
-    this.joystickService.reset();
   }
 
   private onActivate(): void {
@@ -59,27 +34,5 @@ export class AlignComponent implements OnInit, OnDestroy {
 
   setAsZero(): void {
     this.panoHeadService.sendSetToZero();
-  }
-
-  manualMove(x: number, y: number): void {
-    this.panoHeadService.sendManualMove({x, y})
-  }
-
-  onMove(e: any): void {
-    this.joystickPos = e.data.vector;
-  }
-
-  onJoystickStart() {
-    console.log('start');
-    this.timer = setInterval(_ => {
-      this.panoHeadService.sendManualMoveByJoystick(this.joystickPos)
-    })
-  }
-
-  onJoystickEnd() {
-    console.log('end');
-    clearInterval(this.timer);
-    this.timer = undefined;
-    this.panoHeadService.sendManualMoveByJoystickStop()
   }
 }

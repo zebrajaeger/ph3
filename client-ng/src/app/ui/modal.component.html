@@ -1,6 +1,7 @@
-<div class="jw-modal">
-    <div class="jw-modal-body">
-        <ng-content></ng-content>
+<div (click)="closeModal()" class="jw-modal-background">
+    <div class="jw-modal" (click)="absorb($event)">
+        <div class="jw-modal-body">
+            <ng-content></ng-content>
+        </div>
     </div>
 </div>
-<div (click)="closeModal()" class="jw-modal-background"></div>

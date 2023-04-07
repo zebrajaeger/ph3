@@ -7,6 +7,7 @@ import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
 import {ConnectionService} from '../connection.service';
 import {degToString} from '../utils';
+import {ModalService} from "../ui/modal.service";
 
 @Component({
   selector: 'app-picture-fov',
@@ -31,6 +32,7 @@ export class PictureFovComponent implements OnInit, OnDestroy {
               private panoService: PanoService,
               private panoHeadService: PanoHeadService,
               private routerService: RouterService,
+              public modalService: ModalService,
               private uiService: UiService) {
     this.routerService.onActivate(this, () => this.onActivate());
   }
@@ -77,5 +79,9 @@ export class PictureFovComponent implements OnInit, OnDestroy {
     this.panoHeadService.sendJogging(true);
     this.panoService.requestPictureFov(fov => this.fov = fov);
     this.panoService.requestRecalculatePano();
+  }
+
+  onClosePopup() {
+    this.modalService.close('picture-fov-set');
   }
 }

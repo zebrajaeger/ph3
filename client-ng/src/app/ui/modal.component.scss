@@ -4,32 +4,38 @@
 
 .jw-modal {
   box-sizing: border-box;
+
   max-width: 800px;
   max-height: 480px;
+  //position: fixed;
+
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
   //margin: auto;
 
   /* modal container fixed across whole screen */
-  position: fixed;
+  //position: fixed;
   //top: 0;
   //right: 0;
   //bottom: 0;
   //left: 0;
 
-  left: 50%;
-  transform: translate(-50%, 0);
+  //left: 50%;
+  //transform: translate(-50%, 0);
 
   /* z-index must be higher than .jw-modal-background */
   z-index: 1000;
 
   /* enables scrolling for tall modals */
-  overflow: auto;
+  //overflow: auto;
 
   .jw-modal-body {
     //padding: 20px;
     background: #fff;
 
     /* margin exposes part of the modal background */
-    margin: 5px;
+    //margin: 5px;
   }
 }
 
@@ -40,6 +46,11 @@
   right: 0;
   bottom: 0;
   left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 
   border: 1px solid black;
   backdrop-filter: blur(3px) brightness(0.5);

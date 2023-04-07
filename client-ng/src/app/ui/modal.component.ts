@@ -59,4 +59,8 @@ export class ModalComponent implements OnInit, OnDestroy {
         document.body.classList.remove('jw-modal-open');
         this.close.emit();
     }
+
+    absorb(e: MouseEvent) {
+        e.stopPropagation()
+  }
 }

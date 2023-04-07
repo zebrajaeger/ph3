@@ -52,6 +52,10 @@ export class PanoHeadService {
         this.rxStompService.publish({destination: '/actor/jogging', body: isJogging.toString()});
     }
 
+    sendManualMove(relPosition : Position): void {
+        this.rxStompService.publish({destination: '/actor/manualMove', body: JSON.stringify(relPosition)});
+    }
+
     // <editor-fold desc="Record">
     public subscribeRecordState(cb: (actor: RecordState) => void): Subscription {
         return this.rxStompService

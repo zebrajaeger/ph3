@@ -6,40 +6,62 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Position {
-    private final double x;
-    private final double y;
 
-    public Position(double x, double y) {
-        this.x = x;
-        this.y = y;
+  private double x;
+  private double y;
+
+  public Position() {
+    x = 0;
+    y = 0;
+  }
+
+  public Position(double x, double y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  public double getX() {
+    return x;
+  }
+
+  public void setX(double x) {
+    this.x = x;
+  }
+
+  public double getY() {
+    return y;
+  }
+
+  public void setY(double y) {
+    this.y = y;
+  }
+
+  public Position add(Position other) {
+    return new Position(x + other.x, y + other.y);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    public double getX() {
-        return x;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public double getY() {
-        return y;
-    }
+    Position position = (Position) o;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
+    return new EqualsBuilder().append(x, position.x).append(y, position.y).isEquals();
+  }
 
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37).append(x).append(y).toHashCode();
+  }
 
-        Position position = (Position) o;
-
-        return new EqualsBuilder().append(x, position.x).append(y, position.y).isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(x).append(y).toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+  }
 }

@@ -177,4 +177,18 @@ public class PanoHeadService {
 
     applicationEventPublisher.publishEvent(new JoggingChangedEvent(jogging));
   }
+
+  public void manualMove(Position relPosition) throws IOException {
+    if (!isJogging()) {
+      return;
+    }
+
+    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+
+    if (panoHead.isPresent()) {
+      final Position newPosition = currentPosition.add(relPosition);
+      panoHead.get().setTargetPos(0, (int) StepsToDeg.REVERSE.translate(newPosition.getX()));
+      panoHead.get().setTargetPos(1, (int) StepsToDeg.REVERSE.translate(newPosition.getY()));
+    }
+  }
 }

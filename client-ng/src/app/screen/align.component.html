@@ -1,26 +1,25 @@
-
 <div class="control">
   <button (click)="setAsZero()" class="setaszero button">Set as Zero</button>
   <pre class="joystick">{{joystickPosition | json}}</pre>
 
-  <div class="button h-center">+10</div>
+  <!--  +y-->
+  <div class="button h-center" (click)="manualMove(0,10)">+10</div>
+  <div class="button h-center" (click)="manualMove(0,1)">+1</div>
+  <div class="button h-center" (click)="manualMove(0,0.1)">+0.1</div>
 
-  <div class="button h-center">+1</div>
+  <!--  +x-->
+  <div class="button h-left v-center" (click)="manualMove(10,0)">+10</div>
+  <div class="button v-center" (click)="manualMove(1,0)">+1</div>
+  <div class="button v-center" (click)="manualMove(0.1,0)">+0.1</div>
 
-  <div class="button h-center">+0.1</div>
-
-  <div class="button h-left v-center">-10</div>
-  <div class="button v-center">-1</div>
-  <div class="button v-center">-0.1</div>
   <div class="empty v-center"></div>
-  <div class="button v-center">+0.1</div>
-  <div class="button v-center">+1</div>
-  <div class="button v-center">+10</div>
 
-  <div class="button h-center">-0.1</div>
+  <!--  -x-->
+  <div class="button v-center" (click)="manualMove(-0.1,0)">-0.1</div>
+  <div class="button v-center" (click)="manualMove(-1,0)">-1</div>
+  <div class="button v-center" (click)="manualMove(-10,0)">-10</div>
 
-  <div class="button h-center">-1</div>
-
-  <div class="button h-center">-10</div>
-
+  <div class="button h-center" (click)="manualMove(0, -0.1)">-0.1</div>
+  <div class="button h-center" (click)="manualMove(0, -1)">-1</div>
+  <div class="button h-center" (click)="manualMove(0, -10)">-10</div>
 </div>

@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.AxisValue;
+import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.event.PositionEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
@@ -50,16 +51,6 @@ public class PanoHeadSTOMPController {
     }
   }
 
-//    @MessageMapping("/actor/pos")
-//    public void pos(@Payload AxisValue pos) throws IOException {
-//        hardwareService.getPanoHead().setTargetPos(pos.getAxisIndex(), pos.getValue());
-//    }
-//
-//    @MessageMapping("/actor/velocity")
-//    public void velocity(@Payload AxisValue velocity) throws IOException {
-//        hardwareService.getPanoHead().setTargetVelocity(velocity.getAxisIndex(), velocity.getValue());
-//    }
-
   @EventListener
   public void onPanoHeadChanged(PositionEvent positionEvent) {
     template.convertAndSend("/topic/actor/position/", positionEvent.getPosition());
@@ -76,6 +67,11 @@ public class PanoHeadSTOMPController {
   @MessageMapping("/actor/jogging")
   public void setJogging(@Payload boolean jogging) throws IOException {
     panoHeadService.setJogging(jogging);
+  }
+
+  @MessageMapping("/actor/manualMove")
+  public void manualMove(@Payload Position relPosition) throws IOException {
+    panoHeadService.manualMove(relPosition);
   }
 
   @EventListener

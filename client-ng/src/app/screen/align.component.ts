@@ -8,51 +8,55 @@ import {PanoHeadService} from '../panohead.service';
 import {PanoService} from '../pano.service';
 
 @Component({
-    selector: 'app-align',
-    templateUrl: './align.component.html',
-    styleUrls: ['./align.component.scss']
+  selector: 'app-align',
+  templateUrl: './align.component.html',
+  styleUrls: ['./align.component.scss']
 })
 export class AlignComponent implements OnInit, OnDestroy {
-    public joystickPosition: JoystickPosition;
-    public joystickPositionSubscription: Subscription;
+  public joystickPosition: JoystickPosition;
+  public joystickPositionSubscription: Subscription;
 
-    constructor(private routerService: RouterService,
-                private joystickService: JoystickService,
-                private panoHeadService: PanoHeadService,
-                private panoService: PanoService,
-                private uiService: UiService) {
-        routerService.onActivate(this, () => this.onActivate());
-    }
+  constructor(private routerService: RouterService,
+              private joystickService: JoystickService,
+              private panoHeadService: PanoHeadService,
+              private panoService: PanoService,
+              private uiService: UiService) {
+    routerService.onActivate(this, () => this.onActivate());
+  }
 
-    ngOnInit(): void {
-        this.joystickPositionSubscription =
-            this.joystickService
-                .position()
-                .subscribe(joystickPosition => this.joystickPosition = joystickPosition);
-    }
+  ngOnInit(): void {
+    this.joystickPositionSubscription =
+        this.joystickService
+        .position()
+        .subscribe(joystickPosition => this.joystickPosition = joystickPosition);
+  }
 
-    ngOnDestroy(): void {
-        if (this.joystickPositionSubscription) {
-            this.joystickPositionSubscription.unsubscribe();
-        }
+  ngOnDestroy(): void {
+    if (this.joystickPositionSubscription) {
+      this.joystickPositionSubscription.unsubscribe();
     }
+  }
 
-    onCenter(): void {
-        this.joystickService.center();
-    }
+  onCenter(): void {
+    this.joystickService.center();
+  }
 
-    onReset(): void {
-        this.joystickService.reset();
-    }
+  onReset(): void {
+    this.joystickService.reset();
+  }
 
-    private onActivate(): void {
-        this.uiService.title.next('Align Panohead');
-        this.uiService.backButton.next(true);
-        this.panoHeadService.sendJogging(true);
-        this.panoService.requestRecalculatePano();
-    }
+  private onActivate(): void {
+    this.uiService.title.next('Align Panohead');
+    this.uiService.backButton.next(true);
+    this.panoHeadService.sendJogging(true);
+    this.panoService.requestRecalculatePano();
+  }
 
-    setAsZero(): void {
-        this.panoHeadService.sendSetToZero();
-    }
+  setAsZero(): void {
+    this.panoHeadService.sendSetToZero();
+  }
+
+  manualMove(x: number, y: number): void {
+    this.panoHeadService.sendManualMove({x,y})
+  }
 }

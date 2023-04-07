@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {JoystickService} from '../joystick.service';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
@@ -10,19 +10,13 @@ import {PanoService} from '../pano.service';
   templateUrl: './align.component.html',
   styleUrls: ['./align.component.scss']
 })
-export class AlignComponent implements OnInit, OnDestroy {
+export class AlignComponent {
   constructor(private routerService: RouterService,
               private joystickService: JoystickService,
               private panoHeadService: PanoHeadService,
               private panoService: PanoService,
               private uiService: UiService) {
     routerService.onActivate(this, () => this.onActivate());
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
   }
 
   private onActivate(): void {

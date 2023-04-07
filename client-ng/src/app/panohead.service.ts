@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {Actor, ActorState, Position, Power} from '../data/panohead';
 import {RecordState} from '../data/record';
+import {RxStompService} from "./rx-stomp.service";
+import {RxStompRPCService} from "./rx-stomp-rpc.service";
 
 @Injectable({
     providedIn: 'root'
@@ -77,7 +78,6 @@ export class PanoHeadService {
     sendPauseResumeRecord(): void {
         this.rxStompService.publish({destination: '/record/pause'});
     }
-
 
     // </editor-fold>
 }

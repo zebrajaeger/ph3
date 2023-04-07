@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
+import {RxStompService} from "./rx-stomp.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SystemService {
-  constructor(private rxStompService: RxStompService, private rxStompRPCService: RxStompRPCService) {
+  constructor(private rxStompService: RxStompService) {
   }
 
   shutdown(): void {

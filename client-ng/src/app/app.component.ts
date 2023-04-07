@@ -1,32 +1,27 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {PanoHeadService} from './panohead.service';
-import {Actor} from '../data/panohead';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RouterService} from './router.service';
-import {OnInit} from '@angular/core/core';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-    // public panoHeadData: Actor;
-    // public panoHeadDataSubscription: Subscription;
+  // public panoHeadData: Actor;
+  // public panoHeadDataSubscription: Subscription;
 
-    constructor(private routerService: RouterService,
-                private panoHeadService: PanoHeadService) {
-    }
+  constructor(private routerService: RouterService) {
+  }
 
-    ngOnInit(): void {
-        // this.panoHeadDataSubscription = this.panoHeadService.subscribeActor(panoHeadData => this.panoHeadData = panoHeadData);
-    }
+  ngOnInit(): void {
+    // this.panoHeadDataSubscription = this.panoHeadService.subscribeActor(panoHeadData => this.panoHeadData = panoHeadData);
+  }
 
-    ngOnDestroy(): void {
-        // this.panoHeadDataSubscription?.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    // this.panoHeadDataSubscription?.unsubscribe();
+  }
 
-    onRouterOutletActivate($event: any): void {
-        this.routerService.onRouteChange($event);
-    }
+  onRouterOutletActivate($event: any): void {
+    this.routerService.onRouteChange($event);
+  }
 }

@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {PanoHeadService} from '../panohead.service';
-import {OnDestroy} from '@angular/core/core';
 import {Subscription} from 'rxjs';
 import {AutomateState, RecordState} from '../../data/record';
 import {PanoService} from '../pano.service';
@@ -57,10 +56,9 @@ export class BottomComponent implements OnInit, OnDestroy {
   }
 
   isStopped(): boolean {
-    const r = !this.state ||
+    return !this.state ||
         (this.state?.automateState === AutomateState.STOPPED ||
             this.state?.automateState === AutomateState.STOPPED_WITH_ERROR);
-    return r;
   }
 
   shutdown(): void {

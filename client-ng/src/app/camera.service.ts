@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
-import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Camera, Shot} from '../data/camera';
+import {RxStompService} from "./rx-stomp.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class CameraService {
 
-    constructor(private rxStompService: RxStompService, private rxStompRPCService: RxStompRPCService) {
+    constructor(private rxStompService: RxStompService) {
     }
 
     public camera(): Observable<Camera> {

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {RxStompService} from '@stomp/ng2-stompjs';
-import {RxStompState} from '@stomp/rx-stomp/esm6/rx-stomp-state';
+import { RxStompState} from '@stomp/rx-stomp';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
+import {RxStompService} from "./rx-stomp.service";
 
 @Injectable({
     providedIn: 'root'

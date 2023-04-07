@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
 import {Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Border, CalculatedPano, Delay, FieldOfView, FieldOfViewPartial} from '../data/pano';
 import {Shots} from '../data/camera';
+import {RxStompService} from "./rx-stomp.service";
+import {RxStompRPCService} from "./rx-stomp-rpc.service";
 
 @Injectable({
     providedIn: 'root'

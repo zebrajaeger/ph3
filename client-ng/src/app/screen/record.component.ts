@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
 import {RecordState} from '../../data/record';
 import {Subscription} from 'rxjs';
-import {OnDestroy} from '@angular/core/core';
 import {PanoService} from '../pano.service';
 
 @Component({

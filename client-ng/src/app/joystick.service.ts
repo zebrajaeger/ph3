@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
-import {RxStompRPCService, RxStompService} from '@stomp/ng2-stompjs';
 import {JoystickPosition} from '../data/joystick';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import {RxStompService} from "./rx-stomp.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class JoystickService {
 
-    constructor(private rxStompService: RxStompService, private rxStompRPCService: RxStompRPCService) {
+    constructor(private rxStompService: RxStompService) {
     }
 
     public position(): Observable<JoystickPosition> {

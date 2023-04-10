@@ -15,10 +15,10 @@ import {ModalService} from "../ui/modal.service";
   styleUrls: ['./picture-fov.component.scss']
 })
 export class PictureFovComponent implements OnInit, OnDestroy {
-  private openSubscription: Subscription;
+  private openSubscription!: Subscription;
 
-  public fov_: FieldOfView;
-  private fovSubscription: Subscription;
+  public fov_!: FieldOfView;
+  private fovSubscription!: Subscription;
 
   public hFromText?: string;
   public hToText?: string;
@@ -49,10 +49,14 @@ export class PictureFovComponent implements OnInit, OnDestroy {
 
   set fov(fov: FieldOfView) {
     this.fov_ = fov;
-    this.hText = degToString(Math.abs(fov.horizontal.size));
+    if (fov.horizontal.size) {
+      this.hText = degToString(Math.abs(fov.horizontal.size));
+    }
     this.hFromText = degToString(fov.horizontal.from);
     this.hToText = degToString(fov.horizontal.to);
-    this.vText = degToString(Math.abs(fov.vertical.size));
+    if (fov.vertical.size) {
+      this.vText = degToString(Math.abs(fov.vertical.size));
+    }
     this.vFromText = degToString(fov.vertical.from);
     this.vToText = degToString(fov.vertical.to);
   }

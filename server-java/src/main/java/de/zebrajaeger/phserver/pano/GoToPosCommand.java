@@ -1,16 +1,11 @@
 package de.zebrajaeger.phserver.pano;
 
 import de.zebrajaeger.phserver.data.Position;
+import de.zebrajaeger.phserver.data.ShotPosition;
+import lombok.Getter;
 
 public class GoToPosCommand extends Command {
-    private final Position position;
-
-    public GoToPosCommand(String description, Position position) {
-        super(description);
-        this.position = position;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
+  public GoToPosCommand(ShotPosition shotPosition, String description) {
+    super(shotPosition, description);
+  }
 }

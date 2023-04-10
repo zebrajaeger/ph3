@@ -1,14 +1,15 @@
 package de.zebrajaeger.phserver.pano;
 
+import de.zebrajaeger.phserver.data.ShotPosition;
+import lombok.Getter;
+
+@Getter
 public class WaitCommand extends Command {
-    private final int timeMs;
 
-    public WaitCommand(String description, int timeMs) {
-        super(description);
-        this.timeMs = timeMs;
-    }
+  private final int timeMs;
 
-    public int getTimeMs() {
-        return timeMs;
-    }
+  public WaitCommand(ShotPosition shotPosition, String description, int timeMs) {
+    super(shotPosition, description);
+    this.timeMs = timeMs;
+  }
 }

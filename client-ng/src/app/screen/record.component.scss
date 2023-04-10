@@ -4,38 +4,34 @@
   height: 400px;
 }
 
-.buttons, .infos {
-  display: flex;
-  flex-direction: column;
-  width: 390px;
+.box {
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 5px;
-  margin: 10px;
-  padding: 35px;
+
+  margin: 3px;
+  padding: 5px;
 }
 
-.button, .info {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 2em;
+.left-column {
+  width: 183px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 0;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.command {
+  height: 65px;
+  margin-bottom: 0;
+  font-size: 2rem;
   font-weight: bold;
 }
 
-.button {
-  margin: 10px;
-  padding: 17px;
+.matrix {
 
-  background-color: unset;
-  box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;
-  border: 1px solid black;
-  border-radius: 5px;
-
-  &:active {
-    background: #555;
-    color: white;
-    box-shadow: unset;
-  }
-}
-
-.info {
 }

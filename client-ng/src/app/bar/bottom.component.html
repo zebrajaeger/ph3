@@ -1,12 +1,10 @@
 <div class="content" (click)="modalService.open('system-menu')">
   Pos: (<span class="value">{{actorPos}}</span>)
-  Pano: (<span class="value">{{calc?.horizontalPositions?.length}}
-  ,{{calc?.verticalPositions?.length}}</span>)
+  Pano: (<span class="value">{{panoMsg}}</span>)
   Power: (<span class="value">{{gaugeString}}</span>)<br>
   <span *ngIf="state">
-    State: {{state?.automateState}}<span *ngIf="!isStopped()">:
-        <span class="value">({{state?.pauseState}} - "{{state?.command?.description}}") -
-            ({{state?.commandIndex + 1}}/{{state?.commandCount}})</span>
+    State: {{state.automateState}}<span *ngIf="!isStopped()">:
+        <span class="value">{{stateMsg}}</span>
         </span>
     </span>
 </div>

@@ -26,7 +26,9 @@ import {MsToSecondPipe} from './ms-to-second.pipe';
 import {FormatSecondPipe} from './format-second.pipe';
 import {AlignComponent} from './screen/align.component';
 import {NgxJoystickModule} from "ngx-joystick";
-import { MovementControllerComponent } from './ui/movement-controller.component';
+import {MovementControllerComponent} from './ui/movement-controller.component';
+import {MatrixComponent} from "./ui/matrix.component";
+import {AddOnePipe} from "./add-one.pipe";
 
 @NgModule({
   declarations: [
@@ -43,9 +45,11 @@ import { MovementControllerComponent } from './ui/movement-controller.component'
     ModalComponent,
     PanoSettingsComponent,
     MsToSecondPipe,
+    AddOnePipe,
     FormatSecondPipe,
     AlignComponent,
-    MovementControllerComponent
+    MovementControllerComponent,
+    MatrixComponent
   ],
   imports: [
     BrowserModule,

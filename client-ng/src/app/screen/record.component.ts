@@ -7,56 +7,67 @@ import {Subscription} from 'rxjs';
 import {PanoService} from '../pano.service';
 
 @Component({
-    selector: 'app-record',
-    templateUrl: './record.component.html',
-    styleUrls: ['./record.component.scss']
+  selector: 'app-record',
+  templateUrl: './record.component.html',
+  styleUrls: ['./record.component.scss']
 })
 export class RecordComponent implements OnInit, OnDestroy {
-    private recordStateSubscription: Subscription;
-    public _state: RecordState;
+  private recordStateSubscription!: Subscription;
+  public _state!: RecordState;
 
-    constructor(private routerService: RouterService,
-                private panoHeadService: PanoHeadService,
-                private panoService: PanoService,
-                private uiService: UiService) {
-        routerService.onActivate(this, () => this.onActivate());
-    }
+  public done: number = 0;
+  public x?: number;
+  public y?: number;
+  public color?: string;
 
-    ngOnInit(): void {
-        this.recordStateSubscription = this.panoHeadService.subscribeRecordState(state => this.state = state);
-    }
+  public msg: string = '';
 
-    ngOnDestroy(): void {
-        this.recordStateSubscription?.unsubscribe();
-    }
+  constructor(private routerService: RouterService,
+              private panoHeadService: PanoHeadService,
+              private panoService: PanoService,
+              private uiService: UiService) {
+    routerService.onActivate(this, () => this.onActivate());
+  }
 
+  ngOnInit(): void {
+    this.recordStateSubscription = this.panoHeadService.subscribeRecordState(state => this.state = state);
+  }
 
-    get state(): RecordState {
-        return this._state;
-    }
+  ngOnDestroy(): void {
+    this.recordStateSubscription?.unsubscribe();
+  }
 
-    set state(value: RecordState) {
-        console.log('STATE', JSON.stringify(value, null, 2));
-        this._state = value;
-    }
+  get state(): RecordState {
+    return this._state;
+  }
 
-    onStart(): void {
-        this.panoHeadService.sendStartRecord();
-    }
+  set state(value: RecordState) {
+    this._state = value;
+    const cmd = value?.command;
+    const shotPos = cmd?.shotPosition;
+    this.x = shotPos?.xLength;
+    this.y = shotPos?.yLength;
+    this.done = shotPos?.index ? shotPos?.index + 1 : -1;
+    this.msg = `[${value?.commandIndex + 1}/${value?.commandCount}] ${cmd?.description}`;
+  }
 
-    onStop(): void {
-        this.panoHeadService.sendStopRecord();
-    }
+  onStart(): void {
+    this.panoHeadService.sendStartRecord();
+  }
 
-    onPause(): void {
-        this.panoHeadService.sendPauseResumeRecord();
-    }
+  onStop(): void {
+    this.panoHeadService.sendStopRecord();
+  }
 
-    private onActivate(): void {
-        this.uiService.title.next('Record');
-        this.uiService.backButton.next(true);
+  onPause(): void {
+    this.panoHeadService.sendPauseResumeRecord();
+  }
 
-        this.panoHeadService.requestRecordState(state => this.state = state);
-        this.panoService.requestRecalculatePano();
-    }
+  private onActivate(): void {
+    this.uiService.title.next('Record');
+    this.uiService.backButton.next(true);
+
+    this.panoHeadService.requestRecordState(state => this.state = state);
+    this.panoService.requestRecalculatePano();
+  }
 }

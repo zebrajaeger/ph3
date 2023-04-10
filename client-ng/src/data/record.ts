@@ -17,28 +17,38 @@ export enum PauseState {
 }
 
 export class Position {
-    x: number;
-    y: number;
+    x!: number;
+    y!: number;
+}
+
+export class ShotPosition {
+    x!: number;
+    y!: number;
+    index!: number;
+    xIndex!: number;
+    xLength!: number;
+    yIndex!: number;
+    yLength!: number;
 }
 
 export class Command {
-    description: string;
+    shotPosition! : ShotPosition;
+    description!: string;
     timeMs?: number;
-    position?: Position;
     shot?: Shot;
 }
 
 export class RecordState {
-    automateState: AutomateState;
-    pauseState: PauseState;
-    command: Command;
-    commandIndex: number;
-    commandCount: number;
+    automateState!: AutomateState;
+    pauseState!: PauseState;
+    command?: Command;
+    commandIndex!: number;
+    commandCount!: number;
 
     constructor(body: string) {
         const o = JSON.parse(body);
-        this.automateState = AutomateState[o.automateState];
-        this.pauseState = PauseState[o.pauseState];
+        this.automateState = (<any>AutomateState)[o.automateState];
+        this.pauseState = (<any>PauseState)[o.pauseState];
         this.command = o.command;
         this.commandIndex = o.commandIndex;
         this.commandCount = o.commandCount;

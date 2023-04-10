@@ -8,7 +8,7 @@ import {Position} from "../../data/panohead";
   styleUrls: ['./movement-controller.component.scss']
 })
 export class MovementControllerComponent {
-  private timer;
+  private timer : any|undefined;
   private joystickPos: Position = {x: 0, y: 0};
 
   constructor(private panoHeadService: PanoHeadService) {
@@ -24,7 +24,7 @@ export class MovementControllerComponent {
 
   onJoystickStart() {
     console.log('start');
-    this.timer = setInterval(_ => {
+    this.timer = setInterval((_: any) => {
       this.panoHeadService.sendManualMoveByJoystick(this.joystickPos)
     })
   }

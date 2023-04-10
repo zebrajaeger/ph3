@@ -1,17 +1,17 @@
 export class Range {
-    from: number;
-    to: number;
+    from!: number;
+    to!: number;
     size?: number;
     complete?: boolean;
 }
 
 export class FieldOfView {
-    horizontal: Range;
-    vertical: Range;
+    horizontal!: Range;
+    vertical!: Range;
 }
 
 export class FieldOfViewPartial extends FieldOfView {
-    partial: boolean;
+    partial!: boolean;
 }
 
 export enum Border {
@@ -22,15 +22,15 @@ export enum Border {
 }
 
 export class CalculatedPano {
-    horizontalPositions: number[];
-    verticalPositions: number[];
+    horizontalPositions!: number[];
+    verticalPositions!: number[];
 
-    horizontalOverlap: number;
-    verticalOverlap: number;
+    horizontalOverlap!: number;
+    verticalOverlap!: number;
 }
 
 export class Delay {
-    waitAfterMove: number;
-    waitAfterShot: number;
-    waitBetweenShots: number;
+    waitAfterMove!: number;
+    waitAfterShot!: number;
+    waitBetweenShots!: number;
 }

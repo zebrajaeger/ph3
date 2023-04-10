@@ -10,14 +10,14 @@ import {ConnectionService} from '../connection.service';
     styleUrls: ['./top.component.scss']
 })
 export class TopComponent implements OnInit, OnDestroy {
-    public stateName: string;
-    private stateNameSubscription: Subscription;
+    public stateName!: string;
+    private stateNameSubscription!: Subscription;
 
-    public title: string;
-    private titleSubscription: Subscription;
+    public title!: string;
+    private titleSubscription!: Subscription;
 
-    public backButton: boolean;
-    private backButtonSubscription: Subscription;
+    public backButton!: boolean;
+    private backButtonSubscription!: Subscription;
 
     constructor(private router: Router, private connectionService: ConnectionService, private uiService: UiService) {
     }

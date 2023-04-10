@@ -10,7 +10,7 @@ import {ModalService} from './modal.service';
     styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit, OnDestroy {
-    @Input() id: string;
+    @Input() id!: string;
     private readonly element: any;
 
     @Output()
@@ -31,7 +31,7 @@ export class ModalComponent implements OnInit, OnDestroy {
         // document.body.appendChild(this.element);
 
         // close modal on background click
-        this.element.addEventListener('click', el => {
+        this.element.addEventListener('click', (el: { target: { className: string; }; }) => {
             if (el.target.className === 'jw-modal') {
                 this.closeModal();
             }

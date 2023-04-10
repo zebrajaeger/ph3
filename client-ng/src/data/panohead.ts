@@ -1,20 +1,20 @@
 import {Camera} from './camera';
 
 export class ActorAxis {
-    public pos: number;
-    public speed: number;
-    public isMoving: boolean;
-    public atTargetPos: boolean;
+    public pos!: number;
+    public speed!: number;
+    public isMoving!: boolean;
+    public atTargetPos!: boolean;
 }
 
 export class Actor {
-    public x: ActorAxis;
-    public y: ActorAxis;
+    public x!: ActorAxis;
+    public y!: ActorAxis;
 }
 
 export class ActorState {
-    public x: number;
-    public y: number;
+    public x!: number;
+    public y!: number;
 }
 
 export class Power {
@@ -35,13 +35,13 @@ export class Power {
 }
 
 export class Position {
-    public x: number;
-    public y: number;
+    public x!: number;
+    public y!: number;
 }
 
 export class PanoHeadData {
-    public actor: Actor;
-    public camera: Camera;
-    public movementRaw: number;
-    public cameraRaw: number;
+    public actor!: Actor;
+    public camera!: Camera;
+    public movementRaw!: number;
+    public cameraRaw!: number;
 }

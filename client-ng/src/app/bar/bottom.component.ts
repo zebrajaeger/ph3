@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PanoHeadService} from '../panohead.service';
 import {Subscription} from 'rxjs';
 import {AutomateState, RecordState} from '../../data/record';
@@ -14,18 +14,19 @@ import {SystemService} from '../system.service';
   styleUrls: ['./bottom.component.scss']
 })
 export class BottomComponent implements OnInit, OnDestroy {
-  private actorSubscription: Subscription;
-  public actorPos: string;
+  private actorSubscription!: Subscription;
+  public actorPos!: string;
 
-  private recordStateSubscription: Subscription;
-  public state: RecordState;
+  private recordStateSubscription!: Subscription;
+  public state?: RecordState;
+  public stateMsg?: string;
+  private calculatedPanoSubscription!: Subscription;
+  public calc?: CalculatedPano;
+  public panoMsg? : string;
 
-  private calculatedPanoSubscription: Subscription;
-  public calc: CalculatedPano;
-
-  private powerSubscription: Subscription;
-  public gauge: Power;
-  public gaugeString: string;
+  private powerSubscription!: Subscription;
+  public gauge!: Power;
+  public gaugeString!: string;
 
   constructor(private panoHeadService: PanoHeadService,
               private panoService: PanoService,
@@ -39,9 +40,12 @@ export class BottomComponent implements OnInit, OnDestroy {
     });
     this.recordStateSubscription = this.panoHeadService.subscribeRecordState(state => {
       this.state = state;
-      console.log('foo', this.state);
+      this.stateMsg = `[${state?.commandIndex + 1}/${state?.commandCount}] [${state?.pauseState}]: ${state?.command?.description}`;
     });
-    this.panoService.subscribeCalculatedPano(calculatedPano => this.calc = calculatedPano);
+    this.panoService.subscribeCalculatedPano(calculatedPano => {
+      this.calc = calculatedPano;
+      this.panoMsg = `${this.calc?.horizontalPositions.length}, ${this.calc?.verticalPositions.length}`
+    });
     this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {
       this.gauge = power;
       this.gaugeString = power.toString();

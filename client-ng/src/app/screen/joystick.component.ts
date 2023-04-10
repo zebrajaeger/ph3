@@ -12,8 +12,8 @@ import {PanoService} from '../pano.service';
     styleUrls: ['./joystick.component.scss']
 })
 export class JoystickComponent implements OnInit, OnDestroy {
-    public joystickPosition: JoystickPosition;
-    public joystickPositionSubscription: Subscription;
+    public joystickPosition!: JoystickPosition;
+    public joystickPositionSubscription!: Subscription;
 
     constructor(private joystickService: JoystickService,
                 private panoService: PanoService,

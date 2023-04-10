@@ -15,12 +15,12 @@ import {ModalService} from "../ui/modal.service";
   styleUrls: ['./pano-fov.component.scss']
 })
 export class PanoFovComponent implements OnInit, OnDestroy {
-  private _fov_: FieldOfViewPartial;
-  public calc: CalculatedPano;
-  private fovSubscription: Subscription;
+  private _fov_!: FieldOfViewPartial | undefined;
+  public calc: CalculatedPano | undefined;
+  private fovSubscription!: Subscription;
 
-  private openSubscription: Subscription;
-  private calculatedPanoSubscription: Subscription;
+  private openSubscription!: Subscription;
+  private calculatedPanoSubscription!: Subscription;
 
   public hFromText?: string;
   public hToText?: string;
@@ -51,16 +51,24 @@ export class PanoFovComponent implements OnInit, OnDestroy {
     this.calculatedPanoSubscription?.unsubscribe();
   }
 
-  get fov(): FieldOfViewPartial {
+  get fov(): FieldOfViewPartial|undefined {
     return this._fov_;
   }
 
-  set fov(fov: FieldOfViewPartial) {
+  set fov(fov: FieldOfViewPartial|undefined) {
     this._fov_ = fov;
-    this.hText = degToString(Math.abs(fov.horizontal.size));
+    if(!fov){
+      return;
+    }
+
+    if (fov.horizontal.size) {
+      this.hText = degToString(Math.abs(fov.horizontal.size));
+    }
     this.hFromText = degToString(fov.horizontal.from);
     this.hToText = degToString(fov.horizontal.to);
-    this.vText = degToString(Math.abs(fov.vertical.size));
+    if (fov.vertical.size) {
+      this.vText = degToString(Math.abs(fov.vertical.size));
+    }
     this.vFromText = degToString(fov.vertical.from);
     this.vToText = degToString(fov.vertical.to);
   }
@@ -82,7 +90,7 @@ export class PanoFovComponent implements OnInit, OnDestroy {
   }
 
   onPartial(): void {
-    this.panoService.setPanoPartial(!this.fov.partial);
+    this.panoService.setPanoPartial(!this.fov?.partial);
   }
 
   private onActivate(): void {

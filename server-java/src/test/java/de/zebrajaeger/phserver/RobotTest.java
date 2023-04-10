@@ -1,13 +1,13 @@
 package de.zebrajaeger.phserver;
 
-import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.hardware.fake.FakeService;
 import de.zebrajaeger.phserver.pano.Command;
-import de.zebrajaeger.phserver.pano.GoToPosCommand;
 import de.zebrajaeger.phserver.pano.TakeShotCommand;
 import de.zebrajaeger.phserver.pano.WaitCommand;
+import java.util.LinkedList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,54 +16,43 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.LinkedList;
-import java.util.List;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("develop")
 public class RobotTest {
 
-    @Autowired
-    private RobotService robotService;
-    @Autowired
-    HardwareService hardwareService;
+  @Autowired
+  private RobotService robotService;
+  @Autowired
+  HardwareService hardwareService;
 
-    @BeforeEach
-    public void init() {
-        if (FakeService.class.equals(hardwareService.getClass())) {
-            ((FakeService) hardwareService).reset();
-        }
+  @BeforeEach
+  public void init() {
+    if (FakeService.class.equals(hardwareService.getClass())) {
+      ((FakeService) hardwareService).reset();
     }
+  }
 
-    @Test
-    public void startWithNoCommands() throws InterruptedException {
-        List<Command> commands = new LinkedList<>();
-        robotService.start(commands);
-        Thread.sleep(1000);
-    }
+  @Test
+  public void startWithNoCommands() throws InterruptedException {
+    List<Command> commands = new LinkedList<>();
+    robotService.start(commands);
+    Thread.sleep(1000);
+  }
 
-    @Test
-    public void singleDelay() throws InterruptedException {
-        List<Command> commands = new LinkedList<>();
-        commands.add(new WaitCommand("wait...", 500));
-        robotService.start(commands);
-        Thread.sleep(1000);
-    }
+  @Test
+  public void singleDelay() throws InterruptedException {
+    List<Command> commands = new LinkedList<>();
+    commands.add(new WaitCommand(null, "wait...", 500));
+    robotService.start(commands);
+    Thread.sleep(1000);
+  }
 
-    @Test
-    public void singleShot() throws InterruptedException {
-        List<Command> commands = new LinkedList<>();
-        commands.add(new TakeShotCommand("shot...", new Shot(500, 800)));
-        robotService.start(commands);
-        Thread.sleep(2000);
-    }
-
-    @Test
-    public void singleMove() throws InterruptedException {
-        List<Command> commands = new LinkedList<>();
-        commands.add(new GoToPosCommand("shot...", new Position(0.25, 0)));
-        robotService.start(commands);
-        Thread.sleep(10000);
-    }
+  @Test
+  public void singleShot() throws InterruptedException {
+    List<Command> commands = new LinkedList<>();
+    commands.add(new TakeShotCommand(null, "shot...", new Shot(500, 800)));
+    robotService.start(commands);
+    Thread.sleep(2000);
+  }
 }

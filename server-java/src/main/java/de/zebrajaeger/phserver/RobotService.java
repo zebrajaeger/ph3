@@ -6,6 +6,7 @@ import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.RawPosition;
 import de.zebrajaeger.phserver.data.RobotState;
 import de.zebrajaeger.phserver.data.Shot;
+import de.zebrajaeger.phserver.data.ShotPosition;
 import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
@@ -183,7 +184,7 @@ public class RobotService {
       if (GoToPosCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.CMD_MOVE).sendUpdate();
 
-        RawPosition rawPosition = translatePos(((GoToPosCommand) currentCommand).getPosition());
+        RawPosition rawPosition = translatePos(currentCommand.getShotPosition());
         try {
           if (panoHead.isPresent()) {
             panoHead.get().setTargetPos(0, rawPosition.getX());
@@ -229,9 +230,17 @@ public class RobotService {
   }
 
   private RawPosition translatePos(Position position) {
+    return translatePos(position.getX(), position.getY());
+  }
+
+  private RawPosition translatePos(ShotPosition shotPosition) {
+    return translatePos(shotPosition.getX(), shotPosition.getY());
+  }
+
+  private RawPosition translatePos(double x, double y) {
     return new RawPosition(
-        (int) StepsToDeg.REVERSE.translate(position.getX()),
-        (int) StepsToDeg.REVERSE.translate(position.getY()));
+        (int) StepsToDeg.REVERSE.translate(x),
+        (int) StepsToDeg.REVERSE.translate(y));
   }
 
   public RobotState getRobotState() {

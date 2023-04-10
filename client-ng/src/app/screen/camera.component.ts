@@ -33,7 +33,7 @@ export class CameraComponent implements OnInit, OnDestroy {
     }
 
     onShot(): void {
-        this.cameraService.shot(1000, 100);
+        this.cameraService.shot(1000, 500);
     }
 
     private onActivate(): void {

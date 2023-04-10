@@ -1,10 +1,15 @@
 package de.zebrajaeger.phserver.stomp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.PanoHeadService;
+import de.zebrajaeger.phserver.data.Camera;
+import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.data.Shot;
+import de.zebrajaeger.phserver.event.CameraChangedEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.hardware.PanoHead;
+import de.zebrajaeger.phserver.util.StompUtils;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -22,6 +27,8 @@ public class CameraSTOMPController {
     private final PanoHeadService panoHeadService;
     private final HardwareService hardwareService;
     private final SimpMessagingTemplate template;
+
+    private Camera camera = new Camera();
 
     @Autowired
     public CameraSTOMPController(PanoHeadService deviceService, HardwareService hardwareService, SimpMessagingTemplate template) {
@@ -63,7 +70,14 @@ public class CameraSTOMPController {
     }
 
     @EventListener
-    public void onPanoHeadChanged(PanoHeadData panoHeadData) {
-        template.convertAndSend("/topic/camera/", panoHeadData.getCamera());
+    public void onPanoHeadChanged(CameraChangedEvent cameraChangedEvent) {
+        camera = cameraChangedEvent.getCamera();
+        template.convertAndSend("/topic/camera", camera);
+    }
+
+    @MessageMapping("/rpc/camera")
+    public void rpcCamera(@Header("correlation-id") String id, @Header("reply-to") String destination)
+        throws JsonProcessingException {
+            StompUtils.rpcSendResponse(template, id, destination, camera);
     }
 }

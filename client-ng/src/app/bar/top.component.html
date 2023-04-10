@@ -2,6 +2,10 @@
 
 <div class="box title">{{title}}</div>
 
+<div class="center-content">
+  <led class="led" [color]="color"></led>
+</div>
+
 <div class="box back-button center-content" [hidden]="!backButton" (click)="onBack()">
   <div class="text-wrapper">
     <span class="back-arrow">«</span>&nbsp;<span class="back-text">Back</span>

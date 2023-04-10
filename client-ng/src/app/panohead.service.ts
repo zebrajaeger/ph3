@@ -36,7 +36,7 @@ export class PanoHeadService {
             .subscribe(cb);
     }
 
-    public requestActor(cb: (actor: Actor) => void): Subscription {
+    public subscribeActor(cb: (actor: Actor) => void): Subscription {
         return this.rxStompRPCService
             .rpc({destination: '/topic/actor/'})
             .pipe(map(msg => JSON.parse(msg.body) as Actor))

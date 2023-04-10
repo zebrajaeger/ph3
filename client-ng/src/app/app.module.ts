@@ -29,6 +29,7 @@ import {NgxJoystickModule} from "ngx-joystick";
 import {MovementControllerComponent} from './ui/movement-controller.component';
 import {MatrixComponent} from "./ui/matrix.component";
 import {AddOnePipe} from "./add-one.pipe";
+import { LedComponent } from './ui/led.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {AddOnePipe} from "./add-one.pipe";
     FormatSecondPipe,
     AlignComponent,
     MovementControllerComponent,
-    MatrixComponent
+    MatrixComponent,
+    LedComponent
   ],
   imports: [
     BrowserModule,

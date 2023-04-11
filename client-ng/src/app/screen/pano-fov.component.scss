@@ -1,3 +1,7 @@
+:host {
+  caret-color: transparent;
+}
+
 .close-button {
   background-color: orange;
 }
@@ -111,10 +115,3 @@
   grid-column-start: 2;
   grid-row-start: 2;
 }
-
-
-//:host {
-//  display: flex;
-//  caret-color: transparent;
-//}
-//

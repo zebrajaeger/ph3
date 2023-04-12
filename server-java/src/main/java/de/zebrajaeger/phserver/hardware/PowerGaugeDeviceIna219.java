@@ -1,19 +1,16 @@
 package de.zebrajaeger.phserver.hardware;
 
-import de.zebrajaeger.phserver.hardware.PowerGauge;
-import de.zebrajaeger.phserver.hardware.remote.RemoteService;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * 'Inspired' by https://github.com/wollewald/INA219_WE/blob/master/src/INA219_WE.h
- * Datasheet: https://www.ti.com/lit/ds/symlink/ina219.pdf
+ * 'Inspired' by <a href="https://github.com/wollewald/INA219_WE/blob/master/src/INA219_WE.h">https://github.com/wollewald/INA219_WE/blob/master/src/INA219_WE.h</a>
+ * Datasheet: <a href="https://www.ti.com/lit/ds/symlink/ina219.pdf">https://www.ti.com/lit/ds/symlink/ina219.pdf</a>
  */
 public class PowerGaugeDeviceIna219 implements PowerGauge {
     private final HardwareDevice hardwareDevice;
-    private int shuntInMilliohm = 100;
+    private static final int SHUNT_RESISTOR_VALUE_IN_MILLIOHM = 100;
 
     public PowerGaugeDeviceIna219(HardwareDevice hardwareDevice) {
         this.hardwareDevice = hardwareDevice;
@@ -36,14 +33,17 @@ public class PowerGaugeDeviceIna219 implements PowerGauge {
 
     @Override
     public int readVoltageInMillivolt() throws IOException {
-        return (readRegister((byte) 2)>>3) * 4;
+        final int v = readRegister((byte) 2);
+        // TODO check (v&0x01)==0 ; if false there is a voltage overflow
+        return (v >>3) * 4;
     }
 
     @Override
     public int readCurrentInMilliampere() throws IOException {
         int x =  readRegister((byte) 1) & 0x7fff; // 1 LB = 10μV
+        // TODO check for negative Voltage (https://www.ti.com/lit/ds/symlink/ina219.pdf Page 21)
         x *= 10; // to μV
-        x = (x * 1000) / shuntInMilliohm; // to μA
+        x = (x * 1000) / SHUNT_RESISTOR_VALUE_IN_MILLIOHM; // to μA
         return x / 1000; // in mA
     }
 
@@ -53,7 +53,8 @@ public class PowerGaugeDeviceIna219 implements PowerGauge {
     }
 
 
-    private void writeRegister(byte adr, short value) throws IOException {
+    @SuppressWarnings("unused")
+    private void writeRegister(short value) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(2).order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort(value);
         hardwareDevice.write(buffer.array());
@@ -62,6 +63,6 @@ public class PowerGaugeDeviceIna219 implements PowerGauge {
     private int readRegister(byte adr) throws IOException {
         hardwareDevice.write(new byte[]{adr});
         ByteBuffer buffer = ByteBuffer.wrap(hardwareDevice.read(2)).order(ByteOrder.BIG_ENDIAN);
-        return buffer.getShort();
+        return 0xffff & buffer.getShort();
     }
 }

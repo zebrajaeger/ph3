@@ -1,5 +1,18 @@
 # Manual installation steps
 
+## Java
+
+    $ sudo apt install default-jdk
+
+## WiringPi
+
+    $ sudo apt-get --yes install git-core gcc make
+    $ cd ~
+    $ git clone https://github.com/WiringPi/WiringPi --branch master --single-branch wiringpi
+    $ cd ~/wiringpi
+    $ sudo ./build
+    $ sudo reboot  (needed?)
+
 ## Remote I2C
 
 ### Enable I2C on raspbian

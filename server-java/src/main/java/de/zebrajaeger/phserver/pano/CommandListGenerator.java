@@ -118,23 +118,24 @@ public class CommandListGenerator {
     int posIndex = 0;
 
     // rows
-    int rowIndex = 0;
-    int rowLength = pano.getVerticalPositions().size();
-    for (double col : pano.getVerticalPositions()) {
+    int yIndex = 0;
+    int yLength = pano.getVerticalPositions().size();
+    for (double yPosition : pano.getVerticalPositions()) {
 
       // columns
-      int colIndex = 0;
-      int colLength = pano.getHorizontalPositions().size();
-      for (double row : pano.getHorizontalPositions()) {
+      int xIndex = 0;
+      int xLength = pano.getHorizontalPositions().size();
+      for (double xPosition : pano.getHorizontalPositions()) {
 
         ShotPosition shotPos = new ShotPosition(
-            col, row,
+            xPosition, yPosition,
             posIndex,
-            colIndex, colLength,
-            rowIndex, rowLength);
+            xIndex, xLength,
+            yIndex, yLength
+        );
 
         commands.add(
-            new GoToPosCommand(shotPos, String.format("GoToIdx: %d,%d", colIndex, rowIndex)));
+            new GoToPosCommand(shotPos, String.format("GoToIdx: %d,%d", xIndex, yIndex)));
         if (delay.getWaitAfterMove() > 0) {
           commands.add(new WaitCommand(shotPos, "WaitAfterMove", delay.getWaitAfterMove()));
         }
@@ -156,9 +157,9 @@ public class CommandListGenerator {
           commands.add(new WaitCommand(shotPos, "WaitAfterShot", delay.getWaitAfterShot()));
         }
         posIndex++;
-        colIndex++;
+        xIndex++;
       }
-      rowIndex++;
+      yIndex++;
     }
     return commands;
   }

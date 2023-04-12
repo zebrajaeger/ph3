@@ -39,3 +39,14 @@ Try to run
    
 That switches HDMI off
 
+Or change firmware: https://github.com/raspberrypi/linux/issues/3849#issuecomment-736676729
+
+## Electronic
+
+### Driver
+
+https://oshwlab.com/zebrajaeger/ph-pi
+
+## Controller
+
+Raspberry PI 4 with 5V Step Down converter and I2C level shifter 

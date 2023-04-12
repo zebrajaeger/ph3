@@ -29,14 +29,9 @@
   grid-template-columns: auto;
   grid-template-rows: repeat(1,128px);
 
+  padding: 20px;
+
   .button {
-    color: red;
-    font-size: 2em;
-    font-weight: bold;
-    margin: 10px;
-    background-color: unset;
-    box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;
-    border: 1px solid black;
-    border-radius: 5px;
+    background-color: red;
   }
 }

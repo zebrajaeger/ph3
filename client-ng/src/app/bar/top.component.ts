@@ -61,7 +61,6 @@ export class TopComponent implements OnInit, OnDestroy {
     } else {
       this.color = "green"
     }
-    // console.log('XXX', camera, this.color)
   }
 
   public get camera(): Camera | undefined {

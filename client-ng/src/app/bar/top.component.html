@@ -6,7 +6,7 @@
   <led class="led" [color]="color"></led>
 </div>
 
-<div class="box back-button center-content" [hidden]="!backButton" (click)="onBack()">
+<div class="box back-button center-content" [style.visibility]="backButton? 'visible':'hidden'" (click)="onBack()">
   <div class="text-wrapper">
     <span class="back-arrow">«</span>&nbsp;<span class="back-text">Back</span>
   </div>

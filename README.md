@@ -1,5 +1,9 @@
 # PH
 
+## Install required software at the Pi
+
+[Klick here](./pi/install.md)
+
 ## Aktive parts
 
 - client-ng
@@ -21,39 +25,6 @@ run *de.zebrajaeger.phserver.App* with profile "develop"
 
 ### Server with remote Hardware 
 
-On pi:
-- enable i2c
-- install nodejs global (without nvm)
-  - https://github.com/nodesource/distributions
-
-
-    curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-    apt-get install -y nodejs
-
-    npm -g i @zebrajaeger/remote-i2c
-
-write into ~/starter.sh
-
-    /usr/bin/i2c-server -b 1 -v &> /home/pi/i2c-server.log
-
-then
-
-    chmod +x starter.sh
-
-Execute starter.sh @ boot
-
-    crontab -e
-
-insert
-
-    @reboot /home/pi/starter.sh
-
-reboot
-
-    sudo reboot
-
-i2c is now available via http 
-
 run *de.zebrajaeger.phserver.App* with profile "remote"
 
 ## Issues
@@ -68,14 +39,3 @@ Try to run
    
 That switches HDMI off
 
-## Kiosk
-
-    sudo nano /etc/xdg/lxsession/LXDE-pi/autostarts
-
-And
-
-    @unclutter -idle 0
-    @xset s off
-    @xset -dpms
-    @xset s noblank
-    @chromium-browser --incognito --kiosk http://localhost:8080

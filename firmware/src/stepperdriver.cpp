@@ -88,7 +88,9 @@ void StepperDriver::loop()
   // Reset Position
   if (cmd_reset_pos_available) {
     tmc429_.setActualPosition(0, 0);
+    tmc429_.setTargetPosition(0, 0);
     tmc429_.setActualPosition(1, 0);
+    tmc429_.setTargetPosition(1, 0);
     cmd_reset_pos_available = false;
   }
 

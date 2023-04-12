@@ -62,17 +62,17 @@ public class PanoService {
         for (Border b : borders) {
             Position currentPosition = panoHeadService.getCurrentPosition();
             switch (b) {
+                case LEFT:
+                    fov.getHorizontal().setFrom(currentPosition.getX());
+                    break;
+                case RIGHT:
+                    fov.getHorizontal().setTo(currentPosition.getX());
+                    break;
                 case TOP:
                     fov.getVertical().setFrom(currentPosition.getY());
                     break;
-                case RIGHT:
-                    fov.getHorizontal().setFrom(currentPosition.getX());
-                    break;
                 case BOTTOM:
                     fov.getVertical().setTo(currentPosition.getY());
-                    break;
-                case LEFT:
-                    fov.getHorizontal().setTo(currentPosition.getX());
                     break;
             }
         }

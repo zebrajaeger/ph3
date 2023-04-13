@@ -187,6 +187,19 @@ public class PanoHeadService {
     }
   }
 
+  public void goTo(Position position) throws IOException {
+    if (!isJoggingEnabled()) {
+      return;
+    }
+
+    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+
+    if (panoHead.isPresent()) {
+      panoHead.get().setTargetPos(0, (int) StepsToDeg.REVERSE.translate(position.getX()));
+      panoHead.get().setTargetPos(1, (int) StepsToDeg.REVERSE.translate(position.getY()));
+    }
+  }
+
   @EventListener
   public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) throws IOException {
     manualMoveByJoystick(joystickPosition.getPosition());

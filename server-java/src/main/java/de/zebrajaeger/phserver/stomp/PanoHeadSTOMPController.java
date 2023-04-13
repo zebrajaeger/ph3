@@ -3,7 +3,6 @@ package de.zebrajaeger.phserver.stomp;
 import de.zebrajaeger.phserver.PanoHeadService;
 import de.zebrajaeger.phserver.data.AxisValue;
 import de.zebrajaeger.phserver.data.Position;
-import de.zebrajaeger.phserver.event.CameraChangedEvent;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.event.PositionEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
@@ -63,6 +62,11 @@ public class PanoHeadSTOMPController {
   @MessageMapping("/actor/setToZero")
   public void setToZero() throws IOException {
     panoHeadService.setToZero();
+  }
+
+  @MessageMapping("/actor/goToZero")
+  public void goToZero() throws IOException {
+    panoHeadService.goTo(new Position(0, 0));
   }
 
   @MessageMapping("/actor/jogging")

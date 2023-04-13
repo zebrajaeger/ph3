@@ -48,6 +48,10 @@ export class PanoHeadService {
         this.rxStompService.publish({destination: '/actor/setToZero'});
     }
 
+    sendGoToZero(): void {
+        this.rxStompService.publish({destination: '/actor/goToZero'});
+    }
+
     sendJogging(isJogging: boolean): void {
         this.rxStompService.publish({destination: '/actor/jogging', body: isJogging.toString()});
     }

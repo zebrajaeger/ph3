@@ -29,4 +29,8 @@ export class AlignComponent {
   setAsZero(): void {
     this.panoHeadService.sendSetToZero();
   }
+
+  goToZero(): void {
+    this.panoHeadService.sendGoToZero();
+  }
 }

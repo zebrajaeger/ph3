@@ -103,6 +103,6 @@ export class PanoFovComponent implements OnInit, OnDestroy {
   }
 
   onClosePopup() {
-    this.modalService.close('picture-fov-set');
+    this.modalService.close('pano-fov-set');
   }
 }

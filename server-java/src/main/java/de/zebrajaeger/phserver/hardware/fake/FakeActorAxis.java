@@ -14,7 +14,7 @@ class FakeActorAxis {
     }
 
     public void reset() {
-        maxSpeed = 1000;
+        maxSpeed = 5000;
         currentPos = 0f;
         targetPos = 0;
         velocity = 0f;

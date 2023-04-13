@@ -16,7 +16,7 @@ public class PiSystem implements SystemDevice {
     LOG.info("Shutdown System");
 
     Runtime runtime = Runtime.getRuntime();
-    Process p = runtime.exec("shutdown -h now");
+    Process p = runtime.exec("sudo shutdown -h now");
     final BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
     String l;
     while ((l = r.readLine()) != null) {

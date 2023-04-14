@@ -15,6 +15,7 @@ import org.springframework.util.Assert;
  *   stepperWriteTargetPos = 0x22,
  *   stepperStopAll = 0x23,
  *
+ *   stepperWriteActualAndTargetPos = 0x27,
  *   stepperWriteActualPos = 0x28,
  *   stepperResetPos = 0x29,
  *
@@ -105,6 +106,15 @@ public class PanoHeadDevice implements PanoHead {
   public void stopAll() throws IOException {
     ByteBuffer buffer = ByteBuffer.allocate(1);
     buffer.put((byte) 0x23);
+    hardwareDevice.write(buffer.array());
+  }
+
+  public void setActualAndTargetPos(int axisIndex, int pos) throws IOException {
+    pos = checkAndInvertIfNeeded(axisIndex, pos);
+    ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
+    buffer.put((byte) 0x27);
+    buffer.put((byte) axisIndex);
+    buffer.putInt(pos);
     hardwareDevice.write(buffer.array());
   }
 

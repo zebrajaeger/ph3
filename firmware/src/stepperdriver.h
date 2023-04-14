@@ -37,6 +37,7 @@ class StepperDriver {
 
   void setLimit(u8_t axisIndex, const Limit_t &limit);
   void setPos(u8_t axisIndex, const u32_t &value);
+  void setActualPos(u8_t axisIndex, const u32_t &value);
   void setVelocity(u8_t axisIndex, const u32_t &value);
   void resetAllPos();
   void stopAll();
@@ -50,8 +51,6 @@ class StepperDriver {
  protected:
   bool isCommunicating();
   void initMotor(uint8_t axisIndex, Limit_t *limit);
-  void setActualPos(u8_t axisIndex, u32_t position);
-  void resetPos(u8_t axisIndex);
 
  private:
   TMC429 tmc429_;
@@ -61,16 +60,26 @@ class StepperDriver {
   // TODO refactor me
   volatile bool cmd_velocity_axis_0_available;
   volatile u32_t cmd_velocity_axis_0_velocity;
+
   volatile bool cmd_pos_axis_0_available;
   volatile u32_t cmd_pos_axis_0_pos;
+
+  volatile bool cmd_actual_pos_axis_0_available;
+  volatile u32_t cmd_actual_pos_axis_0_pos;
+
   volatile bool cmd_limit_axis_0_available;
   volatile Limit_t cmd_limit_axis_0_value;
 
   // TODO refactor me
   volatile bool cmd_velocity_axis_1_available;
   volatile u32_t cmd_velocity_axis_1_velocity;
+
   volatile bool cmd_pos_axis_1_available;
   volatile u32_t cmd_pos_axis_1_pos;
+
+  volatile bool cmd_actual_pos_axis_1_available;
+  volatile u32_t cmd_actual_pos_axis_1_pos;
+
   volatile bool cmd_limit_axis_1_available;
   volatile Limit_t cmd_limit_axis_1_value;
 

@@ -16,6 +16,7 @@ enum command_t {
   stepperWriteTargetPos = 0x22,
   stepperStopAll = 0x23,
 
+  stepperWriteActualAndTargetPos = 0x27,
   stepperWriteActualPos = 0x28,
   stepperResetPos = 0x29,
 
@@ -126,10 +127,35 @@ void onWriteActualPos()
 // -----------------------------------------------------------------------------
 {
   u8_t axis;
-  u32_t velocity;
+  u32_t pos;
+  if (WireUtils::read8(axis) && WireUtils::read32(pos)) {
+    if (debug) {
+      Serial.print("Write Actual Pos: ");
+      Serial.print(axis.uint8);
+      Serial.print(": ");
+      Serial.println(pos.uint32);
+    }
+    stepperDriver.setActualPos(axis, pos);
+  } else {
+    Serial.println(F("; NOT ENOUGH DATA"));
+  }
+}
 
-  if (WireUtils::read8(axis) && WireUtils::read32(velocity)) {
-    // stepperDriver.setActualPos(axis, velocity);
+// -----------------------------------------------------------------------------
+void onWriteActualAndTargetPos()
+// -----------------------------------------------------------------------------
+{
+  u8_t axis;
+  u32_t pos;
+  if (WireUtils::read8(axis) && WireUtils::read32(pos)) {
+    if (debug) {
+      Serial.print("Write Actual and Target Pos: ");
+      Serial.print(axis.uint8);
+      Serial.print(": ");
+      Serial.println(pos.uint32);
+    }
+    stepperDriver.setPos(axis, pos);
+    stepperDriver.setActualPos(axis, pos);
   } else {
     Serial.println(F("; NOT ENOUGH DATA"));
   }
@@ -237,6 +263,9 @@ void receiveEvent(int howMany)
         break;
       case stepperWriteActualPos:
         onWriteActualPos();
+        break;
+      case stepperWriteActualAndTargetPos:
+        onWriteActualAndTargetPos();
         break;
 
       case cameraStartFocus:

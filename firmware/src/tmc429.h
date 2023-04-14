@@ -37,8 +37,7 @@ public:
   uint32_t getVelocityMaxInHz(size_t motor);
 
   int32_t getTargetVelocityInHz(size_t motor);
-  void setTargetVelocityInHz(size_t motor,
-    int32_t velocity_hz);
+  void setTargetVelocityInHz(size_t motor, int32_t velocity_hz);
   bool atTargetVelocity(size_t motor);
 
   int32_t getActualVelocityInHz(size_t motor);
@@ -49,8 +48,7 @@ public:
   uint32_t getActualAccelerationInHzPerS(size_t motor);
 
   int32_t getTargetPosition(size_t motor);
-  void setTargetPosition(size_t motor,
-    int32_t position);
+  void setTargetPosition(size_t motor, int32_t position);
   bool atTargetPosition(size_t motor);
 
   int32_t getActualPosition(size_t motor);

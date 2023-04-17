@@ -40,6 +40,10 @@ public class Position {
     return new Position(x + other.x, y + other.y);
   }
 
+  public Position add(Angle other) {
+    return new Position(x + other.getX(), y + other.getY());
+  }
+
   public Position withBorderOfOne() {
     return new Position(withBorder(x, -1, 1), withBorder(y, -1, 1));
   }

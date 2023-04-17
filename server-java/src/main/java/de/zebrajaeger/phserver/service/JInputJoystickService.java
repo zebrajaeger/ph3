@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.service;
 
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;

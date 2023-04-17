@@ -1,25 +1,22 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.service;
 
 import de.zebrajaeger.phserver.data.AutomateState;
 import de.zebrajaeger.phserver.data.PauseState;
 import de.zebrajaeger.phserver.data.Position;
-import de.zebrajaeger.phserver.data.RawPosition;
 import de.zebrajaeger.phserver.data.RobotState;
 import de.zebrajaeger.phserver.data.Shot;
-import de.zebrajaeger.phserver.data.ShotPosition;
 import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
-import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.hardware.PanoHead;
+import de.zebrajaeger.phserver.pano.ApplyOffsetCommand;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.GoToPosCommand;
+import de.zebrajaeger.phserver.pano.NormalizePositionCommand;
 import de.zebrajaeger.phserver.pano.TakeShotCommand;
 import de.zebrajaeger.phserver.pano.WaitCommand;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,8 +33,8 @@ public class RobotService {
 
   private static final Logger LOG = LoggerFactory.getLogger(RobotService.class);
 
-  private final HardwareService hardwareService;
   private final ApplicationEventPublisher applicationEventPublisher;
+  private final PanoHeadService panoHeadService;
 
   private List<Command> commands = new LinkedList<>();
   private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -47,9 +44,9 @@ public class RobotService {
       null);
 
   @Autowired
-  public RobotService(HardwareService hardwareService,
+  public RobotService(PanoHeadService panoHeadService,
       ApplicationEventPublisher applicationEventPublisher) {
-    this.hardwareService = hardwareService;
+    this.panoHeadService = panoHeadService;
     this.applicationEventPublisher = applicationEventPublisher;
   }
 
@@ -98,13 +95,7 @@ public class RobotService {
   private void stopAll() {
     setAutomateState(AutomateState.STOPPING).setPauseState(PauseState.RUNNING).sendUpdate();
     try {
-      final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-      if (panoHead.isPresent()) {
-        panoHead.get().setTargetVelocity(0, 0);
-        panoHead.get().setTargetVelocity(1, 0);
-      }
-      setAutomateState(AutomateState.STOPPED).setPauseState(PauseState.RUNNING).sendUpdate();
-      setCommand(null, 0).sendUpdate();
+      panoHeadService.stopAll();
     } catch (IOException e) {
       setAutomateState(AutomateState.STOPPED_WITH_ERROR).setPauseState(PauseState.RUNNING)
           .sendUpdate();
@@ -180,27 +171,39 @@ public class RobotService {
           TimeUnit.MILLISECONDS);
 
     } else {
-      final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
       if (GoToPosCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.CMD_MOVE).sendUpdate();
-
-        RawPosition rawPosition = translatePos(currentCommand.getShotPosition());
         try {
-          if (panoHead.isPresent()) {
-            panoHead.get().setTargetPos(0, rawPosition.getX());
-            panoHead.get().setTargetPos(1, rawPosition.getY());
-          }
+          panoHeadService.goTo(new Position(
+              currentCommand.getShotPosition().getX(),
+              currentCommand.getShotPosition().getY()));
         } catch (IOException e) {
           setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
         }
 
       } else if (TakeShotCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.CMD_SHOT).sendUpdate();
-        Shot shot = ((TakeShotCommand) currentCommand).getShot();
         try {
-          if (panoHead.isPresent()) {
-            panoHead.get().startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
-          }
+          Shot shot = ((TakeShotCommand) currentCommand).getShot();
+          panoHeadService.shot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+        } catch (IOException e) {
+          setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
+        }
+
+      } else if (ApplyOffsetCommand.class.equals(currentCommand.getClass())) {
+        setAutomateState(AutomateState.APPLY_OFFSET).sendUpdate();
+        try {
+          panoHeadService.adaptAxisOffset();
+          executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
+        } catch (IOException e) {
+          setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
+        }
+
+      } else if (NormalizePositionCommand.class.equals(currentCommand.getClass())) {
+        setAutomateState(AutomateState.NORMALIZE_POSITION).sendUpdate();
+        try {
+          panoHeadService.normalizeAxisPosition();
+          executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
         } catch (IOException e) {
           setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
         }
@@ -227,20 +230,6 @@ public class RobotService {
   private void onTimer() {
     LOG.debug("onTimer()");
     next();
-  }
-
-  private RawPosition translatePos(Position position) {
-    return translatePos(position.getX(), position.getY());
-  }
-
-  private RawPosition translatePos(ShotPosition shotPosition) {
-    return translatePos(shotPosition.getX(), shotPosition.getY());
-  }
-
-  private RawPosition translatePos(double x, double y) {
-    return new RawPosition(
-        (int) StepsToDeg.REVERSE.translate(x),
-        (int) StepsToDeg.REVERSE.translate(y));
   }
 
   public RobotState getRobotState() {

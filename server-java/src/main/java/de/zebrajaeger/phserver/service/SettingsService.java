@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.zebrajaeger.phserver.settings.Settings;

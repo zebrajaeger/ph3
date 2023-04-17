@@ -1,16 +1,14 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.PanoHeadService;
+import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.data.AxisValue;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.event.PositionEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.hardware.PanoHead;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -36,8 +34,10 @@ public class PanoHeadSTOMPController {
 
   //<editor-fold desc="Actor">
   @MessageMapping("/actor")
-  public void getActorRpc(@Header("correlation-id") String id,
+  public void getActorRpc(
+      @Header("correlation-id") String id,
       @Header("reply-to") String destination) {
+
     HashMap<String, Object> header = new HashMap<>();
     header.put("correlation-id", id);
     template.convertAndSend(destination, panoHeadService.getData().getActor(), header);
@@ -45,10 +45,7 @@ public class PanoHeadSTOMPController {
 
   @MessageMapping("/actor/limit")
   public void limit(@Payload AxisValue limit) throws IOException {
-    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-    if (panoHead.isPresent()) {
-      panoHead.get().setLimit(limit.getAxisIndex(), limit.getValue());
-    }
+    hardwareService.getPanoHead().setLimit(limit.getAxisIndex(), limit.getValue());
   }
 
   @EventListener
@@ -67,6 +64,11 @@ public class PanoHeadSTOMPController {
   @MessageMapping("/actor/goToZero")
   public void goToZero() throws IOException {
     panoHeadService.goTo(new Position(0, 0));
+  }
+
+  @MessageMapping("/actor/adaptOffset")
+  public void adaptOffset() throws IOException {
+    panoHeadService.adaptAxisOffset();
   }
 
   @MessageMapping("/actor/jogging")

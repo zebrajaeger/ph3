@@ -1,7 +1,6 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.JoystickService;
-import de.zebrajaeger.phserver.data.JoystickPosition;
+import de.zebrajaeger.phserver.service.JoystickService;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -10,7 +9,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 @Controller

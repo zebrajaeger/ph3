@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.util;
 
 import org.apache.commons.math3.analysis.function.Sigmoid;
 

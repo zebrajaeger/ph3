@@ -52,6 +52,10 @@ export class PanoHeadService {
         this.rxStompService.publish({destination: '/actor/goToZero'});
     }
 
+    adaptOffset(): void {
+        this.rxStompService.publish({destination: '/actor/adaptOffset'});
+    }
+
     sendJogging(isJogging: boolean): void {
         this.rxStompService.publish({destination: '/actor/jogging', body: isJogging.toString()});
     }

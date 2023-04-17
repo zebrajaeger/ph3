@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.lessThan;
 import de.zebrajaeger.phserver.data.ActorAxis;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.hardware.fake.FakeService;
+import de.zebrajaeger.phserver.service.PanoHeadService;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,8 +38,7 @@ public class MoveTest {
 
   @Test
   public void velocity() throws InterruptedException, IOException {
-    //noinspection OptionalGetWithoutIsPresent
-    hardwareService.getPanoHead().get().setTargetVelocity(0, 100);
+    hardwareService.getPanoHead().setTargetVelocity(0, 100);
     Thread.sleep(1000);
 
     ActorAxis x = panoHeadService.getData().getActor().getX();
@@ -49,9 +49,8 @@ public class MoveTest {
 
   @Test
   public void pos() throws InterruptedException, IOException {
-    //noinspection OptionalGetWithoutIsPresent
-    hardwareService.getPanoHead().get().setLimit(0, 1000);
-    hardwareService.getPanoHead().get().setTargetPos(0, 750);
+    hardwareService.getPanoHead().setLimit(0, 1000);
+    hardwareService.getPanoHead().setTargetPos(0, 750);
     Thread.sleep(1000);
 
     ActorAxis x = panoHeadService.getData().getActor().getX();

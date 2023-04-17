@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import de.zebrajaeger.phserver.PanoService;
+import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.util.StompUtils;

@@ -8,6 +8,7 @@ import de.zebrajaeger.phserver.hardware.PanoHead;
 import de.zebrajaeger.phserver.hardware.PowerGauge;
 import de.zebrajaeger.phserver.hardware.SystemDevice;
 import java.util.Optional;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,59 +17,59 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @Service
 @Profile({"develop"})
 public class FakeService implements HardwareService {
-    private static final Logger LOG = LoggerFactory.getLogger(FakeService.class);
 
-    private FakePanoHead panoHead;
+  private static final Logger LOG = LoggerFactory.getLogger(FakeService.class);
 
-    @Value("${develop.updatesPerSecond:5}")
-    private int updatesPerSecond;
+  private FakePanoHead panoHead;
+  private final FakeSystemDevice systemDevice = new FakeSystemDevice();
 
-    @Override
-    public Optional<PanoHead> getPanoHead() {
-        return Optional.of(panoHead);
-    }
+  @Value("${develop.updatesPerSecond:5}")
+  private int updatesPerSecond;
 
-    @Override
-    public Optional<PowerGauge> getPowerGauge() {
-        return Optional.empty();
-    }
+  @Override
+  public PanoHead getPanoHead() {
+    return panoHead;
+  }
 
-    @Override
-    public Optional<AccelerationSensor> getAccelerationSensor() {
-        return Optional.empty();
-    }
+  @Override
+  public Optional<PowerGauge> getPowerGauge() {
+    return Optional.empty();
+  }
 
-    @Override
-    public Optional<SystemDevice> getSystemDevice() {
-        return Optional.empty();
-    }
+  @Override
+  public Optional<AccelerationSensor> getAccelerationSensor() {
+    return Optional.empty();
+  }
 
-    @Scheduled(fixedRateString = "${develop.updatesPerSecond:5}")
-    public void update() {
-        panoHead.update();
-    }
+  @Override
+  public SystemDevice getSystemDevice() {
+    return systemDevice;
+  }
 
-    public void reset() {
-        panoHead.reset();
-    }
+  @Scheduled(fixedRateString = "${develop.updatesPerSecond:5}")
+  public void update() {
+    panoHead.update();
+  }
 
-    @PostConstruct
-    public void init() {
-        panoHead = new FakePanoHead(1000 / updatesPerSecond);
-    }
+  public void reset() {
+    panoHead.reset();
+  }
 
-    @EventListener
-    public void printCameraEvent(CameraChangedEvent cameraChangedEvent) {
-        LOG.info("Camera changed: '{}'", cameraChangedEvent);
-    }
+  @PostConstruct
+  public void init() {
+    panoHead = new FakePanoHead(1000 / updatesPerSecond);
+  }
 
-    @EventListener
-    public void printShotDone(ShotDoneEvent shotDoneEvent) {
-        LOG.info("Camera shot done: '{}'", shotDoneEvent);
-    }
+  @EventListener
+  public void printCameraEvent(CameraChangedEvent cameraChangedEvent) {
+    LOG.info("Camera changed: '{}'", cameraChangedEvent);
+  }
+
+  @EventListener
+  public void printShotDone(ShotDoneEvent shotDoneEvent) {
+    LOG.info("Camera shot done: '{}'", shotDoneEvent);
+  }
 }

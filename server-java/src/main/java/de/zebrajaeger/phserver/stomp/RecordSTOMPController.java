@@ -1,8 +1,8 @@
 package de.zebrajaeger.phserver.stomp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import de.zebrajaeger.phserver.PanoService;
-import de.zebrajaeger.phserver.RobotService;
+import de.zebrajaeger.phserver.service.PanoService;
+import de.zebrajaeger.phserver.service.RobotService;
 import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;

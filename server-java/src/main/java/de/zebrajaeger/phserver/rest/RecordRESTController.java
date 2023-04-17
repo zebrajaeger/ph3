@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.rest;
 
-import de.zebrajaeger.phserver.PanoService;
-import de.zebrajaeger.phserver.RobotService;
+import de.zebrajaeger.phserver.service.PanoService;
+import de.zebrajaeger.phserver.service.RobotService;
 import de.zebrajaeger.phserver.data.Border;
 import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.FieldOfView;

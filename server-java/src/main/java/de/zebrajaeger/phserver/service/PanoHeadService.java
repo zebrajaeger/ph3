@@ -1,5 +1,6 @@
-package de.zebrajaeger.phserver;
+package de.zebrajaeger.phserver.service;
 
+import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import de.zebrajaeger.phserver.data.Camera;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.data.Position;
@@ -14,7 +15,6 @@ import de.zebrajaeger.phserver.event.PositionEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.hardware.PanoHead;
 import de.zebrajaeger.phserver.hardware.PowerGauge;
 import java.io.IOException;
 import java.util.Optional;
@@ -32,6 +32,8 @@ public class PanoHeadService {
 
   private static final Logger LOG = LoggerFactory.getLogger(PanoHeadService.class);
   private final HardwareService hardwareService;
+  private final Axis x;
+  private final Axis y;
   private final ApplicationEventPublisher applicationEventPublisher;
   @Value("${jogging.speed:1000}")
   private float joggingSpeed;
@@ -41,7 +43,7 @@ public class PanoHeadService {
   private final SigmoidCalculator sigmoid = new SigmoidCalculator();
 
   private final PreviousState previousState = new PreviousState();
-  private Position currentPosition;
+//  private Position currentPosition;
 
   private long lastManualMove = 0;
   private boolean jogByJoystick = false;
@@ -70,9 +72,12 @@ public class PanoHeadService {
 
   @Autowired
   public PanoHeadService(HardwareService hardwareService,
+      AxisTranslatorService axisTranslatorService,
       ApplicationEventPublisher applicationEventPublisher) {
     this.hardwareService = hardwareService;
     this.applicationEventPublisher = applicationEventPublisher;
+    x = new Axis(hardwareService.getPanoHead(), 0, axisTranslatorService, true);
+    y = new Axis(hardwareService.getPanoHead(), 1, axisTranslatorService, false);
   }
 
   @Scheduled(initialDelay = 0, fixedRateString = "${controller.power.period:250}")
@@ -91,22 +96,24 @@ public class PanoHeadService {
 //        hardwareService.getAccelerationSensor().foo();
 //    }
 
+  public Position getCurrentPosition() {
+    return new Position(x.getDegValue(), y.getDegValue());
+  }
+
+  public RawPosition getCurrentRawPosition() {
+    return new RawPosition(x.getRawValue(), y.getRawValue());
+  }
+
   @Scheduled(initialDelay = 0, fixedRateString = "${controller.main.period:100}")
   public void update() throws IOException {
 
-    if (hardwareService.getPanoHead().isPresent()) {
-      panoHeadData = hardwareService.getPanoHead().get().read();
-    }
+    panoHeadData = hardwareService.getPanoHead().read();
     applicationEventPublisher.publishEvent(new PanoHeadDataEvent(panoHeadData));
 
-    RawPosition rawPos = new RawPosition(
-        panoHeadData.getActor().getX().getPos(),
-        panoHeadData.getActor().getY().getPos());
-
-    currentPosition = new Position(
-        StepsToDeg.INSTANCE.translate(rawPos.getX()),
-        StepsToDeg.INSTANCE.translate(rawPos.getY()));
-    applicationEventPublisher.publishEvent(new PositionEvent(rawPos, currentPosition));
+    x.setRawValue(panoHeadData.getActor().getX().getPos());
+    y.setRawValue(panoHeadData.getActor().getY().getPos());
+    applicationEventPublisher.publishEvent(
+        new PositionEvent(getCurrentRawPosition(), getCurrentPosition()));
 
     // TODO set focus/trigger on start shot
     // TODO same with movement
@@ -140,14 +147,7 @@ public class PanoHeadService {
   }
 
   public void setToZero() throws IOException {
-    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-    if (panoHead.isPresent()) {
-      panoHead.get().resetPos();
-    }
-  }
-
-  public Position getCurrentPosition() {
-    return currentPosition;
+    hardwareService.getPanoHead().resetPos();
   }
 
   /**
@@ -178,26 +178,35 @@ public class PanoHeadService {
       return;
     }
 
-    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-
-    if (panoHead.isPresent()) {
-      final Position newPosition = currentPosition.add(relPosition);
-      panoHead.get().setTargetPos(0, (int) StepsToDeg.REVERSE.translate(newPosition.getX()));
-      panoHead.get().setTargetPos(1, (int) StepsToDeg.REVERSE.translate(newPosition.getY()));
-    }
+    x.moveRelative(relPosition.getX());
+    y.moveRelative(relPosition.getY());
   }
 
   public void goTo(Position position) throws IOException {
-    if (!isJoggingEnabled()) {
+    if (isJoggingEnabled()) {
       return;
     }
+    x.moveTo(position.getX());
+    y.moveTo(position.getY());
+  }
 
-    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
+  public void stopAll() throws IOException {
+    hardwareService.getPanoHead().setTargetVelocity(0, 0);
+    hardwareService.getPanoHead().setTargetVelocity(1, 0);
+  }
 
-    if (panoHead.isPresent()) {
-      panoHead.get().setTargetPos(0, (int) StepsToDeg.REVERSE.translate(position.getX()));
-      panoHead.get().setTargetPos(1, (int) StepsToDeg.REVERSE.translate(position.getY()));
-    }
+  public void shot(int focusTimeMs, int triggerTimeMs) throws IOException {
+    hardwareService.getPanoHead().startShot(focusTimeMs, triggerTimeMs);
+  }
+
+  public void adaptAxisOffset() throws IOException {
+    x.adaptOffset();
+    y.adaptOffset();
+  }
+
+  public void normalizeAxisPosition() throws IOException {
+    x.normalizeAxisPosition();
+    y.normalizeAxisPosition();
   }
 
   @EventListener
@@ -242,18 +251,12 @@ public class PanoHeadService {
     Position speed1 = speed.withBorderOfOne();
     int x = (int) (sigmoid.value(speed1.getX()) * joggingSpeed);
     int y = (int) (sigmoid.value(speed1.getY()) * joggingSpeed);
-    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-    if (panoHead.isPresent()) {
-      panoHead.get().setTargetVelocity(0, x);
-      panoHead.get().setTargetVelocity(1, y);
-    }
+    hardwareService.getPanoHead().setTargetVelocity(0, x);
+    hardwareService.getPanoHead().setTargetVelocity(1, y);
   }
 
   private void stopMovement() throws IOException {
-    final Optional<PanoHead> panoHead = hardwareService.getPanoHead();
-    if (panoHead.isPresent()) {
-      panoHead.get().setTargetVelocity(0, 0);
-      panoHead.get().setTargetVelocity(1, 0);
-    }
+    hardwareService.getPanoHead().setTargetVelocity(0, 0);
+    hardwareService.getPanoHead().setTargetVelocity(1, 0);
   }
 }

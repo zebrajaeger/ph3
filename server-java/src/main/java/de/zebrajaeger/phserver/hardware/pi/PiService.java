@@ -60,8 +60,8 @@ public class PiService implements HardwareService {
   }
 
   @Override
-  public Optional<PanoHead> getPanoHead() {
-    return Optional.of(panoHead);
+  public PanoHead getPanoHead() {
+    return panoHead;
   }
 
   @Override
@@ -75,8 +75,8 @@ public class PiService implements HardwareService {
   }
 
   @Override
-  public Optional<SystemDevice> getSystemDevice() {
-    return Optional.of(piSystem);
+  public SystemDevice getSystemDevice() {
+    return piSystem;
   }
 
   private void scan(I2CBus bus) {

@@ -23,5 +23,7 @@ public interface PanoHead {
 
     void setActualPos(int axisIndex, int pos) throws IOException;
 
+    void setActualAndTargetPos(int axisIndex, int pos) throws IOException;
+
     void resetPos() throws IOException;
 }

@@ -33,4 +33,7 @@ export class AlignComponent {
   goToZero(): void {
     this.panoHeadService.sendGoToZero();
   }
+  adaptOffset(): void {
+    this.panoHeadService.adaptOffset();
+  }
 }

@@ -6,6 +6,7 @@ import de.zebrajaeger.phserver.hardware.fake.FakeService;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.TakeShotCommand;
 import de.zebrajaeger.phserver.pano.WaitCommand;
+import de.zebrajaeger.phserver.service.RobotService;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

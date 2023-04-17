@@ -1,15 +1,10 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.CalculatedPano;
+import lombok.Data;
 
+@Data
 public class CalculatedPanoChangedEvent {
-    private final CalculatedPano calculatedPano;
 
-    public CalculatedPanoChangedEvent(CalculatedPano calculatedPano) {
-        this.calculatedPano = calculatedPano;
-    }
-
-    public CalculatedPano getCalculatedPano() {
-        return calculatedPano;
-    }
+  private final CalculatedPano calculatedPano;
 }

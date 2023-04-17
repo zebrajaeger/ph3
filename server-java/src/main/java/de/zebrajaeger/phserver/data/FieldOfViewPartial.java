@@ -1,15 +1,15 @@
 package de.zebrajaeger.phserver.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class FieldOfViewPartial extends FieldOfView {
 
     private boolean partial = false;
 
     public FieldOfViewPartial() {
-    }
-
-    public FieldOfViewPartial(double hFrom, double hTo, double vFrom, double vTo, boolean partial) {
-        super(hFrom, hTo, vFrom, vTo);
-        this.partial = partial;
     }
 
     public FieldOfViewPartial(FieldOfViewPartial fov) {
@@ -27,14 +27,6 @@ public class FieldOfViewPartial extends FieldOfView {
                 getHorizontal() == null ? null : getHorizontal().normalize(),
                 getVertical() == null ? null : getVertical().normalize(),
                 partial);
-    }
-
-    public boolean isPartial() {
-        return partial;
-    }
-
-    public void setPartial(boolean partial) {
-        this.partial = partial;
     }
 
     @Override

@@ -1,13 +1,9 @@
 package de.zebrajaeger.phserver.event;
 
+import lombok.Data;
+
+@Data
 public class JoggingChangedEvent {
-    private final boolean jogging;
 
-    public JoggingChangedEvent(boolean jogging) {
-        this.jogging = jogging;
-    }
-
-    public boolean isJogging() {
-        return jogging;
-    }
+  private final boolean jogging;
 }

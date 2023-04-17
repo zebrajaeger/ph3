@@ -1,15 +1,10 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.Power;
+import lombok.Data;
 
+@Data
 public class PowerMeasureEvent {
-    private final Power power;
 
-    public PowerMeasureEvent(Power power) {
-        this.power = power;
-    }
-
-    public Power getPower() {
-        return power;
-    }
+  private final Power power;
 }

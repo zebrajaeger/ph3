@@ -1,8 +1,12 @@
 package de.zebrajaeger.phserver.data;
 
 import de.zebrajaeger.phserver.util.MathUtils;
+import lombok.Getter;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+@Getter
+@ToString
 public class AutoRange {
     private float rawMin = Float.MAX_VALUE;
     private float rawCenter = 0f;
@@ -35,26 +39,9 @@ public class AutoRange {
         }
     }
 
-    public float getRawMin() {
-        return rawMin;
-    }
-
-    public float getRawCenter() {
-        return rawCenter;
-    }
-
-    public float getRawMax() {
-        return rawMax;
-    }
-
     public void setAll(float rawMin, float rawCenter, float rawMax){
         this.rawMin = rawMin;
         this.rawCenter = rawCenter;
         this.rawMax = rawMax;
-    }
-
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
     }
 }

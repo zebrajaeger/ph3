@@ -4,13 +4,32 @@
   box-sizing: border-box;
   border: 1px solid black;
   margin: 0;
-  padding: 0 5px 0 5px;
-  display: block;
   background-color: mistyrose;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .content {
   height: 40px;
+  display: flex;
+  flex-direction: row;
+
+  .item {
+    padding: 0 5px 0 5px;
+  }
+}
+
+.onoff {
+  border-left: 1px solid black;
+  width: 25px;
+  padding: 5px;
+
+  img {
+    width: 25px;
+  }
 }
 
 .label {
@@ -25,9 +44,9 @@
   width: 320px;
   height: calc((128px + 10px) * 2 - 10px);
 
-  display:grid;
+  display: grid;
   grid-template-columns: auto;
-  grid-template-rows: repeat(1,128px);
+  grid-template-rows: repeat(1, 128px);
 
   padding: 20px;
 

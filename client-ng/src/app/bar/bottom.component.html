@@ -1,12 +1,18 @@
-<div class="content" (click)="modalService.open('system-menu')">
-  Pos: (<span class="value">{{actorPos}}</span>)
-  Pano: (<span class="value">{{panoMsg}}</span>)
-  Power: (<span class="value">{{gaugeString}}</span>)<br>
-  <span *ngIf="state">
+<div class="content">
+  <div class="item">Pos: (<span class="value">{{actorPos}}</span>)</div>
+  <div class="item"> Pano: (<span class="value">{{panoMsg}}</span>)</div>
+  <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
+  <span *ngIf="state" class="item">
     State: {{state.automateState}}<span *ngIf="!isStopped()">:
         <span class="value">{{stateMsg}}</span>
         </span>
     </span>
+</div>
+<div class="onoff">
+  <img src="assets/power-button-svgrepo-com.svg"
+       width="20px"
+       alt="onoff menu"
+       (click)="modalService.open('system-menu')">
 </div>
 
 <app-modal class="modal-system-dialog" id="system-menu">

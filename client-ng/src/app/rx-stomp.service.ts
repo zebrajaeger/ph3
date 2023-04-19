@@ -7,7 +7,6 @@ import { RxStompConfig } from '@stomp/rx-stomp';
 })
 export class RxStompService extends RxStomp {
   rxStompConfig: RxStompConfig = {
-  // brokerURL: 'ws://192.168.178.78:8080/ph',
   brokerURL: 'ws://127.0.0.1:8080/ph',
 
   heartbeatIncoming: 0,
@@ -21,6 +20,7 @@ export class RxStompService extends RxStomp {
 
   constructor() {
     super();
+    this.rxStompConfig.brokerURL = `ws://${window.location.hostname}:8080/ph`
     this.configure(this.rxStompConfig);
     this.activate();
   }

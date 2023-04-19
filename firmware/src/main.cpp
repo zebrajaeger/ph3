@@ -10,6 +10,10 @@
 #include "types.h"
 #include "wireutils.h"
 
+#define STEPPER_AXIS_X 0
+#define STEPPER_AXIS_Y 1
+#define STEPPER_AXIS_Z 2
+
 enum command_t {
   stepperWriteLimit = 0x20,
   stepperWriteVelocity = 0x21,
@@ -73,13 +77,16 @@ void alarm()
 void requestEvent()
 // -----------------------------------------------------------------------------
 {
-  const StepperDriver::Stepper_t &s1 = stepperDriver.getStepper(0);
-  const StepperDriver::Stepper_t &s2 = stepperDriver.getStepper(1);
+  const StepperDriver::Stepper_t &s1 = stepperDriver.getStepper(STEPPER_AXIS_X);
+  const StepperDriver::Stepper_t &s2 = stepperDriver.getStepper(STEPPER_AXIS_Y);
+  const StepperDriver::Stepper_t &s3 = stepperDriver.getStepper(STEPPER_AXIS_Z);
   WireUtils::write8(stepperDriver.getMovementStatus().u8);
   WireUtils::write32(s1.pos);
   WireUtils::write16(s1.speed);
   WireUtils::write32(s2.pos);
   WireUtils::write16(s2.speed);
+  WireUtils::write32(s3.pos);
+  WireUtils::write16(s3.speed);
   WireUtils::write8(camera.getStatus().u8);
   // 1 + 4 + 2 + 4 + 2 + 1 = 14
 }

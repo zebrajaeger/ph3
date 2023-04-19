@@ -39,13 +39,22 @@ void StepperDriver::loop()
   steppers_[1].isAtTargetPos = status_.at_target_position_1;
   steppers_[1].pos.int32 = tmc429_.getActualPosition(1);
   steppers_[1].speed.int16 = tmc429_.getActualVelocityInHz(1);
+  steppers_[2].isAtTargetPos = status_.at_target_position_2;
+  steppers_[2].pos.int32 = tmc429_.getActualPosition(2);
+  steppers_[2].speed.int16 = tmc429_.getActualVelocityInHz(2);
 
   // Set Limit
   if (cmd_limit_axis_0_available) {
-    tmc429_.setLimitsInHz(0, cmd_limit_axis_0_value.velocityMinHz, cmd_limit_axis_0_value.velocityMaxHz, cmd_limit_axis_0_value.acceleration_max_hz_per_s);
+    tmc429_.setLimitsInHz(0, cmd_limit_axis_0_value.velocityMinHz, cmd_limit_axis_0_value.velocityMaxHz,
+                          cmd_limit_axis_0_value.acceleration_max_hz_per_s);
   }
   if (cmd_limit_axis_1_available) {
-    tmc429_.setLimitsInHz(1, cmd_limit_axis_1_value.velocityMinHz, cmd_limit_axis_1_value.velocityMaxHz, cmd_limit_axis_1_value.acceleration_max_hz_per_s);
+    tmc429_.setLimitsInHz(1, cmd_limit_axis_1_value.velocityMinHz, cmd_limit_axis_1_value.velocityMaxHz,
+                          cmd_limit_axis_1_value.acceleration_max_hz_per_s);
+  }
+  if (cmd_limit_axis_2_available) {
+    tmc429_.setLimitsInHz(2, cmd_limit_axis_2_value.velocityMinHz, cmd_limit_axis_2_value.velocityMaxHz,
+                          cmd_limit_axis_2_value.acceleration_max_hz_per_s);
   }
 
   // Set Velocity
@@ -62,6 +71,13 @@ void StepperDriver::loop()
     tmc429_.setVelocityMode(1);
     tmc429_.setTargetVelocityInHz(1, cmd_velocity_axis_1_velocity.int32);
     cmd_velocity_axis_1_available = false;
+  }
+  if (cmd_velocity_axis_2_available) {
+    // Serial.print("cmd_velocity_axis_2_available: ");
+    // Serial.println(cmd_velocity_axis_2_velocity.int32);
+    tmc429_.setVelocityMode(2);
+    tmc429_.setTargetVelocityInHz(2, cmd_velocity_axis_2_velocity.int32);
+    cmd_velocity_axis_2_available = false;
   }
 
   // Set Position
@@ -80,6 +96,13 @@ void StepperDriver::loop()
     tmc429_.setTargetPosition(1, cmd_pos_axis_1_pos.int32);
     cmd_pos_axis_1_available = false;
   }
+  if (cmd_pos_axis_2_available) {
+    // Serial.print("cmd_pos_axis_2_available: ");
+    // Serial.println(cmd_pos_axis_2_pos.int32);
+    tmc429_.setSoftMode(2);
+    tmc429_.setTargetPosition(2, cmd_pos_axis_2_pos.int32);
+    cmd_pos_axis_2_available = false;
+  }
 
   // Set Actual Position
   if (cmd_actual_pos_axis_0_available) {
@@ -95,6 +118,12 @@ void StepperDriver::loop()
     tmc429_.setActualPosition(1, cmd_actual_pos_axis_1_pos.int32);
     cmd_actual_pos_axis_1_available = false;
   }
+  if (cmd_actual_pos_axis_2_available) {
+    // Serial.print("cmd_actual_pos_axis_2_available: ");
+    // Serial.println(cmd_actual_pos_axis_2_pos.int32);
+    tmc429_.setActualPosition(2, cmd_actual_pos_axis_2_pos.int32);
+    cmd_actual_pos_axis_2_available = false;
+  }
 
   // Reset Position
   if (cmd_reset_pos_available) {
@@ -102,6 +131,8 @@ void StepperDriver::loop()
     tmc429_.setTargetPosition(0, 0);
     tmc429_.setActualPosition(1, 0);
     tmc429_.setTargetPosition(1, 0);
+    tmc429_.setActualPosition(2, 0);
+    tmc429_.setTargetPosition(2, 0);
     cmd_reset_pos_available = false;
   }
 
@@ -124,6 +155,10 @@ void StepperDriver::setPos(u8_t axisIndex, const u32_t &value)
     cmd_pos_axis_1_available = true;
     cmd_pos_axis_1_pos.uint32 = value.uint32;
   }
+  if (axisIndex.uint8 == 2) {
+    cmd_pos_axis_2_available = true;
+    cmd_pos_axis_2_pos.uint32 = value.uint32;
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -138,6 +173,10 @@ void StepperDriver::setActualPos(u8_t axisIndex, const u32_t &value)
     cmd_actual_pos_axis_1_available = true;
     cmd_actual_pos_axis_1_pos.uint32 = value.uint32;
   }
+  if (axisIndex.uint8 == 2) {
+    cmd_actual_pos_axis_2_available = true;
+    cmd_actual_pos_axis_2_pos.uint32 = value.uint32;
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -147,10 +186,14 @@ void StepperDriver::setVelocity(u8_t axisIndex, const u32_t &value)
   if (axisIndex.uint8 == 0) {
     cmd_velocity_axis_0_available = true;
     cmd_velocity_axis_0_velocity.uint32 = value.uint32;
-  }
-  if (axisIndex.uint8 == 1) {
+    
+  } else if (axisIndex.uint8 == 1) {
     cmd_velocity_axis_1_available = true;
     cmd_velocity_axis_1_velocity.uint32 = value.uint32;
+
+  } else if (axisIndex.uint8 == 2) {
+    cmd_velocity_axis_2_available = true;
+    cmd_velocity_axis_2_velocity.uint32 = value.uint32;
   }
 }
 
@@ -214,6 +257,8 @@ void StepperDriver::statistic()
   Serial.print(steppers_[0].pos.int32);
   Serial.print(", 1:");
   Serial.print(steppers_[1].pos.int32);
+  Serial.print(", 2:");
+  Serial.print(steppers_[2].pos.int32);
   Serial.println("}");
 }
 
@@ -229,9 +274,12 @@ void StepperDriver::initMotor(uint8_t axisIndex, Limit_t *limit)
 //------------------------------------------------------------------------------
 {
   tmc429_.stop(axisIndex);  // velocity mode, speed 0
+
   tmc429_.setLimitsInHz(axisIndex, limit->velocityMinHz, limit->velocityMaxHz, limit->acceleration_max_hz_per_s);
+
   tmc429_.setActualPosition(axisIndex, 0);
   tmc429_.setTargetPosition(axisIndex, 0);
+
   tmc429_.disableLeftSwitchStop(axisIndex);
   tmc429_.disableRightSwitchStop(axisIndex);
   tmc429_.disableSwitchSoftStop(axisIndex);
@@ -253,5 +301,10 @@ void StepperDriver::setLimit(u8_t axisIndex, const Limit_t &limit)
     cmd_limit_axis_1_value.velocityMinHz = limit.velocityMinHz;
     cmd_limit_axis_1_value.velocityMaxHz = limit.velocityMaxHz;
     cmd_limit_axis_1_value.acceleration_max_hz_per_s = limit.acceleration_max_hz_per_s;
+  } else if (axisIndex.uint8 == 2) {
+    cmd_limit_axis_2_available = true;
+    cmd_limit_axis_2_value.velocityMinHz = limit.velocityMinHz;
+    cmd_limit_axis_2_value.velocityMaxHz = limit.velocityMaxHz;
+    cmd_limit_axis_2_value.acceleration_max_hz_per_s = limit.acceleration_max_hz_per_s;
   }
 }

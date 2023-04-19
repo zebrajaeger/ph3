@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Arduino.h>
-#include "tmc429.h"
 
+#include "tmc429.h"
 #include "types.h"
 
 class StepperDriver {
@@ -83,6 +83,20 @@ class StepperDriver {
   volatile bool cmd_limit_axis_1_available;
   volatile Limit_t cmd_limit_axis_1_value;
 
+  // TODO refactor me
+  volatile bool cmd_velocity_axis_2_available;
+  volatile u32_t cmd_velocity_axis_2_velocity;
+
+  volatile bool cmd_pos_axis_2_available;
+  volatile u32_t cmd_pos_axis_2_pos;
+
+  volatile bool cmd_actual_pos_axis_2_available;
+  volatile u32_t cmd_actual_pos_axis_2_pos;
+
+  volatile bool cmd_limit_axis_2_available;
+  volatile Limit_t cmd_limit_axis_2_value;
+
+  // ----
   volatile bool cmd_reset_pos_available;
   volatile bool cmd_stop_all_available;
 };

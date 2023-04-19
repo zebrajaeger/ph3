@@ -38,7 +38,7 @@ public class PanoHeadDevice implements PanoHead {
   }
 
   public PanoHeadData read() throws IOException {
-    ByteBuffer buffer = ByteBuffer.wrap(hardwareDevice.read(14)).order(ByteOrder.LITTLE_ENDIAN);
+    ByteBuffer buffer = ByteBuffer.wrap(hardwareDevice.read(20)).order(ByteOrder.LITTLE_ENDIAN);
 
     PanoHeadData result = new PanoHeadData();
 
@@ -48,6 +48,8 @@ public class PanoHeadDevice implements PanoHead {
     actor.getX().setSpeed(checkAndInvertIfNeeded(0, buffer.getShort()));
     actor.getY().setPos(checkAndInvertIfNeeded(1, buffer.getInt()));
     actor.getY().setSpeed(checkAndInvertIfNeeded(1, buffer.getShort()));
+    actor.getZ().setPos(checkAndInvertIfNeeded(2, buffer.getInt()));
+    actor.getZ().setSpeed(checkAndInvertIfNeeded(2, buffer.getShort()));
     result.setCameraRaw(buffer.get());
 
     result.init();
@@ -77,7 +79,7 @@ public class PanoHeadDevice implements PanoHead {
   }
 
   public void setLimit(int axisIndex, int limit) throws IOException {
-    Assert.state(axisIndex == 0 || axisIndex == 1, "Illegal axis index: " + axisIndex);
+    Assert.state(axisIndex >= 0 && axisIndex <= 2, "Illegal axis index: " + axisIndex);
     ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
     buffer.put((byte) 0x20);
     buffer.put((byte) axisIndex);
@@ -134,7 +136,7 @@ public class PanoHeadDevice implements PanoHead {
   }
 
   private int checkAndInvertIfNeeded(int axisIndex, int value) {
-    Assert.state(axisIndex == 0 || axisIndex == 1, "Illegal axis index: " + axisIndex);
+    Assert.state(axisIndex >= 0 && axisIndex <= 2, "Illegal axis index: " + axisIndex);
     if (X_INVERTED && axisIndex == 0) {
       value = -value;
     }

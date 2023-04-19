@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 public class PanoHeadService {
 
   private static final Logger LOG = LoggerFactory.getLogger(PanoHeadService.class);
+  private static final int AXIS_INDEX_X = 0;
+  private static final int AXIS_INDEX_Y = 2;
   private final HardwareService hardwareService;
   private final Axis x;
   private final Axis y;
@@ -76,8 +78,8 @@ public class PanoHeadService {
       ApplicationEventPublisher applicationEventPublisher) {
     this.hardwareService = hardwareService;
     this.applicationEventPublisher = applicationEventPublisher;
-    x = new Axis(hardwareService.getPanoHead(), 0, axisTranslatorService, true);
-    y = new Axis(hardwareService.getPanoHead(), 1, axisTranslatorService, false);
+    x = new Axis(hardwareService.getPanoHead(), AXIS_INDEX_X, axisTranslatorService, true);
+    y = new Axis(hardwareService.getPanoHead(), AXIS_INDEX_Y, axisTranslatorService, false);
   }
 
   @Scheduled(initialDelay = 0, fixedRateString = "${controller.power.period:250}")
@@ -110,8 +112,8 @@ public class PanoHeadService {
     panoHeadData = hardwareService.getPanoHead().read();
     applicationEventPublisher.publishEvent(new PanoHeadDataEvent(panoHeadData));
 
-    x.setRawValue(panoHeadData.getActor().getX().getPos());
-    y.setRawValue(panoHeadData.getActor().getY().getPos());
+    x.setRawValue(panoHeadData.getActor().getByIndex(AXIS_INDEX_X).getPos());
+    y.setRawValue(panoHeadData.getActor().getByIndex(AXIS_INDEX_Y).getPos());
     applicationEventPublisher.publishEvent(
         new PositionEvent(getCurrentRawPosition(), getCurrentPosition()));
 

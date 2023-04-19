@@ -7,7 +7,8 @@ public class AxisTranslatorServiceImpl implements AxisTranslatorService {
 
   // https://www.ti.com/lit/ds/symlink/drv8825.pdf
   // https://www.pololu.com/product/2133/pictures#lightbox-picture0J4222
-  private static final double STEPPER_MICROSTEPS = 8;
+  // DRV8825: 8; TMC2209: 16
+  private static final double STEPPER_MICROSTEPS = 16;
   // https://www.omc-stepperonline.com/download/11HS12-0674D-PG27.pdf
   private static final double STEPPER_STEPS = 200;
   private static final double STEPPER_GEARBOX_RATIO = 26d + (103d / 121d);

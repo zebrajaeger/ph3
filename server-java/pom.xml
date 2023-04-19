@@ -15,7 +15,7 @@
 
   <properties>
     <java.version>11</java.version>
-    <spring-boot.version>2.4.5</spring-boot.version>
+    <spring-boot.version>2.7.10</spring-boot.version>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 

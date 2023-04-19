@@ -174,9 +174,13 @@ public class RobotService {
       if (GoToPosCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.CMD_MOVE).sendUpdate();
         try {
-          panoHeadService.goTo(new Position(
+          boolean alreadyAtPosition = panoHeadService.goTo(new Position(
               currentCommand.getShotPosition().getX(),
               currentCommand.getShotPosition().getY()));
+          if (alreadyAtPosition) {
+            // We need this, because no motion-stop event will occur
+            executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
+          }
         } catch (IOException e) {
           setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
         }

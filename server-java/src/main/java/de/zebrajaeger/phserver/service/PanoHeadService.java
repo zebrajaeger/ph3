@@ -182,12 +182,15 @@ public class PanoHeadService {
     y.moveRelative(relPosition.getY());
   }
 
-  public void goTo(Position position) throws IOException {
+  /**
+   * @param position to go to
+   * @return true: already at the required position; false: move required
+   */
+  public boolean goTo(Position position) throws IOException {
     if (isJoggingEnabled()) {
-      return;
+      return false;
     }
-    x.moveTo(position.getX());
-    y.moveTo(position.getY());
+    return x.moveTo(position.getX()) ||    y.moveTo(position.getY());
   }
 
   public void stopAll() throws IOException {

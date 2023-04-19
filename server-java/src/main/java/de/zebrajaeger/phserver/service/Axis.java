@@ -27,12 +27,24 @@ public class Axis {
     this.isInverted = isInverted;
   }
 
-  public void moveTo(double posDeg) throws IOException {
+  /**
+   *
+   * @param posDeg Position to go to.
+   * @return  true: already at the required position; false: move required;
+   */
+
+  public boolean moveTo(double posDeg) throws IOException {
     if (isInverted) {
       posDeg = -posDeg;
     }
     int raw = axisTranslatorService.degToRaw(posDeg);
-    setTargetPosRaw(raw - offsetRaw);
+    final int targetPos = raw - offsetRaw;
+    if(rawValue!=targetPos){
+      setTargetPosRaw(targetPos);
+      return false;
+    }else{
+      return true;
+    }
   }
 
   public void moveRelative(double angleDeg) throws IOException {

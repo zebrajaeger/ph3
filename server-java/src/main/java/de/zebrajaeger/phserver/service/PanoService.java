@@ -18,7 +18,7 @@ import de.zebrajaeger.phserver.event.PanoFOVChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
 import de.zebrajaeger.phserver.event.ShotsChangedEvent;
 import de.zebrajaeger.phserver.pano.Command;
-import de.zebrajaeger.phserver.pano.DefaultPanoGenerator;
+import de.zebrajaeger.phserver.pano.MatrixPanoGenerator;
 import de.zebrajaeger.phserver.pano.PanoGenerator;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +35,7 @@ public class PanoService {
   private final SettingsService settingsService;
   private final AxisTranslatorServiceImpl axisTranslatorService;
 
-  private final PanoGenerator panoGenerator = new DefaultPanoGenerator();
+  private final PanoGenerator panoGenerator = new MatrixPanoGenerator();
   private final FieldOfView pictureFOV = new FieldOfView();
   private final FieldOfViewPartial panoFOV = new FieldOfViewPartial();
   private double minimumOverlapH = 0.25;

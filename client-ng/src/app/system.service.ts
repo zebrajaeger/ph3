@@ -11,4 +11,8 @@ export class SystemService {
   shutdown(): void {
     this.rxStompService.publish({destination: '/system/shutdown'});
   }
+
+  reboot(): void {
+    this.rxStompService.publish({destination: '/system/reboot'});
+  }
 }

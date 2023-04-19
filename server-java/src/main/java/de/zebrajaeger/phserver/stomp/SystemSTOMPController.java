@@ -19,8 +19,14 @@ public class SystemSTOMPController {
   }
 
   @MessageMapping("/system/shutdown")
-  public void start() throws IOException {
+  public void shutdown() throws IOException {
     LOG.info("Shutdown System (STOMP)");
     hardwareService.getSystemDevice().shutdown();
+  }
+
+  @MessageMapping("/system/reboot")
+  public void reboot() throws IOException {
+    LOG.info("Reboot System (STOMP)");
+    hardwareService.getSystemDevice().reboot();
   }
 }

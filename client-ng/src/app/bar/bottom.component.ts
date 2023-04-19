@@ -22,7 +22,7 @@ export class BottomComponent implements OnInit, OnDestroy {
   public stateMsg?: string;
   private calculatedPanoSubscription!: Subscription;
   public calc?: CalculatedPano;
-  public panoMsg? : string;
+  public panoMsg?: string;
 
   private powerSubscription!: Subscription;
   public gauge!: Power;
@@ -68,5 +68,10 @@ export class BottomComponent implements OnInit, OnDestroy {
   shutdown(): void {
     this.systemService.shutdown();
     console.log('shutdown');
+  }
+
+  reboot(): void {
+    this.systemService.reboot();
+    console.log('reboot');
   }
 }

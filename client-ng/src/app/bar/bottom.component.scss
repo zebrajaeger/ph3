@@ -23,7 +23,7 @@
 
 .shutdown-dialog {
   width: 320px;
-  height: 128px;
+  height: calc((128px + 10px) * 2 - 10px);
 
   display:grid;
   grid-template-columns: auto;
@@ -33,5 +33,10 @@
 
   .button {
     background-color: red;
+    margin-top: 10px;
+  }
+
+  .button:first-child {
+    margin-top: 0;
   }
 }

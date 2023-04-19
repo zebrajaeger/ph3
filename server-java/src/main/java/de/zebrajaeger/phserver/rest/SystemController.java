@@ -20,9 +20,15 @@ public class SystemController {
     this.hardwareService = hardwareService;
   }
 
-  @GetMapping("shutdown")
+  @GetMapping("system/shutdown")
   public void shutdown() throws IOException {
     LOG.info("Shutdown System (REST)");
     hardwareService.getSystemDevice().shutdown();
+  }
+
+  @GetMapping("system/reboot")
+  public void reboot() throws IOException {
+    LOG.info("Reboot System (REST)");
+    hardwareService.getSystemDevice().reboot();
   }
 }

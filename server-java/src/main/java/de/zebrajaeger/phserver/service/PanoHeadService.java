@@ -1,6 +1,5 @@
 package de.zebrajaeger.phserver.service;
 
-import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import de.zebrajaeger.phserver.data.Camera;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.data.Position;
@@ -16,6 +15,7 @@ import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.hardware.PowerGauge;
+import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import java.io.IOException;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -173,13 +173,21 @@ public class PanoHeadService {
    *
    * @param relPosition way to move in deg
    */
-  public void manualMove(Position relPosition) throws IOException {
+  public void manualRelativeMove(Position relPosition) throws IOException {
     if (!isJoggingEnabled()) {
       return;
     }
 
     x.moveRelative(relPosition.getX());
     y.moveRelative(relPosition.getY());
+  }
+
+  public void manualAbsoluteMove(Position position) throws IOException {
+    if (!isJoggingEnabled()) {
+      return;
+    }
+    x.moveTo(position.getX());
+    y.moveTo(position.getY());
   }
 
   /**
@@ -190,7 +198,7 @@ public class PanoHeadService {
     if (isJoggingEnabled()) {
       return false;
     }
-    return x.moveTo(position.getX()) ||    y.moveTo(position.getY());
+    return x.moveTo(position.getX()) || y.moveTo(position.getY());
   }
 
   public void stopAll() throws IOException {

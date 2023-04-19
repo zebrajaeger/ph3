@@ -63,7 +63,7 @@ public class PanoHeadSTOMPController {
 
   @MessageMapping("/actor/goToZero")
   public void goToZero() throws IOException {
-    panoHeadService.goTo(new Position(0, 0));
+    panoHeadService.manualAbsoluteMove(new Position(0, 0));
   }
 
   @MessageMapping("/actor/adaptOffset")
@@ -78,7 +78,7 @@ public class PanoHeadSTOMPController {
 
   @MessageMapping("/actor/manualMove")
   public void manualMove(@Payload Position relPosition) throws IOException {
-    panoHeadService.manualMove(relPosition);
+    panoHeadService.manualRelativeMove(relPosition);
   }
 
   @MessageMapping("/actor/manualMoveByJoystick")

@@ -1,13 +1,13 @@
 <div class="control">
   <!--  +y-->
-  <div class="button h-center" (click)="manualMove(0,10)">+10</div>
-  <div class="button h-center" (click)="manualMove(0,1)">+1</div>
-  <div class="button h-center" (click)="manualMove(0,0.1)">+0.1</div>
+  <div class="button h-center" (click)="manualMove(0,-10)">-10</div>
+  <div class="button h-center" (click)="manualMove(0,-1)">-1</div>
+  <div class="button h-center" (click)="manualMove(0,-0.1)">-0.1</div>
 
   <!--  +x-->
-  <div class="button h-left v-center" (click)="manualMove(10,0)">+10</div>
-  <div class="button v-center" (click)="manualMove(1,0)">+1</div>
-  <div class="button v-center" (click)="manualMove(0.1,0)">+0.1</div>
+  <div class="button h-left v-center" (click)="manualMove(-10,0)">-10</div>
+  <div class="button v-center" (click)="manualMove(-1,0)">-1</div>
+  <div class="button v-center" (click)="manualMove(-0.1,0)">-0.1</div>
 
   <div class="joystick v-center zone">
     <ngx-joystick #dynamicJoystick [options]="{
@@ -20,13 +20,13 @@
   </div>
 
   <!--  -x-->
-  <div class="button v-center" (click)="manualMove(-0.1,0)">-0.1</div>
-  <div class="button v-center" (click)="manualMove(-1,0)">-1</div>
-  <div class="button v-center" (click)="manualMove(-10,0)">-10</div>
+  <div class="button v-center" (click)="manualMove(0.1,0)">0.1</div>
+  <div class="button v-center" (click)="manualMove(1,0)">1</div>
+  <div class="button v-center" (click)="manualMove(10,0)">10</div>
 
-  <div class="button h-center" (click)="manualMove(0, -0.1)">-0.1</div>
-  <div class="button h-center" (click)="manualMove(0, -1)">-1</div>
-  <div class="button h-center" (click)="manualMove(0, -10)">-10</div>
+  <div class="button h-center" (click)="manualMove(0, 0.1)">0.1</div>
+  <div class="button h-center" (click)="manualMove(0, 1)">1</div>
+  <div class="button h-center" (click)="manualMove(0, 10)">10</div>
 
   <!--  additional content-->
   <div class="additional-content top left">

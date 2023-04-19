@@ -15,11 +15,17 @@ import java.util.List;
 import org.apache.commons.math3.util.Precision;
 import org.springframework.lang.Nullable;
 
-public class DefaultPanoGenerator implements PanoGenerator {
+public class MatrixPanoGenerator implements PanoGenerator {
+
+  public static final double BACKLASH_ANGLE = 25d;
 
   @Override
-  public List<Command> createCommands(Position currentPosDeg, Image image, Pano pano,
-      List<Shot> shots, Delay delay) {
+  public List<Command> createCommands(
+      Position currentPosDeg,
+      Image image,
+      Pano pano,
+      List<Shot> shots,
+      Delay delay) {
 
     final CalculatedPano calculatedPano = calculatePano(currentPosDeg, image, pano);
 
@@ -53,8 +59,31 @@ public class DefaultPanoGenerator implements PanoGenerator {
           }
         }
 
+        final double x = xPosition + xOffset;
+        if (lastShotPosition == null) {
+          // this is the first position, so we go a little left to avoid the backlash
+          ShotPosition antiBackLashPos = new ShotPosition(
+              x - BACKLASH_ANGLE, yPosition - BACKLASH_ANGLE,
+              posIndex,
+              xIndex, xLength,
+              yIndex, yLength
+          );
+          commands.add(new GoToPosCommand(antiBackLashPos, "XY anti-backlash move"));
+        } else {
+          // if we go left, we go a little more left before, so we avoid the backlash
+          if (x - lastShotPosition.getX() < 0) {
+            ShotPosition antiBackLashPos = new ShotPosition(
+                x - BACKLASH_ANGLE, yPosition,
+                posIndex,
+                xIndex, xLength,
+                yIndex, yLength
+            );
+            commands.add(new GoToPosCommand(antiBackLashPos, "X anti-backlash move"));
+          }
+        }
+
         ShotPosition shotPos = new ShotPosition(
-            xPosition + xOffset, yPosition,
+            x, yPosition,
             posIndex,
             xIndex, xLength,
             yIndex, yLength

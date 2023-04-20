@@ -27,19 +27,6 @@ run *de.zebrajaeger.phserver.App* with profile "develop"
 
 run *de.zebrajaeger.phserver.App* with profile "remote"
 
-## Issues
-
-PI4 loses WiFi Connection
-
-- https://forums.raspberrypi.com/viewtopic.php?t=278393&sid=2932da18f4c4dc58bc39dd206f2ffec8&start=25
-
-Try to run
-
-   tvservice -o
-   
-That switches HDMI off
-
-Or change firmware: https://github.com/raspberrypi/linux/issues/3849#issuecomment-736676729
 
 ## Electronic
 

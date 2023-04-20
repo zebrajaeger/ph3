@@ -15,6 +15,7 @@ public class FakePanoHead implements PanoHead {
   private final PanoHeadData panoHeadData = new PanoHeadData();
   private final FakeActorAxis x = new FakeActorAxis();
   private final FakeActorAxis y = new FakeActorAxis();
+  private final FakeActorAxis z = new FakeActorAxis();
 
   public FakePanoHead(int ticsPerSec) {
     this.ticsPerSec = ticsPerSec;
@@ -23,6 +24,7 @@ public class FakePanoHead implements PanoHead {
   public void reset() {
     x.reset();
     y.reset();
+    z.reset();
   }
 
   @Override
@@ -61,6 +63,8 @@ public class FakePanoHead implements PanoHead {
       x.setLimit(limit);
     } else if (axisIndex == 1) {
       y.setLimit(limit);
+    } else if (axisIndex == 2) {
+      z.setLimit(limit);
     } else {
       throw new IllegalArgumentException("Wrong axis index: " + axisIndex);
     }
@@ -72,6 +76,8 @@ public class FakePanoHead implements PanoHead {
       x.setVelocity(velocity);
     } else if (axisIndex == 1) {
       y.setVelocity(velocity);
+    } else if (axisIndex == 2) {
+      z.setVelocity(velocity);
     } else {
       throw new IllegalArgumentException("Wrong axis index: " + axisIndex);
     }
@@ -83,6 +89,8 @@ public class FakePanoHead implements PanoHead {
       x.setTargetPos(pos);
     } else if (axisIndex == 1) {
       y.setTargetPos(pos);
+    } else if (axisIndex == 2) {
+      z.setTargetPos(pos);
     } else {
       throw new IllegalArgumentException("Wrong axis index: " + axisIndex);
     }
@@ -91,7 +99,8 @@ public class FakePanoHead implements PanoHead {
   @Override
   public void stopAll() {
     x.setVelocity(0);
-    x.setVelocity(1);
+    y.setVelocity(0);
+    z.setVelocity(0);
   }
 
   @Override
@@ -106,6 +115,8 @@ public class FakePanoHead implements PanoHead {
       x.setActualAndTargetPos(pos);
     } else if (axisIndex == 1) {
       y.setActualAndTargetPos(pos);
+    } else if (axisIndex == 2) {
+      z.setActualAndTargetPos(pos);
     } else {
       throw new IllegalArgumentException("Wrong axis index: " + axisIndex);
     }
@@ -115,6 +126,7 @@ public class FakePanoHead implements PanoHead {
   public void resetPos() {
     x.reset();
     y.reset();
+    z.reset();
   }
 
   public void update() {
@@ -129,5 +141,11 @@ public class FakePanoHead implements PanoHead {
     dataY.setMoving(y.isMoving());
     dataY.setAtTargetPos(y.isAtPos());
     dataY.setPos(y.getPos());
+
+    z.update(ticsPerSec);
+    ActorAxis dataZ = panoHeadData.getActor().getZ();
+    dataZ.setMoving(z.isMoving());
+    dataZ.setAtTargetPos(z.isAtPos());
+    dataZ.setPos(z.getPos());
   }
 }

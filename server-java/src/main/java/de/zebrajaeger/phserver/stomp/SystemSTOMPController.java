@@ -29,4 +29,10 @@ public class SystemSTOMPController {
     LOG.info("Reboot System (STOMP)");
     hardwareService.getSystemDevice().reboot();
   }
+
+  @MessageMapping("/system/restartApp")
+  public void restartApp() throws IOException {
+    LOG.info("Restart App (STOMP)");
+    hardwareService.getSystemDevice().restartApp();
+  }
 }

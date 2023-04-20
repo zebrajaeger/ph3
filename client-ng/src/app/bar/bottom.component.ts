@@ -74,4 +74,9 @@ export class BottomComponent implements OnInit, OnDestroy {
     this.systemService.reboot();
     console.log('reboot');
   }
+
+  restartApp(): void {
+    this.systemService.restartApp();
+    console.log('restartApp');
+  }
 }

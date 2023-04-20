@@ -15,4 +15,8 @@ export class SystemService {
   reboot(): void {
     this.rxStompService.publish({destination: '/system/reboot'});
   }
+
+  restartApp(): void {
+    this.rxStompService.publish({destination: '/system/restartApp'});
+  }
 }

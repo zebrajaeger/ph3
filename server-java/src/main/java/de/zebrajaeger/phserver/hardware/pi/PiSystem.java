@@ -23,6 +23,13 @@ public class PiSystem implements SystemDevice {
     executeCommand("sudo reboot");
   }
 
+  @Override
+  public void restartApp() throws IOException {
+    LOG.info("Restart App");
+    executeCommand("sudo service browser restart");
+    executeCommand("sudo service ph restart");
+  }
+
   private void executeCommand(String command) throws IOException {
     Runtime runtime = Runtime.getRuntime();
     Process p = runtime.exec(command);
@@ -32,5 +39,4 @@ public class PiSystem implements SystemDevice {
       LOG.info(l);
     }
   }
-
 }

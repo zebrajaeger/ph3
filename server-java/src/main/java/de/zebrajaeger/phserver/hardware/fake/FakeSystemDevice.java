@@ -17,4 +17,8 @@ public class FakeSystemDevice implements SystemDevice {
   public void reboot() {
     LOG.warn("REBOOT triggered (but this is a fake device, so nothing will happen");
   }
+  @Override
+  public void restartApp() {
+    LOG.warn("Restart App triggered (but this is a fake device, so nothing will happen");
+  }
 }

@@ -126,12 +126,17 @@ public class MatrixPanoGenerator implements PanoGenerator {
     FieldOfViewPartial targetFov = pano.getFieldOfViewPartial();
     if (targetFov.isPartial()) {
       calc.setPartial(true);
+
       Double hTargetSize = targetFov.getHorizontal().getSize();
       if (hTargetSize == null) {
         throw new IllegalArgumentException(String.format("Pano FOV error: '%s'", targetFov));
       }
       calc.setTargetSize(Math.abs(hTargetSize));
-      calc.setTargetStartPoint(targetFov.getHorizontal().getFrom());
+
+      double xStartPos = Math.min(
+          targetFov.getHorizontal().getFrom(),
+          targetFov.getHorizontal().getTo());
+      calc.setTargetStartPoint(xStartPos);
     } else {
       calc.setPartial(false);
       calc.setTargetSize(360d);

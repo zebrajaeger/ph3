@@ -56,15 +56,28 @@
                 <sshexec host="${remote.host}"
                   username="${remote.user}"
                   keyfile="${remote.keyfile}"
-                  command="chmod +x ~/ph3-server-0.0.1-SNAPSHOT.jar"
+                  command="sudo service ph restart"
                   trust="true"
                 />
                 <sshexec host="${remote.host}"
                   username="${remote.user}"
                   keyfile="${remote.keyfile}"
-                  command="sudo reboot"
+                  command="sudo service browser restart"
                   trust="true"
                 />
+
+                <!--                <sshexec host="${remote.host}"-->
+                <!--                  username="${remote.user}"-->
+                <!--                  keyfile="${remote.keyfile}"-->
+                <!--                  command="chmod +x ~/ph3-server-0.0.1-SNAPSHOT.jar"-->
+                <!--                  trust="true"-->
+                <!--                />-->
+                <!--                <sshexec host="${remote.host}"-->
+                <!--                  username="${remote.user}"-->
+                <!--                  keyfile="${remote.keyfile}"-->
+                <!--                  command="sudo reboot"-->
+                <!--                  trust="true"-->
+                <!--                />-->
               </target>
             </configuration>
           </execution>

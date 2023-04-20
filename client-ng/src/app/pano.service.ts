@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subscription, firstValueFrom} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Border, CalculatedPano, Delay, FieldOfView, FieldOfViewPartial} from '../data/pano';
 import {Shots} from '../data/camera';
@@ -143,7 +143,7 @@ export class PanoService {
 
     requestRecalculatePano(): void {
         console.log("REQUEST RECALCULATION");
-        this.rxStompRPCService.rpc({destination: '/rpc/pano/recalculate'}).toPromise().then();
+        firstValueFrom(this.rxStompRPCService.rpc({destination: '/rpc/pano/recalculate'})).then();
     }
 
     // </editor-fold>

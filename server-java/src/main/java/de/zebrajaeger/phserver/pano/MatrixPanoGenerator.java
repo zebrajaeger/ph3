@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import org.apache.commons.math3.util.Precision;
 import org.springframework.lang.Nullable;
 
 public class MatrixPanoGenerator implements PanoGenerator {
@@ -31,8 +30,6 @@ public class MatrixPanoGenerator implements PanoGenerator {
 
     List<Command> commands = new LinkedList<>();
 
-    commands.add(createInitialGoTo(currentPosDeg, calculatedPano));
-
     int posIndex = 0;
     ShotPosition lastShotPosition = null;
 
@@ -46,7 +43,6 @@ public class MatrixPanoGenerator implements PanoGenerator {
       int xLength = calculatedPano.getHorizontalPositions().size();
       double xOffset = 0;
       for (double xPosition : calculatedPano.getHorizontalPositions()) {
-        // TODO add additional move command to move al litte bit farther back and than to the correct position to dupe the backlash
 
         if (lastShotPosition != null && xIndex == 0) {
           double delta = xPosition - lastShotPosition.getX();
@@ -61,7 +57,8 @@ public class MatrixPanoGenerator implements PanoGenerator {
 
         final double x = xPosition + xOffset;
         if (lastShotPosition == null) {
-          // this is the first position, so we go a little left to avoid the backlash
+          // this is the first position, so we go a little left and up
+          // before we go to the target position. This is to avoid the backlash
           ShotPosition antiBackLashPos = new ShotPosition(
               x - BACKLASH_ANGLE, yPosition - BACKLASH_ANGLE,
               posIndex,
@@ -70,7 +67,8 @@ public class MatrixPanoGenerator implements PanoGenerator {
           );
           commands.add(new GoToPosCommand(antiBackLashPos, "XY anti-backlash move"));
         } else {
-          // if we go left, we go a little more left before, so we avoid the backlash
+          // if we go left, we go a little more left before, we go to the target position,
+          // so we avoid the backlash
           if (x - lastShotPosition.getX() < 0) {
             ShotPosition antiBackLashPos = new ShotPosition(
                 x - BACKLASH_ANGLE, yPosition,
@@ -105,7 +103,13 @@ public class MatrixPanoGenerator implements PanoGenerator {
     }
 
     commands.add(new NormalizePositionCommand(
-        new ShotPosition(-1, -1, -1, -1, -1, -1, -1),
+        new ShotPosition(
+            0, 0,
+            posIndex,
+            calculatedPano.getHorizontalPositions().size() - 1,
+            calculatedPano.getHorizontalPositions().size(),
+            calculatedPano.getVerticalPositions().size() - 1,
+            calculatedPano.getVerticalPositions().size()),
         "NormalizePosition"));
 
     return commands;
@@ -169,26 +173,6 @@ public class MatrixPanoGenerator implements PanoGenerator {
     return result;
   }
 
-  private GoToPosCommand createInitialGoTo(Position currentPosDeg, CalculatedPano calculatedPano) {
-    // first command: move 5° left
-    double x1 = currentPosDeg.getX();
-    double x2 = calculatedPano.getHorizontalPositions().get(0) - 5;
-    double y = calculatedPano.getVerticalPositions().get(0);
-    //noinspection SuspiciousNameCombination
-    if (Precision.equals(x1, x2, 1d)) {
-      // to close together start extra 2° left (=7°)
-      x2 -= 2d;
-    }
-
-    ShotPosition shotPos = new ShotPosition(
-        x2, y,
-        -1,
-        -1, calculatedPano.getHorizontalPositions().size(),
-        0, calculatedPano.getVerticalPositions().size());
-
-    return new GoToPosCommand(shotPos, String.format("GoToIdx: %d,%d", -1, 0));
-  }
-
   private List<Command> createCommandsForPos(
       ShotPosition shotPos, @Nullable ShotPosition lastShotPosition,
       int xIndex, int yIndex, List<Shot> shots,
@@ -197,11 +181,11 @@ public class MatrixPanoGenerator implements PanoGenerator {
     List<Command> commands = new ArrayList<>();
 
     // now go to shot position
-    commands.add(new GoToPosCommand(shotPos, String.format("GoToIdx: %d,%d", xIndex, yIndex)));
+    commands.add(new GoToPosCommand(shotPos, String.format("Go to: (%d,%d)", xIndex, yIndex)));
 
     // wait until the swinging is over
     if (delay.getWaitAfterMove() > 0) {
-      commands.add(new WaitCommand(shotPos, "WaitAfterMove", delay.getWaitAfterMove()));
+      commands.add(new WaitCommand(shotPos, "Wait after move", delay.getWaitAfterMove()));
     }
 
     // shots
@@ -215,13 +199,13 @@ public class MatrixPanoGenerator implements PanoGenerator {
 
       // if there is another shot, wait if needed
       if (i < shots.size() && delay.getWaitBetweenShots() > 0) {
-        commands.add(new WaitCommand(shotPos, "WaitBetweenShots", delay.getWaitBetweenShots()));
+        commands.add(new WaitCommand(shotPos, "Wait between shots", delay.getWaitBetweenShots()));
       }
     }
 
     // if needed, wait after the last shot
     if (delay.getWaitAfterShot() > 0) {
-      commands.add(new WaitCommand(shotPos, "WaitAfterShot", delay.getWaitAfterShot()));
+      commands.add(new WaitCommand(shotPos, "Wait after shot", delay.getWaitAfterShot()));
     }
 
     commands.add(new ApplyOffsetCommand(shotPos, "Apply offset"));

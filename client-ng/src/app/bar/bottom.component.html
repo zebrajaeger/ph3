@@ -2,11 +2,6 @@
   <div class="item">Pos: (<span class="value">{{actorPos}}</span>)</div>
   <div class="item"> Pano: (<span class="value">{{panoMsg}}</span>)</div>
   <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
-  <span *ngIf="state" class="item">
-    State: {{state.automateState}}<span *ngIf="!isStopped()">:
-        <span class="value">{{stateMsg}}</span>
-        </span>
-    </span>
 </div>
 <div class="onoff">
   <img src="assets/power-button-svgrepo-com.svg"

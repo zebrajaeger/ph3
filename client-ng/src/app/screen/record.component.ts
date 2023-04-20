@@ -2,9 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RouterService} from '../router.service';
 import {UiService} from '../ui.service';
 import {PanoHeadService} from '../panohead.service';
-import {RecordState} from '../../data/record';
+import {AutomateState, RecordState} from '../../data/record';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../pano.service';
+import {CalculatedPano} from "../../data/pano";
 
 @Component({
   selector: 'app-record',
@@ -14,6 +15,9 @@ import {PanoService} from '../pano.service';
 export class RecordComponent implements OnInit, OnDestroy {
   private recordStateSubscription!: Subscription;
   public _state!: RecordState;
+
+  private calculatedPanoSubscription!: Subscription;
+  public calc?: CalculatedPano;
 
   public done: number = 0;
   public x?: number;
@@ -31,10 +35,17 @@ export class RecordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.recordStateSubscription = this.panoHeadService.subscribeRecordState(state => this.state = state);
+    this.calculatedPanoSubscription = this.panoService.subscribeCalculatedPano(calculatedPano => {
+      console.log('RECALCULATED!!!!', calculatedPano)
+      this.calc = calculatedPano
+      this.x = calculatedPano.horizontalPositions.length;
+      this.y = calculatedPano.verticalPositions.length;
+    });
   }
 
   ngOnDestroy(): void {
     this.recordStateSubscription?.unsubscribe();
+    this.calculatedPanoSubscription?.unsubscribe();
   }
 
   get state(): RecordState {
@@ -44,11 +55,17 @@ export class RecordComponent implements OnInit, OnDestroy {
   set state(value: RecordState) {
     this._state = value;
     const cmd = value?.command;
-    const shotPos = cmd?.shotPosition;
-    this.x = shotPos?.xLength;
-    this.y = shotPos?.yLength;
-    this.done = shotPos?.index ? shotPos?.index + 1 : -1;
-    this.msg = `[${value?.commandIndex + 1}/${value?.commandCount}] ${cmd?.description}`;
+    if (value.automateState !== AutomateState.STOPPED) {
+      const shotPos = cmd?.shotPosition;
+      this.x = shotPos?.xLength;
+      this.y = shotPos?.yLength;
+      if (shotPos && shotPos.index >= 0) {
+        this.done = shotPos.index + 1;
+      }
+      this.msg = `[${value?.commandIndex + 1}/${value?.commandCount}] ${cmd?.description}`;
+    } else {
+      this.msg = '';
+    }
   }
 
   onStart(): void {

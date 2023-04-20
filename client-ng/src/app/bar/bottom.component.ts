@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PanoHeadService} from '../panohead.service';
 import {Subscription} from 'rxjs';
-import {AutomateState, RecordState} from '../../data/record';
 import {PanoService} from '../pano.service';
 import {CalculatedPano} from '../../data/pano';
 import {Power} from '../../data/panohead';
@@ -17,9 +16,6 @@ export class BottomComponent implements OnInit, OnDestroy {
   private actorSubscription!: Subscription;
   public actorPos!: string;
 
-  private recordStateSubscription!: Subscription;
-  public state?: RecordState;
-  public stateMsg?: string;
   private calculatedPanoSubscription!: Subscription;
   public calc?: CalculatedPano;
   public panoMsg?: string;
@@ -38,10 +34,6 @@ export class BottomComponent implements OnInit, OnDestroy {
     this.actorSubscription = this.panoHeadService.subscribeActorPosition(actorPositionData => {
       this.actorPos = `${actorPositionData.x.toFixed(3)}°, ${actorPositionData.y.toFixed(3)}°`;
     });
-    this.recordStateSubscription = this.panoHeadService.subscribeRecordState(state => {
-      this.state = state;
-      this.stateMsg = `[${state?.commandIndex + 1}/${state?.commandCount}] [${state?.pauseState}]: ${state?.command?.description}`;
-    });
     this.panoService.subscribeCalculatedPano(calculatedPano => {
       this.calc = calculatedPano;
       this.panoMsg = `${this.calc?.horizontalPositions.length}, ${this.calc?.verticalPositions.length}`
@@ -54,15 +46,8 @@ export class BottomComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.actorSubscription?.unsubscribe();
-    this.recordStateSubscription?.unsubscribe();
     this.calculatedPanoSubscription?.unsubscribe();
     this.powerSubscription?.unsubscribe();
-  }
-
-  isStopped(): boolean {
-    return !this.state ||
-        (this.state?.automateState === AutomateState.STOPPED ||
-            this.state?.automateState === AutomateState.STOPPED_WITH_ERROR);
   }
 
   shutdown(): void {

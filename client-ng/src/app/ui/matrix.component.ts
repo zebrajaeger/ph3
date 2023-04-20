@@ -73,11 +73,16 @@ export class MatrixComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     const xn = this.x;
-    // const xn = Math.random()*10;
     const yn = this.y;
     const w = canvas.width;
     const h = canvas.height;
     const v = this.done;
+    console.log({xn,yn,v})
+
+    if(v===-1){
+      return;
+    }
+
 
     ctx.clearRect(0, 0, w, h);
 
@@ -96,7 +101,7 @@ export class MatrixComponent implements OnInit, AfterViewInit, OnChanges {
         const y = yl * yi
 
         const n = yi * xn + xi;
-        if (n == v - 1 && this.color) {
+        if (n == v && this.color) {
           ctx.fillStyle = this.color;
         }
         if (n < v) {

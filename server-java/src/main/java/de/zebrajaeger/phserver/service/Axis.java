@@ -11,8 +11,6 @@ public class Axis {
 
   private final PanoHead panoHead;
   private final int axisIndex;
-  //  private final Translator rawToDeg;
-//  private final Translator degToRaw;
   private final AxisTranslatorService axisTranslatorService;
 
   private final boolean isInverted;

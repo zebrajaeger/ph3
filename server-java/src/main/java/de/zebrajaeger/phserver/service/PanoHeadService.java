@@ -200,7 +200,9 @@ public class PanoHeadService {
     if (isJoggingEnabled()) {
       return false;
     }
-    return x.moveTo(position.getX()) && y.moveTo(position.getY());
+    boolean _x = x.moveTo(position.getX());
+    boolean _y = y.moveTo(position.getY());
+    return _x && _y;
   }
 
   public void stopAll() throws IOException {

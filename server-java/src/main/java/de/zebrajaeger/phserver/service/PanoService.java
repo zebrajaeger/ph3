@@ -13,7 +13,6 @@ import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.data.Shots;
 import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
-import de.zebrajaeger.phserver.event.OverlapChangedEvent;
 import de.zebrajaeger.phserver.event.PanoFOVChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
 import de.zebrajaeger.phserver.event.ShotsChangedEvent;
@@ -23,11 +22,18 @@ import de.zebrajaeger.phserver.pano.PanoGenerator;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
 // TODO @Getter @Setter
 @Service
+@Getter
+@Setter
+@Slf4j
 public class PanoService {
 
   private final PanoHeadService panoHeadService;
@@ -35,7 +41,7 @@ public class PanoService {
   private final SettingsService settingsService;
   private final AxisTranslatorServiceImpl axisTranslatorService;
 
-  private final PanoGenerator panoGenerator = new MatrixPanoGenerator();
+  private final PanoGenerator panoGenerator = new MatrixPanoGenerator(5d, true);
   private final FieldOfView pictureFOV = new FieldOfView();
   private final FieldOfViewPartial panoFOV = new FieldOfViewPartial();
   private double minimumOverlapH = 0.25;
@@ -82,24 +88,16 @@ public class PanoService {
     for (Border b : borders) {
       Position currentPosition = panoHeadService.getCurrentPosition();
       switch (b) {
-        case LEFT:
-          fov.getHorizontal().setFrom(currentPosition.getX());
-          break;
-        case RIGHT:
-          fov.getHorizontal().setTo(currentPosition.getX());
-          break;
-        case TOP:
-          fov.getVertical().setFrom(currentPosition.getY());
-          break;
-        case BOTTOM:
-          fov.getVertical().setTo(currentPosition.getY());
-          break;
+        case LEFT -> fov.getHorizontal().setFrom(currentPosition.getX());
+        case RIGHT -> fov.getHorizontal().setTo(currentPosition.getX());
+        case TOP -> fov.getVertical().setFrom(currentPosition.getY());
+        case BOTTOM -> fov.getVertical().setTo(currentPosition.getY());
       }
     }
   }
 
   public void updateCalculatedPano() {
-    System.out.println("updateCalculatedPano() - CALL");
+    log.info("updateCalculatedPano() - CALL");
     FieldOfView cameraFOV = getPictureFOV();
     Double height = cameraFOV.getVertical().getSize();
     Double width = cameraFOV.getHorizontal().getSize();
@@ -108,11 +106,11 @@ public class PanoService {
       FieldOfViewPartial panoFOV = getPanoFOV().normalize();
       PanoHeadData data = panoHeadService.getData();
       if (panoFOV.isComplete() && image.isComplete() && data != null) {
-        // TODO LOG instead sysout
-        System.out.println("updateCalculatedPano() - RECALCULATE");
+        log.info("updateCalculatedPano() - RECALCULATE");
         Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
 
-        Position currentPosDeg = axisTranslatorService.fromRaw(data.getActor().getX().getPos(),data.getActor().getY().getPos());
+        Position currentPosDeg = axisTranslatorService.fromRaw(data.getActor().getX().getPos(),
+            data.getActor().getY().getPos());
 
         calculatedPano = Optional.of(panoGenerator.calculatePano(currentPosDeg, image, pano));
         calculatedPano.ifPresent(
@@ -141,53 +139,16 @@ public class PanoService {
     return Optional.ofNullable(result);
   }
 
-  public double getMinimumOverlapH() {
-    return minimumOverlapH;
-  }
-
-  public void setMinimumOverlapH(double minimumOverlapH) {
-    this.minimumOverlapH = minimumOverlapH;
-  }
-
-  public double getMinimumOverlapV() {
-    return minimumOverlapV;
-  }
-
-  public void setMinimumOverlapV(double minimumOverlapV) {
-    this.minimumOverlapV = minimumOverlapV;
-  }
-
-  public void publishOverlapChange() {
-    applicationEventPublisher.publishEvent(
-        new OverlapChangedEvent(minimumOverlapH, minimumOverlapV));
-  }
-
-  public FieldOfView getPictureFOV() {
-    return pictureFOV;
-  }
-
   public void publishPictureFOVChange() {
     settingsService.getSettings().getPictureFov().setAll(pictureFOV);
     settingsService.setDirty();
     applicationEventPublisher.publishEvent(new PictureFOVChangedEvent(pictureFOV));
   }
 
-  public FieldOfViewPartial getPanoFOV() {
-    return panoFOV;
-  }
-
   public void publishPanoFOVChange() {
     settingsService.getSettings().getPanoFov().setAll(panoFOV);
     settingsService.setDirty();
     applicationEventPublisher.publishEvent(new PanoFOVChangedEvent(panoFOV));
-  }
-
-  public Shots getShots() {
-    return shots;
-  }
-
-  public void setShots(Shots shots) {
-    this.shots = shots;
   }
 
   public void publishShotsChange() {
@@ -197,13 +158,6 @@ public class PanoService {
   }
 
   // <editor-fold desc="delay">
-  public Delay getDelay() {
-    return delay;
-  }
-
-  public void setDelay(Delay delay) {
-    this.delay = delay;
-  }
 
   public void publishDelayChange() {
     settingsService.getSettings().getDelay().setAll(delay);
@@ -212,7 +166,4 @@ public class PanoService {
   }
   // </editor-fold>
 
-  public Optional<CalculatedPano> getCalculatedPano() {
-    return calculatedPano;
-  }
 }

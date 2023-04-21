@@ -2,7 +2,6 @@ package de.zebrajaeger.phserver.pano;
 
 import de.zebrajaeger.phserver.data.CalculatedPano;
 import de.zebrajaeger.phserver.data.Delay;
-import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
 import de.zebrajaeger.phserver.data.Position;
@@ -12,11 +11,56 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.lang.Nullable;
 
+@AllArgsConstructor
 public class MatrixPanoGenerator implements PanoGenerator {
 
-  public static final double BACKLASH_ANGLE = 25d;
+  private double backlashAngle;
+  private boolean spreadPano;
+
+  public CalculatedPano calculatePano(Position currentPosDeg, Image image, Pano pano) {
+
+    CalculatedPano result = new CalculatedPano(pano);
+
+    {
+      // x
+      double leftBorder = Math.min(
+          pano.getFieldOfViewPartial().getHorizontal().getFrom(),
+          pano.getFieldOfViewPartial().getHorizontal().getTo());
+      double lImage = Math.abs(image.getWidth());
+
+      double lPano;
+      MatrixCalculator calc;
+      if (pano.getFieldOfViewPartial().isPartial()) {
+        calc = new MatrixCalculatorPartial(spreadPano);
+        lPano = Math.abs(pano.getFieldOfViewPartial().getHorizontal().getSize());
+      } else {
+        calc = new MatrixCalculator360();
+        lPano = 360d;
+      }
+
+      result.setHorizontalPositions(
+          calc.calculatePositions(leftBorder, lImage, lPano, pano.getHorizontalMinimumOverlap()));
+    }
+
+    {
+      // y
+      double topBorder = Math.min(
+          pano.getFieldOfViewPartial().getVertical().getFrom(),
+          pano.getFieldOfViewPartial().getVertical().getTo());
+      double lImage = Math.abs(image.getHeight());
+      double lPano = Math.abs(pano.getFieldOfViewPartial().getVertical().getSize());
+      MatrixCalculator calc = new MatrixCalculator360();
+
+      //noinspection SuspiciousNameCombination
+      result.setVerticalPositions(
+          calc.calculatePositions(topBorder, lImage, lPano, pano.getHorizontalMinimumOverlap()));
+    }
+
+    return result;
+  }
 
   @Override
   public List<Command> createCommands(
@@ -60,7 +104,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
           // this is the first position, so we go a little left and up
           // before we go to the target position. This is to avoid the backlash
           ShotPosition antiBackLashPos = new ShotPosition(
-              x - BACKLASH_ANGLE, yPosition - BACKLASH_ANGLE,
+              x - backlashAngle, yPosition - backlashAngle,
               posIndex,
               xIndex, xLength,
               yIndex, yLength
@@ -71,7 +115,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
           // so we avoid the backlash
           if (x - lastShotPosition.getX() < 0) {
             ShotPosition antiBackLashPos = new ShotPosition(
-                x - BACKLASH_ANGLE, yPosition,
+                x - backlashAngle, yPosition,
                 posIndex,
                 xIndex, xLength,
                 yIndex, yLength
@@ -113,64 +157,6 @@ public class MatrixPanoGenerator implements PanoGenerator {
         "NormalizePosition"));
 
     return commands;
-  }
-
-  @Override
-  public CalculatedPano calculatePano(Position currentPosDeg, Image image, Pano pano) {
-    CalculatedPano result = new CalculatedPano(pano);
-
-    Calc calc = new Calc();
-
-    // ========== Horizontal ==========
-    calc.reset();
-
-    calc.setSourceSize(Math.abs(image.getWidth()));
-    calc.setOverlap(pano.getHorizontalMinimumOverlap());
-
-    FieldOfViewPartial targetFov = pano.getFieldOfViewPartial();
-    if (targetFov.isPartial()) {
-      calc.setPartial(true);
-
-      Double hTargetSize = targetFov.getHorizontal().getSize();
-      if (hTargetSize == null) {
-        throw new IllegalArgumentException(String.format("Pano FOV error: '%s'", targetFov));
-      }
-      calc.setTargetSize(Math.abs(hTargetSize));
-
-      double xStartPos = Math.min(
-          targetFov.getHorizontal().getFrom(),
-          targetFov.getHorizontal().getTo());
-      calc.setTargetStartPoint(xStartPos);
-    } else {
-      calc.setPartial(false);
-      calc.setTargetSize(360d);
-      calc.setTargetStartPoint(currentPosDeg.getX());
-    }
-    Calc.Result hResult = calc.calc();
-
-    result.setHorizontalPositions(hResult.getStartPositions());
-    result.setHorizontalOverlap(hResult.getOverlap());
-
-    // ========== Vertical ==========
-    calc.reset();
-
-    calc.setSourceSize(Math.abs(image.getHeight()));
-
-    // Always partial
-    calc.setPartial(true);
-    Double vTargetSize = targetFov.getVertical().getSize();
-    if (vTargetSize == null) {
-      throw new IllegalArgumentException(String.format("Pano FOV error: '%s'", targetFov));
-    }
-    calc.setTargetSize(Math.abs(vTargetSize));
-    calc.setTargetStartPoint(targetFov.getVertical().getFrom());
-    calc.setOverlap(pano.getVerticalMinimumOverlap());
-    Calc.Result vResult = calc.calc();
-
-    result.setVerticalPositions(vResult.getStartPositions());
-    result.setVerticalOverlap(vResult.getOverlap());
-
-    return result;
   }
 
   private List<Command> createCommandsForPos(

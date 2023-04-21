@@ -75,7 +75,12 @@ public class MatrixPanoGenerator implements PanoGenerator {
     List<Command> commands = new LinkedList<>();
 
     int posIndex = 0;
-    ShotPosition lastShotPosition = null;
+    ShotPosition lastShotPosition = new ShotPosition(
+        currentPosDeg.getX(),
+        currentPosDeg.getY(),
+        -1, -1, -1, -1, -1);
+
+    boolean first = true;
 
     // rows
     int yIndex = 0;
@@ -88,7 +93,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
       double xOffset = 0;
       for (double xPosition : calculatedPano.getHorizontalPositions()) {
 
-        if (lastShotPosition != null && xIndex == 0) {
+        if (xIndex == 0) {
           double delta = xPosition - lastShotPosition.getX();
           if (delta < -180d) {
             xOffset += 360;
@@ -100,7 +105,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
         }
 
         final double x = xPosition + xOffset;
-        if (lastShotPosition == null) {
+        if (first) {
           // this is the first position, so we go a little left and up
           // before we go to the target position. This is to avoid the backlash
           ShotPosition antiBackLashPos = new ShotPosition(
@@ -110,6 +115,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
               yIndex, yLength
           );
           commands.add(new GoToPosCommand(antiBackLashPos, "XY anti-backlash move"));
+          first = false;
         } else {
           // if we go left, we go a little more left before, we go to the target position,
           // so we avoid the backlash

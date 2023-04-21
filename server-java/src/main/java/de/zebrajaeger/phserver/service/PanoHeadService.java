@@ -18,6 +18,7 @@ import de.zebrajaeger.phserver.hardware.PowerGauge;
 import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import java.io.IOException;
 import java.util.Optional;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,31 +46,15 @@ public class PanoHeadService {
   private final SigmoidCalculator sigmoid = new SigmoidCalculator();
 
   private final PreviousState previousState = new PreviousState();
-//  private Position currentPosition;
 
   private long lastManualMove = 0;
   private boolean jogByJoystick = false;
 
+  @Data
   static class PreviousState {
 
     private Camera camera;
     private boolean actorActive = false;
-
-    public Camera getCamera() {
-      return camera;
-    }
-
-    public void setCamera(Camera camera) {
-      this.camera = camera;
-    }
-
-    public boolean isActorActive() {
-      return actorActive;
-    }
-
-    public void setActorActive(boolean actorActive) {
-      this.actorActive = actorActive;
-    }
   }
 
   @Autowired

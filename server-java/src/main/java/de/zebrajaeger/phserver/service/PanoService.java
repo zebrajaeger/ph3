@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-// TODO @Getter @Setter
 @Service
 @Getter
 @Setter
@@ -165,5 +164,4 @@ public class PanoService {
     applicationEventPublisher.publishEvent(new DelaySettingsChangedEvent(delay));
   }
   // </editor-fold>
-
 }

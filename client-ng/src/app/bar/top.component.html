@@ -1,9 +1,9 @@
-<div class="box state">{{stateName}}</div>
+<div class="box state {{stateName}}" >{{stateName}}</div>
 
 <div class="box title">{{title}}</div>
 
 <div class="center-content">
-  <led class="led" [color]="color"></led>
+  <led class="led" [color]="cameraActivityIndicator"></led>
 </div>
 
 <div class="box back-button center-content" [style.visibility]="backButton? 'visible':'hidden'" (click)="onBack()">

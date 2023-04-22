@@ -28,6 +28,18 @@
     font-family: Arial, sans-serif;
     font-weight: bold;
     font-size: 0.9em;
+    &.CONNECTING {
+      background-color: yellow;
+    }
+    &.OPEN {
+      background-color: green;
+    }
+    &.CLOSING {
+      background-color: orange;
+    }
+    &.CLOSED {
+      background-color: red;
+    }
   }
 
   &.title {

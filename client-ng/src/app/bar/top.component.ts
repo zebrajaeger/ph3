@@ -24,7 +24,7 @@ export class TopComponent implements OnInit, OnDestroy {
   public camera_?: Camera;
   private cameraSubscription!: Subscription;
 
-  public color: string = "green";
+  public cameraActivityIndicator: string = "green";
 
   constructor(private router: Router,
               private connectionService: ConnectionService,
@@ -55,11 +55,11 @@ export class TopComponent implements OnInit, OnDestroy {
 
     this.camera_ = camera;
     if (this.camera_?.trigger) {
-      this.color = "red"
+      this.cameraActivityIndicator = "red"
     } else if (this.camera_?.focus) {
-      this.color = "amber"
+      this.cameraActivityIndicator = "amber"
     } else {
-      this.color = "green"
+      this.cameraActivityIndicator = "green"
     }
   }
 

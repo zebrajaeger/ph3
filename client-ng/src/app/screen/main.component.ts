@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {UiService} from '../ui.service';
-import {RouterService} from '../router.service';
-import {PanoHeadService} from '../panohead.service';
-import {PanoService} from '../pano.service';
+import {UiService} from '../service/ui.service';
+import {RouterService} from '../service/router.service';
+import {PanoHeadService} from '../service/panohead.service';
+import {PanoService} from '../service/pano.service';
 
 @Component({
     selector: 'app-main',

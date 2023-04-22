@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {PanoHeadService} from "../panohead.service";
+import {PanoHeadService} from "../service/panohead.service";
 import {Position} from "../../data/panohead";
 
 @Component({

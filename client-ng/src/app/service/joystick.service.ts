@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {JoystickPosition} from '../data/joystick';
+import {JoystickPosition} from '../../data/joystick';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {RxStompService} from "./rx-stomp.service";

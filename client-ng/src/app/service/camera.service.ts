@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {Camera, Shot} from '../data/camera';
+import {Camera, Shot} from '../../data/camera';
 import {RxStompService} from "./rx-stomp.service";
 import {RxStompRPCService} from "./rx-stomp-rpc.service";
 

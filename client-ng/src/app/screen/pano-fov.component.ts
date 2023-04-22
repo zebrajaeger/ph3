@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Border, CalculatedPano, FieldOfViewPartial} from '../../data/pano';
 import {Subscription} from 'rxjs';
-import {PanoService} from '../pano.service';
-import {PanoHeadService} from '../panohead.service';
-import {RouterService} from '../router.service';
-import {UiService} from '../ui.service';
-import {ConnectionService} from '../connection.service';
+import {PanoService} from '../service/pano.service';
+import {PanoHeadService} from '../service/panohead.service';
+import {RouterService} from '../service/router.service';
+import {UiService} from '../service/ui.service';
+import {ConnectionService} from '../service/connection.service';
 import {degToString} from '../utils';
 import {ModalService} from "../ui/modal.service";
 

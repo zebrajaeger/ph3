@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UiService} from '../ui.service';
+import {UiService} from '../service/ui.service';
 import {Subscription} from 'rxjs';
-import {ConnectionService} from '../connection.service';
-import {RouterService} from '../router.service';
+import {ConnectionService} from '../service/connection.service';
+import {RouterService} from '../service/router.service';
 import {ModalService} from '../ui/modal.service';
-import {PanoService} from '../pano.service';
+import {PanoService} from '../service/pano.service';
 import {Shots} from '../../data/camera';
 import {Delay} from '../../data/pano';
 

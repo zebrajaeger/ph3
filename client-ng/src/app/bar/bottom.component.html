@@ -1,7 +1,14 @@
 <div class="content">
-  <div class="item">Pos: (<span class="value">{{actorPos}}</span>)</div>
-  <div class="item"> Pano: (<span class="value">{{panoMsg}}</span>)</div>
-  <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
+  <div class="line">
+    <div class="item">Pos: (<span class="value">{{actorPos | position }}</span>)</div>
+    <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
+    <div class="item"> RobotState: (<span class="value">{{robotState?.automateState}}</span>)</div>
+  </div>
+  <div class="line">
+    <div class="item">Img: (<span class="value">{{pictureFov | fovSize}}</span>)</div>
+    <div class="item">Pano: (<span class="value">{{panoFov | fovPartialSize}}</span>)</div>
+    <div class="item">PanoX: (<span class="value">{{panoMsg}}</span>)</div>
+  </div>
 </div>
 <div class="onoff">
   <img src="assets/power-button-svgrepo-com.svg"

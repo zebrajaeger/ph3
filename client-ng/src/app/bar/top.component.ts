@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {UiService} from '../ui.service';
+import {UiService} from '../service/ui.service';
 import {Router} from '@angular/router';
-import {ConnectionService} from '../connection.service';
-import {CameraService} from "../camera.service";
+import {ConnectionService} from '../service/connection.service';
+import {CameraService} from "../service/camera.service";
 import {Camera} from "../../data/camera";
 
 @Component({

@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PanoHeadService} from '../panohead.service';
+import {PanoHeadService} from '../service/panohead.service';
 import {Subscription} from 'rxjs';
-import {PanoService} from '../pano.service';
-import {CalculatedPano} from '../../data/pano';
-import {Power} from '../../data/panohead';
+import {PanoService} from '../service/pano.service';
+import {CalculatedPano, FieldOfView, FieldOfViewPartial} from '../../data/pano';
+import {Position, Power} from '../../data/panohead';
 import {ModalService} from '../ui/modal.service';
-import {SystemService} from '../system.service';
+import {SystemService} from '../service/system.service';
+import {RobotState} from "../../data/record";
 
 @Component({
   selector: 'app-bottom',
@@ -14,7 +15,7 @@ import {SystemService} from '../system.service';
 })
 export class BottomComponent implements OnInit, OnDestroy {
   private actorSubscription!: Subscription;
-  public actorPos!: string;
+  public actorPos?: Position;
 
   private calculatedPanoSubscription!: Subscription;
   public calc?: CalculatedPano;
@@ -24,6 +25,14 @@ export class BottomComponent implements OnInit, OnDestroy {
   public gauge!: Power;
   public gaugeString!: string;
 
+  private robotStateSubscription!: Subscription;
+  public robotState?: RobotState;
+
+  private pictureFovSubscription!: Subscription;
+  public pictureFov?: FieldOfView;
+  private panoFovSubscription!: Subscription;
+  public panoFov?: FieldOfViewPartial;
+
   constructor(private panoHeadService: PanoHeadService,
               private panoService: PanoService,
               public modalService: ModalService,
@@ -31,23 +40,38 @@ export class BottomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.actorSubscription = this.panoHeadService.subscribeActorPosition(actorPositionData => {
-      this.actorPos = `${actorPositionData.x.toFixed(3)}°, ${actorPositionData.y.toFixed(3)}°`;
+    this.actorSubscription = this.panoHeadService.subscribeActorPosition(position => {
+      this.actorPos = position;
     });
+
     this.panoService.subscribeCalculatedPano(calculatedPano => {
       this.calc = calculatedPano;
       this.panoMsg = `${this.calc?.horizontalPositions.length}, ${this.calc?.verticalPositions.length}`
     });
+
     this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {
       this.gauge = power;
       this.gaugeString = power.toString();
     });
+
+    this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
+    this.panoHeadService.requestRobotState(robotState => this.robotState = robotState);
+
+
+    this.pictureFovSubscription = this.panoService.subscribePictureFov(fov => this.pictureFov = fov);
+    this.panoService.requestPictureFov(fov => this.pictureFov = fov);
+
+    this.panoFovSubscription = this.panoService.subscribePanoFov(fov => this.panoFov = fov);
+    this.panoService.requestPanoFov(fov => this.panoFov = fov);
   }
 
   ngOnDestroy(): void {
     this.actorSubscription?.unsubscribe();
     this.calculatedPanoSubscription?.unsubscribe();
     this.powerSubscription?.unsubscribe();
+    this.robotStateSubscription?.unsubscribe();
+    this.pictureFovSubscription?.unsubscribe();
+    this.panoFovSubscription?.unsubscribe();
   }
 
   shutdown(): void {

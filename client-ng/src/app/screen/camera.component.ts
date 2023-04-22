@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CameraService} from '../camera.service';
-import {RouterService} from '../router.service';
-import {UiService} from '../ui.service';
-import {PanoService} from '../pano.service';
+import {CameraService} from '../service/camera.service';
+import {RouterService} from '../service/router.service';
+import {UiService} from '../service/ui.service';
+import {PanoService} from '../service/pano.service';
 
 @Component({
     selector: 'app-camera',

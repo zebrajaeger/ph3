@@ -1,12 +1,12 @@
 <div class="fields">
     <div class="label">Focus Time[s]:</div>
-    <input class="input" (click)="modalService.open('focusTime')" type="text" readonly [value]="focusTime | formatSecond">
+    <input class="input" (click)="modalService.open('focusTime')" type="text" readonly [value]="focusTime | toFixed">
 
     <div class="label">Trigger Time[s]:</div>
-    <input class="input" (click)="modalService.open('triggerTime')" type="text" readonly [value]="triggerTime | formatSecond">
+    <input class="input" (click)="modalService.open('triggerTime')" type="text" readonly [value]="triggerTime | toFixed">
 
     <div class="label">Delay after move[s]:</div>
-    <input class="input" (click)="modalService.open('delayAfterMove')" type="text" readonly [value]="delayAfterMove | formatSecond">
+    <input class="input" (click)="modalService.open('delayAfterMove')" type="text" readonly [value]="delayAfterMove | toFixed">
 </div>
 
 <app-modal class="modal-num-pad" id="focusTime" (close)="onFocusTimeClose()">

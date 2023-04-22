@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {Actor, ActorState, Position, Power} from '../data/panohead';
-import {RecordState} from '../data/record';
+import {Actor, ActorState, Position, Power} from '../../data/panohead';
+import {RobotState} from '../../data/record';
 import {RxStompService} from "./rx-stomp.service";
 import {RxStompRPCService} from "./rx-stomp-rpc.service";
 
@@ -29,7 +29,7 @@ export class PanoHeadService {
             .subscribe(cb);
     }
 
-    public subscribeActorPosition(cb: (actorState: ActorState) => void): Subscription {
+    public subscribeActorPosition(cb: (position: Position) => void): Subscription {
         return this.rxStompService
             .watch('/topic/actor/position/')
             .pipe(map(msg => JSON.parse(msg.body) as Position))
@@ -73,17 +73,17 @@ export class PanoHeadService {
     }
 
     // <editor-fold desc="Record">
-    public subscribeRecordState(cb: (actor: RecordState) => void): Subscription {
+    public subscribeRobotState(cb: (actor: RobotState) => void): Subscription {
         return this.rxStompService
             .watch('/topic/robot/state')
-            .pipe(map(msg => new RecordState(msg.body)))
+            .pipe(map(msg => new RobotState(msg.body)))
             .subscribe(cb);
     }
 
-    public requestRecordState(cb: (actor: RecordState) => void): Subscription {
+    public requestRobotState(cb: (actor: RobotState) => void): Subscription {
         return this.rxStompRPCService
             .rpc({destination: '/rpc/robot/state'})
-            .pipe(map(msg => new RecordState(msg.body)))
+            .pipe(map(msg => new RobotState(msg.body)))
             .subscribe(cb);
     }
 

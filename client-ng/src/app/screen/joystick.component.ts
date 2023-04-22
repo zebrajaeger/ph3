@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {JoystickService} from '../joystick.service';
+import {JoystickService} from '../service/joystick.service';
 import {JoystickPosition} from '../../data/joystick';
 import {Subscription} from 'rxjs';
-import {RouterService} from '../router.service';
-import {UiService} from '../ui.service';
-import {PanoService} from '../pano.service';
+import {RouterService} from '../service/router.service';
+import {UiService} from '../service/ui.service';
+import {PanoService} from '../service/pano.service';
 
 @Component({
     selector: 'app-joystick',

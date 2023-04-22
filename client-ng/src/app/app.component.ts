@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RouterService} from './router.service';
+import {RouterService} from './service/router.service';
 
 @Component({
   selector: 'app-root',

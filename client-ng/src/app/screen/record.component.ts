@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RouterService} from '../router.service';
-import {UiService} from '../ui.service';
-import {PanoHeadService} from '../panohead.service';
-import {AutomateState, RecordState} from '../../data/record';
+import {RouterService} from '../service/router.service';
+import {UiService} from '../service/ui.service';
+import {PanoHeadService} from '../service/panohead.service';
+import {AutomateState, RobotState} from '../../data/record';
 import {Subscription} from 'rxjs';
-import {PanoService} from '../pano.service';
+import {PanoService} from '../service/pano.service';
 import {CalculatedPano} from "../../data/pano";
 
 @Component({
@@ -13,8 +13,8 @@ import {CalculatedPano} from "../../data/pano";
   styleUrls: ['./record.component.scss']
 })
 export class RecordComponent implements OnInit, OnDestroy {
-  private recordStateSubscription!: Subscription;
-  public _state!: RecordState;
+  private robotStateSubscription!: Subscription;
+  public _robotState!: RobotState;
 
   private calculatedPanoSubscription!: Subscription;
   public calc?: CalculatedPano;
@@ -34,7 +34,7 @@ export class RecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.recordStateSubscription = this.panoHeadService.subscribeRecordState(state => this.state = state);
+    this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
     this.calculatedPanoSubscription = this.panoService.subscribeCalculatedPano(calculatedPano => {
       console.log('RECALCULATED!!!!', calculatedPano)
       this.calc = calculatedPano
@@ -44,16 +44,16 @@ export class RecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.recordStateSubscription?.unsubscribe();
+    this.robotStateSubscription?.unsubscribe();
     this.calculatedPanoSubscription?.unsubscribe();
   }
 
-  get state(): RecordState {
-    return this._state;
+  get robotState(): RobotState {
+    return this._robotState;
   }
 
-  set state(value: RecordState) {
-    this._state = value;
+  set robotState(value: RobotState) {
+    this._robotState = value;
     const cmd = value?.command;
     if (value.automateState !== AutomateState.STOPPED) {
       const shotPos = cmd?.shotPosition;
@@ -84,7 +84,7 @@ export class RecordComponent implements OnInit, OnDestroy {
     this.uiService.title.next('Record');
     this.uiService.backButton.next(true);
 
-    this.panoHeadService.requestRecordState(state => this.state = state);
+    this.panoHeadService.requestRobotState(state => this.robotState = state);
     this.panoService.requestRecalculatePano();
   }
 }

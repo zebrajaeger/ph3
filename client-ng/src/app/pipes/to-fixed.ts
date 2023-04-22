@@ -1,10 +1,10 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-    name: 'formatSecond'
+    name: 'toFixed'
 })
-export class FormatSecondPipe implements PipeTransform {
-    transform(value: number, digits = 3): unknown {
+export class ToFixed implements PipeTransform {
+    transform(value: number, digits = 2): unknown {
         if (value === null || value === undefined) {
             return '-';
         } else {

@@ -17,6 +17,6 @@ public class MatrixCalculator360 implements MatrixCalculator {
     double n = n(lImage, lPano, overlap);
     int imgCount = (int) Math.ceil(n);
 
-    return equidistantPositions(imgCount, leftBorder + (lImage/2), lPano / imgCount);
+    return equidistantPositions(imgCount, leftBorder, lPano / imgCount);
   }
 }

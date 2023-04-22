@@ -12,9 +12,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 
 @AllArgsConstructor
+@Slf4j
 public class MatrixPanoGenerator implements PanoGenerator {
 
   private double backlashAngle;
@@ -26,19 +28,21 @@ public class MatrixPanoGenerator implements PanoGenerator {
 
     {
       // x
-      double leftBorder = Math.min(
-          pano.getFieldOfViewPartial().getHorizontal().getFrom(),
-          pano.getFieldOfViewPartial().getHorizontal().getTo());
       double lImage = Math.abs(image.getWidth());
 
       double lPano;
+      double leftBorder;
       MatrixCalculator calc;
       if (pano.getFieldOfViewPartial().isPartial()) {
         calc = new MatrixCalculatorPartial(spreadPano);
         lPano = Math.abs(pano.getFieldOfViewPartial().getHorizontal().getSize());
+        leftBorder = Math.min(
+            pano.getFieldOfViewPartial().getHorizontal().getFrom(),
+            pano.getFieldOfViewPartial().getHorizontal().getTo());
       } else {
         calc = new MatrixCalculator360();
         lPano = 360d;
+        leftBorder = currentPosDeg.getX();
       }
 
       result.setHorizontalPositions(
@@ -52,7 +56,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
           pano.getFieldOfViewPartial().getVertical().getTo());
       double lImage = Math.abs(image.getHeight());
       double lPano = Math.abs(pano.getFieldOfViewPartial().getVertical().getSize());
-      MatrixCalculator calc = new MatrixCalculator360();
+      MatrixCalculator calc = new MatrixCalculatorPartial(spreadPano);
 
       //noinspection SuspiciousNameCombination
       result.setVerticalPositions(
@@ -70,6 +74,14 @@ public class MatrixPanoGenerator implements PanoGenerator {
       List<Shot> shots,
       Delay delay) {
 
+    log.info("<Create Commands>");
+    log.info("*  currentPosDeg: '{}'", currentPosDeg);
+    log.info("*  image: '{}'", image);
+    log.info("*  pano: '{}'", pano);
+    log.info("*  shots: '{}'", shots);
+    log.info("*  delay: '{}'", delay);
+    log.info("</Create Commands>");
+
     final CalculatedPano calculatedPano = calculatePano(currentPosDeg, image, pano);
 
     List<Command> commands = new LinkedList<>();
@@ -85,7 +97,9 @@ public class MatrixPanoGenerator implements PanoGenerator {
     // rows
     int yIndex = 0;
     int yLength = calculatedPano.getVerticalPositions().size();
-    for (double yPosition : calculatedPano.getVerticalPositions()) {
+    List<Double> yPositions = new ArrayList<>(calculatedPano.getVerticalPositions());
+    Collections.reverse(yPositions);
+    for (double yPosition : yPositions) {
 
       // columns
       int xIndex = 0;

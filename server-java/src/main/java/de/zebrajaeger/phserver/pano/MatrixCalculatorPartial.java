@@ -1,12 +1,13 @@
 package de.zebrajaeger.phserver.pano;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.math3.util.Precision;
 
 @AllArgsConstructor
-public class MatrixCalculatorPartial implements MatrixCalculator{
+public class MatrixCalculatorPartial implements MatrixCalculator {
+
+  public static final double EPSILON = 0.1d;
   private boolean spreadPano;
 
   // Base
@@ -42,10 +43,11 @@ public class MatrixCalculatorPartial implements MatrixCalculator{
         : calculatePositionsIncreaseOverlap(leftBorder, lImage, lPano, overlap);
   }
 
-  public List<Double> calculatePositionsIncreaseLPano(double leftBorder, double lImage, double lPano,
+  public List<Double> calculatePositionsIncreaseLPano(double leftBorder, double lImage,
+      double lPano,
       double overlap) {
     // lPano <= lImage -> only one position in the center
-    if (lPano < lImage || Precision.equals(lPano, lImage, 0.1d)) {
+    if (lPano < lImage || Precision.equals(lPano, lImage, EPSILON)) {
       return List.of(leftBorder + (lImage / 2));
     }
 
@@ -72,5 +74,4 @@ public class MatrixCalculatorPartial implements MatrixCalculator{
 
     return equidistantPositions(imgCount, first, imgDistance);
   }
-
 }

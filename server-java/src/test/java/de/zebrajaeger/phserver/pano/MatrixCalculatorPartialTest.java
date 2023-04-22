@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.hasSize;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-
 class MatrixCalculatorPartialTest {
 
   @Test

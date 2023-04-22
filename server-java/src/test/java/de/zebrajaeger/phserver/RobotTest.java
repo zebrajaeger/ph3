@@ -37,7 +37,7 @@ public class RobotTest {
   @Test
   public void startWithNoCommands() throws InterruptedException {
     List<Command> commands = new LinkedList<>();
-    robotService.start(commands);
+    robotService.requestStart(commands);
     Thread.sleep(1000);
   }
 
@@ -45,7 +45,7 @@ public class RobotTest {
   public void singleDelay() throws InterruptedException {
     List<Command> commands = new LinkedList<>();
     commands.add(new WaitCommand(null, "wait...", 500));
-    robotService.start(commands);
+    robotService.requestStart(commands);
     Thread.sleep(1000);
   }
 
@@ -53,7 +53,7 @@ public class RobotTest {
   public void singleShot() throws InterruptedException {
     List<Command> commands = new LinkedList<>();
     commands.add(new TakeShotCommand(null, "shot...", new Shot(500, 800)));
-    robotService.start(commands);
+    robotService.requestStart(commands);
     Thread.sleep(2000);
   }
 }

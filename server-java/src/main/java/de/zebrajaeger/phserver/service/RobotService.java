@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
+@Getter
 public class RobotService {
 
   private static final Logger LOG = LoggerFactory.getLogger(RobotService.class);
@@ -50,37 +51,7 @@ public class RobotService {
     this.applicationEventPublisher = applicationEventPublisher;
   }
 
-  private RobotService setAutomateState(AutomateState automateState) {
-    LOG.debug("Set state to '{}'", automateState);
-    this.robotState.setAutomateState(automateState);
-    return this;
-  }
-
-  private RobotService setPauseState(PauseState state) {
-    LOG.debug("Set pause-state to '{}'", state);
-    this.robotState.setPauseState(state);
-    return this;
-  }
-
-  private RobotService setCommand(Command command, int commandIndex) {
-    LOG.debug("Set command #{} to '{}'", commandIndex, command);
-    this.robotState.setCommand(command, commandIndex);
-    return this;
-  }
-
-  private void sendUpdate() {
-    RobotStateEvent event = new RobotStateEvent(this.robotState);
-    LOG.debug("State changed to '{}'", event);
-    applicationEventPublisher.publishEvent(event);
-  }
-
-  private void sendUpdate(Exception error) {
-    RobotStateEvent event = new RobotStateEvent(this.robotState, error);
-    LOG.debug("State changed to '{}'", event);
-    applicationEventPublisher.publishEvent(event);
-  }
-
-  public void start(List<Command> commands) {
+  public void requestStart(List<Command> commands) {
     if (this.robotState.getAutomateState() == AutomateState.STOPPED
         || this.robotState.getAutomateState() == AutomateState.STOPPED_WITH_ERROR) {
       this.commands = commands;
@@ -92,26 +63,21 @@ public class RobotService {
     }
   }
 
-  private void stopAll() {
-    setAutomateState(AutomateState.STOPPING).setPauseState(PauseState.RUNNING).sendUpdate();
-    try {
-      panoHeadService.stopAll();
-    } catch (IOException e) {
-      setAutomateState(AutomateState.STOPPED_WITH_ERROR).setPauseState(PauseState.RUNNING)
+  public void requestStop() {
+    final AutomateState as = robotState.getAutomateState();
+    if (as != AutomateState.STOP_REQUEST &&
+        as != AutomateState.STOPPING &&
+        as != AutomateState.STOPPED) {
+      setAutomateState(AutomateState.STOP_REQUEST)
+          .setPauseState(PauseState.RUNNING)
           .sendUpdate();
     }
   }
 
-  public void stop() {
-    if (this.robotState.getAutomateState() != AutomateState.STOPPED
-        && this.robotState.getAutomateState() != AutomateState.STOPPED_WITH_ERROR) {
-      stopAll();
-    }
-  }
-
-  public void PauseResume() {
-    if (this.robotState.getAutomateState() != AutomateState.STOPPED
-        && this.robotState.getAutomateState() != AutomateState.STOPPED_WITH_ERROR) {
+  public void requestPauseOrResume() {
+    final AutomateState automateState = this.robotState.getAutomateState();
+    if (automateState != AutomateState.STOPPED
+        && automateState != AutomateState.STOPPED_WITH_ERROR) {
       if (this.robotState.getPauseState() == PauseState.PAUSING) {
         setPauseState(PauseState.RUNNING).sendUpdate();
         next();
@@ -129,13 +95,20 @@ public class RobotService {
     // Command state
 
     // STOPPING
+    if (this.robotState.getAutomateState() == AutomateState.STOP_REQUEST) {
+      onStopRequest();
+      return;
+    }
+
+    // STOPPING
     if (this.robotState.getAutomateState() == AutomateState.STOPPING) {
-      stopAll();
+      onStopping();
       return;
     }
 
     // STOPPED
     if (this.robotState.getAutomateState() == AutomateState.STOPPED) {
+      onStopped();
       return;
     }
 
@@ -236,12 +209,76 @@ public class RobotService {
     next();
   }
 
-  public RobotState getRobotState() {
-    return robotState;
+  private void onStopRequest() {
+    switch (robotState.getAutomateState()) {
+      // we have to wait until the end of the move
+      case CMD_MOVE -> {
+        try {
+          panoHeadService.stopAll();
+          setAutomateState(AutomateState.STOPPING)
+              .setPauseState(PauseState.RUNNING)
+              .sendUpdate();
+        } catch (IOException e) {
+          setAutomateState(AutomateState.STOPPED_WITH_ERROR)
+              .setPauseState(PauseState.RUNNING)
+              .sendUpdate();
+        }
+      }
+
+      // we have to wait until the end of the shot
+      case CMD_SHOT -> setAutomateState(AutomateState.STOPPING)
+          .setPauseState(PauseState.RUNNING)
+          .sendUpdate();
+
+      // otherwise we can stop immediately
+      default -> {
+        setAutomateState(AutomateState.STOPPED)
+            .setPauseState(PauseState.RUNNING)
+            .sendUpdate();
+        triggerNext();
+      }
+    }
   }
 
-  @Override
-  public String toString() {
-    return ReflectionToStringBuilder.toString(this);
+  private void triggerNext() {
+    executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
+  }
+
+  private void onStopping() {
+    // TODO trigger timeout
+  }
+
+  private void onStopped() {
+    // nothing to do so far
+  }
+
+  private RobotService setAutomateState(AutomateState automateState) {
+    LOG.debug("Set state to '{}'", automateState);
+    this.robotState.setAutomateState(automateState);
+    return this;
+  }
+
+  private RobotService setPauseState(PauseState state) {
+    LOG.debug("Set pause-state to '{}'", state);
+    this.robotState.setPauseState(state);
+    return this;
+  }
+
+  private RobotService setCommand(Command command, int commandIndex) {
+    LOG.debug("Set command #{} to '{}'", commandIndex, command);
+    this.robotState.setCommand(command, commandIndex);
+    return this;
+  }
+
+  private void sendUpdate() {
+    RobotStateEvent event = new RobotStateEvent(this.robotState);
+    LOG.debug("State changed to '{}'", event);
+    applicationEventPublisher.publishEvent(event);
+  }
+
+  private void sendUpdate(Exception error) {
+    RobotStateEvent event = new RobotStateEvent(this.robotState, error);
+    LOG.debug("State changed to '{}'", event);
+    applicationEventPublisher.publishEvent(event);
   }
 }

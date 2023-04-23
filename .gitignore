@@ -6,3 +6,5 @@
 target
 settings.json
 temp
+ph.log
+ph.log.*

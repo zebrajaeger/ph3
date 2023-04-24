@@ -99,26 +99,30 @@ public class MatrixPanoGenerator implements PanoGenerator {
     int yLength = calculatedPano.getVerticalPositions().size();
     List<Double> yPositions = new ArrayList<>(calculatedPano.getVerticalPositions());
     Collections.reverse(yPositions);
+
+    double xOffset = 0;
     for (double yPosition : yPositions) {
 
       // columns
       int xIndex = 0;
       int xLength = calculatedPano.getHorizontalPositions().size();
-      double xOffset = 0;
       for (double xPosition : calculatedPano.getHorizontalPositions()) {
 
         if (xIndex == 0) {
-          double delta = xPosition - lastShotPosition.getX();
+          double delta = (xPosition + xOffset) - lastShotPosition.getX();
+
+          // more than 1/2 revolution backwards?
           if (delta < -180d) {
             xOffset += 360;
           }
+
+          // more than 1/2 revolution forward?
           if (delta > 180d) {
-            // should not happen, right?
             xOffset -= 360;
           }
         }
 
-        final double x = xPosition + xOffset;
+        double x = xPosition + xOffset;
         if (first) {
           // this is the first position, so we go a little left and up
           // before we go to the target position. This is to avoid the backlash

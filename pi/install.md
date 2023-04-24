@@ -77,12 +77,30 @@ Comment it out or delete it: `#dtoverlay=vc4-kms-v3d`
 
 ## Install remote-I2C
 
+new
+
+---
+
+- install remote-I2c global `$ sudo npm -g i @zebrajaeger/remote-i2c`
+- cp `/home/pi/i2c.service`
+- `sudo ln -s /home/pi/i2c.service /etc/systemd/system/i2c.service`
+
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl enable i2c
+    $ sudo systemctl start i2c
+
+---
+
+old 
 - install remote-I2c global `$ sudo npm -g i @zebrajaeger/remote-i2c`
 - copy this `/home/pi/i2c_server_starter.sh` to pi `/home/pi/i2c_server_starter.sh` 
 - add execution rights `$ chmod +x i2c_server_starter.sh`
 - edit crontab  `$ crontab -e` and add `@reboot /home/pi/i2c_server_starter.sh` to start the remote-i2c automatically
 - reboot to test    
 - i2c is now available via http
+
+---
 
 Example:    
 Read [INA219](https://www.ti.com/lit/ds/symlink/ina219.pdf) registers.

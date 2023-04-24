@@ -1,0 +1,17 @@
+[Unit]
+Description=Remote i2c service
+After=syslog.target network.target
+
+[Service]
+User=pi
+Group=pi
+WorkingDirectory=/home/pi
+
+ExecStart=/usr/bin/i2c-server -b 1 -v -p 8079 &> /home/pi/i2c-server.log
+ExecStop=/bin/kill -15 $MAINPID
+
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

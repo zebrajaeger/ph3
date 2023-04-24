@@ -1,0 +1,19 @@
+[Unit]
+Description=Panohead service
+After=syslog.target network.target
+
+[Service]
+User=pi
+Group=pi
+Environment=JAVA_HOME=/usr/lib/jvm/java-17-openjdk-armhf
+WorkingDirectory=/home/pi
+
+ExecStart=/home/pi/ph3-server-0.0.1-SNAPSHOT.jar
+ExecStop=/bin/kill -15 $MAINPID
+
+SuccessExitStatus=143
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

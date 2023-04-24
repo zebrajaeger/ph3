@@ -178,12 +178,8 @@ public class RobotService {
 
       } else if (NormalizePositionCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.NORMALIZE_POSITION).sendUpdate();
-        try {
-          panoHeadService.normalizeAxisPosition();
-          executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
-        } catch (IOException e) {
-          setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
-        }
+        panoHeadService.normalizeAxisPosition();
+        executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
 
       } else {
         setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(
@@ -249,7 +245,7 @@ public class RobotService {
   }
 
   private void onStopped() {
-    // nothing to do so far
+    panoHeadService.normalizeAxisPosition();
   }
 
   private RobotService setAutomateState(AutomateState automateState) {

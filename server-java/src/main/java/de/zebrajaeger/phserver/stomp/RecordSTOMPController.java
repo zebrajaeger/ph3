@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
+import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.service.RobotService;
 import de.zebrajaeger.phserver.util.StompUtils;
@@ -21,13 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecordSTOMPController {
 
   private final PanoService panoService;
+  private final PanoHeadService panoHeadService;
   private final RobotService robotService;
   private final SimpMessagingTemplate template;
 
   @Autowired
-  public RecordSTOMPController(PanoService panoService, RobotService robotService,
+  public RecordSTOMPController(PanoService panoService, PanoHeadService panoHeadService,
+      RobotService robotService,
       SimpMessagingTemplate template) {
     this.panoService = panoService;
+    this.panoHeadService = panoHeadService;
     this.robotService = robotService;
     this.template = template;
   }
@@ -35,6 +39,7 @@ public class RecordSTOMPController {
   //<editor-fold desc="Record">
   @MessageMapping("/record/start/{shotsName}")
   public void start(@DestinationVariable String shotsName) {
+    panoHeadService.normalizeAxisPosition();
     panoService
         .createCommands(shotsName)
         .ifPresent(robotService::requestStart);

@@ -30,7 +30,6 @@ public class Axis {
    * @param posDeg Position to go to.
    * @return  true: already at the required position; false: move required;
    */
-
   public boolean moveTo(double posDeg) throws IOException {
     if (isInverted) {
       posDeg = -posDeg;
@@ -68,6 +67,11 @@ public class Axis {
     int revolutions = (int) (a / 360d);
     int rawDelta = axisTranslatorService.degToRaw(360 * revolutions);
     offsetRaw -= rawDelta;
+  }
+
+  public void setToZero() throws IOException {
+    offsetRaw = 0;
+    panoHead.setActualAndTargetPos(axisIndex, 0);
   }
 
   public void setVelocityRaw(int velocity) throws IOException {

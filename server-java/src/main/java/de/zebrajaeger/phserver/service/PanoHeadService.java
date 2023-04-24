@@ -134,7 +134,8 @@ public class PanoHeadService {
   }
 
   public void setToZero() throws IOException {
-    hardwareService.getPanoHead().resetPos();
+    x.setToZero();
+    y.setToZero();
   }
 
   /**
@@ -204,7 +205,7 @@ public class PanoHeadService {
     y.adaptOffset();
   }
 
-  public void normalizeAxisPosition() throws IOException {
+  public void normalizeAxisPosition() {
     x.normalizeAxisPosition();
     y.normalizeAxisPosition();
   }

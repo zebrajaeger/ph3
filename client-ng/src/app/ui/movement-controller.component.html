@@ -9,14 +9,7 @@
   <div class="button v-center" (click)="manualMove(1,0)">1</div>
   <div class="button v-center" (click)="manualMove(0.1,0)">0.1</div>
 
-  <div class="joystick v-center zone">
-    <ngx-joystick #dynamicJoystick [options]="{
-        mode: 'dynamic',
-        size: 300,
-        position: { left: '50%', top: '50%' },
-        color: 'blue',
-        shape: 'square'
-      }" (move)="onMove($event)" (start)="onJoystickStart()" (end)="onJoystickEnd()"></ngx-joystick>
+  <div class="v-center">
   </div>
 
   <!--  -x-->

@@ -13,10 +13,10 @@ import de.zebrajaeger.phserver.hardware.PowerGauge;
 import de.zebrajaeger.phserver.hardware.PowerGaugeDeviceIna219;
 import de.zebrajaeger.phserver.hardware.SystemDevice;
 import de.zebrajaeger.phserver.hardware.remote.RemoteService;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +32,8 @@ public class PiService implements HardwareService {
   /**
    * #define I2C_ADDRESS 0x33
    */
+  @Value("${i2c.bus:0x01}")
+  private int i2cBus;
   @Value("${i2c.address.panohead:0x33}")
   private int i2cPanoHeadAddress;
   @Value("${i2c.address.ina219:0x40}")

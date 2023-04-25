@@ -109,6 +109,11 @@ At first, we write the register number that we want to access:
     `http://192.168.178.78:8079/write?address=0x40&data=2`    
 Now we can read the 2 Bytes value: `http://192.168.178.78:8079/read?address=0x40&count=2`    
 
+## Install the native lib
+
+- create a folder `/home/pi/lib`
+- copy the `/home/pi/lib/libjinput-linux64.so` into the new folder
+
 ## Install the Applikation
 
 Open `server-java/pom.xml` and search for the `maven-antrun-plugin` section.

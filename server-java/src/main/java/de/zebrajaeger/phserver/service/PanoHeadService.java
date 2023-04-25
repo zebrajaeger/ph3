@@ -7,6 +7,7 @@ import de.zebrajaeger.phserver.data.Power;
 import de.zebrajaeger.phserver.data.RawPosition;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
+import de.zebrajaeger.phserver.event.JoystickConnectionEvent;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;
 import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.PanoHeadDataEvent;
@@ -163,11 +164,7 @@ public class PanoHeadService {
 
     // if jogging is disabled now, we stop the movement
     if (!isJoggingEnabled()) {
-      try {
-        stopAll();
-      } catch (IOException e) {
-        LOG.debug("Could not stop all", e);
-      }
+      stopAll();
     }
 
     applicationEventPublisher.publishEvent(new JoggingChangedEvent(joggingEnabled));
@@ -216,8 +213,12 @@ public class PanoHeadService {
     return _x && _y;
   }
 
-  public void stopAll() throws IOException {
-    hardwareService.getPanoHead().stopAll();
+  public void stopAll() {
+    try {
+      hardwareService.getPanoHead().stopAll();
+    } catch (IOException e) {
+      LOG.debug("Could stop all", e);
+    }
   }
 
   public void shot(int focusTimeMs, int triggerTimeMs) throws IOException {
@@ -240,10 +241,25 @@ public class PanoHeadService {
 
   @EventListener
   public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) {
-    manualMoveByJoystick(joystickPosition.getPosition());
+    manualMoveByJoystick(joystickPosition.position());
+  }
+
+  @EventListener
+  public void onJoystickConnectionChanged(JoystickConnectionEvent joystickConnectionEvent) {
+    if (!joystickConnectionEvent.connected()) {
+      stopAll();
+    }
   }
 
   public void manualMoveByJoystick(Position joystickPosition) {
+    if (!isJoggingEnabled()) {
+      return;
+    }
+
+    setSigmoidSpeed(joystickPosition);
+  }
+
+  public void manualMoveByJoystickWithEmergencyStopOnTimeout(Position joystickPosition) {
     if (!isJoggingEnabled()) {
       return;
     }
@@ -262,11 +278,7 @@ public class PanoHeadService {
 
     jogByJoystick = false;
 
-    try {
-      stopAll();
-    } catch (IOException e) {
-      LOG.debug("Could not stop all", e);
-    }
+    stopAll();
   }
 
   @Scheduled(fixedDelay = 100)
@@ -277,11 +289,7 @@ public class PanoHeadService {
     if (jogByJoystick && now - lastManualMove > 200) {
       jogByJoystick = false;
       LOG.warn("Emergency stop. Reason: Joystick event timeout");
-      try {
-        stopAll();
-      } catch (IOException e) {
-        LOG.debug("Could not stop movement", e);
-      }
+      stopAll();
     }
   }
 

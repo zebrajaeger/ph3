@@ -90,7 +90,7 @@ public class PanoHeadSTOMPController {
 
   @MessageMapping("/actor/manualMoveByJoystick")
   public void manualMoveByJoystick(@Payload Position relSpeed) {
-    panoHeadService.manualMoveByJoystick(relSpeed);
+    panoHeadService.manualMoveByJoystickWithEmergencyStopOnTimeout(relSpeed);
   }
 
   @MessageMapping("/actor/manualMoveByJoystickStop")

@@ -169,8 +169,8 @@ public class RobotService {
 
       } else if (ApplyOffsetCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.APPLY_OFFSET).sendUpdate();
-          panoHeadService.adaptAxisOffset();
-          executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
+        panoHeadService.adaptAxisOffset();
+        executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
 
       } else if (NormalizePositionCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.NORMALIZE_POSITION).sendUpdate();
@@ -205,16 +205,10 @@ public class RobotService {
     switch (robotState.getAutomateState()) {
       // we have to wait until the end of the move
       case CMD_MOVE -> {
-        try {
-          panoHeadService.stopAll();
-          setAutomateState(AutomateState.STOPPING)
-              .setPauseState(PauseState.RUNNING)
-              .sendUpdate();
-        } catch (IOException e) {
-          setAutomateState(AutomateState.STOPPED_WITH_ERROR)
-              .setPauseState(PauseState.RUNNING)
-              .sendUpdate();
-        }
+        panoHeadService.stopAll();
+        setAutomateState(AutomateState.STOPPING)
+            .setPauseState(PauseState.RUNNING)
+            .sendUpdate();
       }
 
       // we have to wait until the end of the shot

@@ -42,6 +42,6 @@ public class JoystickSTOMPController {
 
     @EventListener
     public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) {
-        template.convertAndSend("/topic/joystick/position", joystickPosition.getPosition());
+        template.convertAndSend("/topic/joystick/position", joystickPosition.position());
     }
 }

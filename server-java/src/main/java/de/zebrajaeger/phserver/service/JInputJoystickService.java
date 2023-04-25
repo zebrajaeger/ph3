@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.service;
 
 import de.zebrajaeger.phserver.data.Position;
+import de.zebrajaeger.phserver.event.JoystickConnectionEvent;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;
 import de.zebrajaeger.phserver.util.MathUtils;
 import java.util.Arrays;
@@ -76,6 +77,7 @@ public class JInputJoystickService implements JoystickService {
         c.ifPresent(value -> {
           controller = value;
           LOG.info("Found a Controller: {}", controller);
+          applicationEventPublisher.publishEvent(new JoystickConnectionEvent(true));
         });
       }
     }
@@ -132,6 +134,7 @@ public class JInputJoystickService implements JoystickService {
       // controller invalid
       controller = null;
       LOG.info("Controller lost");
+      applicationEventPublisher.publishEvent(new JoystickConnectionEvent(false));
       if (position == ZERO_POSITION) {
         return false;
       } else {

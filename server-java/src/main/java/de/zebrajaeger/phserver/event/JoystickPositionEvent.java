@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.Position;
-import lombok.Data;
 
-@Data
-public class JoystickPositionEvent {
+public record JoystickPositionEvent(Position position) {
 
-  private final Position position;
 }

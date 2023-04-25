@@ -65,19 +65,6 @@
                   command="sudo service browser restart"
                   trust="true"
                 />
-
-                <!--                <sshexec host="${remote.host}"-->
-                <!--                  username="${remote.user}"-->
-                <!--                  keyfile="${remote.keyfile}"-->
-                <!--                  command="chmod +x ~/ph3-server-0.0.1-SNAPSHOT.jar"-->
-                <!--                  trust="true"-->
-                <!--                />-->
-                <!--                <sshexec host="${remote.host}"-->
-                <!--                  username="${remote.user}"-->
-                <!--                  keyfile="${remote.keyfile}"-->
-                <!--                  command="sudo reboot"-->
-                <!--                  trust="true"-->
-                <!--                />-->
               </target>
             </configuration>
           </execution>
@@ -256,6 +243,23 @@
       <artifactId>jinput</artifactId>
       <version>2.0.9</version>
     </dependency>
+    <dependency>
+      <groupId>net.java.jinput</groupId>
+      <artifactId>jinput</artifactId>
+      <version>2.0.9</version>
+      <classifier>natives-all</classifier>
+    </dependency>
+
+<!--    <dependency>-->
+<!--      <groupId>net.java.jinput</groupId>-->
+<!--      <artifactId>jinput</artifactId>-->
+<!--      <version>2.0.9</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.hid4java</groupId>-->
+<!--      <artifactId>hid4java</artifactId>-->
+<!--      <version>0.7.0</version>-->
+<!--    </dependency>-->
     <!--        <dependency>-->
     <!--            <groupId>net.java.jinput</groupId>-->
     <!--            <artifactId>jinput</artifactId>-->

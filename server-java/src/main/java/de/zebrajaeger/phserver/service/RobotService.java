@@ -169,12 +169,8 @@ public class RobotService {
 
       } else if (ApplyOffsetCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.APPLY_OFFSET).sendUpdate();
-        try {
           panoHeadService.adaptAxisOffset();
           executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
-        } catch (IOException e) {
-          setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
-        }
 
       } else if (NormalizePositionCommand.class.equals(currentCommand.getClass())) {
         setAutomateState(AutomateState.NORMALIZE_POSITION).sendUpdate();

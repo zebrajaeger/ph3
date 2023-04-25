@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ph3-root [install]" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="ph3-server [install]" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings">
         <MavenGeneralSettings>
@@ -36,7 +36,7 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/server-java" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>

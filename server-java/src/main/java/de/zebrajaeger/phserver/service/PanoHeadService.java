@@ -38,7 +38,7 @@ public class PanoHeadService {
   private final Axis x;
   private final Axis y;
   private final ApplicationEventPublisher applicationEventPublisher;
-  @Value("${jogging.speed:1000}")
+  @Value("${jogging.speed:20}")
   private float joggingSpeed;
 
   private boolean joggingEnabled;
@@ -68,13 +68,17 @@ public class PanoHeadService {
   }
 
   @Scheduled(initialDelay = 0, fixedRateString = "${controller.power.period:250}")
-  public void updatePowerConsumption() throws IOException {
+  public void updatePowerConsumption() {
     final Optional<PowerGauge> powerGauge = hardwareService.getPowerGauge();
     if (powerGauge.isPresent()) {
-      double u = powerGauge.get().readVoltageInMillivolt() / 1000d;
-      double i = powerGauge.get().readCurrentInMilliampere() / 1000d;
-      Power power = new Power(u, i);
-      applicationEventPublisher.publishEvent(new PowerMeasureEvent(power));
+      try {
+        double u = powerGauge.get().readVoltageInMillivolt() / 1000d;
+        double i = powerGauge.get().readCurrentInMilliampere() / 1000d;
+        Power power = new Power(u, i);
+        applicationEventPublisher.publishEvent(new PowerMeasureEvent(power));
+      } catch (IOException e) {
+        LOG.debug("Could not read PowerGauge");
+      }
     }
   }
 
@@ -92,9 +96,14 @@ public class PanoHeadService {
   }
 
   @Scheduled(initialDelay = 0, fixedRateString = "${controller.main.period:100}")
-  public void update() throws IOException {
+  public void update() {
 
-    panoHeadData = hardwareService.getPanoHead().read();
+    try {
+      panoHeadData = hardwareService.getPanoHead().read();
+    } catch (IOException e) {
+      LOG.debug("Could not read data from hardware device", e);
+      return;
+    }
     applicationEventPublisher.publishEvent(new PanoHeadDataEvent(panoHeadData));
 
     x.setRawValue(panoHeadData.getActor().getByIndex(AXIS_INDEX_X).getPos());
@@ -133,15 +142,19 @@ public class PanoHeadService {
     return joggingEnabled;
   }
 
-  public void setToZero() throws IOException {
-    x.setToZero();
-    y.setToZero();
+  public void setToZero() {
+    try {
+      x.setToZero();
+      y.setToZero();
+    } catch (IOException e) {
+      LOG.debug("Could not set zu zero", e);
+    }
   }
 
   /**
    * Also publishes JoggingChangedEvent
    */
-  public void setJoggingEnabled(boolean joggingEnabled) throws IOException {
+  public void setJoggingEnabled(boolean joggingEnabled) {
     if (joggingEnabled == this.joggingEnabled) {
       return;
     }
@@ -150,7 +163,11 @@ public class PanoHeadService {
 
     // if jogging is disabled now, we stop the movement
     if (!isJoggingEnabled()) {
-      stopMovement();
+      try {
+        stopAll();
+      } catch (IOException e) {
+        LOG.debug("Could not stop all", e);
+      }
     }
 
     applicationEventPublisher.publishEvent(new JoggingChangedEvent(joggingEnabled));
@@ -161,21 +178,29 @@ public class PanoHeadService {
    *
    * @param relPosition way to move in deg
    */
-  public void manualRelativeMove(Position relPosition) throws IOException {
+  public void manualRelativeMove(Position relPosition) {
     if (!isJoggingEnabled()) {
       return;
     }
 
-    x.moveRelative(relPosition.getX());
-    y.moveRelative(relPosition.getY());
+    try {
+      x.moveRelative(relPosition.getX());
+      y.moveRelative(relPosition.getY());
+    } catch (IOException e) {
+      LOG.debug("Could not move", e);
+    }
   }
 
-  public void manualAbsoluteMove(Position position) throws IOException {
+  public void manualAbsoluteMove(Position position) {
     if (!isJoggingEnabled()) {
       return;
     }
-    x.moveTo(position.getX());
-    y.moveTo(position.getY());
+    try {
+      x.moveTo(position.getX());
+      y.moveTo(position.getY());
+    } catch (IOException e) {
+      LOG.debug("Could not move", e);
+    }
   }
 
   /**
@@ -192,17 +217,20 @@ public class PanoHeadService {
   }
 
   public void stopAll() throws IOException {
-    hardwareService.getPanoHead().setTargetVelocity(0, 0);
-    hardwareService.getPanoHead().setTargetVelocity(1, 0);
+    hardwareService.getPanoHead().stopAll();
   }
 
   public void shot(int focusTimeMs, int triggerTimeMs) throws IOException {
     hardwareService.getPanoHead().startShot(focusTimeMs, triggerTimeMs);
   }
 
-  public void adaptAxisOffset() throws IOException {
-    x.adaptOffset();
-    y.adaptOffset();
+  public void adaptAxisOffset() {
+    try {
+      x.adaptOffset();
+      y.adaptOffset();
+    } catch (IOException e) {
+      LOG.debug("Could not adapt axis", e);
+    }
   }
 
   public void normalizeAxisPosition() {
@@ -211,11 +239,11 @@ public class PanoHeadService {
   }
 
   @EventListener
-  public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) throws IOException {
+  public void onJoystickPosChanged(JoystickPositionEvent joystickPosition) {
     manualMoveByJoystick(joystickPosition.getPosition());
   }
 
-  public void manualMoveByJoystick(Position joystickPosition) throws IOException {
+  public void manualMoveByJoystick(Position joystickPosition) {
     if (!isJoggingEnabled()) {
       return;
     }
@@ -227,37 +255,45 @@ public class PanoHeadService {
     setSigmoidSpeed(joystickPosition);
   }
 
-  public void manualMoveByJoystickStop() throws IOException {
+  public void manualMoveByJoystickStop() {
     if (!isJoggingEnabled()) {
       return;
     }
 
     jogByJoystick = false;
-    stopMovement();
+
+    try {
+      stopAll();
+    } catch (IOException e) {
+      LOG.debug("Could not stop all", e);
+    }
   }
 
   @Scheduled(fixedDelay = 100)
-  public void checkJoystickMovementTimeout() throws IOException {
+  public void checkJoystickMovementTimeout() {
     long now = System.currentTimeMillis();
 
     // emergency stop ?
     if (jogByJoystick && now - lastManualMove > 200) {
       jogByJoystick = false;
       LOG.warn("Emergency stop. Reason: Joystick event timeout");
-      stopMovement();
+      try {
+        stopAll();
+      } catch (IOException e) {
+        LOG.debug("Could not stop movement", e);
+      }
     }
   }
 
-  private void setSigmoidSpeed(Position speed) throws IOException {
+  private void setSigmoidSpeed(Position speed) {
     Position speed1 = speed.withBorderOfOne();
-    int x = (int) (sigmoid.value(speed1.getX()) * joggingSpeed);
-    int y = (int) (sigmoid.value(speed1.getY()) * joggingSpeed);
-    hardwareService.getPanoHead().setTargetVelocity(0, x);
-    hardwareService.getPanoHead().setTargetVelocity(1, y);
-  }
-
-  private void stopMovement() throws IOException {
-    hardwareService.getPanoHead().setTargetVelocity(0, 0);
-    hardwareService.getPanoHead().setTargetVelocity(1, 0);
+    int xSpeed = (int) (sigmoid.value(speed1.getX()) * joggingSpeed);
+    int ySpeed = (int) (sigmoid.value(speed1.getY()) * joggingSpeed);
+    try {
+      x.setVelocityDeg(xSpeed);
+      y.setVelocityDeg(ySpeed);
+    } catch (IOException e) {
+      LOG.debug("Could not set velocity", e);
+    }
   }
 }

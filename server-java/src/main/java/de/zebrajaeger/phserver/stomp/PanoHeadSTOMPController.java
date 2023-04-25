@@ -9,6 +9,7 @@ import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import java.io.IOException;
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -18,6 +19,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@Slf4j
 public class PanoHeadSTOMPController {
 
   private final PanoHeadService panoHeadService;
@@ -44,8 +46,13 @@ public class PanoHeadSTOMPController {
   }
 
   @MessageMapping("/actor/limit")
-  public void limit(@Payload AxisValue limit) throws IOException {
-    hardwareService.getPanoHead().setLimit(limit.getAxisIndex(), limit.getValue());
+  public void limit(@Payload AxisValue limit) {
+    // TODO no hardware access on this layer
+    try {
+      hardwareService.getPanoHead().setLimit(limit.getAxisIndex(), limit.getValue());
+    } catch (IOException e) {
+      log.debug("Could not set zu zero", e);
+    }
   }
 
   @EventListener
@@ -57,37 +64,37 @@ public class PanoHeadSTOMPController {
   //<editor-fold desc="Control">
 
   @MessageMapping("/actor/setToZero")
-  public void setToZero() throws IOException {
+  public void setToZero(){
     panoHeadService.setToZero();
   }
 
   @MessageMapping("/actor/goToZero")
-  public void goToZero() throws IOException {
+  public void goToZero(){
     panoHeadService.manualAbsoluteMove(new Position(0, 0));
   }
 
   @MessageMapping("/actor/adaptOffset")
-  public void adaptOffset() throws IOException {
+  public void adaptOffset(){
     panoHeadService.adaptAxisOffset();
   }
 
   @MessageMapping("/actor/jogging")
-  public void setJogging(@Payload boolean jogging) throws IOException {
+  public void setJogging(@Payload boolean jogging){
     panoHeadService.setJoggingEnabled(jogging);
   }
 
   @MessageMapping("/actor/manualMove")
-  public void manualMove(@Payload Position relPosition) throws IOException {
+  public void manualMove(@Payload Position relPosition) {
     panoHeadService.manualRelativeMove(relPosition);
   }
 
   @MessageMapping("/actor/manualMoveByJoystick")
-  public void manualMoveByJoystick(@Payload Position relSpeed) throws IOException {
+  public void manualMoveByJoystick(@Payload Position relSpeed) {
     panoHeadService.manualMoveByJoystick(relSpeed);
   }
 
   @MessageMapping("/actor/manualMoveByJoystickStop")
-  public void manualMoveByJoystickStop() throws IOException {
+  public void manualMoveByJoystickStop() {
     panoHeadService.manualMoveByJoystickStop();
   }
 

@@ -19,12 +19,20 @@ import de.zebrajaeger.phserver.event.ShotsChangedEvent;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.MatrixPanoGenerator;
 import de.zebrajaeger.phserver.pano.PanoGenerator;
+import de.zebrajaeger.phserver.pano.Positions;
+import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
 import jakarta.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -35,6 +43,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PanoService {
 
+  private static final SimpleDateFormat STRUCTURED_DATE_PATTERN = new SimpleDateFormat(
+      "yyyy-MM-dd_hhmmss");
   private final PanoHeadService panoHeadService;
   private final ApplicationEventPublisher applicationEventPublisher;
   private final SettingsService settingsService;
@@ -95,7 +105,7 @@ public class PanoService {
     }
   }
 
-  public void updateCalculatedPano() {
+  public Optional<CalculatedPano> updateCalculatedPano() {
     log.info("updateCalculatedPano() - CALL");
     FieldOfView cameraFOV = getPictureFOV();
     Double height = cameraFOV.getVertical().getSize();
@@ -116,26 +126,30 @@ public class PanoService {
             value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
       }
     }
+    return calculatedPano;
   }
 
-  public Optional<List<Command>> createCommands(String shotsName) {
-    updateCalculatedPano();
-
-    List<Command> result = null;
+  public Optional<List<Command>> createCommands(CalculatedPano calculatedPano, String shotsName) {
     List<Shot> shots = getShots().get(shotsName);
-
-    if (calculatedPano.isPresent() && shots != null && !shots.isEmpty()) {
-      FieldOfView cameraFOV = getPictureFOV();
-      Double height = cameraFOV.getVertical().getSize();
-      Double width = cameraFOV.getHorizontal().getSize();
-      Image image = new Image(width, height);
-      Pano pano = new Pano(getPanoFOV(), getMinimumOverlapH(), getMinimumOverlapV());
-      result = panoGenerator.createCommands(
-          panoHeadService.getCurrentPosition(),
-          image, pano,
-          shots, getDelay());
+    if (shots == null || shots.isEmpty()) {
+      return Optional.empty();
     }
-    return Optional.ofNullable(result);
+    return Optional.of(panoGenerator.createCommands(calculatedPano, shots, getDelay()));
+  }
+
+  public void createPapywizardFile(CalculatedPano calculatedPano) {
+    final Positions positions = panoGenerator.createPositions(calculatedPano);
+    final PapywizardGenerator g = new PapywizardGenerator();
+    final String xml = g.generate(positions);
+    final Date now = new Date();
+    final File file = new File(STRUCTURED_DATE_PATTERN.format(now)
+        + "("  + calculatedPano.hSize() + "-" + calculatedPano.vSize() +")" + "-papywizard.xml");
+    log.info("Write papywizard file to: '{}'", file.getAbsolutePath());
+    try {
+      FileUtils.write(file, xml, Charset.defaultCharset());
+    } catch (IOException e) {
+      log.error("Could not write papywizard file to: '{}'", file.getAbsolutePath(), e);
+    }
   }
 
   public void publishPictureFOVChange() {

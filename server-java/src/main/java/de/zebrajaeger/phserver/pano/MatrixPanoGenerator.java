@@ -25,6 +25,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
   public CalculatedPano calculatePano(Position currentPosDeg, Image image, Pano pano) {
 
     CalculatedPano result = new CalculatedPano(pano);
+    result.setStartPosition(currentPosDeg);
 
     {
       // x
@@ -67,29 +68,44 @@ public class MatrixPanoGenerator implements PanoGenerator {
   }
 
   @Override
-  public List<Command> createCommands(
-      Position currentPosDeg,
-      Image image,
-      Pano pano,
-      List<Shot> shots,
+  public Positions createPositions(CalculatedPano calculatedPano) {
+
+    List<Double> xPositions = new ArrayList<>(calculatedPano.getHorizontalPositions());
+    List<Double> yPositions = new ArrayList<>(calculatedPano.getVerticalPositions());
+    Collections.reverse(yPositions);
+    Positions result = new Positions(xPositions.size(), yPositions.size());
+
+    int index = 0;
+    int yIndex = 0;
+    for (double yPosition : yPositions) {
+      int xIndex = 0;
+      for (double xPosition : xPositions) {
+        new ShotPosition(xPosition, yPosition, index, xIndex, xPositions.size(), yIndex,
+            yPositions.size());
+        xIndex++;
+        index++;
+      }
+      yIndex++;
+    }
+    return result;
+  }
+
+  @Override
+  public List<Command> createCommands(CalculatedPano calculatedPano, List<Shot> shots,
       Delay delay) {
 
     log.info("<Create Commands>");
-    log.info("*  currentPosDeg: '{}'", currentPosDeg);
-    log.info("*  image: '{}'", image);
-    log.info("*  pano: '{}'", pano);
+    log.info("*  calculatedPano: '{}'", calculatedPano);
     log.info("*  shots: '{}'", shots);
     log.info("*  delay: '{}'", delay);
     log.info("</Create Commands>");
-
-    final CalculatedPano calculatedPano = calculatePano(currentPosDeg, image, pano);
 
     List<Command> commands = new LinkedList<>();
 
     int posIndex = 0;
     ShotPosition lastShotPosition = new ShotPosition(
-        currentPosDeg.getX(),
-        currentPosDeg.getY(),
+        calculatedPano.getStartPosition().getX(),
+        calculatedPano.getStartPosition().getY(),
         -1, -1, -1, -1, -1);
 
     boolean first = true;
@@ -209,7 +225,8 @@ public class MatrixPanoGenerator implements PanoGenerator {
 
       // if there is another shot, wait if needed
       if (i < shots.size() && delay.getWaitBetweenShots() > 0) {
-        commands.add(new WaitCommand(shotPos, "Wait between shots", delay.getWaitBetweenShots()));
+        commands.add(
+            new WaitCommand(shotPos, "Wait between shots", delay.getWaitBetweenShots()));
       }
     }
 

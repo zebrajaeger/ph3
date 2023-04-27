@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class CalculatedPano extends Pano {
 
+  private Position startPosition;
+
   private List<Double> horizontalPositions = new LinkedList<>();
   private List<Double> verticalPositions = new LinkedList<>();
 
@@ -17,5 +19,12 @@ public class CalculatedPano extends Pano {
 
   public CalculatedPano(Pano pano) {
     super(pano);
+  }
+
+  public int hSize(){
+    return horizontalPositions.size();
+  }
+  public int vSize(){
+    return verticalPositions.size();
   }
 }

@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import de.zebrajaeger.phserver.data.CalculatedPano;
 import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
@@ -8,6 +9,8 @@ import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.service.RobotService;
 import de.zebrajaeger.phserver.util.StompUtils;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api")
+@Slf4j
 public class RecordSTOMPController {
 
   private final PanoService panoService;
@@ -40,9 +44,13 @@ public class RecordSTOMPController {
   @MessageMapping("/record/start/{shotsName}")
   public void start(@DestinationVariable String shotsName) {
     panoHeadService.normalizeAxisPosition();
-    panoService
-        .createCommands(shotsName)
-        .ifPresent(robotService::requestStart);
+    final Optional<CalculatedPano> calculatedPano = panoService.updateCalculatedPano();
+    calculatedPano.ifPresent(pano -> {
+      panoService.createCommands(pano, shotsName).ifPresent(commandList -> {
+        panoService.createPapywizardFile(pano);
+        robotService.requestStart(commandList);
+      });
+    });
   }
 
   @MessageMapping("/record/stop")

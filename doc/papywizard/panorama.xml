@@ -1,0 +1,1505 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<papywizard>
+		<shoot>
+			<pict bracket="1">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="0"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="36"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="72"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="108"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="144"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="180"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="216"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="252"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="288"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="40" yaw="324"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="0"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="36"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="72"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="108"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="144"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="180"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="216"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="252"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="288"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="20" yaw="324"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="0"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="36"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="72"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="108"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="144"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="180"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="216"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="252"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="288"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="0" yaw="324"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="0"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="36"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="72"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="108"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="144"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="180"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="216"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="252"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="288"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-20" yaw="324"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="0"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="36"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="72"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="108"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="144"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="180"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="216"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="252"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="288"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="2">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="3">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="4">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="5">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="6">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="7">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="8">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="9">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+				<pict bracket="10">
+						<position pitch="-40" yaw="324"/>
+				</pict>
+			</shoot>
+	</papywizard>

@@ -10,5 +10,8 @@ import java.util.List;
 
 public interface PanoGenerator {
   CalculatedPano calculatePano(Position currentPosDeg,  Image image, Pano pano);
-  List<Command> createCommands(Position currentPosDeg, Image image,Pano pano, List<Shot> shots, Delay delay);
+
+  Positions createPositions(CalculatedPano calculatedPano);
+
+  List<Command> createCommands(CalculatedPano calculatedPano, List<Shot> shots, Delay delay);
 }

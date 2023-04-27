@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<papywizard>
+		<shoot>
+			<pict bracket="1">
+						<position pitch="1" yaw="0"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="1" yaw="120"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="1" yaw="240"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="2" yaw="0"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="2" yaw="120"/>
+				</pict>
+				<pict bracket="1">
+						<position pitch="2" yaw="240"/>
+				</pict>
+			</shoot>
+	</papywizard>

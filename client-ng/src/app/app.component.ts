@@ -7,18 +7,14 @@ import {RouterService} from './service/router.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  // public panoHeadData: Actor;
-  // public panoHeadDataSubscription: Subscription;
 
   constructor(private routerService: RouterService) {
   }
 
   ngOnInit(): void {
-    // this.panoHeadDataSubscription = this.panoHeadService.subscribeActor(panoHeadData => this.panoHeadData = panoHeadData);
   }
 
   ngOnDestroy(): void {
-    // this.panoHeadDataSubscription?.unsubscribe();
   }
 
   onRouterOutletActivate($event: any): void {

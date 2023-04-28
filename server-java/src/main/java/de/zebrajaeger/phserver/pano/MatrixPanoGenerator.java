@@ -80,8 +80,11 @@ public class MatrixPanoGenerator implements PanoGenerator {
     for (double yPosition : yPositions) {
       int xIndex = 0;
       for (double xPosition : xPositions) {
-        new ShotPosition(xPosition, yPosition, index, xIndex, xPositions.size(), yIndex,
-            yPositions.size());
+        result.add(new ShotPosition(
+            xPosition, yPosition,
+            index,
+            xIndex, xPositions.size(),
+            yIndex, yPositions.size()));
         xIndex++;
         index++;
       }

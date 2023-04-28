@@ -44,7 +44,7 @@ import org.springframework.stereotype.Service;
 public class PanoService {
 
   private static final SimpleDateFormat STRUCTURED_DATE_PATTERN = new SimpleDateFormat(
-      "yyyy-MM-dd_hhmmss");
+      "yyyy-MM-dd_hh-mm-ss");
   private final PanoHeadService panoHeadService;
   private final ApplicationEventPublisher applicationEventPublisher;
   private final SettingsService settingsService;
@@ -143,7 +143,7 @@ public class PanoService {
     final String xml = g.generate(positions);
     final Date now = new Date();
     final File file = new File(STRUCTURED_DATE_PATTERN.format(now)
-        + "("  + calculatedPano.hSize() + "-" + calculatedPano.vSize() +")" + "-papywizard.xml");
+        + "-("  + calculatedPano.hSize() + "-" + calculatedPano.vSize() +")" + "-papywizard.xml");
     log.info("Write papywizard file to: '{}'", file.getAbsolutePath());
     try {
       FileUtils.write(file, xml, Charset.defaultCharset());

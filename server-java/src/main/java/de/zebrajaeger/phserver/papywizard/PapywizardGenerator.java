@@ -10,9 +10,11 @@ public class PapywizardGenerator {
   public String generate(Positions positions) {
     XmlMapper xmlMapper = new XmlMapper();
 
-    final List<Pict> picts = positions.getAll(false, true).stream().map(shotPosition ->
-        new Pict(1, new Position(shotPosition.getX(), shotPosition.getY()))
-    ).toList();
+    final List<Pict> picts = positions
+        .getAll(false, true)
+        .stream()
+        .map(shotPosition -> new Pict(1, new Position(shotPosition.getX(), shotPosition.getY())))
+        .toList();
 
     Shoot shot = new Shoot(picts);
     final Papywizard pw = new Papywizard(shot);

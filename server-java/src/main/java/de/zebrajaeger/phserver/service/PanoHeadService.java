@@ -5,6 +5,7 @@ import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.Power;
 import de.zebrajaeger.phserver.data.RawPosition;
+import de.zebrajaeger.phserver.event.ActorActiveChangedEvent;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.event.JoystickConnectionEvent;
@@ -130,6 +131,10 @@ public class PanoHeadService {
 
     if (previousState.isActorActive() && !actorActive) {
       applicationEventPublisher.publishEvent(new MovementStoppedEvent());
+    }
+
+    if (previousState.isActorActive() != actorActive) {
+      applicationEventPublisher.publishEvent(new ActorActiveChangedEvent(actorActive));
     }
 
     previousState.setActorActive(actorActive);

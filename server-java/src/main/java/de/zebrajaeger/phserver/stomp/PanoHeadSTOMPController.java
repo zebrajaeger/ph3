@@ -1,12 +1,13 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.data.AxisValue;
 import de.zebrajaeger.phserver.data.Position;
+import de.zebrajaeger.phserver.event.ActorActiveChangedEvent;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.event.PositionEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.service.PanoHeadService;
 import java.io.IOException;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
@@ -59,27 +60,32 @@ public class PanoHeadSTOMPController {
   public void onPanoHeadChanged(PositionEvent positionEvent) {
     template.convertAndSend("/topic/actor/position/", positionEvent.getPosition());
   }
+
+  @EventListener
+  public void onActorActiveChanged(ActorActiveChangedEvent actorActiveChangedEvent) {
+    template.convertAndSend("/topic/actor/active/", actorActiveChangedEvent.isActive());
+  }
   //</editor-fold>
 
   //<editor-fold desc="Control">
 
   @MessageMapping("/actor/setToZero")
-  public void setToZero(){
+  public void setToZero() {
     panoHeadService.setToZero();
   }
 
   @MessageMapping("/actor/goToZero")
-  public void goToZero(){
+  public void goToZero() {
     panoHeadService.manualAbsoluteMove(new Position(0, 0));
   }
 
   @MessageMapping("/actor/adaptOffset")
-  public void adaptOffset(){
+  public void adaptOffset() {
     panoHeadService.adaptAxisOffset();
   }
 
   @MessageMapping("/actor/jogging")
-  public void setJogging(@Payload boolean jogging){
+  public void setJogging(@Payload boolean jogging) {
     panoHeadService.setJoggingEnabled(jogging);
   }
 

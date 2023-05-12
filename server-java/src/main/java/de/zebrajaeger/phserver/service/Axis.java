@@ -1,45 +1,58 @@
 package de.zebrajaeger.phserver.service;
 
 import de.zebrajaeger.phserver.hardware.PanoHead;
+import de.zebrajaeger.phserver.translation.AxisParameters;
 import java.io.IOException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @Getter
+@Slf4j
 public class Axis {
 
   private final PanoHead panoHead;
   private final int axisIndex;
-  private final AxisTranslatorService axisTranslatorService;
+  //  private final AxisTranslator axisTranslatorService;
+  private final AxisParameters axisParameters;
 
   private final boolean isInverted;
   private int offsetRaw = 0;
   private int rawValue = 0;
 
-  public Axis(PanoHead panoHead, int axisIndex, AxisTranslatorService axisTranslatorService,
+  public Axis(PanoHead panoHead, int axisIndex, AxisParameters axisParameters,
       boolean isInverted) {
     this.panoHead = panoHead;
     this.axisIndex = axisIndex;
-    this.axisTranslatorService = axisTranslatorService;
+    this.axisParameters = axisParameters;
     this.isInverted = isInverted;
+
+    try {
+      panoHead.setLimit(
+          axisIndex,
+          6 * 10,
+          axisParameters.getMaxStepFrequency(),
+          axisParameters.getMaxAccelerationFrequency());
+    } catch (IOException e) {
+      log.error("could not set limit for axisIndex: {}", axisIndex, e);
+    }
   }
 
   /**
-   *
    * @param posDeg Position to go to.
-   * @return  true: already at the required position; false: move required;
+   * @return true: already at the required position; false: move required;
    */
   public boolean moveTo(double posDeg) throws IOException {
     if (isInverted) {
       posDeg = -posDeg;
     }
-    int raw = axisTranslatorService.degToRaw(posDeg);
+    int raw = axisParameters.degToRaw(posDeg);
     final int targetPos = raw - offsetRaw;
-    if(rawValue!=targetPos){
+    if (rawValue != targetPos) {
       setTargetPosRaw(targetPos);
       return false;
-    }else{
+    } else {
       return true;
     }
   }
@@ -52,7 +65,7 @@ public class Axis {
     if (isInverted) {
       angleDeg = -angleDeg;
     }
-    setTargetPosRaw(rawValue + axisTranslatorService.degToRaw(angleDeg));
+    setTargetPosRaw(rawValue + axisParameters.degToRaw(angleDeg));
   }
 
   public void adaptOffset() throws IOException {
@@ -63,9 +76,9 @@ public class Axis {
   }
 
   public void normalizeAxisPosition() {
-    double a = axisTranslatorService.rawToDeg(rawValue + offsetRaw);
+    double a = axisParameters.rawToDeg(rawValue + offsetRaw);
     int revolutions = (int) (a / 360d);
-    int rawDelta = axisTranslatorService.degToRaw(360 * revolutions);
+    int rawDelta = axisParameters.degToRaw(360 * revolutions);
     offsetRaw -= rawDelta;
   }
 
@@ -74,18 +87,17 @@ public class Axis {
     panoHead.setActualAndTargetPos(axisIndex, 0);
   }
 
-  public void setVelocityRaw(int velocity) throws IOException {
-    panoHead.setTargetVelocity(axisIndex, rawValue);
-  }
-
-  public void setVelocityDeg(int velocity) throws IOException {
-    panoHead.setTargetVelocity(axisIndex, axisTranslatorService.degToRaw(velocity));
+  /**
+   * @param velocity [0..1]
+   */
+  public void setVelocity(double velocity) throws IOException {
+    panoHead.setTargetVelocity(axisIndex, (int) (velocity * axisParameters.getMaxStepFrequency()));
   }
 
   public double getDegValue() {
     return isInverted
-        ? -(axisTranslatorService.rawToDeg(rawValue + offsetRaw))
-        : axisTranslatorService.rawToDeg(rawValue + offsetRaw);
+        ? -(axisParameters.rawToDeg(rawValue + offsetRaw))
+        : axisParameters.rawToDeg(rawValue + offsetRaw);
   }
 
   private void setTargetPosRaw(int pos) throws IOException {

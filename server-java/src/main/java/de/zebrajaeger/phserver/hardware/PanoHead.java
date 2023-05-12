@@ -13,7 +13,7 @@ public interface PanoHead {
 
     void startShot(int focusTimeMs, int triggerTimeMs) throws IOException;
 
-    void setLimit(int axisIndex, int limit) throws IOException;
+    void setLimit(int axisIndex, int velocityMinHz, int velocityMaxHz, int accelerationMaxHzPerSecond) throws IOException;
 
     void setTargetVelocity(int axis, int velocity) throws IOException;
 

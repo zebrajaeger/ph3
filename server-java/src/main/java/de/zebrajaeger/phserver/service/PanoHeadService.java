@@ -17,6 +17,11 @@ import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.hardware.PowerGauge;
+import de.zebrajaeger.phserver.translation.AxisParameters;
+import de.zebrajaeger.phserver.translation.DefaultStepperParameters;
+import de.zebrajaeger.phserver.translation.MotorDriverParameters;
+import de.zebrajaeger.phserver.translation.SpurGearParameters;
+import de.zebrajaeger.phserver.translation.WormGearParameters;
 import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import java.io.IOException;
 import java.util.Optional;
@@ -24,7 +29,6 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -40,8 +44,6 @@ public class PanoHeadService {
   private final Axis x;
   private final Axis y;
   private final ApplicationEventPublisher applicationEventPublisher;
-  @Value("${jogging.speed:20}")
-  private float joggingSpeed;
 
   private boolean joggingEnabled;
   private PanoHeadData panoHeadData;
@@ -61,12 +63,21 @@ public class PanoHeadService {
 
   @Autowired
   public PanoHeadService(HardwareService hardwareService,
-      AxisTranslatorService axisTranslatorService,
       ApplicationEventPublisher applicationEventPublisher) {
     this.hardwareService = hardwareService;
     this.applicationEventPublisher = applicationEventPublisher;
-    x = new Axis(hardwareService.getPanoHead(), AXIS_INDEX_X, axisTranslatorService, true);
-    y = new Axis(hardwareService.getPanoHead(), AXIS_INDEX_Y, axisTranslatorService, false);
+
+    final AxisParameters axisParametersX = new AxisParameters(
+        new DefaultStepperParameters(),
+        MotorDriverParameters.MDP_16,
+        new SpurGearParameters());
+    x = new Axis(hardwareService.getPanoHead(), AXIS_INDEX_X, axisParametersX, true);
+
+    final AxisParameters axisParametersY = new AxisParameters(
+        new DefaultStepperParameters(350),
+        MotorDriverParameters.MDP_16,
+        new WormGearParameters());
+    y = new Axis(hardwareService.getPanoHead(), AXIS_INDEX_Y, axisParametersY, false);
   }
 
   @Scheduled(initialDelay = 0, fixedRateString = "${controller.power.period:250}")
@@ -300,13 +311,16 @@ public class PanoHeadService {
 
   private void setSigmoidSpeed(Position speed) {
     Position speed1 = speed.withBorderOfOne();
-    int xSpeed = (int) (sigmoid.value(speed1.getX()) * joggingSpeed);
-    int ySpeed = (int) (sigmoid.value(speed1.getY()) * joggingSpeed);
     try {
-      x.setVelocityDeg(xSpeed);
-      y.setVelocityDeg(ySpeed);
+      x.setVelocity(sigmoid.value(speed1.getX()));
+      y.setVelocity(sigmoid.value(speed1.getY()));
     } catch (IOException e) {
       LOG.debug("Could not set velocity", e);
     }
   }
+
+  public Position getCurrentPositionDeg() {
+    return new Position(x.getDegValue(), y.getDegValue());
+  }
+
 }

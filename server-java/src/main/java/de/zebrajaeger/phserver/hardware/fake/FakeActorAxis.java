@@ -24,8 +24,8 @@ class FakeActorAxis {
     isMoving = false;
   }
 
-  public void setLimit(int limit) {
-    this.maxSpeed = limit;
+  public void setLimit(int velocityMinHz, int velocityMaxHz, int accelerationMaxHzPerSecond) {
+    this.maxSpeed = velocityMaxHz;
   }
 
   public void setTargetPos(int pos) {

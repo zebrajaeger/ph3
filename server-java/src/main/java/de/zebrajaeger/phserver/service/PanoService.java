@@ -7,7 +7,6 @@ import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
-import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.data.Shots;
@@ -48,7 +47,6 @@ public class PanoService {
   private final PanoHeadService panoHeadService;
   private final ApplicationEventPublisher applicationEventPublisher;
   private final SettingsService settingsService;
-  private final AxisTranslatorServiceImpl axisTranslatorService;
 
   private final PanoGenerator panoGenerator = new MatrixPanoGenerator(5d, true);
   private final FieldOfView pictureFOV = new FieldOfView();
@@ -61,11 +59,9 @@ public class PanoService {
 
   @Autowired
   public PanoService(PanoHeadService panoHeadService,
-      AxisTranslatorServiceImpl axisTranslatorService,
       ApplicationEventPublisher applicationEventPublisher,
       SettingsService settingsService) {
     this.panoHeadService = panoHeadService;
-    this.axisTranslatorService = axisTranslatorService;
     this.applicationEventPublisher = applicationEventPublisher;
     this.settingsService = settingsService;
   }
@@ -113,15 +109,11 @@ public class PanoService {
     if (height != null && width != null) {
       Image image = new Image(width, height).normalized();
       FieldOfViewPartial panoFOV = getPanoFOV().normalize();
-      PanoHeadData data = panoHeadService.getData();
-      if (panoFOV.isComplete() && image.isComplete() && data != null) {
+      if (panoFOV.isComplete() && image.isComplete()) {
         log.info("updateCalculatedPano() - RECALCULATE");
         Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
-
-        Position currentPosDeg = axisTranslatorService.fromRaw(data.getActor().getX().getPos(),
-            data.getActor().getY().getPos());
-
-        calculatedPano = Optional.of(panoGenerator.calculatePano(currentPosDeg, image, pano));
+        calculatedPano = Optional.of(
+            panoGenerator.calculatePano(panoHeadService.getCurrentPositionDeg(), image, pano));
         calculatedPano.ifPresent(
             value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
       }
@@ -143,7 +135,7 @@ public class PanoService {
     final String xml = g.generate(positions);
     final Date now = new Date();
     final File file = new File(STRUCTURED_DATE_PATTERN.format(now)
-        + "-("  + calculatedPano.hSize() + "-" + calculatedPano.vSize() +")" + "-papywizard.xml");
+        + "-(" + calculatedPano.hSize() + "-" + calculatedPano.vSize() + ")" + "-papywizard.xml");
     log.info("Write papywizard file to: '{}'", file.getAbsolutePath());
     try {
       FileUtils.write(file, xml, Charset.defaultCharset());
@@ -170,12 +162,9 @@ public class PanoService {
     applicationEventPublisher.publishEvent(new ShotsChangedEvent(shots));
   }
 
-  // <editor-fold desc="delay">
-
   public void publishDelayChange() {
     settingsService.getSettings().getDelay().setAll(delay);
     settingsService.setDirty();
     applicationEventPublisher.publishEvent(new DelaySettingsChangedEvent(delay));
   }
-  // </editor-fold>
 }

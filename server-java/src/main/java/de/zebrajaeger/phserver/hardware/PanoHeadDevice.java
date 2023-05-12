@@ -5,6 +5,7 @@ import de.zebrajaeger.phserver.data.PanoHeadData;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
 /**
@@ -27,6 +28,7 @@ import org.springframework.util.Assert;
  * };
  * </pre>
  */
+@Slf4j
 public class PanoHeadDevice implements PanoHead {
 
   private final HardwareDevice hardwareDevice;
@@ -78,16 +80,20 @@ public class PanoHeadDevice implements PanoHead {
     hardwareDevice.write(buffer.array());
   }
 
-  public void setLimit(int axisIndex, int limit) throws IOException {
+  public void setLimit(int axisIndex, int velocityMinHz, int velocityMaxHz, int accelerationMaxHzPerSecond) throws IOException {
     Assert.state(axisIndex >= 0 && axisIndex <= 2, "Illegal axis index: " + axisIndex);
-    ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
+    log.info("setLimit {}: min:{} max{} acc:{}", axisIndex, velocityMinHz, velocityMaxHz, accelerationMaxHzPerSecond);
+    ByteBuffer buffer = ByteBuffer.allocate(14).order(ByteOrder.LITTLE_ENDIAN);
     buffer.put((byte) 0x20);
     buffer.put((byte) axisIndex);
-    buffer.putInt(limit);
+    buffer.putInt(velocityMinHz);
+    buffer.putInt(velocityMaxHz);
+    buffer.putInt(accelerationMaxHzPerSecond);
     hardwareDevice.write(buffer.array());
   }
 
   public void setTargetVelocity(int axisIndex, int velocity) throws IOException {
+    log.info("SetVelocity {}: {}", axisIndex, velocity);
     velocity = checkAndInvertIfNeeded(axisIndex, velocity);
     ByteBuffer buffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN);
     buffer.put((byte) 0x21);

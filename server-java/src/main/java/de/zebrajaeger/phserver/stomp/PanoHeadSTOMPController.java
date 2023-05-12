@@ -1,14 +1,11 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.data.AxisValue;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.ActorActiveChangedEvent;
 import de.zebrajaeger.phserver.event.JoggingChangedEvent;
 import de.zebrajaeger.phserver.event.PositionEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
-import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.service.PanoHeadService;
-import java.io.IOException;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +21,11 @@ import org.springframework.stereotype.Controller;
 public class PanoHeadSTOMPController {
 
   private final PanoHeadService panoHeadService;
-  private final HardwareService hardwareService;
   private final SimpMessagingTemplate template;
 
   @Autowired
-  public PanoHeadSTOMPController(PanoHeadService deviceService, HardwareService hardwareService,
-      SimpMessagingTemplate template) {
+  public PanoHeadSTOMPController(PanoHeadService deviceService, SimpMessagingTemplate template) {
     this.panoHeadService = deviceService;
-    this.hardwareService = hardwareService;
     this.template = template;
   }
 
@@ -44,16 +38,6 @@ public class PanoHeadSTOMPController {
     HashMap<String, Object> header = new HashMap<>();
     header.put("correlation-id", id);
     template.convertAndSend(destination, panoHeadService.getData().getActor(), header);
-  }
-
-  @MessageMapping("/actor/limit")
-  public void limit(@Payload AxisValue limit) {
-    // TODO no hardware access on this layer
-    try {
-      hardwareService.getPanoHead().setLimit(limit.getAxisIndex(), limit.getValue());
-    } catch (IOException e) {
-      log.debug("Could not set zu zero", e);
-    }
   }
 
   @EventListener

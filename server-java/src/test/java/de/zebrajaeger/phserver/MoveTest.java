@@ -49,7 +49,7 @@ public class MoveTest {
 
   @Test
   public void pos() throws InterruptedException, IOException {
-    hardwareService.getPanoHead().setLimit(0, 1000);
+    hardwareService.getPanoHead().setLimit(0, 1000,1000,1000);
     hardwareService.getPanoHead().setTargetPos(0, 750);
     Thread.sleep(1000);
 

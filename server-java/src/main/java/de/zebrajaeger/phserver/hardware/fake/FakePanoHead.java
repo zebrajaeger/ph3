@@ -58,13 +58,14 @@ public class FakePanoHead implements PanoHead {
   }
 
   @Override
-  public void setLimit(int axisIndex, int limit) {
+  public void setLimit(int axisIndex, int velocityMinHz, int velocityMaxHz,
+      int accelerationMaxHzPerSecond) {
     if (axisIndex == 0) {
-      x.setLimit(limit);
+      x.setLimit(velocityMinHz, velocityMaxHz, accelerationMaxHzPerSecond);
     } else if (axisIndex == 1) {
-      y.setLimit(limit);
+      y.setLimit(velocityMinHz, velocityMaxHz, accelerationMaxHzPerSecond);
     } else if (axisIndex == 2) {
-      z.setLimit(limit);
+      z.setLimit(velocityMinHz, velocityMaxHz, accelerationMaxHzPerSecond);
     } else {
       throw new IllegalArgumentException("Wrong axis index: " + axisIndex);
     }

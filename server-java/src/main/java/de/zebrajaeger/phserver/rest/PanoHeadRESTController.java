@@ -1,9 +1,9 @@
 package de.zebrajaeger.phserver.rest;
 
-import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.data.Actor;
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.service.PanoHeadService;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class PanoHeadRESTController {
   }
 
   @PutMapping("jogging")
-  public boolean setJogging(@RequestParam boolean jogging){
+  public boolean setJogging(@RequestParam boolean jogging) {
     panoHeadService.setJoggingEnabled(jogging);
     return panoHeadService.isJoggingEnabled();
   }
@@ -47,16 +47,6 @@ public class PanoHeadRESTController {
   @GetMapping("actor")
   public Actor actor() {
     return panoHeadService.getData().getActor();
-  }
-
-  @PutMapping("actor/limit")
-  public void limit(@RequestParam int axisIndex, @RequestParam int limit){
-    // TODO no hardware access on this layer
-    try {
-      hardwareService.getPanoHead().setLimit(axisIndex, limit);
-    } catch (IOException e) {
-      log.debug("Could not set limit", e);
-    }
   }
 
   @PutMapping("actor/pos/{axisIndex}")
@@ -70,7 +60,7 @@ public class PanoHeadRESTController {
   }
 
   @PutMapping("actor/velocity/{axisIndex}")
-  public void velocity(@PathVariable int axisIndex, @RequestParam int velocity)  {
+  public void velocity(@PathVariable int axisIndex, @RequestParam int velocity) {
     // TODO no hardware access on this layer
     try {
       hardwareService.getPanoHead().setTargetVelocity(axisIndex, velocity);

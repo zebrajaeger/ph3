@@ -1,11 +1,9 @@
-package de.zebrajaeger.phserver.settings;
+package de.zebrajaeger.phserver.papywizard.settings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Data
 public class FovSettings {

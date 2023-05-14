@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.settings;
+package de.zebrajaeger.phserver.papywizard.settings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.zebrajaeger.phserver.data.Delay;

@@ -1,6 +1,5 @@
 package de.zebrajaeger.phserver.translation;
 
-import de.zebrajaeger.phserver.data.Position;
 import lombok.Getter;
 
 @Getter
@@ -36,10 +35,6 @@ public class AxisParameters {
 
   public int degToRaw(double degValue) {
     return (int) ((degValue / 360d) * ratio);
-  }
-
-  public Position fromRaw(int x, int y) {
-    return new Position(rawToDeg(x), rawToDeg(y));
   }
 
   private int calculateMaxStepFrequency() {

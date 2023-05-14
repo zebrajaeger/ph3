@@ -1,9 +1,9 @@
 package de.zebrajaeger.phserver.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.zebrajaeger.phserver.settings.Settings;
-import de.zebrajaeger.phserver.settings.ShotSetting;
-import de.zebrajaeger.phserver.settings.ShotsSettings;
+import de.zebrajaeger.phserver.papywizard.settings.Settings;
+import de.zebrajaeger.phserver.papywizard.settings.ShotSetting;
+import de.zebrajaeger.phserver.papywizard.settings.ShotsSettings;
 import dev.dirs.ProjectDirectories;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;

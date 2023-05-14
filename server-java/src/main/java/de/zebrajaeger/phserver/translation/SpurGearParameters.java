@@ -9,6 +9,6 @@ public class SpurGearParameters implements  GearParameters {
 
   @Override
   public double translateMotorToOutput(double motorAngle) {
-    return  26d + (103d / 121d);
+    return  5 * (26d + (103d / 121d));
   }
 }

@@ -4,6 +4,6 @@ public class WormGearParameters implements GearParameters {
 
   @Override
   public double translateMotorToOutput(double motorAngle) {
-    return 60;
+    return 5 * 60;
   }
 }

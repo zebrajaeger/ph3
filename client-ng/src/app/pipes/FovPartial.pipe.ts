@@ -9,11 +9,21 @@ export class FovPartialSizePipe implements PipeTransform {
     if (fov == null) {
       return '-, -';
     } else {
-      if (fov.partial) {
-        return `${FovPartialSizePipe.rangeToString(fov.horizontal)}, ${FovPartialSizePipe.rangeToString(fov.vertical)}`;
+
+      let x: string;
+      if (fov.fullX) {
+        x = '֍';
       } else {
-        return `֍, ${FovPartialSizePipe.rangeToString(fov.vertical)}`;
+        x = `${FovPartialSizePipe.rangeToString(fov.horizontal)}`;
       }
+      let y: string;
+      if (fov.fullY) {
+        y = '֍';
+      } else {
+        y = `${FovPartialSizePipe.rangeToString(fov.vertical)}`;
+      }
+
+      return `${x}, ${y}`;
     }
   }
 

@@ -2,16 +2,16 @@ package de.zebrajaeger.phserver.papywizard;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import de.zebrajaeger.phserver.pano.Positions;
+import de.zebrajaeger.phserver.data.PanoMatrix;
 import java.util.List;
 
 public class PapywizardGenerator {
 
-  public String generate(Positions positions) {
+  public String generate(PanoMatrix positions) {
     XmlMapper xmlMapper = new XmlMapper();
 
     final List<Pict> picts = positions
-        .getAll(false, true)
+        .asPositionList(false, true)
         .stream()
         .map(shotPosition -> new Pict(1, new Position(shotPosition.getX(), shotPosition.getY())))
         .toList();

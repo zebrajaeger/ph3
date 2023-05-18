@@ -10,6 +10,10 @@ public class MatrixCalculatorPartial implements MatrixCalculator {
   public static final double EPSILON = 0.1d;
   private boolean spreadPano;
 
+  public MatrixCalculatorPartial() {
+    spreadPano = false;
+  }
+
   // Base
   // lPano = (2 * (lImage * (1-lOverlap)))  # left and right image with single overlap
   //       + ((n-2) * (lImage - (1-lOverlap - lOverlap) )) # n-2 center images with double overlap

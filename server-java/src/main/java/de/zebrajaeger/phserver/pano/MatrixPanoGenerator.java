@@ -1,9 +1,9 @@
 package de.zebrajaeger.phserver.pano;
 
-import de.zebrajaeger.phserver.data.CalculatedPano;
 import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
+import de.zebrajaeger.phserver.data.PanoMatrix;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.data.ShotPosition;
@@ -13,92 +13,142 @@ import java.util.LinkedList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 
 @AllArgsConstructor
 @Slf4j
 public class MatrixPanoGenerator implements PanoGenerator {
 
   private double backlashAngle;
-  private boolean spreadPano;
 
-  public CalculatedPano calculatePano(Position currentPosDeg, Image image, Pano pano) {
+  public PanoMatrix calculatePano(Position currentPosDeg, Image image, Pano pano) {
+    PanoMatrix result = new PanoMatrix();
+    setYPositions(image, pano, result);
+    setXPositions(currentPosDeg, image, pano, result);
+    return result;
+  }
 
-    CalculatedPano result = new CalculatedPano(pano);
-    result.setStartPosition(currentPosDeg);
 
-    {
-      // x
-      double lImage = Math.abs(image.getWidth());
-
-      double lPano;
-      double leftBorder;
-      MatrixCalculator calc;
-      if (pano.getFieldOfViewPartial().isPartial()) {
-        calc = new MatrixCalculatorPartial(spreadPano);
-        lPano = Math.abs(pano.getFieldOfViewPartial().getHorizontal().getSize());
-        leftBorder = Math.min(
-            pano.getFieldOfViewPartial().getHorizontal().getFrom(),
-            pano.getFieldOfViewPartial().getHorizontal().getTo());
-      } else {
-        calc = new MatrixCalculator360();
-        lPano = 360d;
-        leftBorder = currentPosDeg.getX();
-      }
-
-      result.setHorizontalPositions(
-          calc.calculatePositions(leftBorder, lImage, lPano, pano.getHorizontalMinimumOverlap()));
+  private ArrayList<Double> equidistant(int count, double startPos, double distance) {
+    ArrayList<Double> result = new ArrayList<>();
+    for (int i = 0; i < count; ++i) {
+      result.add(startPos + (distance * i));
     }
+    return result;
+  }
 
-    {
-      // y
-      double topBorder = Math.min(
+  @SuppressWarnings("UnnecessaryLocalVariable")
+  private ArrayList<Double> calcVFull(double lImage, double overlap) {
+    // f: full image length
+    double f = lImage;
+    // f: image length
+    double o = overlap;
+
+    // p = f - (f * o) // p: partial image length
+    double p = f - (f * o);
+
+    // b = f * o // b: image overlap length
+    double b = f * o;
+
+    // lp = 180  // lp:  pano length
+    double lp = 180;
+
+    // lb: pano length + extra border on top and bottom
+    // lb = lp + (2*b) = lp + (2*f*o)
+    double lb = lp + (2 * b);
+    // lb = f + (n-1) * p -> n = (lb-f+p)/p
+    double n1 = (lb - f + p) / p;
+
+    // n: image count
+    int n = (int) Math.ceil(n1);
+
+    // d: distance between images
+    double d = (lp - (f / 2)) / (n - 1);
+
+    // s: first image start position
+    double s = -90 + (f / 2) - b;
+
+    return equidistant(n, s, d);
+  }
+
+  @SuppressWarnings("UnnecessaryLocalVariable")
+  private ArrayList<Double> calcHFull(double startPosition, double lImage, double overlap) {
+    // f: full image length
+    double f = lImage;
+    // f: image length
+    double o = overlap;
+
+    // lp = 360  // lp:  pano length
+    double lp = 360;
+
+    // p = f - (f * o) // p: partial image length
+    double p = f - (f * o);
+
+    // n: image count
+    // lp = n * p -> n = lp / p
+    double n1 = lp / p;
+    int n = (int) Math.ceil(n1);
+
+    // d: distance between images
+    double d = lp / n;
+
+    return equidistant(n, startPosition, d);
+  }
+
+  private void setXPositions(Position currentPosDeg, Image image, Pano pano, PanoMatrix result) {
+    double lImage = Math.abs(image.getWidth());
+
+    if (pano.getFieldOfViewPartial().isFullX()) {
+      // full range x
+      double startPos = currentPosDeg.getX();
+      final ArrayList<Double> positions = calcHFull(startPos, lImage,
+          pano.getHorizontalMinimumOverlap());
+      result.setAllXPositions(positions);
+
+    } else {
+      // Partial range y
+      double lPano = Math.abs(pano.getFieldOfViewPartial().getHorizontal().getSize());
+      double startPos = Math.min(
+          pano.getFieldOfViewPartial().getHorizontal().getFrom(),
+          pano.getFieldOfViewPartial().getHorizontal().getTo());
+
+      result.setAllXPositions(
+          new MatrixCalculatorPartial().calculatePositions(
+              startPos,
+              lImage,
+              lPano,
+              pano.getHorizontalMinimumOverlap()));
+    }
+  }
+
+  private void setYPositions(Image image, Pano pano, PanoMatrix result) {
+    double lImage = Math.abs(image.getHeight());
+
+    MatrixCalculator calc;
+    if (pano.getFieldOfViewPartial().isFullY()) {
+      // Full y range
+      result.setYPositions(calcVFull(image.getHeight(), pano.getHorizontalMinimumOverlap()));
+
+    } else {
+      // Partial y range
+      double lPano;
+      double startPos;
+      calc = new MatrixCalculatorPartial();
+      lPano = Math.abs(pano.getFieldOfViewPartial().getVertical().getSize());
+      startPos = Math.min(
           pano.getFieldOfViewPartial().getVertical().getFrom(),
           pano.getFieldOfViewPartial().getVertical().getTo());
-      double lImage = Math.abs(image.getHeight());
-      double lPano = Math.abs(pano.getFieldOfViewPartial().getVertical().getSize());
-      MatrixCalculator calc = new MatrixCalculatorPartial(spreadPano);
-
-      //noinspection SuspiciousNameCombination
-      result.setVerticalPositions(
-          calc.calculatePositions(topBorder, lImage, lPano, pano.getHorizontalMinimumOverlap()));
+      result.setYPositions(
+          calc.calculatePositions(startPos, lImage, lPano, pano.getHorizontalMinimumOverlap()));
     }
-
-    return result;
   }
 
   @Override
-  public Positions createPositions(CalculatedPano calculatedPano) {
-
-    List<Double> xPositions = new ArrayList<>(calculatedPano.getHorizontalPositions());
-    List<Double> yPositions = new ArrayList<>(calculatedPano.getVerticalPositions());
-    Collections.reverse(yPositions);
-    Positions result = new Positions(xPositions.size(), yPositions.size());
-
-    int index = 0;
-    int yIndex = 0;
-    for (double yPosition : yPositions) {
-      int xIndex = 0;
-      for (double xPosition : xPositions) {
-        result.add(new ShotPosition(
-            xPosition, yPosition,
-            index,
-            xIndex, xPositions.size(),
-            yIndex, yPositions.size()));
-        xIndex++;
-        index++;
-      }
-      yIndex++;
-    }
-    return result;
-  }
-
-  @Override
-  public List<Command> createCommands(CalculatedPano calculatedPano, List<Shot> shots,
+  public List<Command> createCommands(Position currentPosDeg, PanoMatrix panoMatrix,
+      List<Shot> shots,
       Delay delay) {
 
     log.info("<Create Commands>");
-    log.info("*  calculatedPano: '{}'", calculatedPano);
+    log.info("*  panoMatrix: '{}'", panoMatrix);
     log.info("*  shots: '{}'", shots);
     log.info("*  delay: '{}'", delay);
     log.info("</Create Commands>");
@@ -107,16 +157,16 @@ public class MatrixPanoGenerator implements PanoGenerator {
 
     int posIndex = 0;
     ShotPosition lastShotPosition = new ShotPosition(
-        calculatedPano.getStartPosition().getX(),
-        calculatedPano.getStartPosition().getY(),
+        currentPosDeg.getX(),
+        currentPosDeg.getY(),
         -1, -1, -1, -1, -1);
 
     boolean first = true;
 
     // rows
     int yIndex = 0;
-    int yLength = calculatedPano.getVerticalPositions().size();
-    List<Double> yPositions = new ArrayList<>(calculatedPano.getVerticalPositions());
+    int yLength = panoMatrix.getYPositions().size();
+    List<Double> yPositions = new ArrayList<>(panoMatrix.getYPositions());
     Collections.reverse(yPositions);
 
     double xOffset = 0;
@@ -124,8 +174,8 @@ public class MatrixPanoGenerator implements PanoGenerator {
 
       // columns
       int xIndex = 0;
-      int xLength = calculatedPano.getHorizontalPositions().size();
-      for (double xPosition : calculatedPano.getHorizontalPositions()) {
+      int xLength = panoMatrix.getXPositions(yIndex).size();
+      for (double xPosition : panoMatrix.getXPositions(yIndex)) {
 
         if (xIndex == 0) {
           double delta = (xPosition + xOffset) - lastShotPosition.getX();
@@ -175,7 +225,7 @@ public class MatrixPanoGenerator implements PanoGenerator {
         );
 
         commands.addAll(createCommandsForPos(
-            shotPos, lastShotPosition,
+            shotPos,
             xIndex, yIndex,
             shots,
             delay));
@@ -189,21 +239,22 @@ public class MatrixPanoGenerator implements PanoGenerator {
       yIndex++;
     }
 
+    int lastYIndex = panoMatrix.getYSize() - 1;
     commands.add(new NormalizePositionCommand(
         new ShotPosition(
             0, 0,
             posIndex,
-            calculatedPano.getHorizontalPositions().size() - 1,
-            calculatedPano.getHorizontalPositions().size(),
-            calculatedPano.getVerticalPositions().size() - 1,
-            calculatedPano.getVerticalPositions().size()),
+            panoMatrix.getXSize(lastYIndex) - 1,
+            panoMatrix.getXSize(lastYIndex),
+            panoMatrix.getYSize() - 1,
+            panoMatrix.getYSize()),
         "NormalizePosition"));
 
     return commands;
   }
 
   private List<Command> createCommandsForPos(
-      ShotPosition shotPos, @Nullable ShotPosition lastShotPosition,
+      ShotPosition shotPos,
       int xIndex, int yIndex, List<Shot> shots,
       Delay delay) {
 

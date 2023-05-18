@@ -1,8 +1,8 @@
 package de.zebrajaeger.phserver.stomp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import de.zebrajaeger.phserver.data.CalculatedPano;
 import de.zebrajaeger.phserver.data.Delay;
+import de.zebrajaeger.phserver.data.PanoMatrix;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.service.PanoHeadService;
@@ -44,7 +44,7 @@ public class RecordSTOMPController {
   @MessageMapping("/record/start/{shotsName}")
   public void start(@DestinationVariable String shotsName) {
     panoHeadService.normalizeAxisPosition();
-    final Optional<CalculatedPano> calculatedPano = panoService.updateCalculatedPano();
+    final Optional<PanoMatrix> calculatedPano = panoService.updatePanoMatrix();
     calculatedPano.ifPresent(pano -> {
       panoService.createCommands(pano, shotsName).ifPresent(commandList -> {
         panoService.createPapywizardFile(pano);

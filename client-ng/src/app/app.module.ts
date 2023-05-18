@@ -32,6 +32,7 @@ import { LedComponent } from './ui/led.component';
 import {FovSizePipe} from "./pipes/Fov.pipe";
 import {PositionPipe} from "./pipes/Position.pipe";
 import {FovPartialSizePipe} from "./pipes/FovPartial.pipe";
+import { Matrix2Component } from './ui/matrix2.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {FovPartialSizePipe} from "./pipes/FovPartial.pipe";
     AlignComponent,
     MovementControllerComponent,
     MatrixComponent,
-    LedComponent
+    LedComponent,
+    Matrix2Component
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PanoHeadService} from '../service/panohead.service';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
-import {CalculatedPano, FieldOfView, FieldOfViewPartial} from '../../data/pano';
+import {FieldOfView, FieldOfViewPartial, PanoMatrix} from '../../data/pano';
 import {Position, Power} from '../../data/panohead';
 import {ModalService} from '../ui/modal.service';
 import {SystemService} from '../service/system.service';
@@ -18,7 +18,7 @@ export class BottomComponent implements OnInit, OnDestroy {
   public actorPos?: Position;
 
   private calculatedPanoSubscription!: Subscription;
-  public calc?: CalculatedPano;
+  public panoMatrix?: PanoMatrix;
   public panoMsg?: string;
 
   private powerSubscription!: Subscription;
@@ -44,9 +44,9 @@ export class BottomComponent implements OnInit, OnDestroy {
       this.actorPos = position;
     });
 
-    this.panoService.subscribeCalculatedPano(calculatedPano => {
-      this.calc = calculatedPano;
-      this.panoMsg = `${this.calc?.horizontalPositions.length}, ${this.calc?.verticalPositions.length}`
+    this.panoService.subscribePanoMatrix(panoMatrix => {
+      this.panoMatrix = panoMatrix;
+      this.panoMsg = `${this.panoMatrix?.maxXSize}, ${this.panoMatrix?.ySize}`
     });
 
     this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {

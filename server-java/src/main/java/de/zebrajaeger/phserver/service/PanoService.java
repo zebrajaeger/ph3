@@ -1,24 +1,23 @@
 package de.zebrajaeger.phserver.service;
 
 import de.zebrajaeger.phserver.data.Border;
-import de.zebrajaeger.phserver.data.CalculatedPano;
 import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
 import de.zebrajaeger.phserver.data.Image;
 import de.zebrajaeger.phserver.data.Pano;
+import de.zebrajaeger.phserver.data.PanoMatrix;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.data.Shots;
-import de.zebrajaeger.phserver.event.CalculatedPanoChangedEvent;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.PanoFOVChangedEvent;
+import de.zebrajaeger.phserver.event.PanoMatrixChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
 import de.zebrajaeger.phserver.event.ShotsChangedEvent;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.MatrixPanoGenerator;
 import de.zebrajaeger.phserver.pano.PanoGenerator;
-import de.zebrajaeger.phserver.pano.Positions;
 import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
 import jakarta.annotation.PostConstruct;
 import java.io.File;
@@ -48,14 +47,14 @@ public class PanoService {
   private final ApplicationEventPublisher applicationEventPublisher;
   private final SettingsService settingsService;
 
-  private final PanoGenerator panoGenerator = new MatrixPanoGenerator(5d, true);
+  private final PanoGenerator panoGenerator = new MatrixPanoGenerator(5d);
   private final FieldOfView pictureFOV = new FieldOfView();
   private final FieldOfViewPartial panoFOV = new FieldOfViewPartial();
   private double minimumOverlapH = 0.25;
   private double minimumOverlapV = 0.25;
   private Shots shots = new Shots();
   private Delay delay = new Delay();
-  private Optional<CalculatedPano> calculatedPano = Optional.empty();
+  private Optional<PanoMatrix> panoMatrix = Optional.empty();
 
   @Autowired
   public PanoService(PanoHeadService panoHeadService,
@@ -101,7 +100,7 @@ public class PanoService {
     }
   }
 
-  public Optional<CalculatedPano> updateCalculatedPano() {
+  public Optional<PanoMatrix> updatePanoMatrix() {
     log.info("updateCalculatedPano() - CALL");
     FieldOfView cameraFOV = getPictureFOV();
     Double height = cameraFOV.getVertical().getSize();
@@ -112,30 +111,34 @@ public class PanoService {
       if (panoFOV.isComplete() && image.isComplete()) {
         log.info("updateCalculatedPano() - RECALCULATE");
         Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
-        calculatedPano = Optional.of(
+        panoMatrix = Optional.of(
             panoGenerator.calculatePano(panoHeadService.getCurrentPositionDeg(), image, pano));
-        calculatedPano.ifPresent(
-            value -> applicationEventPublisher.publishEvent(new CalculatedPanoChangedEvent(value)));
+        panoMatrix.ifPresent(
+            value -> applicationEventPublisher.publishEvent(new PanoMatrixChangedEvent(value)));
       }
     }
-    return calculatedPano;
+    return panoMatrix;
   }
 
-  public Optional<List<Command>> createCommands(CalculatedPano calculatedPano, String shotsName) {
+  public Optional<List<Command>> createCommands(PanoMatrix panoMatrix, String shotsName) {
     List<Shot> shots = getShots().get(shotsName);
     if (shots == null || shots.isEmpty()) {
       return Optional.empty();
     }
-    return Optional.of(panoGenerator.createCommands(calculatedPano, shots, getDelay()));
+
+    return Optional.of(panoGenerator.createCommands(
+        panoHeadService.getCurrentPositionDeg(),
+        panoMatrix,
+        shots, getDelay()));
   }
 
-  public void createPapywizardFile(CalculatedPano calculatedPano) {
-    final Positions positions = panoGenerator.createPositions(calculatedPano);
+  public void createPapywizardFile(PanoMatrix calculatedPano) {
     final PapywizardGenerator g = new PapywizardGenerator();
-    final String xml = g.generate(positions);
+    final String xml = g.generate(calculatedPano);
     final Date now = new Date();
     final File file = new File(STRUCTURED_DATE_PATTERN.format(now)
-        + "-(" + calculatedPano.hSize() + "-" + calculatedPano.vSize() + ")" + "-papywizard.xml");
+        + "-(" + calculatedPano.getMaxXSize() + "-" + calculatedPano.getMaxY() + ")"
+        + "-papywizard.xml");
     log.info("Write papywizard file to: '{}'", file.getAbsolutePath());
     try {
       FileUtils.write(file, xml, Charset.defaultCharset());

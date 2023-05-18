@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Border, CalculatedPano, FieldOfViewPartial} from '../../data/pano';
+import {Border, FieldOfViewPartial, PanoMatrix} from '../../data/pano';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
 import {PanoHeadService} from '../service/panohead.service';
@@ -16,7 +16,7 @@ import {ModalService} from "../ui/modal.service";
 })
 export class PanoFovComponent implements OnInit, OnDestroy {
   private _fov_!: FieldOfViewPartial | undefined;
-  public calc: CalculatedPano | undefined;
+  public panoMatrix: PanoMatrix | undefined;
   private fovSubscription!: Subscription;
 
   private openSubscription!: Subscription;
@@ -42,7 +42,7 @@ export class PanoFovComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.openSubscription = this.connectionService.subscribeOpen(() => this.onActivate());
     this.fovSubscription = this.panoService.subscribePanoFov(fov => this.fov = fov);
-    this.calculatedPanoSubscription = this.panoService.subscribeCalculatedPano(calculatedPano => this.calc = calculatedPano);
+    this.calculatedPanoSubscription = this.panoService.subscribePanoMatrix(panoMatrix => this.panoMatrix = panoMatrix);
   }
 
   ngOnDestroy(): void {
@@ -89,8 +89,11 @@ export class PanoFovComponent implements OnInit, OnDestroy {
     this.panoService.setPanoBorder(Border.BOTTOM);
   }
 
-  onPartial(): void {
-    this.panoService.setPanoPartial(!this.fov?.partial);
+  onFullX(): void {
+    this.panoService.setPanoFullX(!this.fov?.fullX);
+  }
+  onFullY(): void {
+    this.panoService.setPanoFullY(!this.fov?.fullY);
   }
 
   private onActivate(): void {

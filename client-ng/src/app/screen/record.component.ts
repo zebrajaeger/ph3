@@ -5,7 +5,6 @@ import {PanoHeadService} from '../service/panohead.service';
 import {AutomateState, RobotState} from '../../data/record';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
-import {CalculatedPano} from "../../data/pano";
 
 @Component({
   selector: 'app-record',
@@ -16,12 +15,7 @@ export class RecordComponent implements OnInit, OnDestroy {
   private robotStateSubscription!: Subscription;
   public _robotState!: RobotState;
 
-  private calculatedPanoSubscription!: Subscription;
-  public calc?: CalculatedPano;
-
   public done: number = 0;
-  public x?: number;
-  public y?: number;
   public color?: string;
 
   public msg: string = '';
@@ -35,33 +29,16 @@ export class RecordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
-    this.calculatedPanoSubscription = this.panoService.subscribeCalculatedPano(calculatedPano => {
-      console.log('RECALCULATED!!!!', calculatedPano)
-      this.calc = calculatedPano
-      this.x = calculatedPano.horizontalPositions.length;
-      this.y = calculatedPano.verticalPositions.length;
-    });
   }
 
   ngOnDestroy(): void {
     this.robotStateSubscription?.unsubscribe();
-    this.calculatedPanoSubscription?.unsubscribe();
-  }
-
-  get robotState(): RobotState {
-    return this._robotState;
   }
 
   set robotState(value: RobotState) {
     this._robotState = value;
     const cmd = value?.command;
     if (value.automateState !== AutomateState.STOPPED) {
-      const shotPos = cmd?.shotPosition;
-      this.x = shotPos?.xLength;
-      this.y = shotPos?.yLength;
-      if (shotPos && shotPos.index >= 0) {
-        this.done = shotPos.index + 1;
-      }
       this.msg = `[${value?.commandIndex + 1}/${value?.commandCount}] ${cmd?.description}`;
     } else {
       this.msg = '';

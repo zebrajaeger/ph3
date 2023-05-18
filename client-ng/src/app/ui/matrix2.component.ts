@@ -11,7 +11,7 @@ import {
 import {FieldOfView, FieldOfViewPartial, PanoMatrix} from "../../data/pano";
 import {PanoService} from "../service/pano.service";
 import {Subscription} from "rxjs";
-import {RobotState} from "../../data/record";
+import {AutomateState, RobotState} from "../../data/record";
 import {PanoHeadService} from "../service/panohead.service";
 
 @Component({
@@ -86,6 +86,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   set robotState(value: RobotState) {
+    this.draw();
     this._robotState = value;
   }
 
@@ -123,60 +124,32 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     ctx.clearRect(0, 0, this.width, this.height);
+    this.drawPanoFov(ctx);
+    this.drawPictures(ctx);
+    ctx.beginPath();
+  }
 
-    console.log('matrix2', 'draw', this.width, this.height);
-
-    // draw pano bounds
-    if (this.panoFov_ && this.panoFov_.horizontal && this.panoFov_.vertical) {
-      console.log('matrix2', 'draw', 'panoFov', this.panoFov_);
-
-      ctx.fillStyle = 'black';
-      if (!this.panoFov_.fullX && !this.panoFov_.fullY) {
-        // rect
-        const x1 = this.normalizeAndConvertX(this.panoFov_.horizontal.from);
-        const x2 = this.normalizeAndConvertX(this.panoFov_.horizontal.to);
-        const y1 = this.normalizeAndConvertY(this.panoFov_.vertical.from);
-        const y2 = this.normalizeAndConvertY(this.panoFov_.vertical.to);
-        ctx.strokeRect(x1, y1, x2-x1, y2-y1);
-
-      } else if (this.panoFov_.fullX && !this.panoFov_.fullY) {
-        // h-lines
-        const y1 = this.normalizeAndConvertY(this.panoFov_.vertical.from);
-        const y2 = this.normalizeAndConvertY(this.panoFov_.vertical.to);
-        ctx.strokeRect(-1, y1, this.width + 2, y2 - y1);
-
-      } else if (!this.panoFov_.fullX && this.panoFov_.fullY) {
-        const x1 = this.normalizeAndConvertX(this.panoFov_.horizontal.from);
-        const x2 = this.normalizeAndConvertX(this.panoFov_.horizontal.to);
-        // v-lines
-        ctx.strokeRect(x1, -1, x2 - x1, this.height + 2);
-      }
-    }
-
-    // half picture size
-    let px;
-    let py;
-    if (this.pictureFov_ && this.pictureFov_.horizontal && this.pictureFov_.vertical) {
-      let ax = Math.abs(this.pictureFov_.horizontal.to - this.pictureFov_.horizontal.from);
-      let ay = Math.abs(this.pictureFov_.vertical.to - this.pictureFov_.vertical.from);
-      px = this.normalizeAndConvertX(ax);
-      py = ay * this.height / 180;
-    } else {
-      px = 20;
-      py = 20;
-    }
-
-    // draw pictures
+  private drawPictures(ctx: CanvasRenderingContext2D) {
     if (this.panoMatrix_) {
+      let px;
+      let py;
+      if (this.pictureFov_ && this.pictureFov_.horizontal && this.pictureFov_.vertical) {
+        let ax = Math.abs(this.pictureFov_.horizontal.to - this.pictureFov_.horizontal.from);
+        let ay = Math.abs(this.pictureFov_.vertical.to - this.pictureFov_.vertical.from);
+        px = this.normalizeAndConvertX(ax);
+        py = ay * this.height / 180;
+      } else {
+        px = 20;
+        py = 20;
+      }
 
-      // const shotPos = cmd?.shotPosition;
-      // this.x = shotPos?.xLength;
-      // this.y = shotPos?.yLength;
-      // if (shotPos && shotPos.index >= 0) {
-      //   this.done = shotPos.index + 1;
-      // }
 
+      let imgIndex = this._robotState?.command?.shotPosition?.index;
+      if(imgIndex == null){
+        imgIndex = -1;
+      }
 
+      let isShooting = this._robotState?.automateState == AutomateState.CMD_SHOT;
       let i = 0;
       ctx.lineWidth = 2;
       ctx.stroke();
@@ -193,20 +166,54 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
           }
           const x = this.normalizeAndConvertX(xx);
 
-          // const fill = (xi + yi) % 2 == 0
-          //     ? 'rgba(0, 0, 255, 0.25)'
-          //     : 'rgba(0, 255, 0, 0.25)'
-          this.drawEllipse(ctx, x, y, px, py, 'rgba(0, 0, 255, 0.25)')
+          let fill;
+          if(isShooting){
+            // shooting
+            fill = 'rgba(255, 0, 0, 0.5)'
+          }else if(imgIndex >= 0 && imgIndex >= i){
+            // done
+            fill = 'rgba(0, 255, 0, 0.25)';
+          }else{
+            // to be done
+            fill ='rgba(0, 0, 255, 0.25)'
+          }
+
+          this.drawEllipse(ctx, x, y, px, py, fill)
 
           if (x - (px / 2) < 0) {
-            this.drawEllipse(ctx, x + this.width, y, px, py, 'rgba(0, 0, 255, 0.25)')
+            this.drawEllipse(ctx, x + this.width, y, px, py, fill)
           }
 
           ++i;
         }
       }
     }
+  }
 
-    ctx.beginPath();
+  private drawPanoFov(ctx: CanvasRenderingContext2D) {
+    if (this.panoFov_ && this.panoFov_.horizontal && this.panoFov_.vertical) {
+
+      ctx.fillStyle = 'black';
+      if (!this.panoFov_.fullX && !this.panoFov_.fullY) {
+        // rect
+        const x1 = this.normalizeAndConvertX(this.panoFov_.horizontal.from);
+        const x2 = this.normalizeAndConvertX(this.panoFov_.horizontal.to);
+        const y1 = this.normalizeAndConvertY(this.panoFov_.vertical.from);
+        const y2 = this.normalizeAndConvertY(this.panoFov_.vertical.to);
+        ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+      } else if (this.panoFov_.fullX && !this.panoFov_.fullY) {
+        // h-lines
+        const y1 = this.normalizeAndConvertY(this.panoFov_.vertical.from);
+        const y2 = this.normalizeAndConvertY(this.panoFov_.vertical.to);
+        ctx.strokeRect(-1, y1, this.width + 2, y2 - y1);
+
+      } else if (!this.panoFov_.fullX && this.panoFov_.fullY) {
+        const x1 = this.normalizeAndConvertX(this.panoFov_.horizontal.from);
+        const x2 = this.normalizeAndConvertX(this.panoFov_.horizontal.to);
+        // v-lines
+        ctx.strokeRect(x1, -1, x2 - x1, this.height + 2);
+      }
+    }
   }
 }

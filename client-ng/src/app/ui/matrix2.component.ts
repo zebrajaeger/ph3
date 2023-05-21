@@ -106,7 +106,12 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     return deg * this.height / 180;
   }
 
-  private drawEllipse(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, fillStyle: string) {
+  private drawEllipse(
+      ctx: CanvasRenderingContext2D,
+      x: number, y: number,
+      w: number, h: number,
+      fillStyle: string,
+      i: number) {
 
     ctx.beginPath();
     ctx.fillStyle = fillStyle;
@@ -115,6 +120,14 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     ctx.ellipse(x, y, w / 2, h / 2, 0, 0, 360);
     ctx.fill();
     ctx.stroke();
+
+    const text = `${i}`;
+    const metrics = ctx.measureText(text);
+    const textH = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+    const textW = metrics.width;
+
+    ctx.fillStyle ='black'
+    ctx.fillText(`${i}`, x  - textW/2, y + textH/2);
   }
 
   private draw() {
@@ -145,13 +158,14 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
 
 
       let imgIndex = this._robotState?.command?.shotPosition?.index;
-      if(imgIndex == null){
+      if (imgIndex == null) {
         imgIndex = -1;
       }
 
       let isShooting = this._robotState?.automateState == AutomateState.CMD_SHOT;
       let i = 0;
       ctx.lineWidth = 2;
+      ctx.font = "bold 15px Roboto";
       ctx.stroke();
       for (let yi = 0; yi < this.panoMatrix_.ySize; ++yi) {
         const y = this.normalizeAndConvertY(this.panoMatrix_.yPositions[yi]);
@@ -167,21 +181,22 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
           const x = this.normalizeAndConvertX(xx);
 
           let fill;
-          if(isShooting){
+          if (isShooting && imgIndex == i) {
             // shooting
             fill = 'rgba(255, 0, 0, 0.5)'
-          }else if(imgIndex >= 0 && imgIndex >= i){
+          } else if (imgIndex >= 0 && imgIndex >= i) {
             // done
             fill = 'rgba(0, 255, 0, 0.25)';
-          }else{
+          } else {
             // to be done
-            fill ='rgba(0, 0, 255, 0.25)'
+            fill = 'rgba(0, 0, 255, 0.25)'
           }
 
-          this.drawEllipse(ctx, x, y, px, py, fill)
+
+          this.drawEllipse(ctx, x, y, px, py, fill, i)
 
           if (x - (px / 2) < 0) {
-            this.drawEllipse(ctx, x + this.width, y, px, py, fill)
+            this.drawEllipse(ctx, x + this.width, y, px, py, fill, i)
           }
 
           ++i;

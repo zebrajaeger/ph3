@@ -11,7 +11,7 @@ class MatrixCalculatorPartialTest {
 
   @Test
   void calculatePositionsSpreadPanoSingleLess() {
-    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial(true);
+    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial();
 
     final List<Double> positions = matrixCalculator.calculatePositions(-10, 30, 20, 0.25);
     assertThat(positions, hasSize(1));
@@ -20,7 +20,7 @@ class MatrixCalculatorPartialTest {
 
   @Test
   void calculatePositionsSpreadPanoSingleEqual() {
-    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial(true);
+    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial();
 
     final List<Double> positions = matrixCalculator.calculatePositions(-10, 30.0001, 30, 0.25);
     assertThat(positions, hasSize(1));
@@ -29,7 +29,7 @@ class MatrixCalculatorPartialTest {
 
   @Test
   void calculatePositionsSpreadPanoSingleDouble() {
-    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial(true);
+    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial();
 
     final List<Double> positions = matrixCalculator.calculatePositions(1, 30, 40, 0.25);
     assertThat(positions, hasSize(2));
@@ -39,7 +39,7 @@ class MatrixCalculatorPartialTest {
 
   @Test
   void calculatePositionsSpreadPano4() {
-    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial(true);
+    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial();
 
     final List<Double> positions = matrixCalculator.calculatePositions(1, 30, 40, 0.25);
     assertThat(positions, hasSize(2));
@@ -49,7 +49,7 @@ class MatrixCalculatorPartialTest {
 
   @Test
   void calculatePositionsSpreadOverlap() {
-    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial(false);
+    MatrixCalculatorPartial matrixCalculator = new MatrixCalculatorPartial();
 
     final List<Double> positions = matrixCalculator.calculatePositions(1, 30, 40, 0.25);
     assertThat(positions, hasSize(2));

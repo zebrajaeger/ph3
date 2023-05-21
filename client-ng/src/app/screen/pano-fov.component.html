@@ -1,23 +1,22 @@
 <movement-controller>
 
-  <div top-left
-       class="info-border"
-       (click)="modalService.open('pano-fov-set')"
-       *ngIf="!fov?.fullX || !fov?.fullY">
-    <div class="top center-content" *ngIf="!fov?.fullY">
-      <span class="value">{{vFromText}}</span>
-    </div>
-    <div class="bottom center-content" *ngIf="!fov?.fullY">
-      <span class="value">{{vToText}}</span>
-    </div>
-    <div class="left center-content" *ngIf="!fov?.fullX">
-      <span class="value">{{hFromText}}</span>
-    </div>
-    <div class="right center-content" *ngIf="!fov?.fullX">
-      <span class="value">{{hToText}}</span>
-    </div>
-    <div class="center center-content">
-      <img class="click-icon" alt="click icon" src="/assets/hand-clicking-icon.svg" width="25px">
+  <div top-left class="info-border" (click)="modalService.open('pano-fov-set')">
+    <div class="info-content" *ngIf="!fov?.fullX || !fov?.fullY">
+      <div class="top center-content" *ngIf="!fov?.fullY">
+        <span class="value">{{vFromText}}</span>
+      </div>
+      <div class="bottom center-content" *ngIf="!fov?.fullY">
+        <span class="value">{{vToText}}</span>
+      </div>
+      <div class="left center-content" *ngIf="!fov?.fullX">
+        <span class="value">{{hFromText}}</span>
+      </div>
+      <div class="right center-content" *ngIf="!fov?.fullX">
+        <span class="value">{{hToText}}</span>
+      </div>
+      <div class="center center-content">
+        <img class="click-icon" alt="click icon" src="/assets/hand-clicking-icon.svg" width="25px">
+      </div>
     </div>
   </div>
 
@@ -36,10 +35,10 @@
     </div>
   </div>
 
-  <div bottom-left class="set-partial center-content">
-    <button class="button" (click)="onFullX()"><span *ngIf="fov?.fullX">✓</span> FullX
+  <div bottom-left class="set-partial full-xy center-content">
+    <button class="button" (click)="onFullX()"><span *ngIf="fov?.fullX">✓</span> FullX ⇔
     </button>
-    <button class="button" (click)="onFullY()"><span *ngIf="fov?.fullY">✓</span> FullY
+    <button class="button" (click)="onFullY()"><span *ngIf="fov?.fullY">✓</span> FullY ⇕
     </button>
   </div>
 

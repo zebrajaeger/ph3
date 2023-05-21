@@ -8,8 +8,8 @@ import java.util.List;
 
 public class PanoMatrix {
 
-  private final List<Double> yPositions = new ArrayList<>();
-  private final List<List<Double>> xPositions = new ArrayList<>();
+  private final ArrayList<Double> yPositions = new ArrayList<>();
+  private final ArrayList<List<Double>> xPositions = new ArrayList<>();
 
   @JsonProperty("ySize")
   public int getYSize() {
@@ -36,6 +36,10 @@ public class PanoMatrix {
     for (int i = 0; i < yPositions.size(); ++i) {
       xPositions.add(value);
     }
+  }
+
+  public void setXPositions(int yIndex, List<Double> value) {
+    xPositions.set(yIndex, value);
   }
 
   @JsonProperty("minX")

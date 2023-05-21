@@ -16,8 +16,9 @@ import de.zebrajaeger.phserver.event.PanoMatrixChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
 import de.zebrajaeger.phserver.event.ShotsChangedEvent;
 import de.zebrajaeger.phserver.pano.Command;
-import de.zebrajaeger.phserver.pano.MatrixPanoGenerator;
 import de.zebrajaeger.phserver.pano.PanoGenerator;
+import de.zebrajaeger.phserver.pano.PositionGeneratorSparseSquare;
+import de.zebrajaeger.phserver.pano.PositionGeneratorSquare;
 import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
 import jakarta.annotation.PostConstruct;
 import java.io.File;
@@ -47,7 +48,6 @@ public class PanoService {
   private final ApplicationEventPublisher applicationEventPublisher;
   private final SettingsService settingsService;
 
-  private final PanoGenerator panoGenerator = new MatrixPanoGenerator(5d);
   private final FieldOfView pictureFOV = new FieldOfView();
   private final FieldOfViewPartial panoFOV = new FieldOfViewPartial();
   private double minimumOverlapH = 0.25;
@@ -55,6 +55,7 @@ public class PanoService {
   private Shots shots = new Shots();
   private Delay delay = new Delay();
   private Optional<PanoMatrix> panoMatrix = Optional.empty();
+  private PanoGenerator panoGenerator = new PanoGenerator(5d);
 
   @Autowired
   public PanoService(PanoHeadService panoHeadService,
@@ -111,8 +112,15 @@ public class PanoService {
       if (panoFOV.isComplete() && image.isComplete()) {
         log.info("updateCalculatedPano() - RECALCULATE");
         Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
-        panoMatrix = Optional.of(
-            panoGenerator.calculatePano(panoHeadService.getCurrentPositionDeg(), image, pano));
+
+        panoMatrix = Optional.of(new PositionGeneratorSparseSquare().calculatePano(
+            panoHeadService.getCurrentPositionDeg(),
+            image,
+            pano));
+//        panoMatrix = Optional.of(new PositionGeneratorSquare().calculatePano(
+//            panoHeadService.getCurrentPositionDeg(),
+//            image,
+//            pano));
         panoMatrix.ifPresent(
             value -> applicationEventPublisher.publishEvent(new PanoMatrixChangedEvent(value)));
       }

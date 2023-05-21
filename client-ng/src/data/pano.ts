@@ -33,6 +33,8 @@ export class PanoMatrix {
   minY!: number;
   maxY!: number;
   ySize!: number;
+
+  positionCount!: number
 }
 
 export class Delay {

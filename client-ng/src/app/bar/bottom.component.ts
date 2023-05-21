@@ -46,7 +46,7 @@ export class BottomComponent implements OnInit, OnDestroy {
 
     this.panoService.subscribePanoMatrix(panoMatrix => {
       this.panoMatrix = panoMatrix;
-      this.panoMsg = `${this.panoMatrix?.maxXSize}, ${this.panoMatrix?.ySize}`
+      this.panoMsg = `${this.panoMatrix?.maxXSize}, ${this.panoMatrix?.ySize} → ${this.panoMatrix?.positionCount}`
     });
 
     this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {

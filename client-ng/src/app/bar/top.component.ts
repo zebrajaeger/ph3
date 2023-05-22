@@ -6,6 +6,8 @@ import {ConnectionService} from '../service/connection.service';
 import {CameraService} from "../service/camera.service";
 import {Camera} from "../../data/camera";
 import {PanoHeadService} from "../service/panohead.service";
+import {Version} from "../../data/system";
+import {SystemService} from "../service/system.service";
 
 @Component({
   selector: 'app-top',
@@ -28,10 +30,13 @@ export class TopComponent implements OnInit, OnDestroy {
   private actorActiveSubscription!: Subscription;
   public actorActiveIndicator: string = "green";
 
+  public version: Version | undefined = undefined;
+
   constructor(private router: Router,
               private connectionService: ConnectionService,
               private cameraService: CameraService,
               private panoHead: PanoHeadService,
+              private system: SystemService,
               private uiService: UiService) {
   }
 
@@ -42,6 +47,7 @@ export class TopComponent implements OnInit, OnDestroy {
     this.cameraSubscription = this.cameraService.subscribeCamera(camera => this.camera = camera);
     this.cameraService.requestCamera(camera => this.camera = camera);
     this.actorActiveSubscription = this.panoHead.subscribeActorActive(isActive => this.actorActive = isActive);
+    this.system.requestVersion(version => this.version = version);
   }
 
   ngOnDestroy(): void {
@@ -69,4 +75,6 @@ export class TopComponent implements OnInit, OnDestroy {
   private set actorActive(isActive: boolean) {
     this.actorActiveIndicator = isActive ? "red" : "green";
   }
+
+  protected readonly undefined = undefined;
 }

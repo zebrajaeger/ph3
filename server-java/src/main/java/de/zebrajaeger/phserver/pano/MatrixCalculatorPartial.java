@@ -5,9 +5,6 @@ import java.util.List;
 
 public class MatrixCalculatorPartial {
 
-  public MatrixCalculatorPartial() {
-  }
-
   // Base
   // lPano = (2 * (lImage * (1-lOverlap)))  # left and right image with single overlap
   //       + ((n-2) * (lImage - (1-lOverlap - lOverlap) )) # n-2 center images with double overlap
@@ -25,13 +22,7 @@ public class MatrixCalculatorPartial {
         / (-lImage * overlap + lImage);
   }
 
-  public List<Double> calculatePositions(double leftBorder, double lImage, double lPano,
-      double overlap) {
-//
-    return calculatePositionsIncreaseOverlap(leftBorder, lImage, lPano, overlap);
-  }
-
-  public List<Double> calculatePositionsIncreaseOverlap(double leftBorder, double lImage,
+  public List<Double> calculatePositions(double leftBorder, double lImage,
       double lPano,
       double overlap) {
     double n = n(lImage, lPano, overlap);

@@ -65,6 +65,7 @@ body {
   text-align: center;
   margin: 3px;
   padding: 7px;
+  user-select: none;
 
   &:active {
     transform: translateX(4px) translateY(4px);

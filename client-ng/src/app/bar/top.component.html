@@ -1,6 +1,11 @@
 <div class="box state {{stateName}}" >{{stateName}}</div>
 
-<div class="box title">{{title}} {{version?.version}}({{version?.commitIdAbbrev}})</div>
+<div class="box title">
+  <div>
+    <span>{{title}}</span>
+    <span [style.visibility]="backButton? 'hidden':'visible'">&nbsp;&nbsp;&nbsp;{{version?.version}}({{version?.commitIdAbbrev}})</span>
+  </div>
+</div>
 
 <div class="center-content">
   <led class="led" [color]="actorActiveIndicator"></led>

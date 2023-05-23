@@ -1,23 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterService} from './service/router.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent {
 
-  constructor(private routerService: RouterService) {
-  }
+    constructor(private routerService: RouterService) {
+    }
 
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-  }
-
-  onRouterOutletActivate($event: any): void {
-    this.routerService.onRouteChange($event);
-  }
+    onRouterOutletActivate($event: any): void {
+        this.routerService.onRouteChange($event);
+    }
 }

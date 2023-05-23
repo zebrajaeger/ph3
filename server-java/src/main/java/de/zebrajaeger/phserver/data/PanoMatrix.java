@@ -1,11 +1,14 @@
 package de.zebrajaeger.phserver.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@ToString
 public class PanoMatrix {
 
   private final ArrayList<Double> yPositions = new ArrayList<>();

@@ -8,6 +8,7 @@ import {MainComponent} from './screen/main.component';
 import {RecordComponent} from './screen/record.component';
 import {PanoSettingsComponent} from './screen/pano-settings.component';
 import {AlignComponent} from './screen/align.component';
+import {DownloadComponent} from "./screen/download.component";
 
 const routes: Routes = [
     {path: 'align', component: AlignComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
     {path: 'pano-settings', component: PanoSettingsComponent},
     {path: 'pano-fov', component: PanoFovComponent},
     {path: 'record', component: RecordComponent},
+    {path: 'download', component: DownloadComponent},
     {path: '**', component: MainComponent}
 ];
 

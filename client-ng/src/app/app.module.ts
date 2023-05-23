@@ -28,54 +28,59 @@ import {NgxJoystickModule} from "ngx-joystick";
 import {MovementControllerComponent} from './ui/movement-controller.component';
 import {MatrixComponent} from "./ui/matrix.component";
 import {AddOnePipe} from "./pipes/add-one.pipe";
-import { LedComponent } from './ui/led.component';
+import {LedComponent} from './ui/led.component';
 import {FovSizePipe} from "./pipes/Fov.pipe";
 import {PositionPipe} from "./pipes/Position.pipe";
 import {FovPartialSizePipe} from "./pipes/FovPartial.pipe";
-import { Matrix2Component } from './ui/matrix2.component';
+import {Matrix2Component} from './ui/matrix2.component';
+import {FileDownloadComponent} from './ui/file-download.component';
+import {DownloadComponent} from "./screen/download.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    JoystickComponent,
-    CameraComponent,
-    PictureFovComponent,
-    PanoFovComponent,
-    RecordComponent,
-    MainComponent,
-    TopComponent,
-    BottomComponent,
-    NumberPadComponent,
-    ModalComponent,
-    PanoSettingsComponent,
-    FovSizePipe,
-    FovPartialSizePipe,
-    AddOnePipe,
-    PositionPipe,
-    ToFixed,
-    AlignComponent,
-    MovementControllerComponent,
-    MatrixComponent,
-    LedComponent,
-    Matrix2Component
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgxJoystickModule
-  ],
-  providers: [
-    CameraService,
-    ConnectionService,
-    JoystickService,
-    PanoService,
-    PanoHeadService,
-    RouterService,
-    UiService,
-    ModalService,
-    SystemService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        JoystickComponent,
+        CameraComponent,
+        DownloadComponent,
+        FileDownloadComponent,
+        PictureFovComponent,
+        PanoFovComponent,
+        RecordComponent,
+        MainComponent,
+        TopComponent,
+        BottomComponent,
+        NumberPadComponent,
+        ModalComponent,
+        PanoSettingsComponent,
+        FovSizePipe,
+        FovPartialSizePipe,
+        AddOnePipe,
+        PositionPipe,
+        ToFixed,
+        AlignComponent,
+        MovementControllerComponent,
+        MatrixComponent,
+        LedComponent,
+        Matrix2Component,
+        FileDownloadComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgxJoystickModule
+    ],
+    providers: [
+        CameraService,
+        ConnectionService,
+        JoystickService,
+        PanoService,
+        PanoHeadService,
+        RouterService,
+        UiService,
+        ModalService,
+        SystemService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

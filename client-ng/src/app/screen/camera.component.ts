@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CameraService} from '../service/camera.service';
 import {RouterService} from '../service/router.service';
 import {UiService} from '../service/ui.service';
@@ -9,19 +9,13 @@ import {PanoService} from '../service/pano.service';
     templateUrl: './camera.component.html',
     styleUrls: ['./camera.component.scss']
 })
-export class CameraComponent implements OnInit, OnDestroy {
+export class CameraComponent {
 
     constructor(private cameraService: CameraService,
                 private routerService: RouterService,
                 private panoService: PanoService,
                 private uiService: UiService) {
         routerService.onActivate(this, () => this.onActivate());
-    }
-
-    ngOnInit(): void {
-    }
-
-    ngOnDestroy(): void {
     }
 
     onFocus(): void {

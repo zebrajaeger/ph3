@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<papywizard version="c">
+    <header>
+        <general>
+            <title>
+                title
+            </title>
+            <gps>
+                37.8022697,-122.4056749
+            </gps>
+            <comment>
+                comment
+            </comment>
+        </general>
+        <shooting mode="360">
+            <headOrientation>
+                up
+            </headOrientation>
+            <cameraOrientation>
+                landscape
+            </cameraOrientation>
+            <stabilizationDelay>
+                5.0
+            </stabilizationDelay>
+            <counter>
+                001
+            </counter>
+            <startTime>
+                2014-02-23_13h59m01s
+            </startTime>
+            <endTime>
+                2014-02-23_13h53m33s
+            </endTime>
+        </shooting>
+        <camera>
+            <timeValue>
+                5.0
+            </timeValue>
+            <bracketing nbPicts="1"/>
+            <sensor coef ="1.61" ratio="3:2"/>
+        </camera>
+        <lens type="rectilinear">
+            <focal>
+                12.7
+            </focal>
+        </lens>
+        <preset name="360"/>
+    </header>
+    <shoot>
+        <pict bracket="1" id="1">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="-144.00"/>
+        </pict>
+        <pict bracket="1" id="2">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="-144.00"/>
+        </pict>
+        <pict bracket="1" id="3">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="-144.00"/>
+        </pict>
+        <pict bracket="1" id="4">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="-144.00"/>
+        </pict>
+        <pict bracket="1" id="5">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="-144.00"/>
+        </pict>
+        <pict bracket="1" id="6">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="-108.00"/>
+        </pict>
+        <pict bracket="1" id="7">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="-108.00"/>
+        </pict>
+        <pict bracket="1" id="8">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="-108.00"/>
+        </pict>
+        <pict bracket="1" id="9">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="-108.00"/>
+        </pict>
+        <pict bracket="1" id="10">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="-108.00"/>
+        </pict>
+        <pict bracket="1" id="11">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="-72.00"/>
+        </pict>
+        <pict bracket="1" id="12">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="-72.00"/>
+        </pict>
+        <pict bracket="1" id="13">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="-72.00"/>
+        </pict>
+        <pict bracket="1" id="14">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="-72.00"/>
+        </pict>
+        <pict bracket="1" id="15">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="-72.00"/>
+        </pict>
+        <pict bracket="1" id="16">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="-36.00"/>
+        </pict>
+        <pict bracket="1" id="17">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="-36.00"/>
+        </pict>
+        <pict bracket="1" id="18">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="-36.00"/>
+        </pict>
+        <pict bracket="1" id="19">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="-36.00"/>
+        </pict>
+        <pict bracket="1" id="20">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="-36.00"/>
+        </pict>
+        <pict bracket="1" id="21">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="0.00"/>
+        </pict>
+        <pict bracket="1" id="22">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="0.00"/>
+        </pict>
+        <pict bracket="1" id="23">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="0.00"/>
+        </pict>
+        <pict bracket="1" id="24">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="0.00"/>
+        </pict>
+        <pict bracket="1" id="25">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="0.00"/>
+        </pict>
+        <pict bracket="1" id="26">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="36.00"/>
+        </pict>
+        <pict bracket="1" id="27">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="36.00"/>
+        </pict>
+        <pict bracket="1" id="28">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="36.00"/>
+        </pict>
+        <pict bracket="1" id="29">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="36.00"/>
+        </pict>
+        <pict bracket="1" id="30">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="36.00"/>
+        </pict>
+        <pict bracket="1" id="31">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="72.00"/>
+        </pict>
+        <pict bracket="1" id="32">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="72.00"/>
+        </pict>
+        <pict bracket="1" id="33">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="72.00"/>
+        </pict>
+        <pict bracket="1" id="34">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="72.00"/>
+        </pict>
+        <pict bracket="1" id="35">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="72.00"/>
+        </pict>
+        <pict bracket="1" id="36">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="108.00"/>
+        </pict>
+        <pict bracket="1" id="37">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="108.00"/>
+        </pict>
+        <pict bracket="1" id="38">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="108.00"/>
+        </pict>
+        <pict bracket="1" id="39">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="108.00"/>
+        </pict>
+        <pict bracket="1" id="40">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="108.00"/>
+        </pict>
+        <pict bracket="1" id="41">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="144.00"/>
+        </pict>
+        <pict bracket="1" id="42">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="144.00"/>
+        </pict>
+        <pict bracket="1" id="43">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="144.00"/>
+        </pict>
+        <pict bracket="1" id="44">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="144.00"/>
+        </pict>
+        <pict bracket="1" id="45">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="144.00"/>
+        </pict>
+        <pict bracket="1" id="46">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="91.20" roll="0.0"  yaw="180.00"/>
+        </pict>
+        <pict bracket="1" id="47">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="45.60" roll="0.0"  yaw="180.00"/>
+        </pict>
+        <pict bracket="1" id="48">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="0.00" roll="0.0"  yaw="180.00"/>
+        </pict>
+        <pict bracket="1" id="49">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-45.60" roll="0.0"  yaw="180.00"/>
+        </pict>
+        <pict bracket="1" id="50">
+            <time>
+                2014-02-23_13h59m01s
+            </time>
+            <position pitch="-91.20" roll="0.0"  yaw="180.00"/>
+        </pict>
+    </shoot>
+</papywizard>

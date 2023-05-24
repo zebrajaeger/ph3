@@ -8,7 +8,7 @@ ${AnsiColor.YELLOW} 888         d8(  888   888   888  888   888  888     888  88
 ${AnsiColor.YELLOW}o888o        `Y888""8o o888o o888o `Y8bod8P' o888o   o888o `Y8bod8P' `Y888""8o `Y8bod88P"${AnsiColor.BRIGHT_RED}   `8bd88P'
 
 MVN: @timestamp@ - @project.version@
-GIT: @git.branch@ - @git.commit.id@ - "@git.commit.message.short@"
+
 ${AnsiColor.WHITE}
 by 'zebrajaeger' Lars Brandt
 Powered by Spring Boot @spring-boot.version@

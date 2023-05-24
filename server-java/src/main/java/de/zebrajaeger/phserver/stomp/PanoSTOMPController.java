@@ -1,6 +1,5 @@
 package de.zebrajaeger.phserver.stomp;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.service.PanoService;
@@ -92,8 +91,7 @@ public class PanoSTOMPController {
 
     //<editor-fold desc="Calculated Pano">
     @MessageMapping("/rpc/pano/matrix")
-    public void rpcCalculatedPano(@Header("correlation-id") String id,
-                                  @Header("reply-to") String destination) throws JsonProcessingException {
+    public void rpcCalculatedPano(@Header("correlation-id") String id, @Header("reply-to") String destination) {
         panoService.updatePanoMatrix();
         Optional<PanoMatrix> panoMatrix = panoService.getPanoMatrix();
         if (panoMatrix.isPresent()) {

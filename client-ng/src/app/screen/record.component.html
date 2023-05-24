@@ -1,19 +1,22 @@
 <div class="left-column box">
-  <button class="button" (click)="onStart()">Start</button>
-  <button class="button" (click)="onStop()">Stop</button>
-  <button class="button" (click)="onPause()">Pause / Resume</button>
+    <button class="button" (click)="onStart()">Start</button>
+    <button class="button" (click)="onStop()">Stop</button>
+    <button class="button" (click)="onPause()">Pause / Resume</button>
+
+    <fieldset class="radio-box">
+        <legend>Pattern</legend>
+        <checkbox  [checked]="gridChecked" label="Grid" value="GRID" (click)="onPatternClick($event)"/>
+        <checkbox  [checked]="sparseChecked" label="Sparse" value="SPARSE" (click)="onPatternClick($event)"/>
+    </fieldset>
+
 </div>
 
 <div class="right-column">
-  <div class="command box">
-    {{msg}}
-<!--    {{state | json}}-->
-    <!--    Command: <span class="info">{{state?.command?.description}}</span>-->
-    <!--    <span class="info">{{state?.commandIndex + 1}}/{{state?.commandCount}}</span>-->
-  </div>
+    <div class="command box">
+        {{msg}}
+    </div>
 
-  <div class="matrix box">
-<!--    <matrix [width]="623" [height]="311" [done]="done" [x]="x" [y]="y"></matrix>-->
-    <matrix2 [width]="623" [height]="311"></matrix2>
-  </div>
+    <div class="matrix box">
+        <matrix2 [width]="623" [height]="311"></matrix2>
+    </div>
 </div>

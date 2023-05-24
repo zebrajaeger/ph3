@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {firstValueFrom, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Border, Delay, FieldOfView, FieldOfViewPartial, PanoMatrix} from '../../data/pano';
+import {Border, Delay, FieldOfView, FieldOfViewPartial, PanoMatrix, Pattern} from '../../data/pano';
 import {Shots} from '../../data/camera';
 import {RxStompService} from "./rx-stomp.service";
 import {RxStompRPCService} from "./rx-stomp-rpc.service";
@@ -151,4 +151,24 @@ export class PanoService {
   }
 
   // </editor-fold>
+
+  subscribePatternType(cb: (pattern: Pattern) => void): Subscription {
+    return this.rxStompService
+        .watch('/topic/pano/pattern')
+        .pipe(map(msg => JSON.parse(msg.body) as Pattern))
+        .subscribe(cb);
+  }
+
+  requestPatternType(cb: (panoMatrix: Pattern) => void): Subscription {
+    return this.rxStompRPCService
+        .rpc({destination: '/rpc/pano/pattern'})
+        .pipe(map(msg => JSON.parse(msg.body) as Pattern))
+        .subscribe(cb);
+  }
+
+  setPatternType(pattern: Pattern): void {
+    const body = JSON.stringify(pattern);
+    this.rxStompService.publish({destination: '/pano/pattern', body});
+  }
+
 }

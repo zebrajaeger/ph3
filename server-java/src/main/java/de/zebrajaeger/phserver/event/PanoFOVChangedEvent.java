@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.FieldOfViewPartial;
-import lombok.Data;
 
-@Data
-public class PanoFOVChangedEvent {
+public record PanoFOVChangedEvent(FieldOfViewPartial panoFOV) {
 
-  private final FieldOfViewPartial panoFOV;
 }

@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.Delay;
-import lombok.Data;
 
-@Data
-public class DelaySettingsChangedEvent {
+public record DelaySettingsChangedEvent(Delay delay) {
 
-  private final Delay delay;
 }

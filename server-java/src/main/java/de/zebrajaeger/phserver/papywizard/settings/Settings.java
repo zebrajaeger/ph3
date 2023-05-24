@@ -10,4 +10,5 @@ public class Settings {
   private FovSettings panoFov = new FovSettings();
   private ShotsSettings shots = new ShotsSettings();
   private DelaySettings delay = new DelaySettings();
+  private PanoSettings pano = new PanoSettings();
 }

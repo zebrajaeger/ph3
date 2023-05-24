@@ -49,7 +49,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     this.panoFovSubscription = this.panoService.subscribePanoFov(fov => this.panoFov = fov);
     this.panoService.requestPanoFov(fov => this.panoFov = fov);
 
-    this.panoFovSubscription = this.panoService.requestPanoMatrix(matrix => this.panoMatrix = matrix);
+    this.panoFovSubscription = this.panoService.subscribePanoMatrix(matrix => this.panoMatrix = matrix);
     this.panoService.requestPanoMatrix(matrix => this.panoMatrix = matrix);
 
     this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);

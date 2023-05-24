@@ -35,6 +35,7 @@ import {FovPartialSizePipe} from "./pipes/FovPartial.pipe";
 import {Matrix2Component} from './ui/matrix2.component';
 import {FileDownloadComponent} from './ui/file-download.component';
 import {DownloadComponent} from "./screen/download.component";
+import { CheckboxComponent } from './ui/checkbox.component';
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import {DownloadComponent} from "./screen/download.component";
         MatrixComponent,
         LedComponent,
         Matrix2Component,
-        FileDownloadComponent
+        FileDownloadComponent,
+        CheckboxComponent
     ],
     imports: [
         BrowserModule,

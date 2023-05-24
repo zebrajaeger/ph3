@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.PanoHeadData;
-import lombok.Data;
 
-@Data
-public class PanoHeadDataEvent {
+public record PanoHeadDataEvent(PanoHeadData data) {
 
-  private final PanoHeadData data;
 }

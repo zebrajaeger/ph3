@@ -42,7 +42,7 @@ public class PanoHeadSTOMPController {
 
   @EventListener
   public void onPanoHeadChanged(PositionEvent positionEvent) {
-    template.convertAndSend("/topic/actor/position/", positionEvent.getPosition());
+    template.convertAndSend("/topic/actor/position/", positionEvent.position());
   }
 
   @EventListener
@@ -90,12 +90,12 @@ public class PanoHeadSTOMPController {
 
   @EventListener
   public void onJoggingChanged(JoggingChangedEvent joggingChangedEvent) {
-    template.convertAndSend("/topic/actor/jogging/", joggingChangedEvent.isJogging());
+    template.convertAndSend("/topic/actor/jogging/", joggingChangedEvent.jogging());
   }
   //</editor-fold>
 
   @EventListener
   public void onPowerConsumption(PowerMeasureEvent powerMeasureEvent) {
-    template.convertAndSend("/topic/power/", powerMeasureEvent.getPower());
+    template.convertAndSend("/topic/power/", powerMeasureEvent.power());
   }
 }

@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.FieldOfView;
-import lombok.Data;
 
-@Data
-public class PictureFOVChangedEvent {
+public record PictureFOVChangedEvent(FieldOfView pictureFOV) {
 
-  private final FieldOfView pictureFOV;
 }

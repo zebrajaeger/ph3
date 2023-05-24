@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,6 +16,9 @@ import java.util.TreeMap;
 @Service
 public class FileService {
     private final File root = new File(".");
+
+    @Value("${system.media.root}")
+    private File mediaRoot;
 
     public Collection<String> getPapywizardFileNamesOrderedByTimestamp(int maxItems) {
         final File[] files = root.listFiles((dir, name) -> name.endsWith("-papywizard.xml"));

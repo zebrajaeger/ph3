@@ -1,0 +1,6 @@
+<input type="text" (input)="onInputChange($event)" class="input display" value={{value}} placeholder="Enter name of preset"/>
+<div class="simple-keyboard"></div>
+<div class="buttons">
+    <div class="button" backButton (click)="onOk()"><span class="ok">✓</span> OK</div>
+    <div class="button" backButton><span class="cancel">🗙</span> Cancel</div>
+</div>

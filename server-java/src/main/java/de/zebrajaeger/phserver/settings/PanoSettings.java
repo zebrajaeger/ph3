@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.papywizard.settings;
+package de.zebrajaeger.phserver.settings;
 
 import de.zebrajaeger.phserver.data.Pattern;
 import lombok.Data;

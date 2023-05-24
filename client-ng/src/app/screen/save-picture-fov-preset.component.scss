@@ -1,0 +1,30 @@
+ul {
+  text-align: center;
+}
+
+.input {
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  box-sizing: border-box;
+}
+
+.buttons {
+  display: flex;
+  width:100%;
+  flex-direction: row;
+  justify-content: flex-end;
+  .button {
+    width: 150px;
+    margin-right: 10px;
+    .ok{
+      color: green;
+    }
+    .cancel{
+      color: red;
+    }
+  }
+}

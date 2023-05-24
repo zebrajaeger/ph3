@@ -7,6 +7,7 @@ import de.zebrajaeger.phserver.pano.PanoGenerator;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSparseSquare;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSquare;
 import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
+import de.zebrajaeger.phserver.settings.SimpleFovSettings;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Getter
@@ -45,6 +44,7 @@ public class PanoService {
     private Delay delay = new Delay();
     private Optional<PanoMatrix> panoMatrix = Optional.empty();
     private PanoGenerator panoGenerator = new PanoGenerator(5d);
+    private Map<String, SimpleFovSettings> picturePresets = new TreeMap<>();
 
     @Autowired
     public PanoService(PanoHeadService panoHeadService,
@@ -71,6 +71,9 @@ public class PanoService {
 
         pattern = settingsService.getSettings().getPano().getPattern();
         publishPatternChange();
+
+        settingsService.getSettings().getPicturePresets().getAll(picturePresets);
+        publishPicturePresetsChange();
     }
 
     public void setCurrentPositionAsPictureBorder(Border... borders) {
@@ -178,6 +181,12 @@ public class PanoService {
         settingsService.getSettings().getPano().setPattern(pattern);
         settingsService.setDirty();
         applicationEventPublisher.publishEvent(new PatternChangedEvent(pattern));
+    }
+
+    public void publishPicturePresetsChange() {
+        settingsService.getSettings().getPicturePresets().setAll(picturePresets);
+        settingsService.setDirty();
+        applicationEventPublisher.publishEvent(new PictureFovNamesChangedEvent(picturePresets.keySet().toArray(new String[0])));
     }
 
 }

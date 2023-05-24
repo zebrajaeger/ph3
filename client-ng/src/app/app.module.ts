@@ -36,6 +36,9 @@ import {Matrix2Component} from './ui/matrix2.component';
 import {FileDownloadComponent} from './ui/file-download.component';
 import {DownloadComponent} from "./screen/download.component";
 import { CheckboxComponent } from './ui/checkbox.component';
+import { SavePictureFovPresetComponent } from './screen/save-picture-fov-preset.component';
+import { BackButtonDirective } from './directive/back-button.directive';
+import { LoadPictureFovPresetComponent } from './screen/load-picture-fov-preset.component';
 
 @NgModule({
     declarations: [
@@ -64,7 +67,10 @@ import { CheckboxComponent } from './ui/checkbox.component';
         LedComponent,
         Matrix2Component,
         FileDownloadComponent,
-        CheckboxComponent
+        CheckboxComponent,
+        SavePictureFovPresetComponent,
+        BackButtonDirective,
+        LoadPictureFovPresetComponent
     ],
     imports: [
         BrowserModule,

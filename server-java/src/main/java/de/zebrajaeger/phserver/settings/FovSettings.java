@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.papywizard.settings;
+package de.zebrajaeger.phserver.settings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.zebrajaeger.phserver.data.FieldOfView;

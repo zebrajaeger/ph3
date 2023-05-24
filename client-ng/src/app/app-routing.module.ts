@@ -9,12 +9,16 @@ import {RecordComponent} from './screen/record.component';
 import {PanoSettingsComponent} from './screen/pano-settings.component';
 import {AlignComponent} from './screen/align.component';
 import {DownloadComponent} from "./screen/download.component";
+import {SavePictureFovPresetComponent} from "./screen/save-picture-fov-preset.component";
+import {LoadPictureFovPresetComponent} from "./screen/load-picture-fov-preset.component";
 
 const routes: Routes = [
     {path: 'align', component: AlignComponent},
     {path: 'joystick', component: JoystickComponent},
     {path: 'camera', component: CameraComponent},
     {path: 'picture-fov', component: PictureFovComponent},
+    {path: 'picture-fov/save', component: SavePictureFovPresetComponent},
+    {path: 'picture-fov/load', component: LoadPictureFovPresetComponent},
     {path: 'pano-fov', component: PanoFovComponent},
     {path: 'pano-settings', component: PanoSettingsComponent},
     {path: 'pano-fov', component: PanoFovComponent},

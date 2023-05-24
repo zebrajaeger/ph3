@@ -23,9 +23,10 @@
     "@stomp/stompjs": "7.0.0",
     "ngx-joystick": "3.0.1",
     "rxjs": "7.4.0",
-    "uuid": "9.0.0",
     "service": "^0.1.4",
+    "simple-keyboard": "3.5.64",
     "tslib": "^2.0.0",
+    "uuid": "9.0.0",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {

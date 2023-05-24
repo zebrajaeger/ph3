@@ -66,6 +66,29 @@ export class PanoService {
     this.rxStompService.publish({destination: '/picture/border', body});
   }
 
+  setCurrentPictureFovAs(name: string){
+    const body = name;
+    this.rxStompService.publish({destination: '/picture/fov/save', body});
+  }
+
+  loadPictureFov(name: string){
+    const body = name;
+    this.rxStompService.publish({destination: '/picture/fov/load', body});
+  }
+
+  subscribePictureFovNames(cb: (names: string[]) => void){
+    return this.rxStompService
+        .watch('/topic/picture/fov/names')
+        .pipe(map(msg => JSON.parse(msg.body) as string[]))
+        .subscribe(cb);
+  }
+
+  requestPictureFovNames(cb: (names: string[]) => void){
+    this.rxStompRPCService
+        .rpc({destination: '/rpc/picture/fov/names'})
+        .pipe(map(msg => JSON.parse(msg.body) as string[]))
+        .subscribe(cb);
+  }
   // </editor-fold>
 
   // <editor-fold desc="Pano FOV">

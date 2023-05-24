@@ -5906,6 +5906,16 @@ sigstore@^1.0.0:
     make-fetch-happen "^11.0.1"
     tuf-js "^1.0.0"
 
+simple-keyboard-layouts@3.1.328:
+  version "3.1.328"
+  resolved "https://registry.yarnpkg.com/simple-keyboard-layouts/-/simple-keyboard-layouts-3.1.328.tgz#9cb48abffbb9fcc347ee48a9ca1c8e9d3c2f2573"
+  integrity sha512-ChXCh0/Umzn9ppgSb2JEl3x6wjRsZtRAKaVZ325yUZehdueq0gBX/d7DLVBjrqlHrePeluxUlNTd1YcL/szPuA==
+
+simple-keyboard@3.5.64:
+  version "3.5.64"
+  resolved "https://registry.yarnpkg.com/simple-keyboard/-/simple-keyboard-3.5.64.tgz#9603446ae7cb7d5572e13535693ea1ada3ac5474"
+  integrity sha512-TvbHv0zsYZbE7Vy+esGiRvEF3Adl8Pj514MEb9CxYbIc0sel4FBGStZxqXizCv5jQLXubztTWWJP/Hgm0T5fYQ==
+
 slash@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-4.0.0.tgz#2422372176c4c6c5addb5e2ada885af984b396a7"

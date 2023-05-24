@@ -58,10 +58,6 @@ export class TopComponent implements OnInit, OnDestroy {
         this.actorActiveSubscription.unsubscribe();
     }
 
-    onBack(): void {
-        this.router.navigate(['/']).then();
-    }
-
     private set camera(camera: Camera | undefined) {
         if (camera?.trigger) {
             this.cameraActivityIndicator = "red"

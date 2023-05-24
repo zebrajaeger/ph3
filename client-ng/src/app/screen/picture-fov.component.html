@@ -15,6 +15,10 @@
     <div class="left-center-content v-label"><span class="value">V:</span></div>
     <div class="left-center-content v-value"><span class="value">{{vText}}</span></div>
   </div>
+  <div bottom-left class="">
+    <button class="button" [routerLink]="['/picture-fov/save']">Save FOV</button>
+    <button class="button" [routerLink]="['/picture-fov/load']">Load FOV</button>
+  </div>
 </movement-controller>
 
 <app-modal class="modal-system-dialog" id="picture-fov-set">

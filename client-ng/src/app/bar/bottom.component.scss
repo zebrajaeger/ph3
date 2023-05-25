@@ -4,7 +4,7 @@
   box-sizing: border-box;
   border: 1px solid black;
   margin: 0;
-  background-color: mistyrose;
+  background-color: white;
 
   display: flex;
   flex-direction: row;
@@ -28,18 +28,14 @@
   }
 }
 
-.onoff {
+.on-off {
   border-left: 1px solid black;
   width: 25px;
   padding: 5px;
-
+  background-color: mistyrose;
   img {
     width: 25px;
   }
-}
-
-.label {
-
 }
 
 .value {

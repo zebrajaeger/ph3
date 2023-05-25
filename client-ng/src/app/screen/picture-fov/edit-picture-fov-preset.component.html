@@ -1,0 +1,7 @@
+<div class="items">
+    <div *ngFor="let name of names_" backButton class="item">
+        <div class="button name">{{name}}</div>
+        <div class="button rename" (click)="onRename(name)"><img class="icon" src="/assets/rename.svg" alt="rename"></div>
+        <div class="button delete" (click)="onDelete(name)">🗑</div>
+    </div>
+</div>

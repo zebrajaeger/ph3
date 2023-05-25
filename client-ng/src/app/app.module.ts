@@ -35,10 +35,11 @@ import {FovPartialSizePipe} from "./pipes/FovPartial.pipe";
 import {Matrix2Component} from './ui/matrix2.component';
 import {FileDownloadComponent} from './ui/file-download.component';
 import {DownloadComponent} from "./screen/download.component";
-import { CheckboxComponent } from './ui/checkbox.component';
-import { SavePictureFovPresetComponent } from './screen/picture-fov/save-picture-fov-preset.component';
-import { BackButtonDirective } from './directive/back-button.directive';
-import { LoadPictureFovPresetComponent } from './screen/picture-fov/load-picture-fov-preset.component';
+import {CheckboxComponent} from './ui/checkbox.component';
+import {SavePictureFovPresetComponent} from './screen/picture-fov/save-picture-fov-preset.component';
+import {BackButtonDirective} from './directive/back-button.directive';
+import {LoadPictureFovPresetComponent} from './screen/picture-fov/load-picture-fov-preset.component';
+import {EditPictureFovPresetComponent} from './screen/picture-fov/edit-picture-fov-preset.component';
 
 @NgModule({
     declarations: [
@@ -70,7 +71,8 @@ import { LoadPictureFovPresetComponent } from './screen/picture-fov/load-picture
         CheckboxComponent,
         SavePictureFovPresetComponent,
         BackButtonDirective,
-        LoadPictureFovPresetComponent
+        LoadPictureFovPresetComponent,
+        EditPictureFovPresetComponent
     ],
     imports: [
         BrowserModule,

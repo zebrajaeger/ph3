@@ -2,7 +2,7 @@
   caret-color: transparent;
 }
 
-.close-button{
+.close-button {
   background-color: orange;
 }
 
@@ -63,6 +63,18 @@
     font-size: 2em;
     margin: 10px;
   }
+}
+
+.button.load, .button.save, .button.edit {
+  width: 250px
+}
+
+.bottom-left {
+  margin: 90px 0 0 10px;
+}
+
+.bottom-right {
+  margin: 25px 0 0 70px;
 }
 
 .set-dialog {

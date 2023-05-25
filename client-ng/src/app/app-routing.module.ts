@@ -11,6 +11,7 @@ import {AlignComponent} from './screen/align.component';
 import {DownloadComponent} from "./screen/download.component";
 import {SavePictureFovPresetComponent} from "./screen/picture-fov/save-picture-fov-preset.component";
 import {LoadPictureFovPresetComponent} from "./screen/picture-fov/load-picture-fov-preset.component";
+import {EditPictureFovPresetComponent} from "./screen/picture-fov/edit-picture-fov-preset.component";
 
 const routes: Routes = [
     {path: 'align', component: AlignComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
     {path: 'picture-fov', component: PictureFovComponent},
     {path: 'picture-fov/save', component: SavePictureFovPresetComponent},
     {path: 'picture-fov/load', component: LoadPictureFovPresetComponent},
+    {path: 'picture-fov/edit', component: EditPictureFovPresetComponent},
     {path: 'pano-fov', component: PanoFovComponent},
     {path: 'pano-settings', component: PanoSettingsComponent},
     {path: 'pano-fov', component: PanoFovComponent},

@@ -3,7 +3,7 @@
 <div class="box title">
   <div>
     <span>{{title}}</span>
-    <span [style.display]="backButton? 'none':'inline'">&nbsp;&nbsp;&nbsp;{{version?.version}}({{version?.commitIdAbbrev}})</span>
+    <span *ngIf="!backButton">&nbsp;&nbsp;&nbsp;{{version?.version}}({{version?.commitIdAbbrev}})</span>
   </div>
 </div>
 

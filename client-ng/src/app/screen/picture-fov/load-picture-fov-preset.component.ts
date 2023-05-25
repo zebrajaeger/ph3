@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PanoService} from "../service/pano.service";
-import {RouterService} from "../service/router.service";
-import {UiService} from "../service/ui.service";
+import {PanoService} from "../../service/pano.service";
+import {RouterService} from "../../service/router.service";
+import {UiService} from "../../service/ui.service";
 
 @Component({
     selector: 'app-load-picture-fov-preset',

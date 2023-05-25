@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PanoService} from '../service/pano.service';
-import {Border, FieldOfView} from '../../data/pano';
+import {PanoService} from '../../service/pano.service';
+import {Border, FieldOfView} from '../../../data/pano';
 import {Subscription} from 'rxjs';
-import {RouterService} from '../service/router.service';
-import {UiService} from '../service/ui.service';
-import {PanoHeadService} from '../service/panohead.service';
-import {ConnectionService} from '../service/connection.service';
-import {degToString} from '../utils';
-import {ModalService} from "../ui/modal.service";
+import {RouterService} from '../../service/router.service';
+import {UiService} from '../../service/ui.service';
+import {PanoHeadService} from '../../service/panohead.service';
+import {ConnectionService} from '../../service/connection.service';
+import {degToString} from '../../utils';
+import {ModalService} from "../../ui/modal.service";
 
 @Component({
   selector: 'app-picture-fov',

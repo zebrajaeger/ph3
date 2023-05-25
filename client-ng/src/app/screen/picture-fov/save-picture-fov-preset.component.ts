@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import Keyboard from "simple-keyboard";
-import {layouts} from "../utils";
-import {FieldOfView} from "../../data/pano";
+import {layouts} from "../../utils";
+import {FieldOfView} from "../../../data/pano";
 import {Subscription} from "rxjs";
-import {PanoService} from "../service/pano.service";
-import {RouterService} from "../service/router.service";
-import {UiService} from "../service/ui.service";
+import {PanoService} from "../../service/pano.service";
+import {RouterService} from "../../service/router.service";
+import {UiService} from "../../service/ui.service";
 
 @Component({
     selector: 'app-save-picture-fov-preset',

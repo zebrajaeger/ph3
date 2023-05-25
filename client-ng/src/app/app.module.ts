@@ -4,7 +4,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {JoystickComponent} from './screen/joystick.component';
 import {CameraComponent} from './screen/camera.component';
-import {PictureFovComponent} from './screen/picture-fov.component';
+import {PictureFovComponent} from './screen/picture-fov/picture-fov.component';
 import {PanoFovComponent} from './screen/pano-fov.component';
 import {RecordComponent} from './screen/record.component';
 import {MainComponent} from './screen/main.component';
@@ -36,9 +36,9 @@ import {Matrix2Component} from './ui/matrix2.component';
 import {FileDownloadComponent} from './ui/file-download.component';
 import {DownloadComponent} from "./screen/download.component";
 import { CheckboxComponent } from './ui/checkbox.component';
-import { SavePictureFovPresetComponent } from './screen/save-picture-fov-preset.component';
+import { SavePictureFovPresetComponent } from './screen/picture-fov/save-picture-fov-preset.component';
 import { BackButtonDirective } from './directive/back-button.directive';
-import { LoadPictureFovPresetComponent } from './screen/load-picture-fov-preset.component';
+import { LoadPictureFovPresetComponent } from './screen/picture-fov/load-picture-fov-preset.component';
 
 @NgModule({
     declarations: [

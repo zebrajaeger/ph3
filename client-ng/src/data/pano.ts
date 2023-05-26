@@ -1,18 +1,42 @@
 export class Range {
     from!: number;
     to!: number;
-    size?: number;
-    complete?: boolean;
+
+    constructor(jsonObject: Range) {
+        Object.assign(this, jsonObject);
+    }
+
+    public get size() {
+        return this.complete ? Math.abs(this.to - this.from) : undefined;
+    }
+
+    public get complete() {
+        return this.from != undefined && this.to != undefined;
+    }
 }
 
-export class FieldOfView {
-    horizontal!: Range;
-    vertical!: Range;
+export class CameraOfView {
+    x!: Range;
+    y!: Range;
+
+    constructor(jsonObject: CameraOfView) {
+        this.x = new Range(jsonObject.x);
+        this.y = new Range(jsonObject.y);
+    }
 }
 
-export class FieldOfViewPartial extends FieldOfView {
+export class PanoFieldOfView {
+    x!: Range;
+    y!: Range;
     fullX!: boolean;
     fullY!: boolean;
+
+    constructor(jsonObject: PanoFieldOfView) {
+        this.x = new Range(jsonObject.x);
+        this.y = new Range(jsonObject.y);
+        this.fullX = jsonObject.fullX;
+        this.fullY = jsonObject.fullY;
+    }
 }
 
 export enum Border {
@@ -27,7 +51,6 @@ export enum Pattern {
     SPARSE = <any>"SPARSE"
 }
 
-//{"maxY":31.245065789473685,"maxXSize":6,"maxX":300.0,"ypositions":[8.748618421052635,31.245065789473685],"minY":8.748618421052635,"minX":0.0,"xpositions":[[0.0,60.0,120.0,180.0,240.0,300.0],[0.0,60.0,120.0,180.0,240.0,300.0]],"ysize":2}
 export class PanoMatrix {
     yPositions!: number[];
     xPositions!: number[][];

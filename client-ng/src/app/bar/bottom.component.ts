@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PanoHeadService} from '../service/panohead.service';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
-import {FieldOfView, FieldOfViewPartial, PanoMatrix} from '../../data/pano';
+import {CameraOfView, PanoFieldOfView, PanoMatrix} from '../../data/pano';
 import {Position, Power} from '../../data/panohead';
 import {ModalService} from '../ui/modal.service';
 import {SystemService} from '../service/system.service';
@@ -29,9 +29,9 @@ export class BottomComponent implements OnInit, OnDestroy {
   public robotState?: RobotState;
 
   private pictureFovSubscription!: Subscription;
-  public pictureFov?: FieldOfView;
+  public pictureFov?: CameraOfView;
   private panoFovSubscription!: Subscription;
-  public panoFov?: FieldOfViewPartial;
+  public panoFov?: PanoFieldOfView;
 
   constructor(private panoHeadService: PanoHeadService,
               private panoService: PanoService,

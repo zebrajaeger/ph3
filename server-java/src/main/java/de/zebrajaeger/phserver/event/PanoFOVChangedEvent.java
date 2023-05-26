@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.FieldOfViewPartial;
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
 
-public record PanoFOVChangedEvent(FieldOfViewPartial panoFOV) {
+public record PanoFOVChangedEvent(PanoFovSettings panoFOV) {
 
 }

@@ -1,8 +1,13 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.data.*;
+import de.zebrajaeger.phserver.data.Border;
+import de.zebrajaeger.phserver.data.PanoMatrix;
+import de.zebrajaeger.phserver.data.Pattern;
 import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.service.PanoService;
+import de.zebrajaeger.phserver.settings.DelaySettings;
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
+import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,14 +48,14 @@ public class PanoSTOMPController {
 
     @MessageMapping("/pano/fullX")
     public void panoFullX(boolean isFull) {
-        panoService.getPanoFOV().setFullX(isFull);
+        panoService.getPanoFov().setFullX(isFull);
         panoService.publishPanoFOVChange();
         panoService.updatePanoMatrix();
     }
 
     @MessageMapping("/pano/fullY")
     public void panoFullY(boolean isFull) {
-        panoService.getPanoFOV().setFullY(isFull);
+        panoService.getPanoFov().setFullY(isFull);
         panoService.publishPanoFOVChange();
         panoService.updatePanoMatrix();
     }
@@ -58,7 +63,7 @@ public class PanoSTOMPController {
     @MessageMapping("/rpc/pano/fov")
     public void rpcPanoFov(@Header("correlation-id") String id,
                            @Header("reply-to") String destination) {
-        FieldOfViewPartial fov = panoService.getPanoFOV();
+        PanoFovSettings fov = panoService.getPanoFov();
         StompUtils.rpcSendResponse(template, id, destination, fov);
     }
 
@@ -112,7 +117,7 @@ public class PanoSTOMPController {
     }
 
     @MessageMapping("/delay")
-    public void setDelay(Delay delay) {
+    public void setDelay(DelaySettings delay) {
         panoService.setDelay(delay);
         panoService.publishDelayChange();
     }
@@ -132,7 +137,7 @@ public class PanoSTOMPController {
     @MessageMapping("/shot/{shotsName}/{index}/focusTimeMs")
     public void setShotFocusTime(@DestinationVariable String shotsName,
                                  @DestinationVariable int index, int focusTimeMs) {
-        Shot shot = panoService.getShots().getShot(shotsName, index);
+        ShotSettings shot = panoService.getShots().getShot(shotsName, index);
         shot.setFocusTimeMs(focusTimeMs);
         panoService.publishShotsChange();
     }
@@ -140,13 +145,13 @@ public class PanoSTOMPController {
     @MessageMapping("/shot/{shotsName}/{index}/triggerTimeMs")
     public void setShotTriggerTime(@DestinationVariable String shotsName,
                                    @DestinationVariable int index, int triggerTimeMs) {
-        Shot shot = panoService.getShots().getShot(shotsName, index);
+        ShotSettings shot = panoService.getShots().getShot(shotsName, index);
         shot.setTriggerTimeMs(triggerTimeMs);
         panoService.publishShotsChange();
     }
 
     @MessageMapping("/shot/{shotsName}/add")
-    public void setShot(@DestinationVariable String shotsName, @Payload Shot shot) {
+    public void setShot(@DestinationVariable String shotsName, @Payload ShotSettings shot) {
         panoService.getShots().add(shotsName, shot);
         panoService.publishShotsChange();
     }

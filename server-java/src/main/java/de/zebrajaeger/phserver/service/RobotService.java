@@ -5,6 +5,7 @@ import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.pano.*;
+import de.zebrajaeger.phserver.settings.ShotSettings;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,7 +154,7 @@ public class RobotService {
             } else if (TakeShotCommand.class.equals(currentCommand.getClass())) {
                 setAutomateState(AutomateState.CMD_SHOT).sendUpdate();
                 try {
-                    Shot shot = ((TakeShotCommand) currentCommand).getShot();
+                    ShotSettings shot = ((TakeShotCommand) currentCommand).getShot();
                     panoHeadService.shot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
                 } catch (IOException e) {
                     setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);

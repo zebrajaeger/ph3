@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import Keyboard from "simple-keyboard";
 import {layouts} from "../../utils";
-import {FieldOfView} from "../../../data/pano";
+import {CameraOfView} from "../../../data/pano";
 import {Subscription} from "rxjs";
 import {PanoService} from "../../service/pano.service";
 import {RouterService} from "../../service/router.service";
@@ -16,7 +16,7 @@ export class SavePictureFovPresetComponent implements AfterViewInit, OnInit,OnDe
     value = "";
     keyboard!: Keyboard;
 
-    public fov_!: FieldOfView;
+    public fov_!: CameraOfView;
     private fovSubscription!: Subscription;
 
     constructor(private panoService: PanoService,
@@ -47,7 +47,7 @@ export class SavePictureFovPresetComponent implements AfterViewInit, OnInit,OnDe
         this.panoService.requestPictureFov(fov => this.fov = fov);
     }
 
-    set fov(fov: FieldOfView) {
+    set fov(fov: CameraOfView) {
         this.fov_ = fov;
     }
 

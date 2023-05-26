@@ -2,24 +2,29 @@ package de.zebrajaeger.phserver.settings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
-public class PicturePresetsSettings extends HashMap<String, SimpleFovSettings> {
+public class PicturePresetsSettings extends TreeMap<String, CameraFovSettings> implements SettingsValue<PicturePresetsSettings> {
 
     @JsonIgnore
-    public void getAll(Map<String, SimpleFovSettings> value) {
+    private void replaceByCopy(Map<String, CameraFovSettings> from, Map<String, CameraFovSettings> to) {
+        to.clear();
+        from.forEach((name, fov) -> to.put(name, new CameraFovSettings(fov.getX(), fov.getY())));
+    }
+
+    @Override
+    public void read(PicturePresetsSettings value) {
         replaceByCopy(this, value);
     }
 
-    @JsonIgnore
-    public void setAll(Map<String, SimpleFovSettings> value) {
+    @Override
+    public void write(PicturePresetsSettings value) {
         replaceByCopy(value, this);
     }
 
     @JsonIgnore
-    public void replaceByCopy(Map<String, SimpleFovSettings> from, Map<String, SimpleFovSettings> to) {
-        to.clear();
-        from.forEach((name, fov) -> to.put(name, new SimpleFovSettings(fov.getX(), fov.getY())));
+    public String[] getNames() {
+        return keySet().toArray(new String[0]);
     }
 }

@@ -7,7 +7,7 @@ import de.zebrajaeger.phserver.pano.PanoGenerator;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSparseSquare;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSquare;
 import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
-import de.zebrajaeger.phserver.settings.SimpleFovSettings;
+import de.zebrajaeger.phserver.settings.*;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Getter
@@ -35,16 +37,16 @@ public class PanoService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final SettingsService settingsService;
 
-    private final FieldOfView pictureFOV = new FieldOfView();
-    private final FieldOfViewPartial panoFOV = new FieldOfViewPartial();
+    private final PanoFovSettings cameraFov = new PanoFovSettings();
+    private final PanoFovSettings panoFov = new PanoFovSettings();
     private double minimumOverlapH = 0.25;
     private double minimumOverlapV = 0.25;
-    private Shots shots = new Shots();
+    private ShotsSettings shots = new ShotsSettings();
     private Pattern pattern;
-    private Delay delay = new Delay();
+    private DelaySettings delay = new DelaySettings();
     private Optional<PanoMatrix> panoMatrix = Optional.empty();
     private PanoGenerator panoGenerator = new PanoGenerator(5d);
-    private Map<String, SimpleFovSettings> picturePresets = new TreeMap<>();
+    private PicturePresetsSettings picturePresets = new PicturePresetsSettings();
 
     @Autowired
     public PanoService(PanoHeadService panoHeadService,
@@ -57,77 +59,77 @@ public class PanoService {
 
     @PostConstruct
     public void init() {
-        settingsService.getSettings().getPictureFov().getAll(pictureFOV);
+        final Settings settings = settingsService.getSettingsStore().getSettings();
+
+        CameraFovSettings temp = new CameraFovSettings();
+        settings.getPictureFov().read(temp);
         publishPictureFOVChange();
 
-        settingsService.getSettings().getPanoFov().getAll(panoFOV);
+        settings.getPanoFov().read(panoFov);
         publishPanoFOVChange();
 
-        settingsService.getSettings().getShots().getAll(shots);
+        settings.getShots().read(shots);
         publishShotsChange();
 
-        settingsService.getSettings().getDelay().getAll(delay);
+        settings.getDelay().read(delay);
         publishDelayChange();
 
-        pattern = settingsService.getSettings().getPano().getPattern();
+        pattern = settings.getPano().getPattern();
         publishPatternChange();
 
-        settingsService.getSettings().getPicturePresets().getAll(picturePresets);
+        settingsService.getPictureFovPresetsStore().getSettings().read(picturePresets);
         publishPicturePresetsChange();
     }
 
     public void setCurrentPositionAsPictureBorder(Border... borders) {
-        setCurrentPositionAsBorder(pictureFOV, borders);
+        setCurrentPositionAsBorder(cameraFov, borders);
     }
 
     public void setCurrentPositionAsPanoBorder(Border... borders) {
-        setCurrentPositionAsBorder(panoFOV, borders);
+        setCurrentPositionAsBorder(panoFov, borders);
     }
 
-    public void setCurrentPositionAsBorder(FieldOfView fov, Border... borders) {
+    public void setCurrentPositionAsBorder(PanoFovSettings fov, Border... borders) {
         for (Border b : borders) {
             Position currentPosition = panoHeadService.getCurrentPosition();
             switch (b) {
-                case LEFT -> fov.getHorizontal().setFrom(currentPosition.getX());
-                case RIGHT -> fov.getHorizontal().setTo(currentPosition.getX());
-                case TOP -> fov.getVertical().setFrom(currentPosition.getY());
-                case BOTTOM -> fov.getVertical().setTo(currentPosition.getY());
+                case LEFT -> fov.getX().setFrom(currentPosition.getX());
+                case RIGHT -> fov.getX().setTo(currentPosition.getX());
+                case TOP -> fov.getY().setFrom(currentPosition.getY());
+                case BOTTOM -> fov.getY().setTo(currentPosition.getY());
             }
         }
     }
 
     public Optional<PanoMatrix> updatePanoMatrix() {
         log.info("updateCalculatedPano() - CALL");
-        FieldOfView cameraFOV = getPictureFOV();
-        Double height = cameraFOV.getVertical().getSize();
-        Double width = cameraFOV.getHorizontal().getSize();
-        if (height != null && width != null) {
-            Image image = new Image(width, height).normalized();
-            FieldOfViewPartial panoFOV = getPanoFOV().normalize();
-            if (panoFOV.isComplete() && image.isComplete()) {
-                log.info("updateCalculatedPano() - RECALCULATE");
-                Pano pano = new Pano(panoFOV, getMinimumOverlapH(), getMinimumOverlapV());
 
-                panoMatrix = Optional.of(switch (pattern) {
-                    case GRID -> new PositionGeneratorSquare().calculatePano(
-                            panoHeadService.getCurrentPositionDeg(),
-                            image,
-                            pano);
-                    case SPARSE -> new PositionGeneratorSparseSquare().calculatePano(
-                            panoHeadService.getCurrentPositionDeg(),
-                            image,
-                            pano);
-                });
+        if (cameraFov.isComplete() && panoFov.isComplete()) {
 
-                panoMatrix.ifPresent(
-                        value -> applicationEventPublisher.publishEvent(new PanoMatrixChangedEvent(value)));
-            }
+            log.info("updateCalculatedPano() - RECALCULATE");
+            final CameraFovSettings camera = new CameraFovSettings();
+            camera.write(cameraFov);
+            Pano pano = new Pano(panoFov.normalize(), getMinimumOverlapH(), getMinimumOverlapV());
+
+            panoMatrix = Optional.of(switch (pattern) {
+                case GRID -> new PositionGeneratorSquare().calculatePano(
+                        panoHeadService.getCurrentPositionDeg(),
+                        camera,
+                        pano);
+                case SPARSE -> new PositionGeneratorSparseSquare().calculatePano(
+                        panoHeadService.getCurrentPositionDeg(),
+                        camera,
+                        pano);
+            });
+
+            panoMatrix.ifPresent(
+                    value -> applicationEventPublisher.publishEvent(new PanoMatrixChangedEvent(value)));
         }
         return panoMatrix;
     }
 
     public Optional<List<Command>> createCommands(PanoMatrix panoMatrix, String shotsName) {
-        List<Shot> shots = getShots().get(shotsName);
+        List<ShotSettings> shots = getShots().get(shotsName);
         if (shots == null || shots.isEmpty()) {
             return Optional.empty();
         }
@@ -154,39 +156,40 @@ public class PanoService {
     }
 
     public void publishPictureFOVChange() {
-        settingsService.getSettings().getPictureFov().setAll(pictureFOV);
-        settingsService.setDirty();
-        applicationEventPublisher.publishEvent(new PictureFOVChangedEvent(pictureFOV));
+        if (cameraFov.isComplete()) {
+            settingsService.getSettingsStore().getSettings().getPictureFov().write(cameraFov);
+            settingsService.getSettingsStore().saveDelayed();
+        }
+        applicationEventPublisher.publishEvent(new PictureFOVChangedEvent(cameraFov));
     }
 
     public void publishPanoFOVChange() {
-        settingsService.getSettings().getPanoFov().setAll(panoFOV);
-        settingsService.setDirty();
-        applicationEventPublisher.publishEvent(new PanoFOVChangedEvent(panoFOV));
+        settingsService.getSettingsStore().getSettings().getPanoFov().write(panoFov);
+        settingsService.getSettingsStore().saveDelayed();
+        applicationEventPublisher.publishEvent(new PanoFOVChangedEvent(panoFov));
     }
 
     public void publishShotsChange() {
-        settingsService.getSettings().getShots().setAll(shots);
-        settingsService.setDirty();
+        settingsService.getSettingsStore().getSettings().getShots().write(shots);
+        settingsService.getSettingsStore().saveDelayed();
         applicationEventPublisher.publishEvent(new ShotsChangedEvent(shots));
     }
 
     public void publishDelayChange() {
-        settingsService.getSettings().getDelay().setAll(delay);
-        settingsService.setDirty();
+        settingsService.getSettingsStore().getSettings().getDelay().write(delay);
+        settingsService.getSettingsStore().saveDelayed();
         applicationEventPublisher.publishEvent(new DelaySettingsChangedEvent(delay));
     }
 
     public void publishPatternChange() {
-        settingsService.getSettings().getPano().setPattern(pattern);
-        settingsService.setDirty();
+        settingsService.getSettingsStore().getSettings().getPano().setPattern(pattern);
+        settingsService.getSettingsStore().saveDelayed();
         applicationEventPublisher.publishEvent(new PatternChangedEvent(pattern));
     }
 
     public void publishPicturePresetsChange() {
-        settingsService.getSettings().getPicturePresets().setAll(picturePresets);
-        settingsService.setDirty();
-        applicationEventPublisher.publishEvent(new PictureFovNamesChangedEvent(picturePresets.keySet().toArray(new String[0])));
+        settingsService.getPictureFovPresetsStore().getSettings().write(picturePresets);
+        settingsService.getPictureFovPresetsStore().saveDelayed();
+        applicationEventPublisher.publishEvent(new PictureFovNamesChangedEvent(picturePresets.getNames()));
     }
-
 }

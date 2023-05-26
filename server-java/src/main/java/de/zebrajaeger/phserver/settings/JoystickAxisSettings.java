@@ -1,25 +1,25 @@
 package de.zebrajaeger.phserver.settings;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.zebrajaeger.phserver.data.JoystickAxis;
 import lombok.Data;
 
 @Data
-public class JoystickAxisSettings {
+public class JoystickAxisSettings implements SettingsValue<JoystickAxisSettings> {
 
-  private float rawMin = Float.MAX_VALUE;
-  private float rawCenter = 0f;
-  private float rawMax = -Float.MAX_VALUE;
+    private float rawMin = Float.MAX_VALUE;
+    private float rawCenter = 0f;
+    private float rawMax = -Float.MAX_VALUE;
 
-  @JsonIgnore
-  public void setAll(JoystickAxis axis) {
-    rawMin = axis.getAutoRange().getRawMin();
-    rawCenter = axis.getAutoRange().getRawCenter();
-    rawMax = axis.getAutoRange().getRawMax();
-  }
+    @Override
+    public void read(JoystickAxisSettings value) {
+        value.setRawMin(rawMin);
+        value.setRawCenter(rawCenter);
+        value.setRawMax(rawMax);
+    }
 
-  @JsonIgnore
-  public void getAll(JoystickAxis axis) {
-    axis.getAutoRange().setAll(rawMin, rawCenter, rawMax);
-  }
+    @Override
+    public void write(JoystickAxisSettings value) {
+        rawMin = value.getRawMin();
+        rawCenter = value.getRawCenter();
+        rawMax = value.getRawMax();
+    }
 }

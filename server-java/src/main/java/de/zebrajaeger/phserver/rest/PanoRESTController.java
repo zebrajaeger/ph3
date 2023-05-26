@@ -1,8 +1,8 @@
 package de.zebrajaeger.phserver.rest;
 
 import de.zebrajaeger.phserver.data.Border;
-import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.service.PanoService;
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,8 +21,8 @@ public class PanoRESTController {
   }
 
   @GetMapping("/camera/fov")
-  public FieldOfView cameraFov() {
-    return panoService.getPictureFOV();
+  public PanoFovSettings cameraFov() {
+    return panoService.getCameraFov();
   }
 
   @PutMapping("/camera/border")
@@ -32,8 +32,8 @@ public class PanoRESTController {
   }
 
   @GetMapping("/pano/fov")
-  public FieldOfView panoFov() {
-    return panoService.getPanoFOV();
+  public PanoFovSettings panoFov() {
+    return panoService.getPanoFov();
   }
 
   @PutMapping("/pano/border")

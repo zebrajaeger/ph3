@@ -2,10 +2,9 @@ package de.zebrajaeger.phserver.rest;
 
 import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.service.RobotService;
-import de.zebrajaeger.phserver.data.Border;
-import de.zebrajaeger.phserver.data.Delay;
-import de.zebrajaeger.phserver.data.FieldOfView;
 import de.zebrajaeger.phserver.data.RobotState;
+import de.zebrajaeger.phserver.settings.DelaySettings;
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,20 +25,15 @@ public class RecordRESTController {
 
     // camera
     @GetMapping("/robot/camera")
-    public FieldOfView getCamera() {
-        return panoService.getPictureFOV();
+    public PanoFovSettings getCamera() {
+        return panoService.getCameraFov();
     }
 
     @PutMapping("/robot/camera")
-    public void setCamera(FieldOfView cameraFov) {
-        FieldOfView cameraFOV = panoService.getPictureFOV();
-        cameraFOV.setHorizontal(cameraFov.getHorizontal());
-        cameraFOV.setVertical(cameraFov.getVertical());
-    }
-
-    @PutMapping("/robot/camera/border")
-    public void setCamera(Border border, double value) {
-        FieldOfView cameraFOV = panoService.getPictureFOV();
+    public void setCamera(PanoFovSettings cameraFov) {
+        PanoFovSettings cameraFOV = panoService.getCameraFov();
+        cameraFOV.setX(cameraFov.getX());
+        cameraFOV.setY(cameraFov.getY());
     }
 
     // control
@@ -88,12 +82,12 @@ public class RecordRESTController {
 
     // delay
     @GetMapping("/robot/delay")
-    public Delay getDelay() {
+    public DelaySettings getDelay() {
         return panoService.getDelay();
     }
 
     @PutMapping("/robot/delay/")
-    public void setDelay(Delay delay) {
+    public void setDelay(DelaySettings delay) {
         panoService.setDelay(delay);
     }
 

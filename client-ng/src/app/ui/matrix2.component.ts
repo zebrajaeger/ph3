@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {FieldOfView, FieldOfViewPartial, PanoMatrix} from "../../data/pano";
+import {CameraOfView, PanoFieldOfView, PanoMatrix} from "../../data/pano";
 import {PanoService} from "../service/pano.service";
 import {Subscription} from "rxjs";
 import {AutomateState, RobotState} from "../../data/record";
@@ -29,10 +29,10 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('matrix2', {static: true})
   canvas!: ElementRef<HTMLCanvasElement>;
 
-  public pictureFov_!: FieldOfView;
+  public pictureFov_!: CameraOfView;
   private pictureFovSubscription!: Subscription;
 
-  public panoFov_!: FieldOfViewPartial;
+  public panoFov_!: PanoFieldOfView;
   private panoFovSubscription!: Subscription;
 
   public panoMatrix_!: PanoMatrix;
@@ -70,12 +70,12 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     this.draw();
   }
 
-  set pictureFov(fov: FieldOfView) {
+  set pictureFov(fov: CameraOfView) {
     this.pictureFov_ = fov;
     this.draw();
   }
 
-  set panoFov(fov: FieldOfViewPartial) {
+  set panoFov(fov: PanoFieldOfView) {
     this.panoFov_ = fov;
     this.draw();
   }
@@ -146,9 +146,9 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     if (this.panoMatrix_) {
       let px;
       let py;
-      if (this.pictureFov_ && this.pictureFov_.horizontal && this.pictureFov_.vertical) {
-        let ax = Math.abs(this.pictureFov_.horizontal.to - this.pictureFov_.horizontal.from);
-        let ay = Math.abs(this.pictureFov_.vertical.to - this.pictureFov_.vertical.from);
+      if (this.pictureFov_ && this.pictureFov_.x && this.pictureFov_.y) {
+        let ax = Math.abs(this.pictureFov_.x.to - this.pictureFov_.x.from);
+        let ay = Math.abs(this.pictureFov_.y.to - this.pictureFov_.y.from);
         px = this.normalizeAndConvertX(ax);
         py = ay * this.height / 180;
       } else {
@@ -206,26 +206,26 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private drawPanoFov(ctx: CanvasRenderingContext2D) {
-    if (this.panoFov_ && this.panoFov_.horizontal && this.panoFov_.vertical) {
+    if (this.panoFov_ && this.panoFov_.x && this.panoFov_.y) {
 
       ctx.fillStyle = 'black';
       if (!this.panoFov_.fullX && !this.panoFov_.fullY) {
         // rect
-        const x1 = this.normalizeAndConvertX(this.panoFov_.horizontal.from);
-        const x2 = this.normalizeAndConvertX(this.panoFov_.horizontal.to);
-        const y1 = this.normalizeAndConvertY(this.panoFov_.vertical.from);
-        const y2 = this.normalizeAndConvertY(this.panoFov_.vertical.to);
+        const x1 = this.normalizeAndConvertX(this.panoFov_.x.from);
+        const x2 = this.normalizeAndConvertX(this.panoFov_.x.to);
+        const y1 = this.normalizeAndConvertY(this.panoFov_.y.from);
+        const y2 = this.normalizeAndConvertY(this.panoFov_.y.to);
         ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
 
       } else if (this.panoFov_.fullX && !this.panoFov_.fullY) {
         // h-lines
-        const y1 = this.normalizeAndConvertY(this.panoFov_.vertical.from);
-        const y2 = this.normalizeAndConvertY(this.panoFov_.vertical.to);
+        const y1 = this.normalizeAndConvertY(this.panoFov_.y.from);
+        const y2 = this.normalizeAndConvertY(this.panoFov_.y.to);
         ctx.strokeRect(-1, y1, this.width + 2, y2 - y1);
 
       } else if (!this.panoFov_.fullX && this.panoFov_.fullY) {
-        const x1 = this.normalizeAndConvertX(this.panoFov_.horizontal.from);
-        const x2 = this.normalizeAndConvertX(this.panoFov_.horizontal.to);
+        const x1 = this.normalizeAndConvertX(this.panoFov_.x.from);
+        const x2 = this.normalizeAndConvertX(this.panoFov_.x.to);
         // v-lines
         ctx.strokeRect(x1, -1, x2 - x1, this.height + 2);
       }

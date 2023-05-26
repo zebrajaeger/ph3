@@ -1,24 +1,41 @@
 package de.zebrajaeger.phserver.settings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.zebrajaeger.phserver.data.Range;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class RangeSettings {
+@AllArgsConstructor
+@NoArgsConstructor
+public class RangeSettings implements SettingsValue<RangeSettings> {
 
-  private Double from;
-  private Double to;
+    private Double from;
+    private Double to;
 
-  @JsonIgnore
-  public void getAll(Range range) {
-    range.setFrom(from);
-    range.setTo(to);
-  }
+    @Override
+    public void read(RangeSettings value) {
+        value.setFrom(from);
+        value.setTo(to);
+    }
 
-  @JsonIgnore
-  public void setAll(Range range) {
-    this.from = range.getFrom();
-    this.to = range.getTo();
-  }
+    @Override
+    public void write(RangeSettings value) {
+        from = value.getFrom();
+        to = value.getTo();
+    }
+
+    @JsonIgnore
+    public boolean isComplete() {
+        return from != null && to != null;
+    }
+
+    public RangeSettings normalize() {
+        return (isComplete() && from > to) ? new RangeSettings(to, from) : new RangeSettings(from, to);
+    }
+
+    @JsonIgnore
+    public Double getSize() {
+        return isComplete() ? to - from : null;
+    }
 }

@@ -1,12 +1,12 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.data.Delay;
 import de.zebrajaeger.phserver.data.PanoMatrix;
 import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.service.RobotService;
+import de.zebrajaeger.phserver.settings.DelaySettings;
 import de.zebrajaeger.phserver.util.StompUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +77,7 @@ public class RecordSTOMPController {
 
     //<editor-fold desc="Delay">
     @MessageMapping("/record/delay/")
-    public void setDelay(Delay delay) {
+    public void setDelay(DelaySettings delay) {
         panoService.setDelay(delay);
         panoService.publishDelayChange();
     }

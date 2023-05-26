@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {firstValueFrom, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Border, Delay, FieldOfView, FieldOfViewPartial, PanoMatrix, Pattern} from '../../data/pano';
+import {Border, CameraOfView, Delay, PanoFieldOfView, PanoMatrix, Pattern} from '../../data/pano';
 import {Shots} from '../../data/camera';
 import {RxStompService} from "./rx-stomp.service";
 import {RxStompRPCService} from "./rx-stomp-rpc.service";
@@ -47,17 +47,17 @@ export class PanoService {
     // </editor-fold>
 
     // <editor-fold desc="Picture FOV">
-    subscribePictureFov(cb: (fov: FieldOfView) => void): Subscription {
+    subscribePictureFov(cb: (fov: CameraOfView) => void): Subscription {
         return this.rxStompService
             .watch('/topic/picture/fov')
-            .pipe(map(msg => JSON.parse(msg.body) as FieldOfView))
+            .pipe(map(msg => new CameraOfView(JSON.parse(msg.body) as CameraOfView)))
             .subscribe(cb);
     }
 
-    requestPictureFov(cb: (fov: FieldOfView) => void): void {
+    requestPictureFov(cb: (fov: CameraOfView) => void): void {
         this.rxStompRPCService
             .rpc({destination: '/rpc/picture/fov'})
-            .pipe(map(msg => JSON.parse(msg.body) as FieldOfView))
+            .pipe(map(msg => new CameraOfView(JSON.parse(msg.body) as CameraOfView)))
             .subscribe(cb);
     }
 
@@ -98,17 +98,17 @@ export class PanoService {
     // </editor-fold>
 
     // <editor-fold desc="Pano FOV">
-    subscribePanoFov(cb: (fov: FieldOfViewPartial) => void): Subscription {
+    subscribePanoFov(cb: (fov: PanoFieldOfView) => void): Subscription {
         return this.rxStompService
             .watch('/topic/pano/fov')
-            .pipe(map(msg => JSON.parse(msg.body) as FieldOfViewPartial))
+            .pipe(map(msg => new PanoFieldOfView(JSON.parse(msg.body) as PanoFieldOfView)))
             .subscribe(cb);
     }
 
-    requestPanoFov(cb: (fov: FieldOfViewPartial) => void): void {
+    requestPanoFov(cb: (fov: PanoFieldOfView) => void): void {
         this.rxStompRPCService
             .rpc({destination: '/rpc/pano/fov'})
-            .pipe(map(msg => JSON.parse(msg.body) as FieldOfViewPartial))
+            .pipe(map(msg => new PanoFieldOfView(JSON.parse(msg.body) as PanoFieldOfView)))
             .subscribe(cb);
     }
 

@@ -1,11 +1,11 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {FieldOfViewPartial, Range} from "../../data/pano";
+import {PanoFieldOfView, Range} from "../../data/pano";
 
 @Pipe({
   name: 'fovPartialSize'
 })
 export class FovPartialSizePipe implements PipeTransform {
-  transform(fov: FieldOfViewPartial | undefined | null, ...args: unknown[]): unknown {
+  transform(fov: PanoFieldOfView | undefined | null, ...args: unknown[]): unknown {
     if (fov == null) {
       return '-, -';
     } else {
@@ -14,13 +14,13 @@ export class FovPartialSizePipe implements PipeTransform {
       if (fov.fullX) {
         x = '֍';
       } else {
-        x = `${FovPartialSizePipe.rangeToString(fov.horizontal)}`;
+        x = `${FovPartialSizePipe.rangeToString(fov.x)}`;
       }
       let y: string;
       if (fov.fullY) {
         y = '֍';
       } else {
-        y = `${FovPartialSizePipe.rangeToString(fov.vertical)}`;
+        y = `${FovPartialSizePipe.rangeToString(fov.y)}`;
       }
 
       return `${x}, ${y}`;

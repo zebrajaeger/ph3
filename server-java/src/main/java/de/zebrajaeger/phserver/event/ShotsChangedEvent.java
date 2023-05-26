@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.Shots;
+import de.zebrajaeger.phserver.settings.ShotsSettings;
 
-public record ShotsChangedEvent(Shots shots) {
+public record ShotsChangedEvent(ShotsSettings shots) {
 
 }

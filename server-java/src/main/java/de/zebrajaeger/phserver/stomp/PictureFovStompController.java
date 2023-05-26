@@ -1,12 +1,11 @@
 package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Border;
-import de.zebrajaeger.phserver.data.FieldOfView;
-import de.zebrajaeger.phserver.data.Range;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFovNamesChangedEvent;
 import de.zebrajaeger.phserver.service.PanoService;
-import de.zebrajaeger.phserver.settings.SimpleFovSettings;
+import de.zebrajaeger.phserver.settings.CameraFovSettings;
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -37,29 +36,27 @@ public class PictureFovStompController {
     @MessageMapping("/rpc/picture/fov")
     public void rpcPictureFov(@Header("correlation-id") String id,
                               @Header("reply-to") String destination) {
-        FieldOfView fov = new FieldOfView(panoService.getPictureFOV());
-        StompUtils.rpcSendResponse(template, id, destination, fov);
+        StompUtils.rpcSendResponse(template, id, destination, panoService.getCameraFov());
     }
 
     @MessageMapping("/picture/fov/load")
     public void pictureFovLoad(@Payload String name) {
-        final SimpleFovSettings simpleFovSettings = panoService.getPicturePresets().get(name);
-        if (simpleFovSettings != null) {
-            panoService.getPictureFOV().setHorizontal(new Range(0d, simpleFovSettings.getX()));
-            panoService.getPictureFOV().setVertical(new Range(0d, simpleFovSettings.getY()));
+        final CameraFovSettings cameraFovSettings = panoService.getPicturePresets().get(name);
+        if (cameraFovSettings != null) {
+            cameraFovSettings.read(panoService.getCameraFov());
             panoService.publishPictureFOVChange();
         }
     }
 
     @MessageMapping("/picture/fov/save")
     public void pictureFovSave(@Payload String name) {
-        FieldOfView fov = new FieldOfView(panoService.getPictureFOV());
-        if(fov.isComplete()) {
+        final PanoFovSettings fov = panoService.getCameraFov();
+        if (fov.isComplete()) {
             panoService.getPicturePresets().put(
                     name,
-                    new SimpleFovSettings(
-                            Math.abs(fov.getHorizontal().getSize()),
-                            Math.abs(fov.getVertical().getSize())));
+                    new CameraFovSettings(
+                            Math.abs(fov.getX().getSize()),
+                            Math.abs(fov.getY().getSize())));
             panoService.publishPicturePresetsChange();
         }
     }

@@ -1,10 +1,10 @@
 package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Camera;
-import de.zebrajaeger.phserver.data.Shot;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.service.PanoHeadService;
+import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -53,7 +53,7 @@ public class CameraSTOMPController {
     }
 
     @MessageMapping("camera/shot")
-    public void trigger(@Payload Shot shot) throws IOException {
+    public void trigger(@Payload ShotSettings shot) throws IOException {
         hardwareService.getPanoHead().startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
     }
 

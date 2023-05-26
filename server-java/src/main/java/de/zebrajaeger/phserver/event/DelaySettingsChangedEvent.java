@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.Delay;
+import de.zebrajaeger.phserver.settings.DelaySettings;
 
-public record DelaySettingsChangedEvent(Delay delay) {
+public record DelaySettingsChangedEvent(DelaySettings delay) {
 
 }

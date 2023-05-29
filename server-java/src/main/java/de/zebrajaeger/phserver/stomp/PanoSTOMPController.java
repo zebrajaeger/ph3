@@ -1,77 +1,34 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.data.Border;
 import de.zebrajaeger.phserver.data.PanoMatrix;
 import de.zebrajaeger.phserver.data.Pattern;
-import de.zebrajaeger.phserver.event.*;
+import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
+import de.zebrajaeger.phserver.event.PanoMatrixChangedEvent;
+import de.zebrajaeger.phserver.event.PatternChangedEvent;
 import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.settings.DelaySettings;
-import de.zebrajaeger.phserver.settings.PanoFovSettings;
-import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api")
+@Slf4j
 public class PanoSTOMPController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(PanoSTOMPController.class);
 
     private final PanoService panoService;
     private final SimpMessagingTemplate template;
 
-    @Autowired
     public PanoSTOMPController(PanoService panoService, SimpMessagingTemplate template) {
         this.panoService = panoService;
         this.template = template;
     }
-
-    //<editor-fold desc="Pano FOV">
-    @MessageMapping("/pano/border")
-    public void panoBorder(Border[] borders) {
-        panoService.setCurrentPositionAsPanoBorder(borders);
-        panoService.publishPanoFOVChange();
-        panoService.updatePanoMatrix();
-    }
-
-    @MessageMapping("/pano/fullX")
-    public void panoFullX(boolean isFull) {
-        panoService.getPanoFov().setFullX(isFull);
-        panoService.publishPanoFOVChange();
-        panoService.updatePanoMatrix();
-    }
-
-    @MessageMapping("/pano/fullY")
-    public void panoFullY(boolean isFull) {
-        panoService.getPanoFov().setFullY(isFull);
-        panoService.publishPanoFOVChange();
-        panoService.updatePanoMatrix();
-    }
-
-    @MessageMapping("/rpc/pano/fov")
-    public void rpcPanoFov(@Header("correlation-id") String id,
-                           @Header("reply-to") String destination) {
-        PanoFovSettings fov = panoService.getPanoFov();
-        StompUtils.rpcSendResponse(template, id, destination, fov);
-    }
-
-    @EventListener
-    public void onPanoFovChanged(PanoFOVChangedEvent panoFOVChangedEvent) {
-        template.convertAndSend("/topic/pano/fov", panoFOVChangedEvent.panoFOV());
-    }
-    //</editor-fold>
 
     //<editor-fold desc="Calculated Pano">
     @MessageMapping("/rpc/pano/matrix")
@@ -92,7 +49,7 @@ public class PanoSTOMPController {
 
     @EventListener
     public void onCalculatedEvent(PanoMatrixChangedEvent calculatedPanoChangedEvent) {
-        LOG.info("Calculated Pano: '{}'", calculatedPanoChangedEvent.panoMatrix());
+        log.info("Calculated Pano: '{}'", calculatedPanoChangedEvent.panoMatrix());
         template.convertAndSend("/topic/pano/matrix", calculatedPanoChangedEvent.panoMatrix());
     }
     //</editor-fold>
@@ -130,40 +87,6 @@ public class PanoSTOMPController {
     @EventListener
     public void onDelay(DelaySettingsChangedEvent delaySettingsChangedEvent) {
         template.convertAndSend("/topic/delay", delaySettingsChangedEvent.delay());
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="Shots">
-    @MessageMapping("/shot/{shotsName}/{index}/focusTimeMs")
-    public void setShotFocusTime(@DestinationVariable String shotsName,
-                                 @DestinationVariable int index, int focusTimeMs) {
-        ShotSettings shot = panoService.getShots().getShot(shotsName, index);
-        shot.setFocusTimeMs(focusTimeMs);
-        panoService.publishShotsChange();
-    }
-
-    @MessageMapping("/shot/{shotsName}/{index}/triggerTimeMs")
-    public void setShotTriggerTime(@DestinationVariable String shotsName,
-                                   @DestinationVariable int index, int triggerTimeMs) {
-        ShotSettings shot = panoService.getShots().getShot(shotsName, index);
-        shot.setTriggerTimeMs(triggerTimeMs);
-        panoService.publishShotsChange();
-    }
-
-    @MessageMapping("/shot/{shotsName}/add")
-    public void setShot(@DestinationVariable String shotsName, @Payload ShotSettings shot) {
-        panoService.getShots().add(shotsName, shot);
-        panoService.publishShotsChange();
-    }
-
-    @MessageMapping("/rpc/shot")
-    public void rpcShot(@Header("correlation-id") String id, @Header("reply-to") String destination) {
-        StompUtils.rpcSendResponse(template, id, destination, panoService.getShots());
-    }
-
-    @EventListener
-    public void onShots(ShotsChangedEvent shotsChangedEvent) {
-        template.convertAndSend("/topic/shot", shotsChangedEvent.shots());
     }
     //</editor-fold>
 

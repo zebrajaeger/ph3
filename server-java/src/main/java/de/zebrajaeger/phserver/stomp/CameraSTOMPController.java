@@ -6,7 +6,6 @@ import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -26,7 +25,6 @@ public class CameraSTOMPController {
 
     private Camera camera = new Camera();
 
-    @Autowired
     public CameraSTOMPController(PanoHeadService deviceService, HardwareService hardwareService,
                                  SimpMessagingTemplate template) {
         this.panoHeadService = deviceService;

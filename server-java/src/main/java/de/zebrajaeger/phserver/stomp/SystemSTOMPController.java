@@ -21,7 +21,6 @@ public class SystemSTOMPController {
     private final HardwareService hardwareService;
     private final CommonService commonService;
 
-
     public SystemSTOMPController(SimpMessagingTemplate template, HardwareService hardwareService, CommonService commonService) {
         this.template = template;
         this.hardwareService = hardwareService;

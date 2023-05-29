@@ -9,19 +9,16 @@ import de.zebrajaeger.phserver.service.RobotService;
 import de.zebrajaeger.phserver.settings.DelaySettings;
 import de.zebrajaeger.phserver.util.StompUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api")
 @Slf4j
 public class RecordSTOMPController {
 
@@ -30,7 +27,6 @@ public class RecordSTOMPController {
     private final RobotService robotService;
     private final SimpMessagingTemplate template;
 
-    @Autowired
     public RecordSTOMPController(PanoService panoService, PanoHeadService panoHeadService,
                                  RobotService robotService,
                                  SimpMessagingTemplate template) {

@@ -22,6 +22,8 @@ public class CameraFovSettings implements SettingsValue<CameraFovSettings> {
         value.getX().setTo(x);
         value.getY().setFrom(0d);
         value.getY().setTo(y);
+        value.setFullX(false);
+        value.setFullY(false);
     }
 
     @Override

@@ -61,8 +61,7 @@ public class PanoService {
     public void init() {
         final Settings settings = settingsService.getSettingsStore().getSettings();
 
-        CameraFovSettings temp = new CameraFovSettings();
-        settings.getPictureFov().read(temp);
+        settings.getPictureFov().read(cameraFov);
         publishPictureFOVChange();
 
         settings.getPanoFov().read(panoFov);

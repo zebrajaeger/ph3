@@ -14,7 +14,7 @@
 }
 
 .left-column {
-  width: 183px;
+  width: 153px;
   display: flex;
   flex-direction: column;
   margin-right: 0;
@@ -27,11 +27,16 @@
 
 .command {
   height: 65px;
+  width: 636px;
   margin-bottom: 0;
   font-size: 2rem;
   font-weight: bold;
 }
 
+.matrix{
+  width: 636px;
+  height: 328px;
+}
 .radio-box {
   border: 1px solid black;
   border-radius: 5px;

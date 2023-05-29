@@ -95,7 +95,7 @@ public abstract class PositionGenerator {
     }
 
     protected void setYPositions(CameraFovSettings camera, Pano pano, PanoMatrix result) {
-        double lImage = Math.abs(camera.getX());
+        double lImage = Math.abs(camera.getY());
 
         if (pano.getFov().isFullY()) {
             // Full y range

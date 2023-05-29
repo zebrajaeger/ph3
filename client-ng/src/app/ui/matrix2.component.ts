@@ -72,11 +72,13 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
 
   set pictureFov(fov: CameraOfView) {
     this.pictureFov_ = fov;
+    this.pictureFov_.normalizeDirection();
     this.draw();
   }
 
   set panoFov(fov: PanoFieldOfView) {
     this.panoFov_ = fov;
+    this.panoFov_.normalizeDirection();
     this.draw();
   }
 
@@ -86,16 +88,13 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   set robotState(value: RobotState) {
-    this.draw();
     this._robotState = value;
+    this.draw();
   }
 
   private normalizeAndConvertX(deg: number): number {
-    deg %= 360;
-    if (deg < 0) {
-      deg += 360;
-    }
-    return deg * this.width / 360;
+    const l = deg/360; //[1...-1]
+    return this.width/2 + this.width*l;
   }
 
   private normalizeAndConvertY(deg: number): number {
@@ -126,8 +125,8 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     const textH = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
     const textW = metrics.width;
 
-    ctx.fillStyle ='black'
-    ctx.fillText(`${i}`, x  - textW/2, y + textH/2);
+    ctx.fillStyle = 'black'
+    ctx.fillText(`${i}`, x - textW / 2, y + textH / 2);
   }
 
   private draw() {
@@ -139,23 +138,25 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     ctx.clearRect(0, 0, this.width, this.height);
     this.drawPanoFov(ctx);
     this.drawPictures(ctx);
+    this.drawZeroCross(ctx);
     ctx.beginPath();
   }
 
   private drawPictures(ctx: CanvasRenderingContext2D) {
     if (this.panoMatrix_) {
-      let px;
-      let py;
-      if (this.pictureFov_ && this.pictureFov_.x && this.pictureFov_.y) {
-        let ax = Math.abs(this.pictureFov_.x.to - this.pictureFov_.x.from);
-        let ay = Math.abs(this.pictureFov_.y.to - this.pictureFov_.y.from);
-        px = this.normalizeAndConvertX(ax);
-        py = ay * this.height / 180;
+      let camX;
+      let camY;
+      if (this.pictureFov_
+          && this.pictureFov_.x && this.pictureFov_.x.complete
+          && this.pictureFov_.y&& this.pictureFov_.y.complete) {
+        let ax = this.pictureFov_.x.size;
+        let ay = this.pictureFov_.y.size;
+        camX = <number>ax * this.width / 360;
+        camY = <number>ay * this.height / 180;
       } else {
-        px = 20;
-        py = 20;
+        camX = 20;
+        camY = 20;
       }
-
 
       let imgIndex = this._robotState?.command?.shotPosition?.index;
       if (imgIndex == null) {
@@ -171,14 +172,8 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         const y = this.normalizeAndConvertY(this.panoMatrix_.yPositions[yi]);
         const row = this.panoMatrix_.xPositions[yi];
         for (let xi = 0; xi < row.length; ++xi) {
-          let xx = row[xi];
-          while (xx < 0) {
-            xx += 360;
-          }
-          while (xx > 360) {
-            xx -= 360;
-          }
-          const x = this.normalizeAndConvertX(xx);
+          let xx = row[xi] % 360;
+          const x = this.normalizeAndConvertX(xx) % this.width;
 
           let fill;
           if (isShooting && imgIndex == i) {
@@ -193,10 +188,10 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
           }
 
 
-          this.drawEllipse(ctx, x, y, px, py, fill, i)
+          this.drawEllipse(ctx, x, y, camX, camY, fill, i)
 
-          if (x - (px / 2) < 0) {
-            this.drawEllipse(ctx, x + this.width, y, px, py, fill, i)
+          if (x - (camX / 2) < 0) {
+            this.drawEllipse(ctx, x + this.width, y, camX, camY, fill, i)
           }
 
           ++i;
@@ -208,14 +203,26 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
   private drawPanoFov(ctx: CanvasRenderingContext2D) {
     if (this.panoFov_ && this.panoFov_.x && this.panoFov_.y) {
 
-      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.strokeStyle = 'black';
       if (!this.panoFov_.fullX && !this.panoFov_.fullY) {
         // rect
-        const x1 = this.normalizeAndConvertX(this.panoFov_.x.from);
-        const x2 = this.normalizeAndConvertX(this.panoFov_.x.to);
-        const y1 = this.normalizeAndConvertY(this.panoFov_.y.from);
-        const y2 = this.normalizeAndConvertY(this.panoFov_.y.to);
-        ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+        let x1 = this.normalizeAndConvertX(this.panoFov_.x.from);
+        let x2 = this.normalizeAndConvertX(this.panoFov_.x.to);
+        let y1 = this.normalizeAndConvertY(this.panoFov_.y.from);
+        let y2 = this.normalizeAndConvertY(this.panoFov_.y.to);
+        //console.log('A1',{x1:this.panoFov_.x.from,x2:this.panoFov_.x.to}, {x1,x2})
+        // TODO same with Y
+        if(x1<0){
+          x1 += this.width
+          ctx.strokeRect(x1, y1, this.width, y2 - y1);
+          ctx.strokeRect(x2, y1, -this.width, y2 - y1);
+        }
+        if(x2>this.width){
+          x2 -= this.width
+          ctx.strokeRect(x1, y1, this.width, y2 - y1);
+          ctx.strokeRect(x2, y1, -this.width, y2 - y1);
+        }
 
       } else if (this.panoFov_.fullX && !this.panoFov_.fullY) {
         // h-lines
@@ -224,11 +231,37 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         ctx.strokeRect(-1, y1, this.width + 2, y2 - y1);
 
       } else if (!this.panoFov_.fullX && this.panoFov_.fullY) {
-        const x1 = this.normalizeAndConvertX(this.panoFov_.x.from);
-        const x2 = this.normalizeAndConvertX(this.panoFov_.x.to);
+        let x1 = this.normalizeAndConvertX(this.panoFov_.x.from);
+        let x2 = this.normalizeAndConvertX(this.panoFov_.x.to);
+        console.log('C1',{x1:this.panoFov_.x.from,x2:this.panoFov_.x.to}, {x1,x2})
+        if(x1<0){
+          x1 += this.width
+        console.log('C2',{x1:this.panoFov_.x.from,x2:this.panoFov_.x.to}, {x1,x2})
+          ctx.strokeRect(x1, -1, this.width, this.height + 2);
+          ctx.strokeRect(x2, -1, -this.width, this.height + 2);
+        }
+        if(x2>this.width){
+          x2 -= this.width
+        console.log('C3',{x1:this.panoFov_.x.from,x2:this.panoFov_.x.to}, {x1,x2})
+          ctx.strokeRect(x1, -1, this.width, this.height + 2);
+          ctx.strokeRect(x2, -1, -this.width, this.height + 2);
+        }
+
         // v-lines
         ctx.strokeRect(x1, -1, x2 - x1, this.height + 2);
+      }else{
+        // ignore, we don't need to draw a rectangle
       }
     }
+  }
+
+  private drawZeroCross(ctx: CanvasRenderingContext2D) {
+    ctx.beginPath();
+    ctx.strokeStyle = 'red';
+    ctx.moveTo(0, this.height / 2); // Move the pen to (30, 50)
+    ctx.lineTo(this.width, this.height / 2); // Draw a line to (150, 100)
+    ctx.moveTo(this.width / 2, 0); // Move the pen to (30, 50)
+    ctx.lineTo(this.width / 2, this.height); // Draw a line to (150, 100)
+    ctx.stroke();
   }
 }

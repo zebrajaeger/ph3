@@ -13,6 +13,14 @@ export class Range {
     public get complete() {
         return this.from != undefined && this.to != undefined;
     }
+
+    public normalizeDirection() {
+        if (this.complete && this.from > this.to) {
+            const temp = this.from;
+            this.from = this.to;
+            this.to = temp;
+        }
+    }
 }
 
 export class CameraOfView {
@@ -22,6 +30,11 @@ export class CameraOfView {
     constructor(jsonObject: CameraOfView) {
         this.x = new Range(jsonObject.x);
         this.y = new Range(jsonObject.y);
+    }
+
+    public normalizeDirection() {
+        this.x.normalizeDirection();
+        this.y.normalizeDirection();
     }
 }
 
@@ -36,6 +49,11 @@ export class PanoFieldOfView {
         this.y = new Range(jsonObject.y);
         this.fullX = jsonObject.fullX;
         this.fullY = jsonObject.fullY;
+    }
+
+    normalizeDirection() {
+        this.x.normalizeDirection();
+        this.y.normalizeDirection();
     }
 }
 

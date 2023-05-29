@@ -1,14 +1,16 @@
 package de.zebrajaeger.phserver.service;
 
-import de.zebrajaeger.phserver.data.*;
+import de.zebrajaeger.phserver.data.AutomateState;
+import de.zebrajaeger.phserver.data.PauseState;
+import de.zebrajaeger.phserver.data.Position;
+import de.zebrajaeger.phserver.data.RobotState;
 import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.pano.*;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -23,9 +25,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Getter
+@Slf4j
 public class RobotService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(RobotService.class);
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final PanoHeadService panoHeadService;
@@ -178,19 +179,19 @@ public class RobotService {
     }
 
     @EventListener
-    public void onMovementStopped(@SuppressWarnings("unused") MovementStoppedEvent event) {
-        LOG.debug("onMovementStopped()");
+    public void onMovementStopped(MovementStoppedEvent ignoredEvent) {
+        log.debug("onMovementStopped()");
         next();
     }
 
     @EventListener
-    public void onShotDone(@SuppressWarnings("unused") ShotDoneEvent event) {
-        LOG.debug("onShotDone()");
+    public void onShotDone(ShotDoneEvent ignoredEvent) {
+        log.debug("onShotDone()");
         next();
     }
 
     private void onTimer() {
-        LOG.debug("onTimer()");
+        log.debug("onTimer()");
         next();
     }
 
@@ -232,32 +233,32 @@ public class RobotService {
     }
 
     private RobotService setAutomateState(AutomateState automateState) {
-        LOG.debug("Set state to '{}'", automateState);
+        log.debug("Set state to '{}'", automateState);
         this.robotState.setAutomateState(automateState);
         return this;
     }
 
     private RobotService setPauseState(PauseState state) {
-        LOG.debug("Set pause-state to '{}'", state);
+        log.debug("Set pause-state to '{}'", state);
         this.robotState.setPauseState(state);
         return this;
     }
 
     private RobotService setCommand(Command command, int commandIndex) {
-        LOG.debug("Set command #{} to '{}'", commandIndex, command);
+        log.debug("Set command #{} to '{}'", commandIndex, command);
         this.robotState.setCommand(command, commandIndex);
         return this;
     }
 
     private void sendUpdate() {
         RobotStateEvent event = new RobotStateEvent(this.robotState, null);
-        LOG.debug("State changed to '{}'", event);
+        log.debug("State changed to '{}'", event);
         applicationEventPublisher.publishEvent(event);
     }
 
     private void sendUpdate(Exception error) {
         RobotStateEvent event = new RobotStateEvent(this.robotState, error);
-        LOG.debug("State changed to '{}'", event);
+        log.debug("State changed to '{}'", event);
         applicationEventPublisher.publishEvent(event);
     }
 }

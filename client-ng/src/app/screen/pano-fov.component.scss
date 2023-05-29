@@ -83,7 +83,13 @@
 
   .button {
     height: 60px;
-    width: 170px;
+  }
+
+  .checked {
+    color: green;
+  }
+  .unchecked {
+    color: red;
   }
 }
 
@@ -103,7 +109,7 @@
   padding-top: 27px;
 
   .button {
-    width: 180px
+    width: 200px
   }
 }
 

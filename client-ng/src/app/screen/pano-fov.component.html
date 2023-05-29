@@ -36,9 +36,15 @@
   </div>
 
   <div bottom-left class="set-partial full-xy center-content">
-    <button class="button" (click)="onFullX()"><span *ngIf="fov?.fullX">✓</span> FullX ⇔
+    <button class="button" (click)="onFullX()">
+      <span class="checked" *ngIf="fov?.fullX">✅</span>
+      <span class="unchecked" *ngIf="!fov?.fullX">❌</span>
+      FullX ⇔
     </button>
-    <button class="button" (click)="onFullY()"><span *ngIf="fov?.fullY">✓</span> FullY ⇕
+    <button class="button" (click)="onFullY()">
+      <span class="checked" *ngIf="fov?.fullY">✅</span>
+      <span class="unchecked" *ngIf="!fov?.fullY">❌</span>
+      FullY ⇕
     </button>
   </div>
 

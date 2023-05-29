@@ -12,11 +12,13 @@ import {DownloadComponent} from "./screen/download.component";
 import {SavePictureFovPresetComponent} from "./screen/picture-fov/save-picture-fov-preset.component";
 import {LoadPictureFovPresetComponent} from "./screen/picture-fov/load-picture-fov-preset.component";
 import {EditPictureFovPresetComponent} from "./screen/picture-fov/edit-picture-fov-preset.component";
+import {CalcFovComponent} from "./screen/calc-fov.component";
 
 const routes: Routes = [
     {path: 'align', component: AlignComponent},
     {path: 'joystick', component: JoystickComponent},
     {path: 'camera', component: CameraComponent},
+    {path: 'calc-fov', component: CalcFovComponent},
     {path: 'picture-fov', component: PictureFovComponent},
     {path: 'picture-fov/save', component: SavePictureFovPresetComponent},
     {path: 'picture-fov/load', component: LoadPictureFovPresetComponent},

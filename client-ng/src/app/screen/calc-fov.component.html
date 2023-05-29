@@ -1,0 +1,54 @@
+<div class="form">
+    <div class="label left-center-content">X:</div>
+    <div class="value editable center-content" (click)="onEdit('x')">{{xSize}}</div>
+    <div class="unit center-content">mm</div>
+
+    <div class="label left-center-content">Y:</div>
+    <div class="value editable center-content" (click)="onEdit('y')">{{ySize}}</div>
+    <div class="unit center-content">mm</div>
+
+    <div class="label left-center-content">Focal distance:</div>
+    <div class="value editable center-content" (click)="onEdit('f')">{{focalDistance}}</div>
+    <div class="unit center-content">mm</div>
+
+    <div class="label left-center-content">D:</div>
+    <div class="editable center-content">{{dSize |toFixed}}</div>
+    <div class="unit center-content">mm</div>
+
+    <div class="label left-center-content">FOV X:</div>
+    <div class=" center-content">{{xFov | toFixed}}</div>
+    <div class="unit center-content">°</div>
+
+    <div class="label left-center-content">FOV Y:</div>
+    <div class=" center-content">{{yFov| toFixed}}</div>
+    <div class="unit center-content">°</div>
+
+    <div class="label left-center-content">FOV D:</div>
+    <div class=" center-content">{{dFov| toFixed}}</div>
+    <div class="unit center-content">°</div>
+</div>
+
+<div class="form2">
+    <div class="label left-center-content">Overlap:</div>
+    <div class="value editable center-content" (click)="onEdit('o')">{{overlap}}</div>
+
+    <div></div>
+    <div></div>
+
+    <div></div>
+    <div></div>
+
+    <div></div>
+    <div></div>
+
+    <div class="label left-center-content">n X:</div>
+    <div class="center-content">{{nX |toFixed}}</div>
+
+    <div class="label left-center-content">n Y:</div>
+    <div class="center-content">{{nY |toFixed}}</div>
+</div>
+
+<app-modal class="modal-num-pad" id="calc" (close)="onEditorClose()">
+    <app-number-pad [(value)]="temp">
+    </app-number-pad>
+</app-modal>

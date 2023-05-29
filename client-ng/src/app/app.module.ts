@@ -40,6 +40,8 @@ import {SavePictureFovPresetComponent} from './screen/picture-fov/save-picture-f
 import {BackButtonDirective} from './directive/back-button.directive';
 import {LoadPictureFovPresetComponent} from './screen/picture-fov/load-picture-fov-preset.component';
 import {EditPictureFovPresetComponent} from './screen/picture-fov/edit-picture-fov-preset.component';
+import { CalcFovComponent } from './screen/calc-fov.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -72,12 +74,14 @@ import {EditPictureFovPresetComponent} from './screen/picture-fov/edit-picture-f
         SavePictureFovPresetComponent,
         BackButtonDirective,
         LoadPictureFovPresetComponent,
-        EditPictureFovPresetComponent
+        EditPictureFovPresetComponent,
+        CalcFovComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        NgxJoystickModule
+        NgxJoystickModule,
+        FormsModule
     ],
     providers: [
         CameraService,

@@ -20,6 +20,7 @@ export class CalcFovComponent {
     public dFov = 0;
     public nX = 0;
     public nY = 0;
+    public nSum = 0;
 
     public id: string = '';
     public temp: number = 0;
@@ -43,6 +44,7 @@ export class CalcFovComponent {
         this.yFov = 180 / Math.PI * 2 * Math.atan(this.ySize / (2 * this.focalDistance));
         this.nY = 360 / (this.yFov * (1 - this.overlap));
         this.dFov = 180 / Math.PI * 2 * Math.atan(this.dSize / (2 * this.focalDistance));
+        this.nSum = Math.ceil(this.nX) * Math.ceil(this.nY);
     }
 
     onEdit(id: string) {

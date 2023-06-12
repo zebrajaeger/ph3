@@ -1,0 +1,56 @@
+:host {
+  display:grid;
+  grid-template-columns: 50px 30px 80px 30px 80px 10px 50px 50px;
+  grid-template-rows:  50px;
+}
+
+.delete {
+  grid-column-start: 1;
+}
+.up {
+  grid-column-start: 7;
+}
+.down {
+  grid-column-start: 8;
+}
+
+.label {
+  margin-right: 5px;
+  margin-top:10px;
+  font-weight: bold;
+  &.f{
+    margin-left: 15px;
+    grid-column-start: 2;
+  }
+  &.t{
+    margin-left: 15px;
+    grid-column-start: 4;
+  }
+}
+
+.input {
+  height: 40px;
+  text-align: end;
+  font-weight: bold;
+  font-size: 1.2rem;
+  &.f {
+    grid-column-start: 3;
+  }
+  &.t {
+    grid-column-start: 5;
+  }
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    column-gap: 10px;
+    .button {
+      width: 150px;
+    }
+  }
+}

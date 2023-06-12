@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {firstValueFrom, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Border, CameraOfView, Delay, PanoFieldOfView, PanoMatrix, Pattern} from '../../data/pano';
-import {Shots} from '../../data/camera';
 import {RxStompService} from "./rx-stomp.service";
 import {RxStompRPCService} from "./rx-stomp-rpc.service";
 
@@ -10,7 +9,6 @@ import {RxStompRPCService} from "./rx-stomp-rpc.service";
     providedIn: 'root'
 })
 export class PanoService {
-
     constructor(private rxStompService: RxStompService, private rxStompRPCService: RxStompRPCService) {
     }
 
@@ -123,38 +121,6 @@ export class PanoService {
 
     setPanoFullY(partial: boolean): void {
         this.rxStompService.publish({destination: '/pano/fullY', body: partial.toString()});
-    }
-
-    // </editor-fold>
-
-    // <editor-fold desc="Shot">
-    subscribeShots(cb: (shots: Shots) => void): Subscription {
-        return this.rxStompService
-            .watch('/topic/shot')
-            .pipe(map(msg => new Map(Object.entries(JSON.parse(msg.body))) as Shots))
-            .subscribe(cb);
-    }
-
-    requestShots(cb: (shots: Shots) => void): Subscription {
-        return this.rxStompRPCService
-            .rpc({destination: '/rpc/shot'})
-            .pipe(map(msg => new Map(Object.entries(JSON.parse(msg.body))) as Shots))
-            .subscribe(cb);
-    }
-
-    setShotFocusTimeMs(shotsName: string, shotIndex: number, focusTimeMs: number): void {
-        const destination = `/shot/${shotsName}/${shotIndex}/focusTimeMs`;
-        this.rxStompService.publish({destination, body: focusTimeMs.toString()});
-    }
-
-    setShotTriggerTimeMs(shotsName: string, shotIndex: number, triggerTimeMs: number): void {
-        const destination = `/shot/${shotsName}/${shotIndex}/triggerTimeMs`;
-        this.rxStompService.publish({destination, body: triggerTimeMs.toString()});
-    }
-
-    setShot(shotId: string, focusTimeMs: number, triggerTimeMs: number): void {
-        const body = JSON.stringify({focusTimeMs, triggerTimeMs});
-        this.rxStompService.publish({destination: `/shot/${shotId}/triggerTimeMs`, body});
     }
 
     // </editor-fold>

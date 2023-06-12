@@ -6,7 +6,6 @@ import de.zebrajaeger.phserver.event.DelaySettingsChangedEvent;
 import de.zebrajaeger.phserver.event.PanoMatrixChangedEvent;
 import de.zebrajaeger.phserver.event.PatternChangedEvent;
 import de.zebrajaeger.phserver.service.PanoService;
-import de.zebrajaeger.phserver.settings.DelaySettings;
 import de.zebrajaeger.phserver.util.StompUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -53,36 +52,6 @@ public class PanoSTOMPController {
         template.convertAndSend("/topic/pano/matrix", calculatedPanoChangedEvent.panoMatrix());
     }
     //</editor-fold>
-
-    //<editor-fold desc="Delay">
-    @MessageMapping("/delay/waitAfterMoveMs")
-    public void setDelayWaitAfterMoveMs(int waitAfterMoveMs) {
-        panoService.getDelay().setWaitAfterMove(waitAfterMoveMs);
-        panoService.publishDelayChange();
-    }
-
-    @MessageMapping("/delay/waitBetweenShotsMs")
-    public void setDelayWaitBetweenShotsMs(int waitBetweenShotsMs) {
-        panoService.getDelay().setWaitBetweenShots(waitBetweenShotsMs);
-        panoService.publishDelayChange();
-    }
-
-    @MessageMapping("/delay/waitAfterShotMs")
-    public void setDelayWaitAfterShotMs(int waitAfterShotMs) {
-        panoService.getDelay().setWaitAfterShot(waitAfterShotMs);
-        panoService.publishDelayChange();
-    }
-
-    @MessageMapping("/delay")
-    public void setDelay(DelaySettings delay) {
-        panoService.setDelay(delay);
-        panoService.publishDelayChange();
-    }
-
-    @MessageMapping("/rpc/delay")
-    public void rpcDelay(@Header("correlation-id") String id, @Header("reply-to") String destination) {
-        StompUtils.rpcSendResponse(template, id, destination, panoService.getDelay());
-    }
 
     @EventListener
     public void onDelay(DelaySettingsChangedEvent delaySettingsChangedEvent) {

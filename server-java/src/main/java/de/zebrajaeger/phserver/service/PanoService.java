@@ -7,13 +7,15 @@ import de.zebrajaeger.phserver.pano.PanoGenerator;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSparseSquare;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSquare;
 import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
-import de.zebrajaeger.phserver.settings.*;
+import de.zebrajaeger.phserver.settings.CameraFovSettings;
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
+import de.zebrajaeger.phserver.settings.PicturePresetsSettings;
+import de.zebrajaeger.phserver.settings.Settings;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -36,25 +38,28 @@ public class PanoService {
     private final PanoHeadService panoHeadService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final SettingsService settingsService;
+    private final ShotService shotService;
+    private final DelayService delayService;
 
     private final PanoFovSettings cameraFov = new PanoFovSettings();
     private final PanoFovSettings panoFov = new PanoFovSettings();
     private double minimumOverlapH = 0.25;
     private double minimumOverlapV = 0.25;
-    private ShotsSettings shots = new ShotsSettings();
     private Pattern pattern;
-    private DelaySettings delay = new DelaySettings();
     private Optional<PanoMatrix> panoMatrix = Optional.empty();
     private PanoGenerator panoGenerator = new PanoGenerator(5d);
     private PicturePresetsSettings picturePresets = new PicturePresetsSettings();
 
-    @Autowired
     public PanoService(PanoHeadService panoHeadService,
                        ApplicationEventPublisher applicationEventPublisher,
-                       SettingsService settingsService) {
+                       SettingsService settingsService,
+                       ShotService shotService,
+                       DelayService delayService) {
         this.panoHeadService = panoHeadService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.settingsService = settingsService;
+        this.shotService = shotService;
+        this.delayService = delayService;
     }
 
     @PostConstruct
@@ -66,12 +71,6 @@ public class PanoService {
 
         settings.getPanoFov().read(panoFov);
         publishPanoFOVChange();
-
-        settings.getShots().read(shots);
-        publishShotsChange();
-
-        settings.getDelay().read(delay);
-        publishDelayChange();
 
         pattern = settings.getPano().getPattern();
         publishPatternChange();
@@ -127,16 +126,13 @@ public class PanoService {
         return panoMatrix;
     }
 
-    public Optional<List<Command>> createCommands(PanoMatrix panoMatrix, String shotsName) {
-        List<ShotSettings> shots = getShots().get(shotsName);
-        if (shots == null || shots.isEmpty()) {
-            return Optional.empty();
-        }
+    public List<Command> createCommands(PanoMatrix panoMatrix) {
 
-        return Optional.of(panoGenerator.createCommands(
+        return panoGenerator.createCommands(
                 panoHeadService.getCurrentPositionDeg(),
                 panoMatrix,
-                shots, getDelay()));
+                shotService.getCurrent(),
+                delayService.getDelay());
     }
 
     public void createPapywizardFile(PanoMatrix calculatedPano) {
@@ -166,18 +162,6 @@ public class PanoService {
         settingsService.getSettingsStore().getSettings().getPanoFov().write(panoFov);
         settingsService.getSettingsStore().saveDelayed();
         applicationEventPublisher.publishEvent(new PanoFOVChangedEvent(panoFov));
-    }
-
-    public void publishShotsChange() {
-        settingsService.getSettingsStore().getSettings().getShots().write(shots);
-        settingsService.getSettingsStore().saveDelayed();
-        applicationEventPublisher.publishEvent(new ShotsChangedEvent(shots));
-    }
-
-    public void publishDelayChange() {
-        settingsService.getSettingsStore().getSettings().getDelay().write(delay);
-        settingsService.getSettingsStore().saveDelayed();
-        applicationEventPublisher.publishEvent(new DelaySettingsChangedEvent(delay));
     }
 
     public void publishPatternChange() {

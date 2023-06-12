@@ -6,13 +6,14 @@ import {PanoFovComponent} from './screen/pano-fov.component';
 import {CameraComponent} from './screen/camera.component';
 import {MainComponent} from './screen/main.component';
 import {RecordComponent} from './screen/record.component';
-import {PanoSettingsComponent} from './screen/pano-settings.component';
 import {AlignComponent} from './screen/align.component';
 import {DownloadComponent} from "./screen/download.component";
 import {SavePictureFovPresetComponent} from "./screen/picture-fov/save-picture-fov-preset.component";
 import {LoadPictureFovPresetComponent} from "./screen/picture-fov/load-picture-fov-preset.component";
 import {EditPictureFovPresetComponent} from "./screen/picture-fov/edit-picture-fov-preset.component";
 import {CalcFovComponent} from "./screen/calc-fov.component";
+import {MovementSettingsComponent} from "./screen/movement-settings/movement-settings.component";
+import {ShotsSettingsComponent} from "./screen/shots-settings/shots-settings.component";
 
 const routes: Routes = [
     {path: 'align', component: AlignComponent},
@@ -24,9 +25,10 @@ const routes: Routes = [
     {path: 'picture-fov/load', component: LoadPictureFovPresetComponent},
     {path: 'picture-fov/edit', component: EditPictureFovPresetComponent},
     {path: 'pano-fov', component: PanoFovComponent},
-    {path: 'pano-settings', component: PanoSettingsComponent},
+    {path: 'movement-settings', component: MovementSettingsComponent},
     {path: 'pano-fov', component: PanoFovComponent},
     {path: 'record', component: RecordComponent},
+    {path: 'shots', component: ShotsSettingsComponent},
     {path: 'download', component: DownloadComponent},
     {path: '**', component: MainComponent}
 ];

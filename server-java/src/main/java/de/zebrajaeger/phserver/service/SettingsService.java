@@ -24,6 +24,7 @@ public class SettingsService {
 
     private SettingStore<Settings> settingsStore;
     private SettingStore<PicturePresetsSettings> pictureFovPresetsStore;
+    private SettingStore<ShotsPresetSettings> shotsPresetStore;
 
     @PostConstruct
     public void init() {
@@ -31,27 +32,33 @@ public class SettingsService {
 
         final File settingsFile = new File(myProjDirs.configDir, "settings.json");
         settingsStore = new SettingStore<>(settingsFile, new Settings(), autoSaveDelay).load();
-        ShotsSettings shots = settingsStore.getSettings().getShots();
-        if (!shots.isDefaultShotOk()) {
-            LOG.info("Add/replace default shot to loaded settings");
-            shots.setDefaultShot(new ShotSettings());
-            settingsStore.saveDelayed();
-        }
+//        ShotsSettings shots = settingsStore.getSettings().getShots();
+//        if (!shots.isDefaultShotOk()) {
+//            LOG.info("Add/replace default shot to loaded settings");
+//            shots.setDefaultShot(new ShotSettings());
+//            settingsStore.saveDelayed();
+//        }
 
         pictureFovPresetsStore = new SettingStore<>(
                 new File(myProjDirs.configDir, "picture-fov-presets.json"),
                 new PicturePresetsSettings(), autoSaveDelay).load();
+
+        shotsPresetStore = new SettingStore<>(
+                new File(myProjDirs.configDir, "shots-presets.json"),
+                new ShotsPresetSettings(), autoSaveDelay).load();
     }
 
     @PreDestroy
     public void destroy() {
         settingsStore.saveImmediately();
         pictureFovPresetsStore.saveImmediately();
+        shotsPresetStore.saveImmediately();
     }
 
     @Scheduled(fixedRate = 1000)
     public void checkSave() {
         settingsStore.poll1000();
         pictureFovPresetsStore.poll1000();
+        shotsPresetStore.poll1000();
     }
 }

@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Getter
 @Slf4j
-public class RobotService {
+public class RecordService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final PanoHeadService panoHeadService;
@@ -39,8 +39,8 @@ public class RobotService {
             null);
 
     @Autowired
-    public RobotService(PanoHeadService panoHeadService,
-                        ApplicationEventPublisher applicationEventPublisher) {
+    public RecordService(PanoHeadService panoHeadService,
+                         ApplicationEventPublisher applicationEventPublisher) {
         this.panoHeadService = panoHeadService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
@@ -232,19 +232,19 @@ public class RobotService {
         panoHeadService.normalizeAxisPosition();
     }
 
-    private RobotService setAutomateState(AutomateState automateState) {
+    private RecordService setAutomateState(AutomateState automateState) {
         log.debug("Set state to '{}'", automateState);
         this.robotState.setAutomateState(automateState);
         return this;
     }
 
-    private RobotService setPauseState(PauseState state) {
+    private RecordService setPauseState(PauseState state) {
         log.debug("Set pause-state to '{}'", state);
         this.robotState.setPauseState(state);
         return this;
     }
 
-    private RobotService setCommand(Command command, int commandIndex) {
+    private RecordService setCommand(Command command, int commandIndex) {
         log.debug("Set command #{} to '{}'", commandIndex, command);
         this.robotState.setCommand(command, commandIndex);
         return this;

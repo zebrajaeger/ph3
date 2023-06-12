@@ -1,0 +1,11 @@
+<input type="text"
+       (input)="_onInputChange($event)"
+       class="input display"
+       value="{{value}}"
+       placeholder="{{placeholder}}"/>
+<div class="simple-keyboard"></div>
+<div class="placeholder"></div>
+<div class="buttons">
+    <div class="button ok" (click)="_onOk()">&nbsp;Ok</div>
+    <div class="button cancel" (click)="_onCancel()">&nbsp;Cancel</div>
+</div>

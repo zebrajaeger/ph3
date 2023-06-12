@@ -1,0 +1,24 @@
+<div class="fields">
+    <div class="label">Delay after move[s]:</div>
+    <input class="input" (click)="modalService.open('delayAfterMove')" type="text" readonly [value]="delayAfterMove | toFixed">
+
+    <div class="label">Delay between shots[s]:</div>
+    <input class="input" (click)="modalService.open('delayBetweenShots')" type="text" readonly [value]="delayBetweenShots | toFixed">
+
+    <div class="label">Delay after shots[s]:</div>
+    <input class="input" (click)="modalService.open('delayAfterShots')" type="text" readonly [value]="delayAfterShots | toFixed">
+</div>
+
+<app-modal class="modal-num-pad" id="delayAfterMove" (close)="onDelayAfterMoveClose()">
+    <app-number-pad [(value)]="delayAfterMove">
+    </app-number-pad>
+</app-modal>
+<app-modal class="modal-num-pad" id="delayBetweenShots" (close)="onDelayBetweenShotsClose()">
+    <app-number-pad [(value)]="delayBetweenShots">
+    </app-number-pad>
+</app-modal>
+<app-modal class="modal-num-pad" id="delayAfterShots" (close)="onDelayAfterShotsClose()">
+    <app-number-pad [(value)]="delayAfterShots">
+    </app-number-pad>
+</app-modal>
+

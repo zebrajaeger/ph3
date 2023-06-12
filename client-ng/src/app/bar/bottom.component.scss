@@ -33,6 +33,7 @@
   width: 25px;
   padding: 5px;
   background-color: mistyrose;
+
   img {
     width: 25px;
   }
@@ -43,21 +44,39 @@
 }
 
 .shutdown-dialog {
-  width: 320px;
-  height: calc((128px + 10px) * 2 - 10px);
+  display:flex;
+  flex-direction: column;
+  align-items: stretch;
 
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: repeat(1, 128px);
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 266px);
+    grid-template-rows: repeat(1, 128px);
 
-  padding: 20px;
-
-  .button {
-    background-color: red;
-    margin-top: 10px;
+    .button {
+      margin: 10px;
+      &.restart-app {
+        background-color: yellow;
+      }
+      &.reboot-system {
+        background-color: orange;
+      }
+      &.shutdown-system{
+      background-color: red;
+      }
+    }
   }
 
-  .button:first-child {
-    margin-top: 0;
+  .space {
+    flex-grow: 1;
+  }
+
+  .go-back {
+    display: flex;
+    justify-content: end;
+    .button {
+      margin: 30px;
+      width:150px;
+    }
   }
 }

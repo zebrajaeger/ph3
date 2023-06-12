@@ -1,0 +1,26 @@
+<div class="shots">
+    <shot class="shot"
+          *ngFor="let s of _shots; index as i; first as isFirst; last as isLast"
+          [shot]="s"
+          [index]="i"
+          [first]="isFirst"
+          [last]="isLast"
+          [editable]="editable"
+          (onUp)="onUp($event)"
+          (onDown)="onDown($event)"
+          (onDelete)="onDelete($event)"
+    />
+</div>
+
+<div class="add-container" *ngIf="editable">
+    <div class="button add"
+         (click)="onAdd()"
+    ></div>
+</div>
+
+<app-ok-cancel-dialog
+        *ngIf="showDeleteOkCancelDialog"
+        [message]="deleteMessage"
+        (onOk)="_onDeleteShotOk()"
+        (onCancel)="_onDeleteShotCancel()"
+/>

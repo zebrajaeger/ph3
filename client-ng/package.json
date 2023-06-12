@@ -21,7 +21,6 @@
     "@angular/router": "15.2.5",
     "@stomp/rx-stomp": "2.0.0",
     "@stomp/stompjs": "7.0.0",
-    "ngx-joystick": "3.0.1",
     "rxjs": "7.4.0",
     "service": "^0.1.4",
     "simple-keyboard": "3.5.64",

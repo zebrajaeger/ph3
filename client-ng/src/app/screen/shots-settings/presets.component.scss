@@ -1,0 +1,39 @@
+:host{
+  display:flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.presets {
+  overflow-x: hidden;
+  overflow-y: auto;
+  display:flex;
+  flex-direction: column;
+
+  .preset {
+    display:grid;
+    grid-template-columns: 50px 50px auto 50px;
+    grid-template-rows: 50px;
+    font-weight: bold;
+
+    .label {
+      margin-left: 10px;
+    }
+
+    .load {
+      background-color: yellow;
+    }
+  }
+}
+
+.add-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  .add {
+    margin-top: 20px;
+    width: 80px;
+    height: 30px;
+  }
+}

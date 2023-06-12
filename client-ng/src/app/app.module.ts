@@ -24,7 +24,6 @@ import {ModalService} from './ui/modal.service';
 import {PanoSettingsComponent} from './screen/pano-settings.component';
 import {ToFixed} from './pipes/to-fixed';
 import {AlignComponent} from './screen/align.component';
-import {NgxJoystickModule} from "ngx-joystick";
 import {MovementControllerComponent} from './ui/movement-controller.component';
 import {MatrixComponent} from "./ui/matrix.component";
 import {AddOnePipe} from "./pipes/add-one.pipe";
@@ -42,6 +41,15 @@ import {LoadPictureFovPresetComponent} from './screen/picture-fov/load-picture-f
 import {EditPictureFovPresetComponent} from './screen/picture-fov/edit-picture-fov-preset.component';
 import { CalcFovComponent } from './screen/calc-fov.component';
 import {FormsModule} from "@angular/forms";
+import { MovementSettingsComponent } from './screen/movement-settings/movement-settings.component';
+import { ShotsSettingsComponent } from './screen/shots-settings/shots-settings.component';
+import { ShotSettingComponent } from './screen/shots-settings/shot-setting.component';
+import { ShotComponent } from './screen/shots-settings/shot.component';
+import { MillisToSecondPipe } from './pipes/millis-to-second.pipe';
+import { ShotsComponent } from './screen/shots-settings/shots.component';
+import { PresetsComponent } from './screen/shots-settings/presets.component';
+import { KeyboardDialogComponent } from './ui/keyboard-dialog.component';
+import { OkCancelDialogComponent } from './ui/ok-cancel-dialog.component';
 
 @NgModule({
     declarations: [
@@ -75,12 +83,20 @@ import {FormsModule} from "@angular/forms";
         BackButtonDirective,
         LoadPictureFovPresetComponent,
         EditPictureFovPresetComponent,
-        CalcFovComponent
+        CalcFovComponent,
+        MovementSettingsComponent,
+        ShotsSettingsComponent,
+        ShotSettingComponent,
+        ShotComponent,
+        MillisToSecondPipe,
+        ShotsComponent,
+        PresetsComponent,
+        KeyboardDialogComponent,
+        OkCancelDialogComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        NgxJoystickModule,
         FormsModule
     ],
     providers: [

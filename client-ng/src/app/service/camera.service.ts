@@ -22,7 +22,7 @@ export class CameraService {
   }
 
   shot(focusTimeMs: number, triggerTimeMs: number): void {
-    const data: Shot = {focusTimeMs, triggerTimeMs};
+    const data = new Shot().setFromJson({focusTimeMs, triggerTimeMs});
     this.rxStompService.publish({destination: '/camera/shot', body: JSON.stringify(data)});
   }
 

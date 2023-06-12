@@ -1,0 +1,13 @@
+<div class="presets">
+<div class="preset" *ngFor="let preset of presets | keyvalue">
+    <div class="button delete" (click)="_onDelete(preset.key)"></div>
+    <div class="button edit" (click)="_onEdit(preset.key)"></div>
+    <div class="label left-center-content">{{preset.key}}[{{preset.value.length}}]</div>
+    <div class="button load" (click)="_onLoad(preset.key)"></div>
+</div>
+</div>
+<div class="add-container" *ngIf="editable">
+    <div class="button add"
+         (click)="_onAdd()"
+    ></div>
+</div>

@@ -15,13 +15,17 @@
   <img src="assets/power-button-svgrepo-com.svg"
        width="20px"
        alt="onoff menu"
-       (click)="modalService.open('system-menu')">
+       (click)="onOpenSystemDialog()">
 </div>
 
-<app-modal class="modal-system-dialog" id="system-menu">
-  <div class="shutdown-dialog">
-    <button (click)="restartApp()" class="button">Restart App</button>
-    <button (click)="shutdown()" class="button">Shutdown</button>
-    <button (click)="reboot()" class="button">Reboot</button>
+<div class="modal shutdown-dialog" *ngIf="showSystemDialog">
+  <div class="buttons">
+    <div (click)="restartApp()" class="button restart-app">⟳ Restart App</div>
+    <div (click)="reboot()" class="button reboot-system"><span class="power">⏻</span>&nbsp;Reboot</div>
+    <div (click)="shutdown()" class="button shutdown-system"><span class="power">⭘</span>&nbsp;Shutdown</div>
   </div>
-</app-modal>
+  <div class="space"></div>
+  <div class="go-back">
+    <div (click)="onCancelShotdownDialog()" class="button cancel">Cancel</div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<!--Current shots-->
+<div class="left">
+    <shots class="shots"
+           [shots]="_shots"
+           [editable]="true"
+           (onChange)="onCurrentShotChanged($event)"
+    />
+    <div class="button add"
+         (click)="onAsNewPreset()">&nbsp;As new Preset
+    </div>
+</div>
+
+<!--Presets-->
+<div class="right">
+    <presets class="presets"
+             [presets]="_presets"
+             (onDelete)="_onDeletePreset($event)"
+             (onLoad)="_onLoadPreset($event)"
+             (onEdit)="_onEditPreset($event)"
+    />
+</div>
+
+<!--Edit Preset Dialog-->
+<div class="modal edit-preset-dialog" *ngIf="editPreset">
+    <shots class="shots"
+           [shots]="tempShots"
+           [editable]="true"
+    />
+    <div class="placeholder"></div>
+    <div class="buttons">
+        <div class="button ok" (click)="_onEditPresetOk()">&nbsp;OK</div>
+        <div class="button cancel" (click)="_onEditPresetCancel()">&nbsp;Cancel</div>
+    </div>
+</div>
+
+<!--New Preset Dialog-->
+<app-keyboard-dialog
+        *ngIf="showNewPresetDialog"
+        class="keyboard-dialog"
+        [(value)]="newPresetName"
+        placeholder="Enter new shot-preset name"
+        (onOk)="onAsNewPresetOk()"
+        (onCancel)="onAsNewPresetCancel()"
+/>
+
+<!--Delete Preset Dialog-->
+<app-ok-cancel-dialog
+        *ngIf="showDeleteOkCancelDialog"
+        [message]="deleteMessage"
+        (onOk)="_onDeletePresetOk()"
+        (onCancel)="_onDeletePresetCancel()"
+/>

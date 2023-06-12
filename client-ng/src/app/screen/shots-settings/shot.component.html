@@ -1,0 +1,28 @@
+<div class="button delete" *ngIf="editable" (click)="_onDelete()"></div>
+
+<div class="label f">F:</div>
+<input class="input f"
+       type="text"
+       readonly
+       [value]="shot.focusTimeMs | millisToSecond | toFixed:3"
+       (click)="_onEditFocus()"
+>
+
+<div class="label  t">T:</div>
+<input class="input t"
+       type="text"
+       readonly
+       [value]="shot.triggerTimeMs | millisToSecond | toFixed:3"
+       (click)="_onEditTrigger()"
+>
+
+    <div class="button up" *ngIf="editable && !first" (click)="_onUp()"></div>
+    <div class="button down" *ngIf="editable && !last" (click)="_onDown()"></div>
+
+<div class="modal" *ngIf="edit">
+    <app-number-pad [(value)]="temp"/>
+    <div class="buttons">
+        <div class="button ok" (click)="_onOk()">Ok</div>
+        <div class="button cancel" (click)="_onCancel()">Cancel</div>
+    </div>
+</div>

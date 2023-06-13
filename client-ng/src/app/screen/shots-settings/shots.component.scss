@@ -12,8 +12,8 @@
 .add-container {
   flex-grow: 1;
   display: flex;
-  justify-content: end;
-  align-items: end;
+  justify-content: flex-end;
+  align-items: flex-end;
   .add {
     margin-top: 20px;
     width: 80px;

@@ -42,7 +42,7 @@ export class CalcFovComponent {
         this.xFov = 180 / Math.PI * 2 * Math.atan(this.xSize / (2 * this.focalDistance));
         this.nX = 360 / (this.xFov * (1 - this.overlap));
         this.yFov = 180 / Math.PI * 2 * Math.atan(this.ySize / (2 * this.focalDistance));
-        this.nY = 360 / (this.yFov * (1 - this.overlap));
+        this.nY = 180 / (this.yFov * (1 - this.overlap));
         this.dFov = 180 / Math.PI * 2 * Math.atan(this.dSize / (2 * this.focalDistance));
         this.nSum = Math.ceil(this.nX) * Math.ceil(this.nY);
     }

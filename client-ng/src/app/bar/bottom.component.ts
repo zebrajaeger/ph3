@@ -2,10 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PanoHeadService} from '../service/panohead.service';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
-import {CameraOfView, PanoFieldOfView, PanoMatrix} from '../../data/pano';
+import {CameraOfView, Gps, PanoFieldOfView, PanoMatrix} from '../../data/pano';
 import {Position, Power} from '../../data/panohead';
 import {SystemService} from '../service/system.service';
 import {RobotState} from "../../data/record";
+import {GpsService} from "../service/gps.service";
 
 @Component({
     selector: 'app-bottom',
@@ -32,10 +33,15 @@ export class BottomComponent implements OnInit, OnDestroy {
     private panoFovSubscription!: Subscription;
     public panoFov?: PanoFieldOfView;
 
+    private gpsSubscription!: Subscription;
+    public gps?: Gps;
+
+
     showSystemDialog = false;
 
     constructor(private panoHeadService: PanoHeadService,
                 private panoService: PanoService,
+                private gpsService: GpsService,
                 private systemService: SystemService) {
     }
 
@@ -63,6 +69,9 @@ export class BottomComponent implements OnInit, OnDestroy {
 
         this.panoFovSubscription = this.panoService.subscribePanoFov(fov => this.panoFov = fov);
         this.panoService.requestPanoFov(fov => this.panoFov = fov);
+
+        this.gpsSubscription = this.gpsService.subscribeGps(gps => this.gps = gps);
+        this.gpsService.requestGps(gps => this.gps = gps);
     }
 
     ngOnDestroy(): void {

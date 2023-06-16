@@ -8,5 +8,8 @@ public interface HardwareService {
     Optional<PowerGauge> getPowerGauge();
 
     Optional<AccelerationSensor> getAccelerationSensor();
+
     SystemDevice getSystemDevice();
+
+    GpsDevice getGpsDevice();
 }

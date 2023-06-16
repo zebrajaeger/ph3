@@ -88,3 +88,30 @@ export class Delay {
     waitAfterShot!: number;
     waitBetweenShots!: number;
 }
+
+export class GpsFlags {
+    public altitude!: boolean;
+    public date!: boolean;
+    public hdop!: boolean;
+    public location!: boolean;
+    public satellites!: boolean;
+    public time!: boolean;
+}
+
+export class GeoLocation {
+    public latitude!: number;
+    public longitude!: number;
+    public altitude!: number;
+}
+
+export class GpsMetaData {
+    public satellites!: number;
+    public hdop!: number;
+}
+
+export class Gps {
+    public geoLocation!: GeoLocation;
+    public gpsMetaData!: GpsMetaData;
+    public updated!: GpsFlags;
+    public valid!: GpsFlags;
+}

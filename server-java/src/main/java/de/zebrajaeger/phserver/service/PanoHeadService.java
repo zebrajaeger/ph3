@@ -8,7 +8,6 @@ import de.zebrajaeger.phserver.translation.*;
 import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -44,7 +43,6 @@ public class PanoHeadService {
         private boolean actorActive = false;
     }
 
-    @Autowired
     public PanoHeadService(HardwareService hardwareService,
                            ApplicationEventPublisher applicationEventPublisher) {
         this.hardwareService = hardwareService;

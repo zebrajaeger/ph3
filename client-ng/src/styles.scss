@@ -1,34 +1,40 @@
 @import 'simple-keyboard/build/css/index.css';
+
 @font-face {
   font-family: "Roboto";
   src: url("/assets/font/Roboto-Thin.ttf") format('truetype');
   font-weight: 100;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Roboto";
   src: url("/assets/font/Roboto-Light.ttf") format('truetype');
   font-weight: 100;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Roboto";
   src: url("/assets/font/Roboto-Regular.ttf") format('truetype');
   font-weight: 400;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Roboto";
   src: url("/assets/font/Roboto-Medium.ttf") format('truetype');
   font-weight: 500;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Roboto";
   src: url("/assets/font/Roboto-Bold.ttf") format('truetype');
   font-weight: 700;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Roboto";
   src: url("/assets/font/Roboto-Black.ttf") format('truetype');
@@ -42,7 +48,8 @@
   font-weight: normal;
   font-style: normal;
 }
-.power{
+
+.power {
   font-family: 'power_symbols', serif;
   font-style: normal;
 }
@@ -89,51 +96,26 @@ body {
   }
 }
 
-.button.ok{
+.button.ok {
   background-color: #0dee1b;
 }
-.ok::before {
-  content: '✔ '
-}
-.cancel{
+
+.cancel {
   background-color: red;
 }
-.cancel::before {
-  content: '✘ '
-}
-.delete{
+
+.delete {
   background-color: red;
-}
-.delete::before {
-  content: '🗑 '
-}
-.up::before {
-  content: '⇑ '
-}
-.down::before {
-  content: '⇓ '
-}
-.add::before {
-  content: '+ '
-}
-.edit::before {
-  content: '🖉 '
-}
-.save::before {
-  content: '🖪 '
-}
-.load::before {
-  content: '↝ '
 }
 
 .center-content {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .left-center-content {
-  display:flex;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
 }
@@ -145,7 +127,7 @@ body {
   width: 800px;
   height: 480px;
   z-index: 100;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;

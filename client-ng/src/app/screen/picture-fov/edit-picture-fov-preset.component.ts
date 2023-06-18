@@ -11,9 +11,12 @@ import {UiService} from "../../service/ui.service";
 export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     names_: string[] = [];
     private fovNamesSubscription: any;
-    oldname!: string;
+    oldName!: string;
     keyboardDialogValue!: string;
     showKeyboardDialog: boolean = false;
+    showOkCancelDialog: any;
+    deleteName!: string;
+    deleteMessage!: string;
 
     constructor(private panoService: PanoService,
                 private routerService: RouterService,
@@ -42,21 +45,32 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     }
 
     onDelete(name: string) {
-        this.panoService.deletePictureFov(name);
+        this.deleteName = name;
+        this.deleteMessage = `Delete preset '${name}'?`
+        this.showOkCancelDialog = true;
     }
 
     onRename(name: string) {
         this.keyboardDialogValue = '';
-        this.oldname = name;
+        this.oldName = name;
         this.showKeyboardDialog = true;
     }
 
     onKeyboardDialogOk() {
         this.showKeyboardDialog = false;
-        this.panoService.renamePictureFov(this.oldname, this.keyboardDialogValue);
+        this.panoService.renamePictureFov(this.oldName, this.keyboardDialogValue);
     }
 
     onKeyboardDialogCancel() {
         this.showKeyboardDialog = false;
+    }
+
+    onOkCancelDialogOk() {
+        this.showOkCancelDialog = false;
+        this.panoService.deletePictureFov(this.deleteName);
+    }
+
+    onOkCancelDialogCancel() {
+        this.showOkCancelDialog = false;
     }
 }

@@ -11,6 +11,9 @@ import {UiService} from "../../service/ui.service";
 export class LoadPictureFovPresetComponent implements OnInit, OnDestroy {
     names_: string[] = [];
     private fovNamesSubscription: any;
+    showOkCancelDialog = false;
+    overwriteMessage!: string;
+    nameToLoad!: string;
 
     constructor(private panoService: PanoService,
                 private routerService: RouterService,
@@ -27,7 +30,7 @@ export class LoadPictureFovPresetComponent implements OnInit, OnDestroy {
         this.fovNamesSubscription?.unsubscribe();
     }
 
-    set names(value : string[]){
+    set names(value: string[]) {
         console.log('VALUES', value)
         this.names_ = value;
     }
@@ -39,6 +42,17 @@ export class LoadPictureFovPresetComponent implements OnInit, OnDestroy {
     }
 
     onLoad(name: string) {
-        this.panoService.loadPictureFov(name);
+        this.nameToLoad = name;
+        this.overwriteMessage = `Overwrite current FOV with '${name}' preset?`;
+        this.showOkCancelDialog = true;
+    }
+
+    onOkCancelDialogOk() {
+        this.showOkCancelDialog = false;
+        this.panoService.loadPictureFov(this.nameToLoad);
+    }
+
+    onOkCancelDialogCancel() {
+        this.showOkCancelDialog = false;
     }
 }

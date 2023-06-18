@@ -79,6 +79,12 @@ export class PanoService {
         this.rxStompService.publish({destination: '/picture/fov/delete', body});
     }
 
+    renamePictureFov(oldName:string, newName: string) {
+        const body = JSON.stringify({oldName,newName});
+        this.rxStompService.publish({destination: '/picture/fov/rename', body});
+    }
+
+
     subscribePictureFovNames(cb: (names: string[]) => void) {
         return this.rxStompService
             .watch('/topic/picture/fov/names')
@@ -92,6 +98,7 @@ export class PanoService {
             .pipe(map(msg => JSON.parse(msg.body) as string[]))
             .subscribe(cb);
     }
+
 
     // </editor-fold>
 

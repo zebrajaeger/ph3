@@ -1,20 +1,20 @@
 <div class="presets">
     <div class="preset" *ngFor="let preset of presets | keyvalue">
-        <div class="button " (click)="_onDelete(preset.key)">
+        <div class="button delete" (click)="_onDelete(preset.key)">
             <img src="/assets/icons/delete_FILL0_wght400_GRAD0_opsz48.svg" alt="Delete"/>
         </div>
-        <div class="button" (click)="_onEdit(preset.key)">
+        <div class="button edit" (click)="_onEdit(preset.key)">
             <img src="/assets/icons/edit_FILL0_wght400_GRAD0_opsz48.svg" alt="Edit"/>
         </div>
         <div class="label left-center-content">{{preset.key}}[{{preset.value.length}}]</div>
-        <div class="button" (click)="_onLoad(preset.key)">
+        <div class="button edit" (click)="_onLoad(preset.key)">
             <img src="/assets/icons/label_important_FILL0_wght400_GRAD0_opsz48.svg" alt="Load"/>
         </div>
     </div>
 </div>
 
 <div class="add-container" *ngIf="editable">
-    <div class="button" (click)="_onAdd()">
+    <div class="button edit" (click)="_onAdd()">
         <img src="/assets/icons/add_FILL0_wght400_GRAD0_opsz48.svg" alt="Add"/>
     </div>
 </div>

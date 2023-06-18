@@ -1,4 +1,4 @@
-<div class="button" *ngIf="editable" (click)="_onDelete()">
+<div class="button delete" *ngIf="editable" (click)="_onDelete()">
     <img src="/assets/icons/delete_FILL0_wght400_GRAD0_opsz48.svg" alt="Delete"/>
 </div>
 
@@ -18,10 +18,10 @@
        (click)="_onEditTrigger()"
 >
 
-<div class="button button-up" *ngIf="editable && !first" (click)="_onUp()">
+<div class="button button-up edit" *ngIf="editable && !first" (click)="_onUp()">
     <img src="/assets/icons/arrow_upward_FILL0_wght400_GRAD0_opsz48.svg" alt="Up"/>
 </div>
-<div class="button button-down" *ngIf="editable && !last" (click)="_onDown()">
+<div class="button button-down edit" *ngIf="editable && !last" (click)="_onDown()">
     <img src="/assets/icons/arrow_downward_FILL0_wght400_GRAD0_opsz48.svg" alt="Down"/>
 </div>
 

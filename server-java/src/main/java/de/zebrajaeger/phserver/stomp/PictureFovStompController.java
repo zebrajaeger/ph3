@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Border;
+import de.zebrajaeger.phserver.data.Rename;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFovNamesChangedEvent;
 import de.zebrajaeger.phserver.service.PanoService;
@@ -63,6 +64,15 @@ public class PictureFovStompController {
     public void pictureFovDelete(@Payload String name) {
         panoService.getPicturePresets().remove(name);
         panoService.publishPicturePresetsChange();
+    }
+
+    @MessageMapping("/picture/fov/rename")
+    public void pictureFovDelete(@Payload Rename rename) {
+        final CameraFovSettings item = panoService.getPicturePresets().remove(rename.oldName());
+        if (item != null) {
+            panoService.getPicturePresets().put(rename.newName(), item);
+            panoService.publishPicturePresetsChange();
+        }
     }
 
     @MessageMapping("/rpc/picture/fov/names")

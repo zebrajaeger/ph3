@@ -1,4 +1,6 @@
-<div class="button delete" *ngIf="editable" (click)="_onDelete()"></div>
+<div class="button" *ngIf="editable" (click)="_onDelete()">
+    <img src="/assets/icons/delete_FILL0_wght400_GRAD0_opsz48.svg" alt="Delete"/>
+</div>
 
 <div class="label f">F:</div>
 <input class="input f"
@@ -16,13 +18,22 @@
        (click)="_onEditTrigger()"
 >
 
-    <div class="button up" *ngIf="editable && !first" (click)="_onUp()"></div>
-    <div class="button down" *ngIf="editable && !last" (click)="_onDown()"></div>
+<div class="button button-up" *ngIf="editable && !first" (click)="_onUp()">
+    <img src="/assets/icons/arrow_upward_FILL0_wght400_GRAD0_opsz48.svg" alt="Up"/>
+</div>
+<div class="button button-down" *ngIf="editable && !last" (click)="_onDown()">
+    <img src="/assets/icons/arrow_downward_FILL0_wght400_GRAD0_opsz48.svg" alt="Down"/>
+</div>
 
 <div class="modal" *ngIf="edit">
     <app-number-pad [(value)]="temp"/>
     <div class="buttons">
-        <div class="button ok" (click)="_onOk()">Ok</div>
-        <div class="button cancel" (click)="_onCancel()">Cancel</div>
+        <div class="button ok" (click)="_onOk()">
+            <img src="/assets/icons/done_FILL0_wght400_GRAD0_opsz48.svg" alt="Ok"/>
+            Ok</div>
+        <div class="button cancel" (click)="_onCancel()">
+            <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
+            Cancel
+        </div>
     </div>
 </div>

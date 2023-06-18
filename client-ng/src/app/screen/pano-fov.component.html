@@ -37,13 +37,21 @@
 
   <div bottom-left class="set-partial full-xy center-content">
     <button class="button" (click)="onFullX()">
-      <span class="checked" *ngIf="fov?.fullX">✅</span>
-      <span class="unchecked" *ngIf="!fov?.fullX">❌</span>
+      <span class="checked" *ngIf="fov?.fullX">
+        <img src="/assets/icons/check_box_FILL0_wght400_GRAD0_opsz48.svg" alt="Checked"/>
+      </span>
+      <span class="unchecked" *ngIf="!fov?.fullX">
+        <img src="/assets/icons/check_box_outline_blank_FILL0_wght400_GRAD0_opsz48.svg" alt="Unchecked"/>
+      </span>
       FullX ⇔
     </button>
     <button class="button" (click)="onFullY()">
-      <span class="checked" *ngIf="fov?.fullY">✅</span>
-      <span class="unchecked" *ngIf="!fov?.fullY">❌</span>
+      <span class="checked" *ngIf="fov?.fullY">
+        <img src="/assets/icons/check_box_FILL0_wght400_GRAD0_opsz48.svg" alt="Checked"/>
+      </span>
+      <span class="unchecked" *ngIf="!fov?.fullY">
+        <img src="/assets/icons/check_box_outline_blank_FILL0_wght400_GRAD0_opsz48.svg" alt="Unchecked"/>
+      </span>
       FullY ⇕
     </button>
   </div>

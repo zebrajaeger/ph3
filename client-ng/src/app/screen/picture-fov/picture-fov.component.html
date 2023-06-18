@@ -16,11 +16,20 @@
         <div class="left-center-content v-value"><span class="value">{{vText}}</span></div>
     </div>
     <div bottom-left class="bottom-left">
-        <button class="button load" [routerLink]="['/picture-fov/load']">↝ Load FOV</button>
+        <button class="button load" [routerLink]="['/picture-fov/load']">
+            <img src="/assets/icons/label_important_FILL0_wght400_GRAD0_opsz48.svg" alt="Load"/>
+            Load FOV
+        </button>
     </div>
     <div bottom-right class="bottom-right">
-        <button class="button save" [routerLink]="['/picture-fov/save']">🖪 Save FOV</button>
-        <button class="button edit" [routerLink]="['/picture-fov/edit']">🖉 Edit FOV</button>
+        <button class="button save" [routerLink]="['/picture-fov/save']">
+            <img src="/assets/icons/save_FILL0_wght400_GRAD0_opsz48.svg" alt="Save"/>
+            Save FOV
+        </button>
+        <button class="button edit" [routerLink]="['/picture-fov/edit']">
+            <img src="/assets/icons/edit_FILL0_wght400_GRAD0_opsz48.svg" alt="Edit"/>
+            Edit FOV
+        </button>
     </div>
 </movement-controller>
 
@@ -29,7 +38,9 @@
         <div class="set-dialog-content">
             <button class="button top" (click)="onTop()">Top</button>
             <button class="button left" (click)="onLeft()">Left</button>
-            <button class="close-button button center" (click)="onClosePopup()">X</button>
+            <button class="close-button button center" (click)="onClosePopup()">
+                <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
+            </button>
             <button class="button right" (click)="onRight()">Right</button>
             <button class="button bottom" (click)="onBottom()">Bottom</button>
         </div>

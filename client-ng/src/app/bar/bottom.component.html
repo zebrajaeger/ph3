@@ -7,7 +7,7 @@
   <div class="line">
     <div class="item">Img: (<span class="value">{{pictureFov | fovSize}}</span>)</div>
     <div class="item">Pano: (<span class="value">{{panoFov | fovPartialSize}}</span>)</div>
-    <div class="item">Pano▦: (<span class="value">{{panoMsg}}</span>)</div>
+    <div class="item">Pano<img class="icon" src="/assets/icons/grid_on_FILL0_wght400_GRAD0_opsz48.svg" alt="Grid"/>: (<span class="value">{{panoMsg}}</span>)</div>
     <div class="item">Gps: (<span class="value">{{gps | gpsToString}}</span>)</div>
   </div>
 </div>
@@ -21,12 +21,24 @@
 
 <div class="modal shutdown-dialog" *ngIf="showSystemDialog">
   <div class="buttons">
-    <div (click)="restartApp()" class="button restart-app">⟳ Restart App</div>
-    <div (click)="reboot()" class="button reboot-system"><span class="power">⏻</span>&nbsp;Reboot</div>
-    <div (click)="shutdown()" class="button shutdown-system"><span class="power">⭘</span>&nbsp;Shutdown</div>
+    <div (click)="restartApp()" class="button restart-app">
+        <img src="/assets/icons/frame_reload_FILL0_wght400_GRAD0_opsz48.svg" alt="Restart app"/>
+      Restart App
+    </div>
+    <div (click)="reboot()" class="button reboot-system">
+        <img src="/assets/icons/refresh_FILL0_wght400_GRAD0_opsz48.svg" alt="Reboot"/>
+      Reboot
+    </div>
+    <div (click)="shutdown()" class="button shutdown-system">
+        <img src="/assets/icons/power_rounded_FILL0_wght400_GRAD0_opsz48.svg" alt="Off"/>
+      &nbsp;Shutdown
+    </div>
   </div>
   <div class="space"></div>
   <div class="go-back">
-    <div (click)="onCancelShotdownDialog()" class="button cancel">Cancel</div>
+    <div (click)="onCancelShotdownDialog()" class="button cancel">
+      <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
+      Cancel
+    </div>
   </div>
 </div>

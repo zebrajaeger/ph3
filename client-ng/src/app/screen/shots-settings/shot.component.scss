@@ -1,16 +1,16 @@
 :host {
   display:grid;
-  grid-template-columns: 50px 30px 80px 30px 80px 10px 50px 50px;
+  grid-template-columns: 50px 30px 75px 30px 75px 5px 50px 50px;
   grid-template-rows:  50px;
 }
 
 .delete {
   grid-column-start: 1;
 }
-.up {
+.button-up {
   grid-column-start: 7;
 }
-.down {
+.button-down {
   grid-column-start: 8;
 }
 
@@ -26,6 +26,14 @@
     margin-left: 15px;
     grid-column-start: 4;
   }
+}
+
+.button{
+  width: 30px;
+}
+  image{
+  width: 25px;
+  height: 25px;
 }
 
 .input {

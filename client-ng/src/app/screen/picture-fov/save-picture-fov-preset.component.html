@@ -1,6 +1,13 @@
-<input type="text" (input)="onInputChange($event)" class="input display" value={{value}} placeholder="Enter name of preset"/>
+<input type="text" (input)="onInputChange($event)" class="input display" value={{value}}
+       placeholder="Enter name of preset"/>
 <div class="simple-keyboard"></div>
 <div class="buttons">
-    <div class="button" backButton (click)="onOk()"><span class="ok">✓</span> OK</div>
-    <div class="button" backButton><span class="cancel">🗙</span> Cancel</div>
+    <div class="button ok" backButton (click)="onOk()">
+        <img src="/assets/icons/done_FILL0_wght400_GRAD0_opsz48.svg" alt="Ok"/>
+        OK
+    </div>
+    <div class="button cancel" backButton>
+        <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
+        Cancel
+    </div>
 </div>

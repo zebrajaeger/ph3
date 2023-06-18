@@ -1,5 +1,11 @@
 <movement-controller>
-  <button top-left class="top-left set-as-zero button" (click)="setAsZero()">Set as Zero</button>
-  <button top-right class="top-right go-to-zero button" (click)="goToZero()">Go to Zero</button>
-  <button bottom-right class="top-right go-to-zero button" (click)="adaptOffset()">!Adapt Offset!</button>
+  <button bottom-left class="top-left set-as-zero button edit" (click)="setAsZero()">
+    <img src="/assets/icons/center_focus_strong_FILL0_wght400_GRAD0_opsz48.svg" alt="Set as Zero"/>
+    Set as Zero
+  </button>
+  <button bottom-right class="top-right go-to-zero button" (click)="goToZero()">
+    <img src="/assets/icons/flare_FILL0_wght400_GRAD0_opsz48.svg" alt="Set as Zero"/>
+    Go to Zero
+  </button>
+<!--  <button bottom-right class="top-right go-to-zero button edit" (click)="adaptOffset()">!Adapt Offset!</button>-->
 </movement-controller>

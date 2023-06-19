@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PanoService} from "../../service/pano.service";
 import {RouterService} from "../../service/router.service";
 import {UiService} from "../../service/ui.service";
+import {OkCancelDialogComponent} from "../../ui/ok-cancel-dialog.component";
 
 @Component({
     selector: 'app-edit-picture-fov-preset',
@@ -14,9 +15,9 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     oldName!: string;
     keyboardDialogValue!: string;
     showKeyboardDialog: boolean = false;
-    showOkCancelDialog: any;
-    deleteName!: string;
-    deleteMessage!: string;
+
+    @ViewChild('okcancel')
+    private okCancelDialog!: OkCancelDialogComponent;
 
     constructor(private panoService: PanoService,
                 private routerService: RouterService,
@@ -45,9 +46,7 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     }
 
     onDelete(name: string) {
-        this.deleteName = name;
-        this.deleteMessage = `Delete preset '${name}'?`
-        this.showOkCancelDialog = true;
+        this.okCancelDialog.show(name, `Delete preset '${name}'?`);
     }
 
     onRename(name: string) {
@@ -65,12 +64,7 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
         this.showKeyboardDialog = false;
     }
 
-    onOkCancelDialogOk() {
-        this.showOkCancelDialog = false;
-        this.panoService.deletePictureFov(this.deleteName);
-    }
-
-    onOkCancelDialogCancel() {
-        this.showOkCancelDialog = false;
+    onOkCancelDialogOk(key: string) {
+        this.panoService.deletePictureFov(key);
     }
 }

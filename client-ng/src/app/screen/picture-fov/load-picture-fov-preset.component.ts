@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PanoService} from "../../service/pano.service";
 import {RouterService} from "../../service/router.service";
 import {UiService} from "../../service/ui.service";
+import {OkCancelDialogComponent} from "../../ui/ok-cancel-dialog.component";
 
 @Component({
     selector: 'app-load-picture-fov-preset',
@@ -11,9 +12,9 @@ import {UiService} from "../../service/ui.service";
 export class LoadPictureFovPresetComponent implements OnInit, OnDestroy {
     names_: string[] = [];
     private fovNamesSubscription: any;
-    showOkCancelDialog = false;
-    overwriteMessage!: string;
-    nameToLoad!: string;
+
+    @ViewChild('okcancel')
+    private okCancelDialog!: OkCancelDialogComponent;
 
     constructor(private panoService: PanoService,
                 private routerService: RouterService,
@@ -42,17 +43,10 @@ export class LoadPictureFovPresetComponent implements OnInit, OnDestroy {
     }
 
     onLoad(name: string) {
-        this.nameToLoad = name;
-        this.overwriteMessage = `Overwrite current FOV with '${name}' preset?`;
-        this.showOkCancelDialog = true;
+        this.okCancelDialog.show(name, `Overwrite current FOV with '${name}' preset?`);
     }
 
-    onOkCancelDialogOk() {
-        this.showOkCancelDialog = false;
-        this.panoService.loadPictureFov(this.nameToLoad);
-    }
-
-    onOkCancelDialogCancel() {
-        this.showOkCancelDialog = false;
+    onOkCancelDialogOk(key: string) {
+        this.panoService.loadPictureFov(key);
     }
 }

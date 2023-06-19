@@ -18,9 +18,4 @@
     </div>
 </div>
 
-<app-ok-cancel-dialog
-        *ngIf="showDeleteOkCancelDialog"
-        [message]="deleteMessage"
-        (onOk)="_onDeleteShotOk()"
-        (onCancel)="_onDeleteShotCancel()"
-/>
+<app-ok-cancel-dialog #okcancel (onOk)="_onDeleteShotOk($event)"/>

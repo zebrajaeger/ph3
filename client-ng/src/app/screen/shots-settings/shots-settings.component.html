@@ -51,9 +51,4 @@
 />
 
 <!--Delete Preset Dialog-->
-<app-ok-cancel-dialog
-        *ngIf="showDeleteOkCancelDialog"
-        [message]="deleteMessage"
-        (onOk)="_onDeletePresetOk()"
-        (onCancel)="_onDeletePresetCancel()"
-/>
+<app-ok-cancel-dialog #okcancel (onOk)="_onDeletePresetOk($event)"/>

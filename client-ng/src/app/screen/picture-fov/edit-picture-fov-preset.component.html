@@ -17,10 +17,6 @@
                      [(value)]="keyboardDialogValue"
                      (onOk)="onKeyboardDialogOk()"
                      (onCancel)="onKeyboardDialogCancel()"
-></app-keyboard-dialog>
+/>
 
-<app-ok-cancel-dialog *ngIf="showOkCancelDialog"
-                      (onOk)="onOkCancelDialogOk()"
-                      (onCancel)="onOkCancelDialogCancel()"
-                      [message]="deleteMessage"
-></app-ok-cancel-dialog>
+<app-ok-cancel-dialog #okcancel (onOk)="onOkCancelDialogOk($event)" />

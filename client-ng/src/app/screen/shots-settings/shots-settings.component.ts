@@ -1,9 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {UiService} from "../../service/ui.service";
 import {RouterService} from "../../service/router.service";
 import {Shots, ShotsPresets} from "../../../data/camera";
 import {ShotService} from "../../service/shot.service";
 import {Subscription} from "rxjs";
+import {OkCancelDialogComponent} from "../../ui/ok-cancel-dialog.component";
 
 @Component({
     selector: 'app-shots-settings',
@@ -20,9 +21,8 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
     public showNewPresetDialog: boolean = false;
     public newPresetName!: string;
 
-    public showDeleteOkCancelDialog: boolean = false;
-    public deleteName!: string;
-    deleteMessage: string = '';
+    @ViewChild('okcancel')
+    private okCancelDialog!: OkCancelDialogComponent;
 
     constructor(private uiService: UiService,
                 private routerService: RouterService,
@@ -65,20 +65,11 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
     }
 
     _onDeletePreset(key: string) {
-        this.showDeleteOkCancelDialog = true;
-        this.deleteName = key;
-        this.deleteMessage = `Delete preset '${key}?'`
+        this.okCancelDialog.show(key, `Delete preset '${key}?'`);
     }
 
-    _onDeletePresetOk() {
-        this.showDeleteOkCancelDialog = false;
-        this._presets.delete(this.deleteName);
-        this.deleteName = '';
-    }
-
-    _onDeletePresetCancel() {
-        this.showDeleteOkCancelDialog = false;
-        this.deleteName = '';
+    _onDeletePresetOk(key: string) {
+        this._presets.delete(key);
     }
 
     _onLoadPreset(key: string) {
@@ -117,7 +108,7 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
     onAsNewPresetOk() {
         this.showNewPresetDialog = false;
         this._presets.set(this.newPresetName, this._shots.clone());
-        console.log("DEBUG",this._presets);
+        console.log("DEBUG", this._presets);
         this.shotService.sendSetPresets(this._presets)
     }
 

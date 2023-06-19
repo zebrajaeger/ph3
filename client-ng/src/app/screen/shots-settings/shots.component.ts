@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Shot, Shots} from "../../../data/camera";
+import {OkCancelDialogComponent} from "../../ui/ok-cancel-dialog.component";
 
 @Component({
     selector: 'shots',
@@ -15,10 +16,10 @@ export class ShotsComponent {
     @Input() public editable = false;
     @Output() public onChange = new EventEmitter<Shots>();
 
+    @ViewChild('okcancel')
+    private okCancelDialog!: OkCancelDialogComponent;
+
     public _shots: Shots = new Shots();
-    public showDeleteOkCancelDialog = false;
-    public shotToDeleteId = -1;
-    public deleteMessage: string = '';
 
     onUp(index: number) {
         const temp = this._shots[index];
@@ -40,18 +41,13 @@ export class ShotsComponent {
     }
 
     onDelete(index: number) {
-        this.shotToDeleteId = index;
-        this.deleteMessage = `Delete shot #${index} (F:${this._shots[index].focusTimeMs / 1000}, T:${this._shots[index].triggerTimeMs / 1000})?`
-        this.showDeleteOkCancelDialog = true;
+        this.okCancelDialog.show(
+            index,
+            `Delete shot #${index} (F:${this._shots[index].focusTimeMs / 1000}, T:${this._shots[index].triggerTimeMs / 1000})?`)
     }
 
-    _onDeleteShotOk() {
-        this.showDeleteOkCancelDialog = false;
-        this._shots.splice(this.shotToDeleteId, 1);
+    _onDeleteShotOk(index: number) {
+        this._shots.splice(index, 1);
         this.onChange.emit(this._shots);
-    }
-
-    _onDeleteShotCancel() {
-        this.showDeleteOkCancelDialog = false;
     }
 }

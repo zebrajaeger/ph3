@@ -50,6 +50,7 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     }
 
     onRename(name: string) {
+        this.oldName = name;
         this.keyboardDialog.show('Rename FOV preset to', name);
     }
 

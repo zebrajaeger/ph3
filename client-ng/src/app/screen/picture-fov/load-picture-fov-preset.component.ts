@@ -3,6 +3,7 @@ import {PanoService} from "../../service/pano.service";
 import {RouterService} from "../../service/router.service";
 import {UiService} from "../../service/ui.service";
 import {OkCancelDialogComponent} from "../../ui/ok-cancel-dialog.component";
+import {NavigationService} from "../../service/navigation.service";
 
 @Component({
     selector: 'app-load-picture-fov-preset',
@@ -18,7 +19,8 @@ export class LoadPictureFovPresetComponent implements OnInit, OnDestroy {
 
     constructor(private panoService: PanoService,
                 private routerService: RouterService,
-                private uiService: UiService) {
+                private uiService: UiService,
+                private navigation: NavigationService) {
         this.routerService.onActivate(this, () => this.onActivate());
     }
 
@@ -48,5 +50,6 @@ export class LoadPictureFovPresetComponent implements OnInit, OnDestroy {
 
     onOkCancelDialogOk(key: string) {
         this.panoService.loadPictureFov(key);
+        this.navigation.back();
     }
 }

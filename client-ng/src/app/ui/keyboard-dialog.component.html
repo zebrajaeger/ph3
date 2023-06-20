@@ -1,18 +1,22 @@
-<input type="text"
-       (input)="_onInputChange($event)"
-       class="input display"
-       value="{{value}}"
-       placeholder="{{placeholder}}"/>
-<div class="simple-keyboard"></div>
-<div class="placeholder"></div>
-<div class="buttons">
-    <div class="button ok" (click)="_onOk()">
-        <img src="/assets/icons/done_FILL0_wght400_GRAD0_opsz48.svg" alt="Ok"/>
-        Ok
-    </div>
-    <div class="button cancel" (click)="_onCancel()">
-        <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
-        Cancel
+<div class="modal root" *ngIf="isVisible">
+    <input type="text"
+           class="input display"
+           value="{{value}}"
+           placeholder="{{placeholder}}"/>
+
+    <app-keyboard class="keyboard" [(value)]="value"/>
+
+    <div class="placeholder"></div>
+
+    <div class="buttons">
+        <div class="button ok" (click)="_onOk()" [ngClass]="{'disabled':!isOkAvailable}">
+            <img src="/assets/icons/done_FILL0_wght400_GRAD0_opsz48.svg" alt="Ok"/>
+            Ok
+        </div>
+        <div class="button cancel" (click)="_onCancel()">
+            <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
+            Cancel
+        </div>
     </div>
 </div>
 

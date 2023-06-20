@@ -5,6 +5,7 @@ import {Shots, ShotsPresets} from "../../../data/camera";
 import {ShotService} from "../../service/shot.service";
 import {Subscription} from "rxjs";
 import {OkCancelDialogComponent} from "../../ui/ok-cancel-dialog.component";
+import {KeyboardDialogComponent} from "../../ui/keyboard-dialog.component";
 
 @Component({
     selector: 'app-shots-settings',
@@ -18,11 +19,12 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
     public tempShots!: Shots;
     public editPreset: string | undefined;
 
-    public showNewPresetDialog: boolean = false;
-    public newPresetName!: string;
+    private editMode = '';
 
     @ViewChild('okcancel')
     private okCancelDialog!: OkCancelDialogComponent;
+    @ViewChild('keyboard')
+    private keyboardDialog!: KeyboardDialogComponent;
 
     constructor(private uiService: UiService,
                 private routerService: RouterService,
@@ -50,7 +52,6 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
     }
 
     set presets(value: ShotsPresets) {
-        console.log('PRE', value)
         this._presets = value;
     }
 
@@ -72,14 +73,19 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
         this._presets.delete(key);
     }
 
-    _onLoadPreset(key: string) {
-        this._shots = <Shots>this._presets.get(key);
+    _onLoadPreset(name: string) {
+        this._shots = <Shots>this._presets.get(name);
         this.shotService.sendSetCurrentShots(this._shots)
     }
 
-    _onEditPreset(key: string) {
-        this.editPreset = key;
-        this.tempShots = <Shots>this._presets.get(key)?.clone();
+    _onEditPreset(name: string) {
+        this.editPreset = name;
+        this.tempShots = <Shots>this._presets.get(name)?.clone();
+    }
+
+    _onAddPreset() {
+        this.editMode = 'addEmptyPreset';
+        this.keyboardDialog.show('Name for new Preset', '');
     }
 
     _onEditPresetOk() {
@@ -92,27 +98,19 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
         this.editPreset = undefined;
     }
 
-
-    // onKeyboardOk() {
-    //     this.showNewPresetDialog = false;
-    //     this._presets.set(this.newPresetName, this._shots.clone());
-    //     this.shotService.sendSetPresets(this._presets);
-    // }
-
-
     onAsNewPreset() {
-        this.showNewPresetDialog = true;
-        this.newPresetName = '';
+        this.editMode = 'asNewPreset';
+        this.keyboardDialog.show('Enter new shot-preset name', '')
     }
 
-    onAsNewPresetOk() {
-        this.showNewPresetDialog = false;
-        this._presets.set(this.newPresetName, this._shots.clone());
-        console.log("DEBUG", this._presets);
-        this.shotService.sendSetPresets(this._presets)
-    }
+    onKeyboardOk(name: string) {
+        if (this.editMode === 'addEmptyPreset') {
+            this.editPreset = name;
+            this.tempShots = new Shots();
 
-    onAsNewPresetCancel() {
-        this.showNewPresetDialog = false;
+        } else if (this.editMode === 'asNewPreset') {
+            this._presets.set(name, this._shots.clone());
+            this.shotService.sendSetPresets(this._presets)
+        }
     }
 }

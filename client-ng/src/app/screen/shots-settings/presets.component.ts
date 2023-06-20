@@ -12,11 +12,12 @@ export class PresetsComponent {
     @Output() public onEdit = new EventEmitter<string>();
     @Output() public onLoad = new EventEmitter<string>();
     @Output() public onDelete = new EventEmitter<string>();
+    @Output() public onAdd = new EventEmitter<void>();
 
     @Input() editable = true;
 
     _onAdd() {
-
+        this.onAdd.emit();
     }
 
     _onDelete(name: string) {

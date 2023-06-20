@@ -1,4 +1,4 @@
-:host {
+.root {
   display: flex;
   flex-direction: column;
 }
@@ -17,7 +17,18 @@ ul {
   box-sizing: border-box;
 }
 
-.placeholder{
+.keyboard {
+  width: 760px;
+  height: 100px;
+  border: 1px solid green;
+
+  .hg-button .hg-standardBtn {
+    background-color: #0d78ee;
+
+  }
+}
+
+.placeholder {
   flex-grow: 1;
 }
 
@@ -29,9 +40,19 @@ ul {
 
   .button {
     width: 150px;
+    margin-bottom: 20px;
 
-    .ok {
+    &.ok {
       margin-right: 50px;
+
+      &.disabled {
+        background-color: gray;
+        color: white;
+      }
+    }
+
+    &.cancel {
+      margin-right: 20px;
     }
   }
 }

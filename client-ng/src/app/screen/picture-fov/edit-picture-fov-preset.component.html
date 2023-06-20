@@ -13,10 +13,6 @@
     </div>
 </div>
 
-<app-keyboard-dialog *ngIf="showKeyboardDialog"
-                     [(value)]="keyboardDialogValue"
-                     (onOk)="onKeyboardDialogOk()"
-                     (onCancel)="onKeyboardDialogCancel()"
-/>
+<app-keyboard-dialog #keyboard (onOk)="onKeyboardDialogOk($event)"/>
 
-<app-ok-cancel-dialog #okcancel (onOk)="onOkCancelDialogOk($event)" />
+<app-ok-cancel-dialog #okcancel (onOk)="onOkCancelDialogOk($event)"/>

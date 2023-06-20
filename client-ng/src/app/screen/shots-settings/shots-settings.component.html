@@ -19,11 +19,13 @@
              (onDelete)="_onDeletePreset($event)"
              (onLoad)="_onLoadPreset($event)"
              (onEdit)="_onEditPreset($event)"
+             (onAdd)="_onAddPreset()"
     />
 </div>
 
 <!--Edit Preset Dialog-->
 <div class="modal edit-preset-dialog" *ngIf="editPreset">
+    <div class="headline">Edit preset '{{editPreset}}'</div>
     <shots class="shots"
            [shots]="tempShots"
            [editable]="true"
@@ -36,19 +38,13 @@
         </div>
         <div class="button cancel" (click)="_onEditPresetCancel()">
             <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
-            Cancel</div>
+            Cancel
+        </div>
     </div>
 </div>
 
 <!--New Preset Dialog-->
-<app-keyboard-dialog
-        *ngIf="showNewPresetDialog"
-        class="keyboard-dialog"
-        [(value)]="newPresetName"
-        placeholder="Enter new shot-preset name"
-        (onOk)="onAsNewPresetOk()"
-        (onCancel)="onAsNewPresetCancel()"
-/>
+<app-keyboard-dialog #keyboard class="keyboard-dialog" (onOk)="onKeyboardOk($event)"/>
 
 <!--Delete Preset Dialog-->
 <app-ok-cancel-dialog #okcancel (onOk)="_onDeletePresetOk($event)"/>

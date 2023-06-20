@@ -21,6 +21,11 @@
   flex-direction: column;
   padding: 20px;
 
+  .headline {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
   .placeholder {
     flex-grow: 1;
   }

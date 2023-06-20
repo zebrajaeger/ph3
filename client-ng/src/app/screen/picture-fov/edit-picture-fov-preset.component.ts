@@ -3,6 +3,7 @@ import {PanoService} from "../../service/pano.service";
 import {RouterService} from "../../service/router.service";
 import {UiService} from "../../service/ui.service";
 import {OkCancelDialogComponent} from "../../ui/ok-cancel-dialog.component";
+import {KeyboardDialogComponent} from "../../ui/keyboard-dialog.component";
 
 @Component({
     selector: 'app-edit-picture-fov-preset',
@@ -13,11 +14,11 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     names_: string[] = [];
     private fovNamesSubscription: any;
     oldName!: string;
-    keyboardDialogValue!: string;
-    showKeyboardDialog: boolean = false;
 
     @ViewChild('okcancel')
     private okCancelDialog!: OkCancelDialogComponent;
+    @ViewChild('keyboard')
+    private keyboardDialog!: KeyboardDialogComponent;
 
     constructor(private panoService: PanoService,
                 private routerService: RouterService,
@@ -35,7 +36,6 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     }
 
     set names(value: string[]) {
-        console.log('VALUES', value)
         this.names_ = value;
     }
 
@@ -50,18 +50,11 @@ export class EditPictureFovPresetComponent implements OnInit, OnDestroy {
     }
 
     onRename(name: string) {
-        this.keyboardDialogValue = '';
-        this.oldName = name;
-        this.showKeyboardDialog = true;
+        this.keyboardDialog.show('Rename FOV preset to', name);
     }
 
-    onKeyboardDialogOk() {
-        this.showKeyboardDialog = false;
-        this.panoService.renamePictureFov(this.oldName, this.keyboardDialogValue);
-    }
-
-    onKeyboardDialogCancel() {
-        this.showKeyboardDialog = false;
+    onKeyboardDialogOk(name: string) {
+        this.panoService.renamePictureFov(this.oldName, name);
     }
 
     onOkCancelDialogOk(key: string) {

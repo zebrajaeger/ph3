@@ -1,57 +1,47 @@
-import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
-import Keyboard from "simple-keyboard";
-import {layouts} from "../utils";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
     selector: 'app-keyboard-dialog',
     templateUrl: './keyboard-dialog.component.html',
     styleUrls: ['./keyboard-dialog.component.scss'],
-    host: {'class': 'modal'}
 })
-export class KeyboardDialogComponent implements AfterViewInit {
-    @Input() public placeholder!: string;
-    @Input() public value: string = ''
+export class KeyboardDialogComponent {
+    public value_: string = ''
     @Output() public valueChange = new EventEmitter<string>();
-    @Output() public onOk = new EventEmitter<void>();
+    @Output() public onOk = new EventEmitter<string>();
     @Output() public onCancel = new EventEmitter<void>();
 
-    keyboard!: Keyboard;
+    public placeholder!: string;
+    public isVisible: boolean = false;
 
-    ngAfterViewInit() {
-        this.keyboard = new Keyboard({
-            onChange: input => this._onChange(input),
-            onKeyPress: button => this._onKeyPress(button),
-            layout: layouts.de
-        });
+    public isOkAvailable: boolean = false;
+
+    @Input()
+    public set value(value: string) {
+        this.value_ = value;
+        this.isOkAvailable = value.length > 0;
     }
 
-    _onChange = (input: string) => {
-        this.value = input;
-        this.valueChange.emit(input);
-    };
+    public get value() {
+        return this.value_;
+    }
 
-    _onKeyPress = (button: string) => {
-        if (button === "{shift}" || button === "{lock}") this.handleShift();
-    };
-
-    _onInputChange = (event: any) => {
-        this.keyboard.setInput(event.target.value);
-    };
-
-    handleShift = () => {
-        let currentLayout = this.keyboard.options.layoutName;
-        let shiftToggle = currentLayout === "default" ? "shift" : "default";
-
-        this.keyboard.setOptions({
-            layoutName: shiftToggle
-        });
-    };
+    public show(placeholder: string, value: string) {
+        this.placeholder = placeholder || '';
+        this.value = value;
+        this.isVisible = true;
+    }
 
     _onOk() {
-        this.onOk.emit();
+        if (!this.isOkAvailable) {
+            return;
+        }
+        this.onOk.emit(this.value);
+        this.isVisible = false;
     }
 
     _onCancel() {
         this.onCancel.emit();
+        this.isVisible = false;
     }
 }

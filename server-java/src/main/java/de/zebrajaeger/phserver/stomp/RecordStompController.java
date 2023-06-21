@@ -3,9 +3,13 @@ package de.zebrajaeger.phserver.stomp;
 import de.zebrajaeger.phserver.data.PanoMatrix;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.pano.Command;
+import de.zebrajaeger.phserver.papywizard.Papywizard;
+import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
+import de.zebrajaeger.phserver.service.GpsService;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.service.RecordService;
+import de.zebrajaeger.phserver.util.PapywizardUtils;
 import de.zebrajaeger.phserver.util.StompUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -24,14 +28,16 @@ public class RecordStompController {
     private final PanoService panoService;
     private final PanoHeadService panoHeadService;
     private final RecordService recordService;
+    private final GpsService gpsService;
     private final SimpMessagingTemplate template;
 
     public RecordStompController(PanoService panoService, PanoHeadService panoHeadService,
                                  RecordService recordService,
-                                 SimpMessagingTemplate template) {
+                                 GpsService gpsService, SimpMessagingTemplate template) {
         this.panoService = panoService;
         this.panoHeadService = panoHeadService;
         this.recordService = recordService;
+        this.gpsService = gpsService;
         this.template = template;
     }
 
@@ -40,9 +46,14 @@ public class RecordStompController {
         panoHeadService.normalizeAxisPosition();
         final Optional<PanoMatrix> calculatedPano = panoService.updatePanoMatrix();
         calculatedPano.ifPresent(pano -> {
+
+            final PapywizardGenerator g = new PapywizardGenerator();
+            final Papywizard papywizard = g.generate(pano);
+            papywizard.getHeader().getGeneral().setGps(gpsService.getLocation());
+            PapywizardUtils.writePapywizardFile(papywizard);
+
             List<Command> commands = panoService.createCommands(pano);
-            panoService.createPapywizardFile(pano);
-            recordService.requestStart(commands);
+            recordService.requestStart(commands, papywizard);
         });
     }
 

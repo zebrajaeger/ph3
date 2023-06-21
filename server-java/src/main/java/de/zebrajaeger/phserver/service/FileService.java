@@ -21,7 +21,7 @@ public class FileService {
     private File mediaRoot;
 
     public Collection<String> getPapywizardFileNamesOrderedByTimestamp(int maxItems) {
-        final File[] files = root.listFiles((dir, name) -> name.endsWith("-papywizard.xml"));
+        final File[] files = root.listFiles((dir, name) -> name.endsWith("_papywizard.xml"));
         if (files == null) {
             return Collections.emptyList();
         }

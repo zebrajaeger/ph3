@@ -26,7 +26,8 @@ public class PanoGenerator {
         this.backlashAngle = backlashAngle;
     }
 
-    public List<Command> createCommands(Position currentPosDeg, PanoMatrix panoMatrix,
+    public List<Command> createCommands(Position currentPosDeg,
+                                        PanoMatrix panoMatrix,
                                         List<ShotSettings> shots,
                                         DelaySettings delay) {
 
@@ -59,6 +60,8 @@ public class PanoGenerator {
             int xIndex = 0;
             int xLength = panoMatrix.getXPositions(yIndex).size();
             for (PanoMatrixPosition xPosition : panoMatrix.getXPositions(yIndex)) {
+
+                xPosition.setId(posIndex);
 
                 if (xIndex == 0) {
                     double delta = (xPosition.getX() + xOffset) - lastShotPosition.getX();
@@ -109,6 +112,7 @@ public class PanoGenerator {
 
                 commands.addAll(createCommandsForPos(
                         shotPos,
+                        xPosition.getId(),
                         xIndex, yIndex,
                         shots,
                         delay));
@@ -137,7 +141,7 @@ public class PanoGenerator {
     }
 
     private List<Command> createCommandsForPos(
-            ShotPosition shotPos,
+            ShotPosition shotPos, Integer shotId,
             int xIndex, int yIndex, List<ShotSettings> shots,
             DelaySettings delay) {
 
@@ -158,7 +162,7 @@ public class PanoGenerator {
             // shot itself
             commands.add(new TakeShotCommand(
                     shotPos,
-                    String.format("Shot: %d of %d", (i + 1), shots.size()), shot));
+                    String.format("Shot: %d of %d", (i + 1), shots.size()), shot, shotId));
 
             // if there is another shot, wait if needed
             if (i < shots.size() && delay.getWaitBetweenShots() > 0) {

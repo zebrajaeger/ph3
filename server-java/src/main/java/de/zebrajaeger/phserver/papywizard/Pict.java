@@ -2,6 +2,7 @@ package de.zebrajaeger.phserver.papywizard;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import de.zebrajaeger.phserver.util.PapywizardUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Pict {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH\\hmm\\mss\\s");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH'h'mm'm'ss's'");
     @JacksonXmlProperty(isAttribute = true)
     private Integer bracket;
     @JacksonXmlProperty(isAttribute = true)
@@ -23,6 +24,6 @@ public class Pict {
     private Position position;
 
     public void setTime(LocalDateTime dateTime) {
-        time = dateTime.format(DATE_TIME_FORMATTER);
+        time = PapywizardUtils.toString(dateTime);
     }
 }

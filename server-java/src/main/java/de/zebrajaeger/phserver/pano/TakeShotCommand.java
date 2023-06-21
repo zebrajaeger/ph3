@@ -8,9 +8,11 @@ import lombok.Getter;
 public class TakeShotCommand extends Command {
 
   private final ShotSettings shot;
+  private final Integer id;
 
-  public TakeShotCommand(ShotPosition shotPosition, String description, ShotSettings shot) {
+  public TakeShotCommand(ShotPosition shotPosition, String description, ShotSettings shot, Integer id) {
     super(shotPosition, description);
     this.shot = shot;
+    this.id = id;
   }
 }

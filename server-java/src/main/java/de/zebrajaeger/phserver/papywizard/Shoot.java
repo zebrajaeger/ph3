@@ -4,6 +4,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -17,5 +19,9 @@ public class Shoot {
 
   public void add(Pict pict) {
     picts.add(pict);
+  }
+
+  public Optional<Pict> findById(Integer id){
+      return picts.stream().filter(pict->id.equals(pict.getId())).findFirst();
   }
 }

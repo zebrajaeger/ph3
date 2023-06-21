@@ -10,6 +10,7 @@ import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.pano.*;
 import de.zebrajaeger.phserver.papywizard.Papywizard;
 import de.zebrajaeger.phserver.settings.ShotSettings;
+import de.zebrajaeger.phserver.util.PapywizardUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -39,6 +41,8 @@ public class RecordService {
     private final RobotState robotState = new RobotState(AutomateState.STOPPED, PauseState.RUNNING,
             null);
 
+    private Papywizard papywizard;
+
     @Autowired
     public RecordService(PanoHeadService panoHeadService,
                          ApplicationEventPublisher applicationEventPublisher) {
@@ -49,6 +53,8 @@ public class RecordService {
     public void requestStart(List<Command> commands, Papywizard papywizard) {
         if (this.robotState.getAutomateState() == AutomateState.STOPPED
                 || this.robotState.getAutomateState() == AutomateState.STOPPED_WITH_ERROR) {
+            this.papywizard = papywizard;
+            this.papywizard.getHeader().getShooting().setStartTime(LocalDateTime.now());
             this.commands = commands;
             this.robotState.setCommandCount(commands.size());
             setAutomateState(AutomateState.STARTED).sendUpdate();
@@ -106,6 +112,10 @@ public class RecordService {
             onStopped();
             return;
         }
+        if (this.robotState.getAutomateState() == AutomateState.STOPPED_WITH_ERROR) {
+            onStopped();
+            return;
+        }
 
         // PAUSE state
         if (this.robotState.getPauseState() == PauseState.PAUSE_REQUESTED) {
@@ -156,8 +166,16 @@ public class RecordService {
             } else if (TakeShotCommand.class.equals(currentCommand.getClass())) {
                 setAutomateState(AutomateState.CMD_SHOT).sendUpdate();
                 try {
-                    ShotSettings shot = ((TakeShotCommand) currentCommand).getShot();
+                    final TakeShotCommand takeShotCommand = (TakeShotCommand) currentCommand;
+                    ShotSettings shot = takeShotCommand.getShot();
                     panoHeadService.shot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+
+                    // shot time to papywizard
+                    if (takeShotCommand.getId() != null) {
+                        papywizard
+                                .findPictById(takeShotCommand.getId())
+                                .ifPresent(pict -> pict.setTime(LocalDateTime.now()));
+                    }
                 } catch (IOException e) {
                     setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
                 }
@@ -231,6 +249,10 @@ public class RecordService {
 
     private void onStopped() {
         panoHeadService.normalizeAxisPosition();
+        if (papywizard != null) {
+            papywizard.getHeader().getShooting().setEndTime(LocalDateTime.now());
+            PapywizardUtils.writePapywizardFile(papywizard, "F");
+        }
     }
 
     private RecordService setAutomateState(AutomateState automateState) {

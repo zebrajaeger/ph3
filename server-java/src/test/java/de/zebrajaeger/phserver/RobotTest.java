@@ -54,7 +54,7 @@ public class RobotTest {
     @Test
     public void singleShot() throws InterruptedException {
         List<Command> commands = new LinkedList<>();
-        commands.add(new TakeShotCommand(null, "shot...", new ShotSettings(500, 800)));
+        commands.add(new TakeShotCommand(null, "shot...", new ShotSettings(500, 800), 0));
         recordService.requestStart(commands, new Papywizard());
         Thread.sleep(2000);
     }

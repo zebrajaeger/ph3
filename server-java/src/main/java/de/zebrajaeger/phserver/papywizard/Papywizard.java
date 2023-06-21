@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Optional;
 
 @XmlRootElement(name = "Papywizard")
 @Data
@@ -26,5 +27,9 @@ public class Papywizard {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to generate papywizard xml content", e);
         }
+    }
+
+    public Optional<Pict> findPictById(Integer id) {
+        return shoot.findById(id);
     }
 }

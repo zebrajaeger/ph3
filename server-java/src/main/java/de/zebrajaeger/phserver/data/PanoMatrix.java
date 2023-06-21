@@ -108,47 +108,42 @@ public class PanoMatrix {
     }
 
     public void finalizeData() {
-        int id=0;
+        int id = 0;
         int iy = 0;
-        for(List<PanoMatrixPosition> xs : xPositions){
+        for (List<PanoMatrixPosition> xs : xPositions) {
             Double y = yPositions.get(iy++);
-            for(PanoMatrixPosition p : xs){
+            for (PanoMatrixPosition p : xs) {
                 p.setId(id++);
                 p.setY(y);
             }
         }
     }
 
-    public List<Position> asPositionList(boolean xInverted, boolean yInverted) {
-        List<Position> result = new ArrayList<>();
+    public List<PanoMatrixPosition> asPositionList(boolean xInverted, boolean yInverted) {
+        List<PanoMatrixPosition> result = new ArrayList<>();
         if (yInverted) {
             for (int iy = yPositions.size() - 1; iy >= 0; --iy) {
-                Double y = yPositions.get(iy);
                 List<PanoMatrixPosition> xs = getXPositions(iy);
-                result.addAll(addXPositions(y, xs, xInverted));
+                result.addAll(addXPositions(xs, xInverted));
             }
         } else {
             for (int iy = 0; iy < yPositions.size(); ++iy) {
-                Double y = yPositions.get(iy);
                 List<PanoMatrixPosition> xs = getXPositions(iy);
-                result.addAll(addXPositions(y, xs, xInverted));
+                result.addAll(addXPositions(xs, xInverted));
             }
         }
         return result;
     }
 
-    private List<Position> addXPositions(Double y, List<PanoMatrixPosition> xs, boolean xInverted) {
-        List<Position> result = new ArrayList<>();
+    private List<PanoMatrixPosition> addXPositions(List<PanoMatrixPosition> xs, boolean xInverted) {
+        List<PanoMatrixPosition> result = new ArrayList<>();
 
         if (xInverted) {
             for (int ix = xs.size() - 1; ix >= 0; --ix) {
-                Double x = xs.get(ix).getX();
-                result.add(new Position(x, y));
+                result.add(xs.get(ix));
             }
         } else {
-            for (PanoMatrixPosition x : xs) {
-                result.add(new Position(x.getX(), y));
-            }
+            result.addAll(xs);
         }
 
         return result;

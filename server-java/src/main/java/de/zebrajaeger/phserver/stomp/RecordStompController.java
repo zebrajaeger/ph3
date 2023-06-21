@@ -48,11 +48,13 @@ public class RecordStompController {
         calculatedPano.ifPresent(pano -> {
 
             final PapywizardGenerator g = new PapywizardGenerator();
-            final Papywizard papywizard = g.generate(pano);
-            papywizard.getHeader().getGeneral().setGps(gpsService.getLocation());
-            PapywizardUtils.writePapywizardFile(papywizard);
 
             List<Command> commands = panoService.createCommands(pano);
+
+            final Papywizard papywizard = g.generate(commands);
+            papywizard.getHeader().getGeneral().setGps(gpsService.getLocation());
+            PapywizardUtils.writePapywizardFile(papywizard, "B");
+
             recordService.requestStart(commands, papywizard);
         });
     }

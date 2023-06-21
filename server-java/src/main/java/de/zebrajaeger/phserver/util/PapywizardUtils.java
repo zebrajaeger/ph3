@@ -3,6 +3,7 @@ package de.zebrajaeger.phserver.util;
 import de.zebrajaeger.phserver.papywizard.Papywizard;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,13 +20,22 @@ public class PapywizardUtils {
 
 
     public static void writePapywizardFile(Papywizard papywizard, String postfix) {
-        String gps = papywizard.getHeader().getGeneral().getGps();
         final Date now = new Date();
+
+        String name = papywizard.getHeader().getGeneral().getTitle();
+        if (StringUtils.isBlank(name)) {
+            name = "";
+        } else {
+            name = "_" + name;
+        }
+
+        String gps = papywizard.getHeader().getGeneral().getGps();
         if (gps == null) {
             gps = "";
         } else {
             gps = "_" + gps;
         }
+
         if (postfix == null) {
             postfix = "";
         } else {
@@ -34,6 +44,7 @@ public class PapywizardUtils {
 
         final File file = new File(FILE_NAME_DATE_TIME_FORMATTER.format(now)
                 + gps
+                + name
                 + postfix
                 + "_papywizard.xml");
         log.info("Write papywizard file to: '{}'", file.getAbsolutePath());

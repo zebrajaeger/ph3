@@ -1,28 +1,31 @@
 package de.zebrajaeger.phserver.papywizard;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import de.zebrajaeger.phserver.data.PanoMatrix;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PapywizardGenerator {
 
-  public String generate(PanoMatrix positions) {
-    XmlMapper xmlMapper = new XmlMapper();
+    public Papywizard generate(PanoMatrix positions) {
 
-    final List<Pict> picts = positions
-        .asPositionList(false, true)
-        .stream()
-        .map(shotPosition -> new Pict(1, new Position(shotPosition.getX(), shotPosition.getY())))
-        .toList();
+        List<Pict> picts = new ArrayList<>();
+        int id = 1;
+        for (de.zebrajaeger.phserver.data.Position shotPosition : positions.asPositionList(false, true)) {
+            Pict pict = new Pict();
+            pict.setBracket(1);
+            pict.setId(id);
+            pict.setPosition(Position.of(shotPosition.getX(), shotPosition.getY()));
+            picts.add(pict);
 
-    Shoot shot = new Shoot(picts);
-    final Papywizard pw = new Papywizard(shot);
+            ++id;
+        }
 
-    try {
-      return xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(pw);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException("Failed to generate papywizard xml content", e);
+        Shoot shot = new Shoot(picts);
+        final Papywizard pw = new Papywizard();
+        pw.getHeader().getGeneral().setComment("Made with Ph3");
+        pw.setShoot(shot);
+
+        return pw;
     }
-  }
 }

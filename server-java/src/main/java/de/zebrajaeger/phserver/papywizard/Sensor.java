@@ -6,23 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Pict {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH\\hmm\\mss\\s");
+public class Sensor {
     @JacksonXmlProperty(isAttribute = true)
-    private Integer bracket;
+    private Double coef =1.61;
     @JacksonXmlProperty(isAttribute = true)
-    private Integer id;
-    private String time;
-    private Position position;
-
-    public void setTime(LocalDateTime dateTime) {
-        time = dateTime.format(DATE_TIME_FORMATTER);
-    }
+    private String ratio="3:2";
 }

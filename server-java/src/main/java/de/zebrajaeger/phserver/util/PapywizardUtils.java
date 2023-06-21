@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Slf4j
 public class PapywizardUtils {
-    private static final SimpleDateFormat FILE_NAME_DATE_TIME_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+    private static final SimpleDateFormat FILE_NAME_DATE_TIME_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
     private static final DateTimeFormatter CONTENT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH'h'mm'm'ss's'");
 
 

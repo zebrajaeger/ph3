@@ -10,3 +10,6 @@ ph.log
 ph.log.*
 *-papywizard.xml
 media
+
+/font/*
+/icons/*

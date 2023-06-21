@@ -9,6 +9,7 @@ temp
 ph.log
 ph.log.*
 *-papywizard.xml
+*_papywizard.xml
 media
 
 /font/*

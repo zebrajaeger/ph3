@@ -5,6 +5,7 @@ import de.zebrajaeger.phserver.hardware.fake.FakeService;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.TakeShotCommand;
 import de.zebrajaeger.phserver.pano.WaitCommand;
+import de.zebrajaeger.phserver.papywizard.Papywizard;
 import de.zebrajaeger.phserver.service.RecordService;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ public class RobotTest {
     @Test
     public void startWithNoCommands() throws InterruptedException {
         List<Command> commands = new LinkedList<>();
-        recordService.requestStart(commands);
+        recordService.requestStart(commands, new Papywizard());
         Thread.sleep(1000);
     }
 
@@ -46,7 +47,7 @@ public class RobotTest {
     public void singleDelay() throws InterruptedException {
         List<Command> commands = new LinkedList<>();
         commands.add(new WaitCommand(null, "wait...", 500));
-        recordService.requestStart(commands);
+        recordService.requestStart(commands, new Papywizard());
         Thread.sleep(1000);
     }
 
@@ -54,7 +55,7 @@ public class RobotTest {
     public void singleShot() throws InterruptedException {
         List<Command> commands = new LinkedList<>();
         commands.add(new TakeShotCommand(null, "shot...", new ShotSettings(500, 800)));
-        recordService.requestStart(commands);
+        recordService.requestStart(commands, new Papywizard());
         Thread.sleep(2000);
     }
 }

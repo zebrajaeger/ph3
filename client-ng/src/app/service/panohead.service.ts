@@ -67,11 +67,11 @@ export class PanoHeadService {
         this.rxStompService.publish({destination: '/actor/jogging', body: isJogging.toString()});
     }
 
-    sendManualMove(relPosition : Position): void {
+    sendManualMove(relPosition: Position): void {
         this.rxStompService.publish({destination: '/actor/manualMove', body: JSON.stringify(relPosition)});
     }
 
-    sendManualMoveByJoystick(speed : Position): void {
+    sendManualMoveByJoystick(speed: Position): void {
         this.rxStompService.publish({destination: '/actor/manualMoveByJoystick', body: JSON.stringify(speed)});
     }
 
@@ -94,8 +94,8 @@ export class PanoHeadService {
             .subscribe(cb);
     }
 
-    sendStartRecord(): void {
-        this.rxStompService.publish({destination: '/record/start'});
+    sendStartRecord(name: string): void {
+        this.rxStompService.publish({destination: '/record/start', body: name});
     }
 
     sendStopRecord(): void {

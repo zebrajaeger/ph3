@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RouterService} from '../service/router.service';
 import {UiService} from '../service/ui.service';
 import {PanoHeadService} from '../service/panohead.service';
@@ -6,6 +6,7 @@ import {AutomateState, RobotState} from '../../data/record';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
 import {Pattern} from "../../data/pano";
+import {KeyboardDialogComponent} from "../ui/keyboard-dialog.component";
 
 @Component({
     selector: 'app-record',
@@ -13,6 +14,9 @@ import {Pattern} from "../../data/pano";
     styleUrls: ['./record.component.scss']
 })
 export class RecordComponent implements OnInit, OnDestroy {
+    @ViewChild('keyboard')
+    private keyboardDialog!: KeyboardDialogComponent;
+
     private robotStateSubscription!: Subscription;
     public _robotState!: RobotState;
 
@@ -24,6 +28,8 @@ export class RecordComponent implements OnInit, OnDestroy {
     public color?: string;
 
     public msg: string = '';
+
+    public name = '';
 
     constructor(private routerService: RouterService,
                 private panoHeadService: PanoHeadService,
@@ -71,7 +77,12 @@ export class RecordComponent implements OnInit, OnDestroy {
     }
 
     onStart(): void {
-        this.panoHeadService.sendStartRecord();
+        this.keyboardDialog.show('Enter name of pano', this.name);
+    }
+
+    onKeyboardOk(name: string) {
+        this.name = name;
+        this.panoHeadService.sendStartRecord(name);
     }
 
     onStop(): void {

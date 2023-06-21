@@ -42,7 +42,7 @@ public class RecordStompController {
     }
 
     @MessageMapping("/record/start")
-    public void start() {
+    public void start(String name) {
         panoHeadService.normalizeAxisPosition();
         final Optional<PanoMatrix> calculatedPano = panoService.updatePanoMatrix();
         calculatedPano.ifPresent(pano -> {
@@ -52,6 +52,7 @@ public class RecordStompController {
             List<Command> commands = panoService.createCommands(pano);
 
             final Papywizard papywizard = g.generate(commands);
+            papywizard.getHeader().getGeneral().setTitle(name);
             papywizard.getHeader().getGeneral().setGps(gpsService.getLocation());
             PapywizardUtils.writePapywizardFile(papywizard, "B");
 

@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.pano;
 
 import de.zebrajaeger.phserver.data.PanoMatrix;
+import de.zebrajaeger.phserver.data.PanoMatrixPosition;
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.data.ShotPosition;
 import de.zebrajaeger.phserver.settings.DelaySettings;
@@ -57,10 +58,10 @@ public class PanoGenerator {
             // columns
             int xIndex = 0;
             int xLength = panoMatrix.getXPositions(yIndex).size();
-            for (double xPosition : panoMatrix.getXPositions(yIndex)) {
+            for (PanoMatrixPosition xPosition : panoMatrix.getXPositions(yIndex)) {
 
                 if (xIndex == 0) {
-                    double delta = (xPosition + xOffset) - lastShotPosition.getX();
+                    double delta = (xPosition.getX() + xOffset) - lastShotPosition.getX();
 
                     // more than 1/2 revolution backwards?
                     if (delta < -180d) {
@@ -73,7 +74,7 @@ public class PanoGenerator {
                     }
                 }
 
-                double x = xPosition + xOffset;
+                double x = xPosition.getX() + xOffset;
                 if (first) {
                     // this is the first position, so we go a little left and up
                     // before we go to the target position. This is to avoid the backlash

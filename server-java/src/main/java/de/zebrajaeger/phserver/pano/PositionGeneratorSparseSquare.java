@@ -18,6 +18,7 @@ public class PositionGeneratorSparseSquare extends PositionGenerator {
         PanoMatrix result = new PanoMatrix();
         setYPositions(camera, pano, result);
         setXPositions(currentPosDeg, camera, pano, result);
+        result.finalizeData();
         return result;
     }
 

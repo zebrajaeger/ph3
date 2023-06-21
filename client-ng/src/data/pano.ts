@@ -69,9 +69,14 @@ export enum Pattern {
     SPARSE = <any>"SPARSE"
 }
 
+export class PanoMatrixPosition {
+    id!: number;
+    x!: number;
+    y!: number;
+}
 export class PanoMatrix {
     yPositions!: number[];
-    xPositions!: number[][];
+    xPositions!: PanoMatrixPosition[][];
 
     minX!: number;
     maxX!: number;

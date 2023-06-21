@@ -8,7 +8,7 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import {CameraOfView, PanoFieldOfView, PanoMatrix} from "../../data/pano";
+import {CameraOfView, PanoFieldOfView, PanoMatrix, PanoMatrixPosition} from "../../data/pano";
 import {PanoService} from "../service/pano.service";
 import {Subscription} from "rxjs";
 import {AutomateState, RobotState} from "../../data/record";
@@ -55,7 +55,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         this.panoFovSubscription = this.panoService.subscribePanoFov(fov => this.panoFov = fov);
         this.panoService.requestPanoFov(fov => this.panoFov = fov);
 
-        this.panoFovSubscription = this.panoService.subscribePanoMatrix(matrix => this.panoMatrix = matrix);
+        this.panoMatrixSubscription = this.panoService.subscribePanoMatrix(matrix => this.panoMatrix = matrix);
         this.panoService.requestPanoMatrix(matrix => this.panoMatrix = matrix);
 
         this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
@@ -224,9 +224,10 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
             ctx.stroke();
             for (let yi = 0; yi < this.panoMatrix_.ySize; ++yi) {
                 const y = this.normalizeAndConvertY(this.panoMatrix_.yPositions[yi]);
-                const row = this.panoMatrix_.xPositions[yi];
+                const row : PanoMatrixPosition[] = this.panoMatrix_.xPositions[yi];
                 for (let xi = 0; xi < row.length; ++xi) {
-                    let xx = row[xi] % 360;
+                    const panoMatrixPosition = row[xi];
+                    let xx = panoMatrixPosition.x % 360;
                     const x = this.normalizeAndConvertX(xx) % this.width;
 
                     let fill;

@@ -8,6 +8,7 @@ import de.zebrajaeger.phserver.event.MovementStoppedEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.pano.*;
+import de.zebrajaeger.phserver.papywizard.Papywizard;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class RecordService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    public void requestStart(List<Command> commands) {
+    public void requestStart(List<Command> commands, Papywizard papywizard) {
         if (this.robotState.getAutomateState() == AutomateState.STOPPED
                 || this.robotState.getAutomateState() == AutomateState.STOPPED_WITH_ERROR) {
             this.commands = commands;

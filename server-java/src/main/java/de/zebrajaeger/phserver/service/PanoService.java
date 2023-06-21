@@ -6,7 +6,6 @@ import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.PanoGenerator;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSparseSquare;
 import de.zebrajaeger.phserver.pano.PositionGeneratorSquare;
-import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
 import de.zebrajaeger.phserver.settings.CameraFovSettings;
 import de.zebrajaeger.phserver.settings.PanoFovSettings;
 import de.zebrajaeger.phserver.settings.PicturePresetsSettings;
@@ -15,15 +14,9 @@ import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +26,6 @@ import java.util.Optional;
 @Slf4j
 public class PanoService {
 
-    private static final SimpleDateFormat STRUCTURED_DATE_PATTERN = new SimpleDateFormat(
-            "yyyy-MM-dd_hh-mm-ss");
     private final PanoHeadService panoHeadService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final SettingsService settingsService;
@@ -133,21 +124,6 @@ public class PanoService {
                 panoMatrix,
                 shotService.getCurrent(),
                 delayService.getDelay());
-    }
-
-    public void createPapywizardFile(PanoMatrix calculatedPano) {
-        final PapywizardGenerator g = new PapywizardGenerator();
-        final String xml = g.generate(calculatedPano);
-        final Date now = new Date();
-        final File file = new File(STRUCTURED_DATE_PATTERN.format(now)
-                + "-(" + calculatedPano.getMaxXSize() + "-" + calculatedPano.getMaxY() + ")"
-                + "-papywizard.xml");
-        log.info("Write papywizard file to: '{}'", file.getAbsolutePath());
-        try {
-            FileUtils.write(file, xml, Charset.defaultCharset());
-        } catch (IOException e) {
-            log.error("Could not write papywizard file to: '{}'", file.getAbsolutePath(), e);
-        }
     }
 
     public void publishPictureFOVChange() {

@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.service;
 
 import de.zebrajaeger.phserver.data.GpsData;
+import de.zebrajaeger.phserver.data.GpsLocation;
 import de.zebrajaeger.phserver.event.GpsDataEvent;
 import de.zebrajaeger.phserver.hardware.HardwareService;
 import lombok.Getter;
@@ -34,5 +35,12 @@ public class GpsService {
             gpsData = null;
             log.debug("Could not read from GPS device");
         }
+    }
+
+    public GpsLocation getLocation(){
+        if(gpsData==null){
+            return null;
+        }
+        return gpsData.geoLocation();
     }
 }

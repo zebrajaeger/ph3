@@ -63,7 +63,19 @@
                 <sshexec host="${remote.host}"
                   username="${remote.user}"
                   keyfile="${remote.keyfile}"
-                  command="sudo service browser restart"
+                  command="sudo service browser stop"
+                  trust="true"
+                />
+                <sshexec host="${remote.host}"
+                  username="${remote.user}"
+                  keyfile="${remote.keyfile}"
+                  command="rm -rf ~/.cache/chromium"
+                  trust="true"
+                />
+                <sshexec host="${remote.host}"
+                  username="${remote.user}"
+                  keyfile="${remote.keyfile}"
+                  command="sudo service browser start"
                   trust="true"
                 />
               </target>

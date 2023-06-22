@@ -1,14 +1,14 @@
 <div class="content">
   <div class="line">
-    <div class="item">Pos: (<span class="value">{{actorPos | position }}</span>)</div>
-    <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
+    <div class="item">Pos: (<span class="value symbol">{{actorPos | position }}</span>)</div>
+    <div class="item"> Power: (<span class="value symbol">{{gaugeString}}</span>)</div>
     <div class="item"> RobotState: (<span class="value">{{robotState?.automateState}}</span>)</div>
   </div>
   <div class="line">
-    <div class="item">Img: (<span class="value">{{pictureFov | fovSize}}</span>)</div>
-    <div class="item">Pano: (<span class="value">{{panoFov | fovPartialSize}}</span>)</div>
-    <div class="item">Pano<img class="icon" src="/assets/icons/grid_on_FILL0_wght400_GRAD0_opsz48.svg" alt="Grid"/>: (<span class="value">{{panoMsg}}</span>)</div>
-    <div class="item">Gps: (<span class="value">{{gps | gpsToString}}</span>)</div>
+    <div class="item">Img: (<span class="value symbol">{{pictureFov | fovSize}}</span>)</div>
+    <div class="item">Pano: (<span class="value symbol">{{panoFov | fovPartialSize}}</span>)</div>
+    <div class="item">Pano<span class=symbol-grid_on></span>: (<span class="value symbols">{{panoMsg}}</span>)</div>
+    <div class="item">Gps: (<span class="value symbol">{{gps | gpsToString}}</span>)</div>
   </div>
 </div>
 
@@ -22,23 +22,19 @@
 <div class="modal shutdown-dialog" *ngIf="showSystemDialog">
   <div class="buttons">
     <div (click)="restartApp()" class="button restart-app">
-        <img src="/assets/icons/frame_reload_FILL0_wght400_GRAD0_opsz48.svg" alt="Restart app"/>
-      Restart App
+      <span class=symbol-frame_reload> Restart App</span>
     </div>
     <div (click)="reboot()" class="button reboot-system">
-        <img src="/assets/icons/refresh_FILL0_wght400_GRAD0_opsz48.svg" alt="Reboot"/>
-      Reboot
+      <span class=symbol-refresh> Reboot</span>
     </div>
     <div (click)="shutdown()" class="button shutdown-system">
-        <img src="/assets/icons/power_rounded_FILL0_wght400_GRAD0_opsz48.svg" alt="Off"/>
-      &nbsp;Shutdown
+      <span class=symbol-power_rounded> Shutdown</span>
     </div>
   </div>
   <div class="space"></div>
   <div class="go-back">
     <div (click)="onCancelShotdownDialog()" class="button cancel">
-      <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
-      Cancel
+      <span class=symbol-close> Cancel</span>
     </div>
   </div>
 </div>

@@ -17,18 +17,15 @@
     </div>
     <div bottom-left class="bottom-left">
         <button class="button load edit" [routerLink]="['/picture-fov/load']">
-            <img src="/assets/icons/label_important_FILL0_wght400_GRAD0_opsz48.svg" alt="Load"/>
-            Load FOV
+            <span class=symbol-label_important> Load FOV</span>
         </button>
     </div>
     <div bottom-right class="bottom-right">
         <button class="button save edit" [routerLink]="['/picture-fov/save']">
-            <img src="/assets/icons/save_FILL0_wght400_GRAD0_opsz48.svg" alt="Save"/>
-            Save FOV
+            <span class=symbol-save> Save FOV</span>
         </button>
         <button class="button edit" [routerLink]="['/picture-fov/edit']">
-            <img src="/assets/icons/edit_FILL0_wght400_GRAD0_opsz48.svg" alt="Edit"/>
-            Edit FOV
+            <span class=symbol-edit> Edit FOV</span>
         </button>
     </div>
 </movement-controller>
@@ -39,7 +36,7 @@
             <button class="button top" (click)="onTop()">Top</button>
             <button class="button left" (click)="onLeft()">Left</button>
             <button class="close-button button center" (click)="onClosePopup()">
-                <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
+                <span class=symbol-close></span>
             </button>
             <button class="button right" (click)="onRight()">Right</button>
             <button class="button bottom" (click)="onBottom()">Bottom</button>

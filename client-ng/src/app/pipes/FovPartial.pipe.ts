@@ -5,6 +5,13 @@ import {PanoFieldOfView, Range} from "../../data/pano";
   name: 'fovPartialSize'
 })
 export class FovPartialSizePipe implements PipeTransform {
+
+
+  private infinity:string;
+  constructor() {
+    this.infinity =  '<span class="icon-all_inclusive"></span>';
+  }
+
   transform(fov: PanoFieldOfView | undefined | null, ...args: unknown[]): unknown {
     if (fov == null) {
       return '-, -';
@@ -12,13 +19,13 @@ export class FovPartialSizePipe implements PipeTransform {
 
       let x: string;
       if (fov.fullX) {
-        x = '֍';
+        x = 'B';
       } else {
         x = `${FovPartialSizePipe.rangeToString(fov.x)}`;
       }
       let y: string;
       if (fov.fullY) {
-        y = '֍';
+        y = 'B';
       } else {
         y = `${FovPartialSizePipe.rangeToString(fov.y)}`;
       }

@@ -1,5 +1,5 @@
 <div class="button delete" *ngIf="editable" (click)="_onDelete()">
-    <img src="/assets/icons/delete_FILL0_wght400_GRAD0_opsz48.svg" alt="Delete"/>
+    <span class=symbol-delete> </span>
 </div>
 
 <div class="label f">F:</div>
@@ -19,21 +19,20 @@
 >
 
 <div class="button button-up edit" *ngIf="editable && !first" (click)="_onUp()">
-    <img src="/assets/icons/arrow_upward_FILL0_wght400_GRAD0_opsz48.svg" alt="Up"/>
+    <span class="symbol-arrow_upward"></span>
 </div>
 <div class="button button-down edit" *ngIf="editable && !last" (click)="_onDown()">
-    <img src="/assets/icons/arrow_downward_FILL0_wght400_GRAD0_opsz48.svg" alt="Down"/>
+    <span class="symbol-arrow_downward"></span>
 </div>
 
 <div class="modal" *ngIf="edit">
     <app-number-pad [(value)]="temp"/>
     <div class="buttons">
         <div class="button ok" (click)="_onOk()">
-            <img src="/assets/icons/done_FILL0_wght400_GRAD0_opsz48.svg" alt="Ok"/>
-            Ok</div>
+            <span class=symbol-done> Ok</span>
+        </div>
         <div class="button cancel" (click)="_onCancel()">
-            <img src="/assets/icons/close_FILL0_wght400_GRAD0_opsz48.svg" alt="Cancel"/>
-            Cancel
+            <span class="symbol-close"> Cancel</span>
         </div>
     </div>
 </div>

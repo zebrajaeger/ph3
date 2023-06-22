@@ -1,58 +1,66 @@
 @import 'simple-keyboard/build/css/index.css';
+//@import 'assets/icon-fonts/google-material-icons.css';
+@import 'assets/font/roboto.css';
+@import 'assets/font/power-symbols.css';
+@import 'assets/font/symbol.scss';
 
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Thin.ttf") format('truetype');
-  font-weight: 100;
-  font-style: normal;
-}
+//@font-face {
+//  font-family: "Roboto";
+//  src: url("/assets/font/Roboto-Thin.ttf") format('truetype');
+//  font-weight: 100;
+//  font-style: normal;
+//}
+//
+//@font-face {
+//  font-family: "Roboto";
+//  src: url("/assets/font/Roboto-Light.ttf") format('truetype');
+//  font-weight: 100;
+//  font-style: normal;
+//}
+//
+//@font-face {
+//  font-family: "Roboto";
+//  src: url("/assets/font/Roboto-Regular.ttf") format('truetype');
+//  font-weight: 400;
+//  font-style: normal;
+//}
+//
+//@font-face {
+//  font-family: "Roboto";
+//  src: url("/assets/font/Roboto-Medium.ttf") format('truetype');
+//  font-weight: 500;
+//  font-style: normal;
+//}
+//
+//@font-face {
+//  font-family: "Roboto";
+//  src: url("/assets/font/Roboto-Bold.ttf") format('truetype');
+//  font-weight: 700;
+//  font-style: normal;
+//}
+//
+//@font-face {
+//  font-family: "Roboto";
+//  src: url("/assets/font/Roboto-Black.ttf") format('truetype');
+//  font-weight: 700;
+//  font-style: normal;
+//}
 
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Light.ttf") format('truetype');
-  font-weight: 100;
-  font-style: normal;
-}
+//@font-face {
+//  font-family: 'power_symbols';
+//  src: url('/assets/font/Unicode_IEC_symbol.ttf') format('truetype');
+//  font-weight: normal;
+//  font-style: normal;
+//}
 
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Regular.ttf") format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
+//@font-face {
+//  font-family: 'symbols';
+//  src: url('/assets/font/symbol.ttf') format('truetype');
+//  font-weight: normal;
+//  font-style: normal;
+//}
 
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Medium.ttf") format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
 
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Bold.ttf") format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Black.ttf") format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'power_symbols';
-  src: url('/assets/font/Unicode_IEC_symbol.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-.power {
-  font-family: 'power_symbols', serif;
-  font-style: normal;
-}
 
 html, body {
   background-color: #999999;

@@ -3,6 +3,10 @@
 @import 'assets/font/power-symbols.css';
 @import 'assets/font/symbol.scss';
 
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   background-color: #999999;
 }

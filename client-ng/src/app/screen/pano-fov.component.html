@@ -26,12 +26,12 @@
     </div>
     <div class="left-center-content h-value">
       <span class="value" *ngIf="!fov?.fullX">{{hText}}</span>
-      <span class="value" *ngIf="fov?.fullX">֍</span>
+      <span class="value symbol-all_inclusive" *ngIf="fov?.fullX"></span>
     </div>
     <div class="left-center-content v-label"><span class="value">V:</span></div>
     <div class="left-center-content v-value">
       <span class="value" *ngIf="!fov?.fullY">{{vText}}</span>
-      <span class="value" *ngIf="fov?.fullY">֍</span>
+      <span class="value symbol-all_inclusive" *ngIf="fov?.fullY"></span>
     </div>
   </div>
 

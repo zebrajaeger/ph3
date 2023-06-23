@@ -1,7 +1,8 @@
 :host {
   width: 800px;
   height: 40px;
-  box-sizing: border-box;
+  position: absolute;
+  top: 440px;
   border: 1px solid black;
   margin: 0;
   background-color: white;
@@ -30,7 +31,7 @@
 
 .on-off {
   border-left: 1px solid black;
-  width: 25px;
+  width: 35px;
   padding: 5px;
   background-color: mistyrose;
 

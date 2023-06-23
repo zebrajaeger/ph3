@@ -3,38 +3,49 @@ import Keyboard from "simple-keyboard";
 import {layouts} from "../../utils";
 
 @Component({
-  selector: 'app-keyboard',
-  templateUrl: './keyboard.component.html',
-  styleUrls: ['./keyboard.component.scss']
+    selector: 'app-keyboard',
+    templateUrl: './keyboard.component.html',
+    styleUrls: ['./keyboard.component.scss']
 })
-export class KeyboardComponent  implements AfterViewInit{
-  @Output() public valueChange = new EventEmitter<string>();
-  @Input()  public value: string = ''
-  private keyboard!: Keyboard;
+export class KeyboardComponent implements AfterViewInit {
+    @Output() public valueChange = new EventEmitter<string>();
+    public value_: string = ''
+    private keyboard!: Keyboard;
 
-  ngAfterViewInit() {
-    this.keyboard = new Keyboard({
-        onChange: input => this._onChange(input),
-        onKeyPress: button => this._onKeyPress(button),
-        layout: layouts.de
-    });
-  }
+    ngAfterViewInit() {
+        this.keyboard = new Keyboard({
+            onChange: input => this._onChange(input),
+            onKeyPress: button => this._onKeyPress(button),
+            layout: layouts.de
+        });
+      if (this.keyboard) {
+        this.keyboard.setInput(this.value_);
+      }
+    }
 
-  _onChange = (input: string) => {
-    this.value = input;
-    this.valueChange.emit(input);
-  };
+    @Input()
+    set value(value: string) {
+        this._onChange(value);
+        if (this.keyboard) {
+            this.keyboard.setInput(value);
+        }
+    }
 
-  _onKeyPress = (button: string) => {
-    if (button === "{shift}" || button === "{lock}") this.handleShift();
-  };
+    _onChange = (input: string) => {
+        this.value_ = input;
+        this.valueChange.emit(input);
+    };
 
-  handleShift = () => {
-    let currentLayout = this.keyboard.options.layoutName;
-    let shiftToggle = currentLayout === "default" ? "shift" : "default";
+    _onKeyPress = (button: string) => {
+        if (button === "{shift}" || button === "{lock}") this.handleShift();
+    };
 
-    this.keyboard.setOptions({
-      layoutName: shiftToggle
-    });
-  };
+    handleShift = () => {
+        let currentLayout = this.keyboard.options.layoutName;
+        let shiftToggle = currentLayout === "default" ? "shift" : "default";
+
+        this.keyboard.setOptions({
+            layoutName: shiftToggle
+        });
+    };
 }

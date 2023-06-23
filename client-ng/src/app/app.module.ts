@@ -39,19 +39,18 @@ import {SavePictureFovPresetComponent} from './screen/picture-fov/save-picture-f
 import {BackButtonDirective} from './directive/back-button.directive';
 import {LoadPictureFovPresetComponent} from './screen/picture-fov/load-picture-fov-preset.component';
 import {EditPictureFovPresetComponent} from './screen/picture-fov/edit-picture-fov-preset.component';
-import { CalcFovComponent } from './screen/calc-fov.component';
+import {CalcFovComponent} from './screen/calc-fov.component';
 import {FormsModule} from "@angular/forms";
-import { MovementSettingsComponent } from './screen/movement-settings/movement-settings.component';
-import { ShotsSettingsComponent } from './screen/shots-settings/shots-settings.component';
-import { ShotSettingComponent } from './screen/shots-settings/shot-setting.component';
-import { ShotComponent } from './screen/shots-settings/shot.component';
-import { MillisToSecondPipe } from './pipes/millis-to-second.pipe';
-import { ShotsComponent } from './screen/shots-settings/shots.component';
-import { PresetsComponent } from './screen/shots-settings/presets.component';
-import { KeyboardDialogComponent } from './ui/keyboard-dialog.component';
-import { OkCancelDialogComponent } from './ui/ok-cancel-dialog.component';
-import { GpsToStringPipe } from './pipes/gps-to-string.pipe';
-import { KeyboardComponent } from './ui/keyboard/keyboard.component';
+import {MovementSettingsComponent} from './screen/movement-settings/movement-settings.component';
+import {ShotsSettingsComponent} from './screen/shots-settings/shots-settings.component';
+import {ShotComponent} from './screen/shots-settings/shot.component';
+import {MillisToSecondPipe} from './pipes/millis-to-second.pipe';
+import {ShotsComponent} from './screen/shots-settings/shots.component';
+import {PresetsComponent} from './screen/shots-settings/presets.component';
+import {KeyboardDialogComponent} from './ui/keyboard-dialog.component';
+import {OkCancelDialogComponent} from './ui/ok-cancel-dialog.component';
+import {GpsToStringPipe} from './pipes/gps-to-string.pipe';
+import {KeyboardComponent} from './ui/keyboard/keyboard.component';
 
 @NgModule({
     declarations: [
@@ -88,7 +87,6 @@ import { KeyboardComponent } from './ui/keyboard/keyboard.component';
         CalcFovComponent,
         MovementSettingsComponent,
         ShotsSettingsComponent,
-        ShotSettingComponent,
         ShotComponent,
         MillisToSecondPipe,
         ShotsComponent,

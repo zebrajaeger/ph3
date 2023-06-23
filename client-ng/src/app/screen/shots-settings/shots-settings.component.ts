@@ -21,8 +21,10 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
 
     private editMode = '';
 
-    @ViewChild('okcancel')
-    private okCancelDialog!: OkCancelDialogComponent;
+    @ViewChild('okCancelDelete')
+    private okCancelDialogDelete!: OkCancelDialogComponent;
+    @ViewChild('okCancelLoad')
+    private okCancelDialogLoad!: OkCancelDialogComponent;
     @ViewChild('keyboard')
     private keyboardDialog!: KeyboardDialogComponent;
 
@@ -66,7 +68,7 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
     }
 
     _onDeletePreset(key: string) {
-        this.okCancelDialog.show(key, `Delete preset '${key}?'`);
+        this.okCancelDialogDelete.show(key, `Delete preset '${key}?'`);
     }
 
     _onDeletePresetOk(key: string) {
@@ -74,9 +76,14 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
     }
 
     _onLoadPreset(name: string) {
+        this.okCancelDialogLoad.show(name, `Overwrite current shots with preset '${name}'`);
+    }
+
+    _onLoadPresetOk(name: any) {
         this._shots = <Shots>this._presets.get(name);
         this.shotService.sendSetCurrentShots(this._shots)
     }
+
 
     _onEditPreset(name: string) {
         this.editPreset = name;
@@ -113,4 +120,5 @@ export class ShotsSettingsComponent implements OnInit, OnDestroy {
             this.shotService.sendSetPresets(this._presets)
         }
     }
+
 }

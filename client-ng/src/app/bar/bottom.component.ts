@@ -25,6 +25,9 @@ export class BottomComponent implements OnInit, OnDestroy {
     public gauge!: Power;
     public gaugeString!: string;
 
+    private batterySubscription!: Subscription;
+    public batteryString: string = '';
+
     private robotStateSubscription!: Subscription;
     public robotState?: RobotState;
 
@@ -58,6 +61,14 @@ export class BottomComponent implements OnInit, OnDestroy {
         this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {
             this.gauge = power;
             this.gaugeString = power.toString();
+        });
+
+        this.batterySubscription = this.panoHeadService.subscribeBatteryState(batteryState => {
+            if (batteryState.valid) {
+                this.batteryString = `${batteryState.percentage}%`;
+            } else {
+                this.batteryString = `-`;
+            }
         });
 
         this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);

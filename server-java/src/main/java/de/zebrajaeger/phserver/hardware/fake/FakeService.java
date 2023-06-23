@@ -24,6 +24,8 @@ public class FakeService implements HardwareService {
     private final FakeGpsDevice gpsDevice = new FakeGpsDevice();
     private final FakeSystemDevice systemDevice = new FakeSystemDevice();
 
+    private final FakePowerGauge powerGauge = new FakePowerGauge();
+
     @Value("${develop.updatesPerSecond:5}")
     private int updatesPerSecond;
 
@@ -33,8 +35,8 @@ public class FakeService implements HardwareService {
     }
 
     @Override
-    public Optional<PowerGauge> getPowerGauge() {
-        return Optional.empty();
+    public PowerGauge getPowerGauge() {
+        return powerGauge;
     }
 
     @Override

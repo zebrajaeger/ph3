@@ -62,8 +62,8 @@ public class RemoteService implements HardwareService {
     }
 
     @Override
-    public Optional<PowerGauge> getPowerGauge() {
-        return Optional.of(powerGauge);
+    public PowerGauge getPowerGauge() {
+        return powerGauge;
     }
 
     @Override

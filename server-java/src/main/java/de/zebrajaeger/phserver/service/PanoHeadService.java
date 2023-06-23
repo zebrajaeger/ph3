@@ -1,5 +1,7 @@
 package de.zebrajaeger.phserver.service;
 
+import de.zebrajaeger.phserver.battery.Batteries;
+import de.zebrajaeger.phserver.battery.DefaultBatteryInterpolator;
 import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.hardware.HardwareService;
@@ -14,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -35,6 +36,9 @@ public class PanoHeadService {
 
     private long lastManualMove = 0;
     private boolean jogByJoystick = false;
+
+    private Power power;
+    private final DefaultBatteryInterpolator batteryInterpolator;
 
     @Data
     static class PreviousState {
@@ -59,21 +63,33 @@ public class PanoHeadService {
                 MotorDriverParameters.MDP_16,
                 new WormGearParameters());
         y = new Axis(hardwareService.getPanoHead(), AXIS_INDEX_Y, axisParametersY, false);
+
+        batteryInterpolator = new DefaultBatteryInterpolator(Batteries.ParksideX20);
     }
 
-    @Scheduled(initialDelay = 0, fixedRateString = "${controller.power.period:250}")
+    @Scheduled(initialDelay = 1000, fixedRateString = "${controller.power.period:250}")
     public void updatePowerConsumption() {
-        final Optional<PowerGauge> powerGauge = hardwareService.getPowerGauge();
-        if (powerGauge.isPresent()) {
-            try {
-                double u = powerGauge.get().readVoltageInMillivolt() / 1000d;
-                double i = powerGauge.get().readCurrentInMilliampere() / 1000d;
-                Power power = new Power(u, i);
-                applicationEventPublisher.publishEvent(new PowerMeasureEvent(power));
-            } catch (IOException e) {
-                log.debug("Could not read PowerGauge");
-            }
+        final PowerGauge powerGauge = hardwareService.getPowerGauge();
+        try {
+            double u = powerGauge.readVoltageInMillivolt() / 1000d;
+            double i = powerGauge.readCurrentInMilliampere() / 1000d;
+            power = new Power(u, i);
+            applicationEventPublisher.publishEvent(new PowerMeasureEvent(power));
+        } catch (IOException e) {
+            log.debug("Could not read PowerGauge");
         }
+    }
+
+    @Scheduled(initialDelay = 2000, fixedRateString = "${controller.battery.period:5000}")
+    public void updateBatteryState() {
+        BatteryState batteryState;
+        if (power == null) {
+            batteryState = new BatteryState(false, 0);
+        } else {
+            batteryState = new BatteryState(true, (int) batteryInterpolator.getPercentForVoltage(power.getVoltage()));
+        }
+        log.info("Battery U:{} -> {}%", power != null ? power.getVoltage() : null, batteryState);
+        applicationEventPublisher.publishEvent(new BatteryStateEvent(batteryState));
     }
 
 //    @Scheduled(initialDelay = 0, fixedRateString = "${controller.acceleration.period:500}")

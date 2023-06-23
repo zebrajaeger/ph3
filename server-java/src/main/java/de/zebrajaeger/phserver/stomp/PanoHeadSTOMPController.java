@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Position;
-import de.zebrajaeger.phserver.event.ActorActiveChangedEvent;
-import de.zebrajaeger.phserver.event.JoggingChangedEvent;
-import de.zebrajaeger.phserver.event.PositionEvent;
-import de.zebrajaeger.phserver.event.PowerMeasureEvent;
+import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -96,5 +93,10 @@ public class PanoHeadSTOMPController {
     @EventListener
     public void onPowerConsumption(PowerMeasureEvent powerMeasureEvent) {
         template.convertAndSend("/topic/power/", powerMeasureEvent.power());
+    }
+
+    @EventListener
+    public void onBatteryState(BatteryStateEvent batteryStateEvent) {
+        template.convertAndSend("/topic/battery/", batteryStateEvent.batteryState());
     }
 }

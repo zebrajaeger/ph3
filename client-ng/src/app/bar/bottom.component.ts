@@ -4,9 +4,9 @@ import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
 import {CameraOfView, Gps, PanoFieldOfView, PanoMatrix} from '../../data/pano';
 import {Position, Power} from '../../data/panohead';
-import {SystemService} from '../service/system.service';
 import {RobotState} from "../../data/record";
 import {GpsService} from "../service/gps.service";
+import {UiService} from "../service/ui.service";
 
 @Component({
     selector: 'app-bottom',
@@ -14,6 +14,10 @@ import {GpsService} from "../service/gps.service";
     styleUrls: ['./bottom.component.scss']
 })
 export class BottomComponent implements OnInit, OnDestroy {
+
+    public backButton!: boolean;
+    private backButtonSubscription!: Subscription;
+
     private actorSubscription!: Subscription;
     public actorPos?: Position;
 
@@ -45,10 +49,12 @@ export class BottomComponent implements OnInit, OnDestroy {
     constructor(private panoHeadService: PanoHeadService,
                 private panoService: PanoService,
                 private gpsService: GpsService,
-                private systemService: SystemService) {
+                private uiService: UiService) {
     }
 
     ngOnInit(): void {
+        this.backButtonSubscription = this.uiService.backButton.subscribe(enabled => this.backButton = enabled);
+
         this.actorSubscription = this.panoHeadService.subscribeActorPosition(position => {
             this.actorPos = position;
         });
@@ -92,28 +98,5 @@ export class BottomComponent implements OnInit, OnDestroy {
         this.robotStateSubscription?.unsubscribe();
         this.pictureFovSubscription?.unsubscribe();
         this.panoFovSubscription?.unsubscribe();
-    }
-
-    shutdown(): void {
-        this.systemService.shutdown();
-        console.log('shutdown');
-    }
-
-    reboot(): void {
-        this.systemService.reboot();
-        console.log('reboot');
-    }
-
-    restartApp(): void {
-        this.systemService.restartApp();
-        console.log('restartApp');
-    }
-
-    onOpenSystemDialog() {
-        this.showSystemDialog = true;
-    }
-
-    onCancelShotdownDialog() {
-        this.showSystemDialog = false;
     }
 }

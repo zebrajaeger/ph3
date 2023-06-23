@@ -1,41 +1,22 @@
 <div class="content">
-  <div class="line">
-    <div class="item">Pos: (<span class="value symbol">{{actorPos | position }}</span>)</div>
-    <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
-    <div class="item"> Battery: <span class="value">{{batteryString}}</span></div>
-    <div class="item"> RobotState: (<span class="value">{{robotState?.automateState}}</span>)</div>
-  </div>
-  <div class="line">
-    <div class="item">Img: (<span class="value symbol">{{pictureFov | fovSize}}</span>)</div>
-    <div class="item">Pano: (<span class="value symbol">{{panoFov | fovPartialSize}}</span>)</div>
-    <div class="item">Pano<span class=symbol-grid_on></span>: (<span class="value symbols">{{panoMsg}}</span>)</div>
-    <div class="item">Gps: (<span class="value symbol">{{gps | gpsToString}}</span>)</div>
-  </div>
+    <div class="line">
+        <div class="item">Pos: (<span class="value symbol">{{actorPos | position }}</span>)</div>
+        <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
+        <div class="item"> Battery: <span class="value">{{batteryString}}</span></div>
+        <div class="item"> RobotState: (<span class="value">{{robotState?.automateState}}</span>)</div>
+    </div>
+    <div class="line">
+        <div class="item">Img: (<span class="value symbol">{{pictureFov | fovSize}}</span>)</div>
+        <div class="item">Pano: (<span class="value symbol">{{panoFov | fovPartialSize}}</span>)</div>
+        <div class="item">Pano<span class=symbol-grid_on></span>: (<span class="value symbols">{{panoMsg}}</span>)</div>
+        <div class="item">Gps: (<span class="value symbol">{{gps | gpsToString}}</span>)</div>
+    </div>
 </div>
 
-<div class="on-off">
-  <img src="assets/power-button-svgrepo-com.svg"
-       width="20px"
-       alt="onoff menu"
-       (click)="onOpenSystemDialog()">
-</div>
-
-<div class="modal shutdown-dialog" *ngIf="showSystemDialog">
-  <div class="buttons">
-    <div (click)="restartApp()" class="button restart-app">
-      <span class=symbol-frame_reload> Restart App</span>
-    </div>
-    <div (click)="reboot()" class="button reboot-system">
-      <span class=symbol-refresh> Reboot</span>
-    </div>
-    <div (click)="shutdown()" class="button shutdown-system">
-      <span class=symbol-power_rounded> Shutdown</span>
-    </div>
-  </div>
-  <div class="space"></div>
-  <div class="go-back">
-    <div (click)="onCancelShotdownDialog()" class="button cancel">
-      <span class=symbol-close> Cancel</span>
-    </div>
-  </div>
+<div class="on-off" *ngIf="!backButton">
+    <img src="assets/power-button-svgrepo-com.svg"
+         width="20px"
+         alt="onoff menu"
+         [routerLink]="['/shutdown']"
+    >
 </div>

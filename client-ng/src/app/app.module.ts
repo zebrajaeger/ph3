@@ -51,6 +51,7 @@ import {KeyboardDialogComponent} from './ui/keyboard-dialog.component';
 import {OkCancelDialogComponent} from './ui/ok-cancel-dialog.component';
 import {GpsToStringPipe} from './pipes/gps-to-string.pipe';
 import {KeyboardComponent} from './ui/keyboard/keyboard.component';
+import { ShutdownComponent } from './screen/shutdown/shutdown.component';
 
 @NgModule({
     declarations: [
@@ -94,7 +95,8 @@ import {KeyboardComponent} from './ui/keyboard/keyboard.component';
         KeyboardDialogComponent,
         OkCancelDialogComponent,
         GpsToStringPipe,
-        KeyboardComponent
+        KeyboardComponent,
+        ShutdownComponent
     ],
     imports: [
         BrowserModule,

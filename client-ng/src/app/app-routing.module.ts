@@ -14,6 +14,7 @@ import {EditPictureFovPresetComponent} from "./screen/picture-fov/edit-picture-f
 import {CalcFovComponent} from "./screen/calc-fov.component";
 import {MovementSettingsComponent} from "./screen/movement-settings/movement-settings.component";
 import {ShotsSettingsComponent} from "./screen/shots-settings/shots-settings.component";
+import {ShutdownComponent} from "./screen/shutdown/shutdown.component";
 
 const routes: Routes = [
     {path: 'align', component: AlignComponent},
@@ -30,6 +31,7 @@ const routes: Routes = [
     {path: 'record', component: RecordComponent},
     {path: 'shots', component: ShotsSettingsComponent},
     {path: 'download', component: DownloadComponent},
+    {path: 'shutdown', component: ShutdownComponent},
     {path: '**', component: MainComponent}
 ];
 

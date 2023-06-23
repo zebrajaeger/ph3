@@ -44,44 +44,6 @@
   font-weight: bold;
 }
 
-.shutdown-dialog {
-  display:flex;
-  flex-direction: column;
-  align-items: stretch;
-
-  .buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 266px);
-    grid-template-rows: repeat(1, 128px);
-
-    .button {
-      margin: 10px;
-      &.restart-app {
-        background-color: yellow;
-      }
-      &.reboot-system {
-        background-color: orange;
-      }
-      &.shutdown-system{
-      background-color: red;
-      }
-    }
-  }
-
-  .space {
-    flex-grow: 1;
-  }
-
-  .go-back {
-    display: flex;
-    justify-content: flex-end;
-    .button {
-      margin: 30px;
-      width:150px;
-    }
-  }
-}
-
 .icon {
   width: 15px;
   position: relative;

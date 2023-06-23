@@ -6,12 +6,14 @@ import de.zebrajaeger.phserver.data.GpsLocation;
 import de.zebrajaeger.phserver.data.GpsMetaData;
 import de.zebrajaeger.phserver.hardware.GpsDevice;
 import de.zebrajaeger.phserver.hardware.HardwareDevice;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalDateTime;
 
+@Slf4j
 public class PiGpsDevice implements GpsDevice {
     private final HardwareDevice hardwareDevice;
 
@@ -22,11 +24,21 @@ public class PiGpsDevice implements GpsDevice {
     public GpsData read() throws IOException {
         ByteBuffer buffer = ByteBuffer.wrap(hardwareDevice.read(29)).order(ByteOrder.LITTLE_ENDIAN);
 
+        final GpsLocation geoLocation = new GpsLocation(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
+
+        LocalDateTime dateTime;
+        try {
+            dateTime = LocalDateTime.of(
+                    buffer.getShort(), buffer.get(), buffer.get(),
+                    buffer.get(), buffer.get(), buffer.get());
+        } catch (java.time.DateTimeException e) {
+            log.debug("Could not read Gps-time", e);
+            dateTime = LocalDateTime.now();
+        }
+
         return new GpsData(
-                new GpsLocation(buffer.getFloat(), buffer.getFloat(), buffer.getFloat()),
-                LocalDateTime.of(
-                        buffer.getShort(), buffer.get(), buffer.get(),
-                        buffer.get(), buffer.get(), buffer.get()),
+                geoLocation,
+                dateTime,
                 new GpsMetaData(buffer.getInt(), buffer.getInt()),
                 toGpsFlags(buffer.get()),
                 toGpsFlags(buffer.get())

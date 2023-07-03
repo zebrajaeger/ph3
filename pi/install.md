@@ -16,6 +16,19 @@ Based on Raspberry PI 4B
 
 ## Fix Wifi connection issues
 
+There are two unknown issues:
+- Interferences between HDMI and 2.4GHz WiFi
+- Interferences between USB3.0 and WiFi (also 5GHz?)
+
+### If possible, use 5GHz
+
+    $ sudo  raspi-config
+
+Go to 'Localisation Options' >> 'L4 WLAN Country' and set your country to unlock it.
+
+
+### Patch the firmware
+
 PI4 loses WiFi Connection
 
 - https://forums.raspberrypi.com/viewtopic.php?t=278393&sid=2932da18f4c4dc58bc39dd206f2ffec8&start=25

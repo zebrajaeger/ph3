@@ -2,90 +2,101 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PanoHeadService} from '../service/panohead.service';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
-import {CalculatedPano, FieldOfView, FieldOfViewPartial} from '../../data/pano';
+import {CameraOfView, Gps, PanoFieldOfView, PanoMatrix} from '../../data/pano';
 import {Position, Power} from '../../data/panohead';
-import {ModalService} from '../ui/modal.service';
-import {SystemService} from '../service/system.service';
 import {RobotState} from "../../data/record";
+import {GpsService} from "../service/gps.service";
+import {UiService} from "../service/ui.service";
 
 @Component({
-  selector: 'app-bottom',
-  templateUrl: './bottom.component.html',
-  styleUrls: ['./bottom.component.scss']
+    selector: 'app-bottom',
+    templateUrl: './bottom.component.html',
+    styleUrls: ['./bottom.component.scss']
 })
 export class BottomComponent implements OnInit, OnDestroy {
-  private actorSubscription!: Subscription;
-  public actorPos?: Position;
 
-  private calculatedPanoSubscription!: Subscription;
-  public calc?: CalculatedPano;
-  public panoMsg?: string;
+    public backButton!: boolean;
+    private backButtonSubscription!: Subscription;
 
-  private powerSubscription!: Subscription;
-  public gauge!: Power;
-  public gaugeString!: string;
+    private actorSubscription!: Subscription;
+    public actorPos?: Position;
 
-  private robotStateSubscription!: Subscription;
-  public robotState?: RobotState;
+    private calculatedPanoSubscription!: Subscription;
+    public panoMatrix?: PanoMatrix;
+    public panoMsg?: string;
 
-  private pictureFovSubscription!: Subscription;
-  public pictureFov?: FieldOfView;
-  private panoFovSubscription!: Subscription;
-  public panoFov?: FieldOfViewPartial;
+    private powerSubscription!: Subscription;
+    public gauge!: Power;
+    public gaugeString!: string;
 
-  constructor(private panoHeadService: PanoHeadService,
-              private panoService: PanoService,
-              public modalService: ModalService,
-              private systemService: SystemService) {
-  }
+    private batterySubscription!: Subscription;
+    public batteryString: string = '';
 
-  ngOnInit(): void {
-    this.actorSubscription = this.panoHeadService.subscribeActorPosition(position => {
-      this.actorPos = position;
-    });
+    private robotStateSubscription!: Subscription;
+    public robotState?: RobotState;
 
-    this.panoService.subscribeCalculatedPano(calculatedPano => {
-      this.calc = calculatedPano;
-      this.panoMsg = `${this.calc?.horizontalPositions.length}, ${this.calc?.verticalPositions.length}`
-    });
+    private pictureFovSubscription!: Subscription;
+    public pictureFov?: CameraOfView;
+    private panoFovSubscription!: Subscription;
+    public panoFov?: PanoFieldOfView;
 
-    this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {
-      this.gauge = power;
-      this.gaugeString = power.toString();
-    });
-
-    this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
-    this.panoHeadService.requestRobotState(robotState => this.robotState = robotState);
+    private gpsSubscription!: Subscription;
+    public gps?: Gps;
 
 
-    this.pictureFovSubscription = this.panoService.subscribePictureFov(fov => this.pictureFov = fov);
-    this.panoService.requestPictureFov(fov => this.pictureFov = fov);
+    showSystemDialog = false;
 
-    this.panoFovSubscription = this.panoService.subscribePanoFov(fov => this.panoFov = fov);
-    this.panoService.requestPanoFov(fov => this.panoFov = fov);
-  }
+    constructor(private panoHeadService: PanoHeadService,
+                private panoService: PanoService,
+                private gpsService: GpsService,
+                private uiService: UiService) {
+    }
 
-  ngOnDestroy(): void {
-    this.actorSubscription?.unsubscribe();
-    this.calculatedPanoSubscription?.unsubscribe();
-    this.powerSubscription?.unsubscribe();
-    this.robotStateSubscription?.unsubscribe();
-    this.pictureFovSubscription?.unsubscribe();
-    this.panoFovSubscription?.unsubscribe();
-  }
+    ngOnInit(): void {
+        this.backButtonSubscription = this.uiService.backButton.subscribe(enabled => this.backButton = enabled);
 
-  shutdown(): void {
-    this.systemService.shutdown();
-    console.log('shutdown');
-  }
+        this.actorSubscription = this.panoHeadService.subscribeActorPosition(position => {
+            this.actorPos = position;
+        });
 
-  reboot(): void {
-    this.systemService.reboot();
-    console.log('reboot');
-  }
+        this.panoService.subscribePanoMatrix(panoMatrix => {
+            this.panoMatrix = panoMatrix;
+            this.panoMsg = `${this.panoMatrix?.maxXSize}, ${this.panoMatrix?.ySize} → ${this.panoMatrix?.positionCount}`
+        });
 
-  restartApp(): void {
-    this.systemService.restartApp();
-    console.log('restartApp');
-  }
+        this.powerSubscription = this.panoHeadService.subscribePowerGauge(power => {
+            this.gauge = power;
+            this.gaugeString = power.toString();
+        });
+
+        this.batterySubscription = this.panoHeadService.subscribeBatteryState(batteryState => {
+            if (batteryState.valid) {
+                this.batteryString = `${batteryState.percentage}%`;
+            } else {
+                this.batteryString = `-`;
+            }
+        });
+
+        this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
+        this.panoHeadService.requestRobotState(robotState => this.robotState = robotState);
+
+
+        this.pictureFovSubscription = this.panoService.subscribePictureFov(fov => this.pictureFov = fov);
+        this.panoService.requestPictureFov(fov => this.pictureFov = fov);
+
+        this.panoFovSubscription = this.panoService.subscribePanoFov(fov => this.panoFov = fov);
+        this.panoService.requestPanoFov(fov => this.panoFov = fov);
+
+        this.gpsSubscription = this.gpsService.subscribeGps(gps => this.gps = gps);
+        this.gpsService.requestGps(gps => this.gps = gps);
+    }
+
+    ngOnDestroy(): void {
+        this.actorSubscription?.unsubscribe();
+        this.calculatedPanoSubscription?.unsubscribe();
+        this.powerSubscription?.unsubscribe();
+        this.robotStateSubscription?.unsubscribe();
+        this.pictureFovSubscription?.unsubscribe();
+        this.panoFovSubscription?.unsubscribe();
+    }
 }

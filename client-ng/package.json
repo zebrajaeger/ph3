@@ -21,11 +21,11 @@
     "@angular/router": "15.2.5",
     "@stomp/rx-stomp": "2.0.0",
     "@stomp/stompjs": "7.0.0",
-    "ngx-joystick": "3.0.1",
     "rxjs": "7.4.0",
-    "uuid": "9.0.0",
     "service": "^0.1.4",
+    "simple-keyboard": "3.5.64",
     "tslib": "^2.0.0",
+    "uuid": "9.0.0",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@types/node": "^12.11.1",
     "jasmine-core": "4.6.0",
     "jasmine-spec-reporter": "~5.0.0",
-    "karma": "~6.1.0",
+    "karma": "6.3.16",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",

@@ -1,38 +1,10 @@
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Thin.ttf") format('truetype');
-  font-weight: 100;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Light.ttf") format('truetype');
-  font-weight: 100;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Regular.ttf") format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Medium.ttf") format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Bold.ttf") format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/font/Roboto-Black.ttf") format('truetype');
-  font-weight: 700;
-  font-style: normal;
+@import 'simple-keyboard/build/css/index.css';
+@import 'assets/font/roboto.css';
+@import 'assets/font/power-symbols.css';
+@import 'assets/font/symbol.scss';
+
+* {
+  box-sizing: border-box;
 }
 
 html, body {
@@ -58,13 +30,16 @@ body {
   font-weight: bold;
 
   background-color: unset;
-  //box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;
   box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.6);
   border: 1px solid black;
   border-radius: 5px;
-  text-align: center;
   margin: 3px;
   padding: 7px;
+  user-select: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:active {
     transform: translateX(4px) translateY(4px);
@@ -72,14 +47,48 @@ body {
   }
 }
 
+.button.ok {
+  background-color: #0dee1b;
+}
+
+.cancel {
+  background-color: red;
+}
+
+.delete {
+  background-color: red;
+}
+
+.edit {
+  background-color: yellow;
+}
+
 .center-content {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .left-center-content {
-  display:flex;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 800px;
+  height: 480px;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+app-keyboard-dialog .hg-button.hg-standardBtn {
+  height: 48px;
 }

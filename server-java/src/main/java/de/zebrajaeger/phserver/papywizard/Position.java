@@ -10,10 +10,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Position {
 
-  // x
-  @JacksonXmlProperty(isAttribute = true)
-  private double yaw;
-  // y
-  @JacksonXmlProperty(isAttribute = true)
-  private double pitch;
+    public static Position of(double x, double y) {
+        Position p = new Position();
+        p.setX(x);
+        p.setY(y);
+        return p;
+    }
+
+    // x
+    @JacksonXmlProperty(isAttribute = true)
+    private double yaw;
+
+    // y
+    @JacksonXmlProperty(isAttribute = true)
+    private double pitch;
+
+    @JacksonXmlProperty(isAttribute = true)
+    private double roll = 0d;
+
+    public void setX(double x) {
+        yaw = x;
+    }
+
+    public void setY(double y) {
+        pitch = y;
+    }
 }

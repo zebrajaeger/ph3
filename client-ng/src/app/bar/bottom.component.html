@@ -1,26 +1,22 @@
 <div class="content">
-  <div class="line">
-    <div class="item">Pos: (<span class="value">{{actorPos | position }}</span>)</div>
-    <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
-    <div class="item"> RobotState: (<span class="value">{{robotState?.automateState}}</span>)</div>
-  </div>
-  <div class="line">
-    <div class="item">Img: (<span class="value">{{pictureFov | fovSize}}</span>)</div>
-    <div class="item">Pano: (<span class="value">{{panoFov | fovPartialSize}}</span>)</div>
-    <div class="item">PanoX: (<span class="value">{{panoMsg}}</span>)</div>
-  </div>
-</div>
-<div class="onoff">
-  <img src="assets/power-button-svgrepo-com.svg"
-       width="20px"
-       alt="onoff menu"
-       (click)="modalService.open('system-menu')">
+    <div class="line">
+        <div class="item">Pos: (<span class="value symbol">{{actorPos | position }}</span>)</div>
+        <div class="item"> Power: (<span class="value">{{gaugeString}}</span>)</div>
+        <div class="item"> Battery: <span class="value">{{batteryString}}</span></div>
+        <div class="item"> RobotState: (<span class="value">{{robotState?.automateState}}</span>)</div>
+    </div>
+    <div class="line">
+        <div class="item">Img: (<span class="value symbol">{{pictureFov | fovSize}}</span>)</div>
+        <div class="item">Pano: (<span class="value symbol">{{panoFov | fovPartialSize}}</span>)</div>
+        <div class="item">Pano<span class=symbol-grid_on></span>: (<span class="value symbols">{{panoMsg}}</span>)</div>
+        <div class="item">Gps: (<span class="value symbol">{{gps | gpsToString}}</span>)</div>
+    </div>
 </div>
 
-<app-modal class="modal-system-dialog" id="system-menu">
-  <div class="shutdown-dialog">
-    <button (click)="restartApp()" class="button">Restart App</button>
-    <button (click)="shutdown()" class="button">Shutdown</button>
-    <button (click)="reboot()" class="button">Reboot</button>
-  </div>
-</app-modal>
+<div class="on-off" *ngIf="!backButton">
+    <img src="assets/power-button-svgrepo-com.svg"
+         width="20px"
+         alt="onoff menu"
+         [routerLink]="['/shutdown']"
+    >
+</div>

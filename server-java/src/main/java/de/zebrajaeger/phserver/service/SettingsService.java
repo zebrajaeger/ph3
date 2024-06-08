@@ -1,106 +1,64 @@
 package de.zebrajaeger.phserver.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.zebrajaeger.phserver.papywizard.settings.Settings;
-import de.zebrajaeger.phserver.papywizard.settings.ShotSetting;
-import de.zebrajaeger.phserver.papywizard.settings.ShotsSettings;
+import de.zebrajaeger.phserver.settings.*;
 import dev.dirs.ProjectDirectories;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import java.io.File;
-import java.io.IOException;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
 @Service
+@Getter
 public class SettingsService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SettingsService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SettingsService.class);
 
-  @Value("${settings.file:#{null}}")
-  private File settingsFile;
+    @Value("${settings.save.delay:10}")
+    private int autoSaveDelay;
 
-  @Value("${settings.autosave.delay:10}")
-  private int autosaveDelay;
-  private int autosaveCounter = 0;
+    private SettingStore<Settings> settingsStore;
+    private SettingStore<PicturePresetsSettings> pictureFovPresetsStore;
+    private SettingStore<ShotsPresetSettings> shotsPresetStore;
 
-  private Settings settings = new Settings();
-  private final ObjectMapper mapper = new ObjectMapper();
+    @PostConstruct
+    public void init() {
+        ProjectDirectories myProjDirs = ProjectDirectories.from("de", "zebrajaeger", "panohead");
 
-  @PostConstruct
-  public void init() {
-    // settings file path
-    if (settingsFile == null) {
-      ProjectDirectories myProjDirs = ProjectDirectories.from("de", "zebrajaeger", "panohead");
-      settingsFile = new File(myProjDirs.configDir, "settings.json");
+        final File settingsFile = new File(myProjDirs.configDir, "settings.json");
+        settingsStore = new SettingStore<>(settingsFile, new Settings(), autoSaveDelay).load();
+//        ShotsSettings shots = settingsStore.getSettings().getShots();
+//        if (!shots.isDefaultShotOk()) {
+//            LOG.info("Add/replace default shot to loaded settings");
+//            shots.setDefaultShot(new ShotSettings());
+//            settingsStore.saveDelayed();
+//        }
+
+        pictureFovPresetsStore = new SettingStore<>(
+                new File(myProjDirs.configDir, "picture-fov-presets.json"),
+                new PicturePresetsSettings(), autoSaveDelay).load();
+
+        shotsPresetStore = new SettingStore<>(
+                new File(myProjDirs.configDir, "shots-presets.json"),
+                new ShotsPresetSettings(), autoSaveDelay).load();
     }
 
-    // create directory if needed
-    File settingsDirectory = settingsFile.getParentFile();
-    if (settingsDirectory.mkdirs()) {
-      LOG.info("Settings directory created @'{}'", settingsDirectory.getAbsolutePath());
-    } else {
-      LOG.info("Settings directory already exists: '{}'", settingsDirectory.getAbsolutePath());
+    @PreDestroy
+    public void destroy() {
+        settingsStore.saveImmediately();
+        pictureFovPresetsStore.saveImmediately();
+        shotsPresetStore.saveImmediately();
     }
 
-    // import data
-    load();
-  }
-
-  @PreDestroy
-  public void destroy() {
-    save();
-  }
-
-  public void load() {
-    if (settingsFile.exists()) {
-      LOG.info("Read from settings file: '{}'", settingsFile.getAbsolutePath());
-      try {
-        settings = mapper.readValue(settingsFile, Settings.class);
-        ShotsSettings shots = settings.getShots();
-        if (!shots.isDefaultShotOk()) {
-          LOG.info("Add/replace default shot to loaded settings");
-          shots.setDefaultShot(new ShotSetting());
-          setDirty();
-        }
-      } catch (IOException e) {
-        LOG.error("Could not read settings file", e);
-      }
+    @Scheduled(fixedRate = 1000)
+    public void checkSave() {
+        settingsStore.poll1000();
+        pictureFovPresetsStore.poll1000();
+        shotsPresetStore.poll1000();
     }
-  }
-
-  private void save() {
-    // TODO delayed save after some ms  (1000 or something like that)
-    LOG.info("Save config to '{}'", settingsFile.getAbsolutePath());
-    try {
-      mapper.writerWithDefaultPrettyPrinter().writeValue(settingsFile, settings);
-    } catch (IOException e) {
-      LOG.error("Could not save config file", e);
-    }
-  }
-
-  public Settings getSettings() {
-    return settings;
-  }
-
-  public void setSettings(Settings settings) {
-    this.settings = settings;
-  }
-
-  public void setDirty() {
-    autosaveCounter = autosaveDelay;
-  }
-
-  @Scheduled(fixedRate = 1000)
-  public void checkSave() {
-    if (autosaveCounter == 0) {
-      save();
-      autosaveCounter = -1;
-    } else if (autosaveCounter > 0) {
-      autosaveCounter--;
-    }
-  }
 }

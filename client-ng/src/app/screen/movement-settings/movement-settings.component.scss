@@ -1,0 +1,26 @@
+.fields {
+  margin: 10px;
+  display:grid;
+  grid-template-columns: 250px auto;
+  grid-template-rows: repeat(3, 80px);
+
+  .label {
+    font-size: 1.5em;
+    font-weight: normal;
+    padding: 12px 0 0 0;
+  }
+
+  .input {
+    box-sizing: border-box;
+    outline: unset;
+    border:1px solid black;
+    caret-color: transparent;
+    cursor:pointer;
+
+    font-size: 2em;
+    font-weight: bold;
+    font-family: Monaco, "Lucida Console", monospace;
+    height: 50px;
+    padding: 10px;
+  }
+}

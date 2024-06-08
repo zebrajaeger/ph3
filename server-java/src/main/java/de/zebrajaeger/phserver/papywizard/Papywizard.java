@@ -1,14 +1,35 @@
 package de.zebrajaeger.phserver.papywizard;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Optional;
 
 @XmlRootElement(name = "Papywizard")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Papywizard {
-  private Shoot shoot;
+    @JacksonXmlProperty(isAttribute = true)
+    private String version = "c";
+    private Header header = new Header();
+    private Shoot shoot = new Shoot();
+
+    public String toXml() {
+        try {
+            XmlMapper xmlMapper = new XmlMapper();
+            return xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to generate papywizard xml content", e);
+        }
+    }
+
+    public Optional<Pict> findPictById(Integer id) {
+        return shoot.findById(id);
+    }
 }

@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.data;
 
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,20 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Pano {
 
-  private FieldOfViewPartial fieldOfViewPartial;
-  private double horizontalMinimumOverlap = 0.25d;
-  private double verticalMinimumOverlap = 0.25d;
+    private PanoFovSettings fov;
+    private double horizontalMinimumOverlap = 0.25d;
+    private double verticalMinimumOverlap = 0.25d;
 
-  public Pano(Pano pano) {
-    this.fieldOfViewPartial = new FieldOfViewPartial(pano.fieldOfViewPartial);
-    this.horizontalMinimumOverlap = pano.horizontalMinimumOverlap;
-    this.verticalMinimumOverlap = pano.verticalMinimumOverlap;
-  }
-
-  public Pano(FieldOfViewPartial fieldOfViewPartial, double horizontalMinimumOverlap,
-      double verticalMinimumOverlap) {
-    this.fieldOfViewPartial = fieldOfViewPartial;
-    this.horizontalMinimumOverlap = horizontalMinimumOverlap;
-    this.verticalMinimumOverlap = verticalMinimumOverlap;
-  }
+    public Pano(PanoFovSettings fov, double horizontalMinimumOverlap,
+                double verticalMinimumOverlap) {
+        this.fov = fov;
+        this.horizontalMinimumOverlap = horizontalMinimumOverlap;
+        this.verticalMinimumOverlap = verticalMinimumOverlap;
+    }
 }

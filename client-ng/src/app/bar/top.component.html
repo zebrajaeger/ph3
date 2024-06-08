@@ -1,6 +1,11 @@
 <div class="box state {{stateName}}" >{{stateName}}</div>
 
-<div class="box title">{{title}}</div>
+<div class="box title">
+  <div>
+    <span>{{title}}</span>
+    <span *ngIf="!backButton">&nbsp;&nbsp;&nbsp;{{version?.version}}({{version?.commitIdAbbrev}})</span>
+  </div>
+</div>
 
 <div class="center-content">
   <led class="led" [color]="actorActiveIndicator"></led>
@@ -10,7 +15,7 @@
   <led class="led" [color]="cameraActivityIndicator"></led>
 </div>
 
-<div class="box back-button center-content" [style.visibility]="backButton? 'visible':'hidden'" (click)="onBack()">
+<div class="box back-button center-content" [style.visibility]="backButton? 'visible':'hidden'" backButton>
   <div class="text-wrapper">
     <span class="back-arrow">«</span>&nbsp;<span class="back-text">Back</span>
   </div>

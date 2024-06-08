@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.FieldOfView;
-import lombok.Data;
+import de.zebrajaeger.phserver.settings.PanoFovSettings;
 
-@Data
-public class PictureFOVChangedEvent {
+public record PictureFOVChangedEvent(PanoFovSettings pictureFOV) {
 
-  private final FieldOfView pictureFOV;
 }

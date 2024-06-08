@@ -1,9 +1,5 @@
 package de.zebrajaeger.phserver.event;
 
-import lombok.Data;
+public record JoggingChangedEvent(boolean jogging) {
 
-@Data
-public class JoggingChangedEvent {
-
-  private final boolean jogging;
 }

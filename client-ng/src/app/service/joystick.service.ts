@@ -8,7 +8,6 @@ import {RxStompService} from "./rx-stomp.service";
     providedIn: 'root'
 })
 export class JoystickService {
-
     constructor(private rxStompService: RxStompService) {
     }
 

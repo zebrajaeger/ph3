@@ -1,0 +1,11 @@
+
+:host {
+  height: 400px;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  .item {
+    margin: 10px;
+  }
+}

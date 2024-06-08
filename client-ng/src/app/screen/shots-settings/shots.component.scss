@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.shots {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.add-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  //.add {
+  //  margin-top: 20px;
+  //  width: 80px;
+  //  height: 30px;
+  //}
+}

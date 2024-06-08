@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {Actor, ActorState, Position, Power} from '../../data/panohead';
+import {Actor, ActorState, BatteryState, Position, Power} from '../../data/panohead';
 import {RobotState} from '../../data/record';
 import {RxStompService} from "./rx-stomp.service";
 import {RxStompRPCService} from "./rx-stomp-rpc.service";
@@ -19,6 +19,13 @@ export class PanoHeadService {
         return this.rxStompService
             .watch('/topic/power/')
             .pipe(map(msg => new Power(msg.body)))
+            .subscribe(cb);
+    }
+
+    public subscribeBatteryState(cb: (batteryState: BatteryState) => void): Subscription {
+        return this.rxStompService
+            .watch('/topic/battery/')
+            .pipe(map(msg => JSON.parse(msg.body) as BatteryState))
             .subscribe(cb);
     }
 
@@ -67,11 +74,11 @@ export class PanoHeadService {
         this.rxStompService.publish({destination: '/actor/jogging', body: isJogging.toString()});
     }
 
-    sendManualMove(relPosition : Position): void {
+    sendManualMove(relPosition: Position): void {
         this.rxStompService.publish({destination: '/actor/manualMove', body: JSON.stringify(relPosition)});
     }
 
-    sendManualMoveByJoystick(speed : Position): void {
+    sendManualMoveByJoystick(speed: Position): void {
         this.rxStompService.publish({destination: '/actor/manualMoveByJoystick', body: JSON.stringify(speed)});
     }
 
@@ -94,8 +101,8 @@ export class PanoHeadService {
             .subscribe(cb);
     }
 
-    sendStartRecord(): void {
-        this.rxStompService.publish({destination: '/record/start/default'});
+    sendStartRecord(name: string): void {
+        this.rxStompService.publish({destination: '/record/start', body: name});
     }
 
     sendStopRecord(): void {

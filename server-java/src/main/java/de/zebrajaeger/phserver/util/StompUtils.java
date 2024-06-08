@@ -12,19 +12,28 @@ public class StompUtils {
     private StompUtils() {
     }
 
-    public static void rpcSendResponse(SimpMessagingTemplate template, String id, String destination, Object o) throws JsonProcessingException {
+    public static void rpcSendResponse(SimpMessagingTemplate template, String id, String destination, Object o) {
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
 
-        String message = MappingUtils.toJson(o);
-        template.convertAndSend(destination, message, header);
+        String message;
+        try {
+            message = MappingUtils.toJson(o);
+            template.convertAndSend(destination, message, header);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static void rpcSendEmptyResponse(SimpMessagingTemplate template, String id, String destination) throws JsonProcessingException {
+    public static void rpcSendEmptyResponse(SimpMessagingTemplate template, String id, String destination) {
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
 
-        String message = MappingUtils.toJson(EMPTY);
-        template.convertAndSend(destination, message, header);
+        try {
+            String message = MappingUtils.toJson(EMPTY);
+            template.convertAndSend(destination, message, header);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

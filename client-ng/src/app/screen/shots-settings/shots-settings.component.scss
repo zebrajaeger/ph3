@@ -1,0 +1,51 @@
+:host {
+  display: flex;
+}
+
+.left, .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.shots, .presets {
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 5px 0 5px 5px;
+  height: 300px;
+  width: 382px;
+}
+
+.edit-preset-dialog {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  .headline {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  .placeholder {
+    flex-grow: 1;
+  }
+
+  .buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    .button {
+      width: 200px;
+
+      &.ok {
+        margin-right: 50px;
+      }
+    }
+  }
+}
+
+.keyboard-dialog {
+  padding: 20px;
+}

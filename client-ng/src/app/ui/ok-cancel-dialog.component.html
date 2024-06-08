@@ -1,0 +1,12 @@
+<div class="modal ok-cancel-root" *ngIf="visible">
+    <div class="message">{{message}}</div>
+    <div class="placeholder"></div>
+    <div class="buttons">
+        <div class="button ok" (click)="_onOk()">&nbsp;
+            <span class="symbol-done"> Ok</span>
+        </div>
+        <div class="button cancel" (click)="_onCancel()">&nbsp;
+            <span class="symbol-close"> Cancel</span>
+        </div>
+    </div>
+</div>

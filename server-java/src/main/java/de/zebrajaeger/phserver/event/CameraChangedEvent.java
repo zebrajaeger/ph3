@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
 import de.zebrajaeger.phserver.data.Camera;
-import lombok.Data;
 
-@Data
-public class CameraChangedEvent {
+public record CameraChangedEvent(Camera camera) {
 
-  private final Camera camera;
 }

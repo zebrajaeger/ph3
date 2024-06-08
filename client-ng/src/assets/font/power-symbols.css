@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'power_symbols';
+  src: url('/assets/font/Unicode_IEC_symbol.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.power {
+    font-family: 'power_symbols', serif;
+    font-style: normal;
+}

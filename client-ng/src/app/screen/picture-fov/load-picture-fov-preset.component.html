@@ -1,0 +1,7 @@
+<div class="items">
+    <div *ngFor="let name of names_" class="button item" (click)="onLoad(name)">
+        {{name}}
+    </div>
+</div>
+
+<app-ok-cancel-dialog #okcancel (onOk)="onOkCancelDialogOk($event)"/>

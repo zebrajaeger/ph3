@@ -1,10 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.Shots;
-import lombok.Data;
+import de.zebrajaeger.phserver.settings.ShotsSettings;
 
-@Data
-public class ShotsChangedEvent {
+public record ShotsChangedEvent(ShotsSettings shots) {
 
-  private final Shots shots;
 }

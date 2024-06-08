@@ -1,23 +1,19 @@
 package de.zebrajaeger.phserver.data;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@Getter
+@ToString
 public class Power {
 
-  private final Double voltage;
-  private final Double current;
-  private final Double power;
+    private final Double voltage;
+    private final Double current;
+    private final Double power;
 
-  public Power(Double voltage, Double current) {
-    this.voltage = voltage;
-    this.current = current;
-    this.power = voltage * current;
-  }
-
-  public Power(Double power) {
-    this.voltage = null;
-    this.current = null;
-    this.power = power;
-  }
+    public Power(Double voltage, Double current) {
+        this.voltage = voltage;
+        this.current = current;
+        this.power = voltage * current;
+    }
 }

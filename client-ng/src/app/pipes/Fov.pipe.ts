@@ -1,15 +1,15 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {FieldOfView, Range} from "../../data/pano";
+import {CameraOfView, Range} from "../../data/pano";
 
 @Pipe({
   name: 'fovSize'
 })
 export class FovSizePipe implements PipeTransform {
-  transform(fov: FieldOfView | undefined | null, ...args: unknown[]): unknown {
+  transform(fov: CameraOfView | undefined | null, ...args: unknown[]): unknown {
     if (fov == null) {
       return '-, -';
     } else {
-      return `${FovSizePipe.rangeToString(fov.horizontal)}, ${FovSizePipe.rangeToString(fov.vertical)}`;
+      return `${FovSizePipe.rangeToString(fov.x)}, ${FovSizePipe.rangeToString(fov.y)}`;
     }
   }
 

@@ -1,0 +1,74 @@
+:host {
+  display: grid;
+  grid-template-columns: 50px 25px 75px 25px 75px 5px 50px 50px;
+  grid-template-rows:  50px;
+}
+
+.delete {
+  grid-column-start: 1;
+}
+
+.button-up {
+  grid-column-start: 7;
+}
+
+.button-down {
+  grid-column-start: 8;
+}
+
+.label {
+  margin-top: 15px;
+  font-weight: bold;
+  margin-left: 9px;
+
+  &.f {
+    grid-column-start: 2;
+  }
+
+  &.t {
+    grid-column-start: 4;
+  }
+}
+
+.button {
+  width: 44px;
+  margin: 3px;
+
+}
+
+image {
+  width: 25px;
+  height: 25px;
+}
+
+.input {
+  height: 40px;
+  text-align: end;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 6px;
+
+  &.f {
+    grid-column-start: 3;
+  }
+
+  &.t {
+    grid-column-start: 5;
+  }
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    column-gap: 10px;
+
+    .button {
+      width: 150px;
+    }
+  }
+}

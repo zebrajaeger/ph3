@@ -19,15 +19,21 @@
   margin: 10px;
 }
 
-.info-border {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 50px);
+.h-value, .v-value {
+  margin: 10px;
+}
 
+.info-border {
   border: 1px solid black;
   border-radius: 5px;
+  height: 160px;
 
-  margin: 10px;
+  .info-content {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 50px);
+    margin: 5px 10px;
+  }
 }
 
 .info-range {
@@ -74,9 +80,16 @@
 
 .set-partial {
   height: 150px;
+
   .button {
     height: 60px;
-    width: 170px;
+  }
+
+  .checked {
+    color: green;
+  }
+  .unchecked {
+    color: red;
   }
 }
 
@@ -89,6 +102,15 @@
   display: grid;
   grid-template-columns: repeat(3, 150px);
   grid-template-rows: repeat(3, 150px);
+}
+
+.full-xy {
+  flex-direction: column;
+  padding-top: 27px;
+
+  .button {
+    width: 200px
+  }
 }
 
 .top {

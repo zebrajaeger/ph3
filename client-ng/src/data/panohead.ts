@@ -34,6 +34,11 @@ export class Power {
     }
 }
 
+export class BatteryState {
+    valid!: boolean;
+    percentage!: number;
+}
+
 export class Position {
     public x!: number;
     public y!: number;

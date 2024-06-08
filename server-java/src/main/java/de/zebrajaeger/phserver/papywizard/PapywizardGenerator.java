@@ -1,28 +1,56 @@
 package de.zebrajaeger.phserver.papywizard;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import de.zebrajaeger.phserver.pano.Positions;
+import de.zebrajaeger.phserver.data.PanoMatrix;
+import de.zebrajaeger.phserver.data.PanoMatrixPosition;
+import de.zebrajaeger.phserver.pano.Command;
+import de.zebrajaeger.phserver.pano.TakeShotCommand;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PapywizardGenerator {
 
-  public String generate(Positions positions) {
-    XmlMapper xmlMapper = new XmlMapper();
+    public Papywizard generate(List<Command> commands) {
+        Shoot shoot = new Shoot();
 
-    final List<Pict> picts = positions
-        .getAll(false, true)
-        .stream()
-        .map(shotPosition -> new Pict(1, new Position(shotPosition.getX(), shotPosition.getY())))
-        .toList();
+        for (Command command : commands) {
+            if (command.getClass().equals(TakeShotCommand.class)) {
+                TakeShotCommand takeShotCommand = (TakeShotCommand) command;
+                Pict pict = new Pict();
+                pict.setBracket(1);
+                pict.setId(takeShotCommand.getId());
+                final Position position = new Position();
+                position.setX(takeShotCommand.getShotPosition().getX());
+                position.setY(takeShotCommand.getShotPosition().getY());
+                pict.setPosition(position);
+                shoot.add(pict);
 
-    Shoot shot = new Shoot(picts);
-    final Papywizard pw = new Papywizard(shot);
+            }
+        }
 
-    try {
-      return xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(pw);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException("Failed to generate papywizard xml content", e);
+        final Papywizard pw = new Papywizard();
+        pw.getHeader().getGeneral().setComment("Made with Ph3");
+        pw.setShoot(shoot);
+
+        return pw;
     }
-  }
+
+    public Papywizard generate(PanoMatrix panoMatrix) {
+
+        List<Pict> picts = new ArrayList<>();
+        for (PanoMatrixPosition panoMatrixPosition : panoMatrix.asPositionList(false, true)) {
+            Pict pict = new Pict();
+            pict.setBracket(1);
+            pict.setId(panoMatrixPosition.getId());
+            pict.setPosition(Position.of(panoMatrixPosition.getX(), panoMatrixPosition.getY()));
+            picts.add(pict);
+        }
+
+        Shoot shot = new Shoot(picts);
+        final Papywizard pw = new Papywizard();
+        pw.getHeader().getGeneral().setComment("Made with Ph3");
+        pw.setShoot(shot);
+
+        return pw;
+    }
 }

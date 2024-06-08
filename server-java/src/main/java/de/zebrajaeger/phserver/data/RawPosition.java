@@ -1,12 +1,5 @@
 package de.zebrajaeger.phserver.data;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public record RawPosition(int x, int y) {
 
-@Data
-@AllArgsConstructor
-public class RawPosition {
-
-  private final int x;
-  private final int y;
 }

@@ -1,0 +1,18 @@
+<div class="items">
+    <div *ngFor="let name of names_" class="item">
+        <div class="button delete" (click)="onDelete(name)">
+            <span class=symbol-delete> </span>
+        </div>
+
+        <div class="name back-button">{{name}}</div>
+
+        <div class="button edit" (click)="onRename(name)">
+            <img src="/assets/rename.svg" alt="Edit"/>
+        </div>
+
+    </div>
+</div>
+
+<app-keyboard-dialog #keyboard (onOk)="onKeyboardDialogOk($event)"/>
+
+<app-ok-cancel-dialog #okcancel (onOk)="onOkCancelDialogOk($event)"/>

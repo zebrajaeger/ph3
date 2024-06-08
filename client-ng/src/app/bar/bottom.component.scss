@@ -1,15 +1,17 @@
 :host {
   width: 800px;
   height: 40px;
-  box-sizing: border-box;
+  position: absolute;
+  top: 440px;
   border: 1px solid black;
   margin: 0;
-  background-color: mistyrose;
+  background-color: white;
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
 }
 
 .content {
@@ -27,40 +29,23 @@
   }
 }
 
-.onoff {
+.on-off {
   border-left: 1px solid black;
-  width: 25px;
+  width: 35px;
   padding: 5px;
+  background-color: mistyrose;
 
   img {
     width: 25px;
   }
 }
 
-.label {
-
-}
-
 .value {
   font-weight: bold;
 }
 
-.shutdown-dialog {
-  width: 320px;
-  height: calc((128px + 10px) * 2 - 10px);
-
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: repeat(1, 128px);
-
-  padding: 20px;
-
-  .button {
-    background-color: red;
-    margin-top: 10px;
-  }
-
-  .button:first-child {
-    margin-top: 0;
-  }
+.icon {
+  width: 15px;
+  position: relative;
+  top: 3px;
 }

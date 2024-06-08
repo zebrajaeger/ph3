@@ -1,90 +1,114 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RouterService} from '../service/router.service';
 import {UiService} from '../service/ui.service';
 import {PanoHeadService} from '../service/panohead.service';
 import {AutomateState, RobotState} from '../../data/record';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
-import {CalculatedPano} from "../../data/pano";
+import {Pattern} from "../../data/pano";
+import {KeyboardDialogComponent} from "../ui/keyboard-dialog.component";
 
 @Component({
-  selector: 'app-record',
-  templateUrl: './record.component.html',
-  styleUrls: ['./record.component.scss']
+    selector: 'app-record',
+    templateUrl: './record.component.html',
+    styleUrls: ['./record.component.scss']
 })
 export class RecordComponent implements OnInit, OnDestroy {
-  private robotStateSubscription!: Subscription;
-  public _robotState!: RobotState;
+    @ViewChild('keyboard')
+    private keyboardDialog!: KeyboardDialogComponent;
 
-  private calculatedPanoSubscription!: Subscription;
-  public calc?: CalculatedPano;
+    private robotStateSubscription!: Subscription;
+    public _robotState!: RobotState;
 
-  public done: number = 0;
-  public x?: number;
-  public y?: number;
-  public color?: string;
+    private patternSubscription!: Subscription;
+    gridChecked: any;
+    sparseChecked: any;
 
-  public msg: string = '';
+    public done: number = 0;
+    public color?: string;
 
-  constructor(private routerService: RouterService,
-              private panoHeadService: PanoHeadService,
-              private panoService: PanoService,
-              private uiService: UiService) {
-    routerService.onActivate(this, () => this.onActivate());
-  }
+    public msg: string = '';
 
-  ngOnInit(): void {
-    this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
-    this.calculatedPanoSubscription = this.panoService.subscribeCalculatedPano(calculatedPano => {
-      console.log('RECALCULATED!!!!', calculatedPano)
-      this.calc = calculatedPano
-      this.x = calculatedPano.horizontalPositions.length;
-      this.y = calculatedPano.verticalPositions.length;
-    });
-  }
+    public name = '';
 
-  ngOnDestroy(): void {
-    this.robotStateSubscription?.unsubscribe();
-    this.calculatedPanoSubscription?.unsubscribe();
-  }
-
-  get robotState(): RobotState {
-    return this._robotState;
-  }
-
-  set robotState(value: RobotState) {
-    this._robotState = value;
-    const cmd = value?.command;
-    if (value.automateState !== AutomateState.STOPPED) {
-      const shotPos = cmd?.shotPosition;
-      this.x = shotPos?.xLength;
-      this.y = shotPos?.yLength;
-      if (shotPos && shotPos.index >= 0) {
-        this.done = shotPos.index + 1;
-      }
-      this.msg = `[${value?.commandIndex + 1}/${value?.commandCount}] ${cmd?.description}`;
-    } else {
-      this.msg = '';
+    constructor(private routerService: RouterService,
+                private panoHeadService: PanoHeadService,
+                private panoService: PanoService,
+                private uiService: UiService) {
+        routerService.onActivate(this, () => this.onActivate());
     }
-  }
 
-  onStart(): void {
-    this.panoHeadService.sendStartRecord();
-  }
+    ngOnInit(): void {
+        this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
+        this.panoHeadService.requestRobotState(robotState => this.robotState = robotState)
 
-  onStop(): void {
-    this.panoHeadService.sendStopRecord();
-  }
+        this.patternSubscription = this.panoService.subscribePatternType(pattern => this.pattern = pattern);
+        this.panoService.requestPatternType(pattern => this.pattern = pattern)
+    }
 
-  onPause(): void {
-    this.panoHeadService.sendPauseResumeRecord();
-  }
+    ngOnDestroy(): void {
+        this.robotStateSubscription?.unsubscribe();
+        this.patternSubscription?.unsubscribe();
+    }
 
-  private onActivate(): void {
-    this.uiService.title.next('Record');
-    this.uiService.backButton.next(true);
+    set robotState(value: RobotState) {
+        this._robotState = value;
+        const cmd = value?.command;
+        if (value.automateState !== AutomateState.STOPPED) {
+            this.msg = `[${value?.commandIndex + 1}/${value?.commandCount}] ${cmd?.description}`;
+        } else {
+            this.msg = '';
+        }
+    }
 
-    this.panoHeadService.requestRobotState(state => this.robotState = state);
-    this.panoService.requestRecalculatePano();
-  }
+    set pattern(pattern: Pattern) {
+        switch (pattern) {
+            case Pattern.GRID: {
+                this.gridChecked = true;
+                this.sparseChecked = false;
+                break;
+            }
+            case Pattern.SPARSE: {
+                this.gridChecked = false;
+                this.sparseChecked = true;
+                break;
+            }
+        }
+    }
+
+    onStart(): void {
+        this.keyboardDialog.show('Enter name of pano', this.name);
+    }
+
+    onKeyboardOk(name: string) {
+        this.name = name;
+        this.panoHeadService.sendStartRecord(name);
+    }
+
+    onStop(): void {
+        this.panoHeadService.sendStopRecord();
+    }
+
+    onPause(): void {
+        this.panoHeadService.sendPauseResumeRecord();
+    }
+
+    private onActivate(): void {
+        this.uiService.title.next('Record');
+        this.uiService.backButton.next(true);
+
+        this.panoHeadService.requestRobotState(state => this.robotState = state);
+        this.panoService.requestRecalculatePano();
+    }
+
+    onPatternClick(value: string) {
+        switch (value) {
+            case "GRID":
+                this.panoService.setPatternType(Pattern.GRID);
+                break;
+            case "SPARSE":
+                this.panoService.setPatternType(Pattern.SPARSE);
+                break;
+        }
+    }
 }

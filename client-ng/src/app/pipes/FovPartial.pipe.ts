@@ -1,19 +1,36 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {FieldOfViewPartial, Range} from "../../data/pano";
+import {PanoFieldOfView, Range} from "../../data/pano";
 
 @Pipe({
   name: 'fovPartialSize'
 })
 export class FovPartialSizePipe implements PipeTransform {
-  transform(fov: FieldOfViewPartial | undefined | null, ...args: unknown[]): unknown {
+
+
+  private infinity:string;
+  constructor() {
+    this.infinity =  '<span class="icon-all_inclusive"></span>';
+  }
+
+  transform(fov: PanoFieldOfView | undefined | null, ...args: unknown[]): unknown {
     if (fov == null) {
       return '-, -';
     } else {
-      if (fov.partial) {
-        return `${FovPartialSizePipe.rangeToString(fov.horizontal)}, ${FovPartialSizePipe.rangeToString(fov.vertical)}`;
+
+      let x: string;
+      if (fov.fullX) {
+        x = 'B';
       } else {
-        return `֍, ${FovPartialSizePipe.rangeToString(fov.vertical)}`;
+        x = `${FovPartialSizePipe.rangeToString(fov.x)}`;
       }
+      let y: string;
+      if (fov.fullY) {
+        y = 'B';
+      } else {
+        y = `${FovPartialSizePipe.rangeToString(fov.y)}`;
+      }
+
+      return `${x}, ${y}`;
     }
   }
 

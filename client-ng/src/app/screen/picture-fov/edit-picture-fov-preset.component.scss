@@ -1,0 +1,43 @@
+
+:host {
+  height: 400px;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  .item {
+    //margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .name {
+      border: 1px solid black;
+      border-radius: 5px;
+      width: 500px;
+      flex-grow: 1;
+      margin: 5px 5px 0 5px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      height: 50px;
+      display:flex;
+      align-items: center;
+      padding: 0 5px 0 5px;
+    }
+
+    .edit {
+      margin-right: 10px;
+      img {
+        width: 30px;
+      }
+    }
+
+    .delete {
+      margin-right: 5px;
+      img {
+        width: 30px;
+      }
+    }
+  }
+}

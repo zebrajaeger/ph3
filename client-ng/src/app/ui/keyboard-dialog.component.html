@@ -1,0 +1,20 @@
+<div class="modal root" *ngIf="isVisible">
+    <input type="text"
+           class="input display"
+           value="{{value}}"
+           placeholder="{{placeholder}}"/>
+
+    <app-keyboard class="keyboard" [(value)]="value"/>
+
+    <div class="placeholder"></div>
+
+    <div class="buttons">
+        <div class="button ok" (click)="_onOk()" [ngClass]="{'disabled':!isOkAvailable}">
+            <span class=symbol-done> Ok</span>
+        </div>
+        <div class="button cancel" (click)="_onCancel()">
+            <span class=symbol-close> Cancel</span>
+        </div>
+    </div>
+</div>
+

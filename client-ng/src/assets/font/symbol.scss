@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'symbol';
+  src: url('./symbol.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.symbol {
+  font-family: symbol, Roboto, serif;
+  font-style: normal;
+}
+
+[class*='symbol-']:before{
+  display: inline-block;
+  font-family: 'symbol', serif;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+}
+.symbol-add:before{content:'\0041';}
+.symbol-all_inclusive:before{content:'\0042';}
+.symbol-arrow_downward:before{content:'\0043';}
+.symbol-arrow_upward:before{content:'\0044';}
+.symbol-battery_vert_050:before{content:'\0045';}
+.symbol-blur_on:before{content:'\0046';}
+.symbol-bolt:before{content:'\0047';}
+.symbol-calculate:before{content:'\0048';}
+.symbol-center_focus_strong:before{content:'\0049';}
+.symbol-check_box:before{content:'\004a';}
+.symbol-check_box_outline_blank:before{content:'\004b';}
+.symbol-cinematic_blur:before{content:'\004c';}
+.symbol-close:before{content:'\004d';}
+.symbol-delete:before{content:'\004e';}
+.symbol-device_reset:before{content:'\004f';}
+.symbol-done:before{content:'\0050';}
+.symbol-download:before{content:'\0051';}
+.symbol-drag_pan:before{content:'\0052';}
+.symbol-edit:before{content:'\0053';}
+.symbol-flare:before{content:'\0054';}
+.symbol-flash_on:before{content:'\0055';}
+.symbol-frame_reload:before{content:'\0056';}
+.symbol-grid_on:before{content:'\0057';}
+.symbol-image:before{content:'\0058';}
+.symbol-joystick:before{content:'\0059';}
+.symbol-label_important:before{content:'\005a';}
+.symbol-location_on:before{content:'\0061';}
+.symbol-movie:before{content:'\0062';}
+.symbol-my_location:before{content:'\0063';}
+.symbol-photo_camera:before{content:'\0064';}
+.symbol-photo_library:before{content:'\0065';}
+.symbol-power_rounded:before{content:'\0066';}
+.symbol-refresh:before{content:'\0067';}
+.symbol-save:before{content:'\0068';}
+.symbol-settings:before{content:'\0069';}
+.symbol-settings_panorama:before{content:'\006a';}
+.symbol-settings_photo_camera:before{content:'\006b';}
+.symbol-settings_slow_motion:before{content:'\006c';}
+.symbol-toggle_off:before{content:'\006d';}
+.symbol-vrpano:before{content:'\006e';}

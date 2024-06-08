@@ -36,7 +36,7 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.openSubscription = this.connectionService.subscribeOpen(() => this.onActivate());
-    this.shotSubscription = this.panoService.subscribeShots((shots) => this.shots = shots);
+    // this.shotSubscription = this.panoService.subscribeShots((shots) => this.shots = shots);
     this.delaySubscription = this.panoService.subscribeDelay((delay) => this.delay = delay);
   }
 
@@ -56,14 +56,14 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const defaultShots = shots.get('default');
-    if (defaultShots) {
-      const defaultShot = defaultShots[0];
-      if (defaultShot) {
-        this.focusTime = defaultShot.focusTimeMs / 1000;
-        this.triggerTime = defaultShot.triggerTimeMs / 1000;
-      }
-    }
+    // const defaultShots = shots.get('default');
+    // if (defaultShots) {
+    //   const defaultShot = defaultShots[0];
+    //   if (defaultShot) {
+    //     this.focusTime = defaultShot.focusTimeMs / 1000;
+    //     this.triggerTime = defaultShot.triggerTimeMs / 1000;
+    //   }
+    // }
   }
 
 
@@ -82,9 +82,9 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
   private onActivate(): void {
     this.uiService.title.next('Pano Settings');
     this.uiService.backButton.next(true);
-    this.panoService.requestShots(shots => this.shots = shots);
-    this.panoService.requestDelay(delay => this.delay = delay);
-    this.panoService.requestRecalculatePano();
+    // this.panoService.requestShots(shots => this.shots = shots);
+    // this.panoService.requestDelay(delay => this.delay = delay);
+    // this.panoService.requestRecalculatePano();
   }
 
   onFocusTime(value: number): void {
@@ -92,11 +92,11 @@ export class PanoSettingsComponent implements OnInit, OnDestroy {
   }
 
   onFocusTimeClose(): void {
-    this.panoService.setShotFocusTimeMs('default', 0, this.focusTime * 1000);
+    // this.panoService.setShotFocusTimeMs('default', 0, this.focusTime * 1000);
   }
 
   onTriggerTimeClose(): void {
-    this.panoService.setShotTriggerTimeMs('default', 0, this.triggerTime * 1000);
+    // this.panoService.setShotTriggerTimeMs('default', 0, this.triggerTime * 1000);
   }
 
   onDelayAfterMoveClose(): void {

@@ -4,7 +4,7 @@ import {Pipe, PipeTransform} from '@angular/core';
     name: 'toFixed'
 })
 export class ToFixed implements PipeTransform {
-    transform(value: number, digits = 2): unknown {
+    transform(value: number|undefined, digits = 2): string {
         if (value === null || value === undefined) {
             return '-';
         } else {

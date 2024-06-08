@@ -1,0 +1,26 @@
+:host {
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 266px);
+    grid-template-rows: repeat(3, 128px);
+
+    .button {
+      margin: 10px;
+
+      &.restart-app {
+        grid-row-start: 2;
+        background-color: yellow;
+      }
+
+      &.reboot-system {
+        grid-row-start: 2;
+        background-color: orange;
+      }
+
+      &.shutdown-system {
+        grid-row-start: 2;
+        background-color: red;
+      }
+    }
+  }
+}

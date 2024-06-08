@@ -1,8 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.service.JoystickService;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.zebrajaeger.phserver.service.JoystickService;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,7 +16,6 @@ public class JoystickSTOMPController {
     private final JoystickService joystickService;
     private final SimpMessagingTemplate template;
 
-    @Autowired
     public JoystickSTOMPController(SimpMessagingTemplate template, JoystickService joystickService) {
         this.template = template;
         this.joystickService = joystickService;

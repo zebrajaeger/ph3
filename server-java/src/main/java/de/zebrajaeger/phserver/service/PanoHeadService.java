@@ -15,12 +15,11 @@ import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
 import de.zebrajaeger.phserver.hardware.Actor;
 import de.zebrajaeger.phserver.hardware.axis.Axis;
-import de.zebrajaeger.phserver.hardware.axis.AxisFactory;
-import de.zebrajaeger.phserver.translation.*;
 import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.lang.Nullable;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PanoHeadService {
 
-    private final AxisFactory axisFactory;
     private final Actor actor;
     private final Axis x;
     private final Axis y;
@@ -54,27 +52,16 @@ public class PanoHeadService {
         private boolean actorActive = false;
     }
 
-    public PanoHeadService(AxisFactory axisFactory, Actor actor,
+    public PanoHeadService(Actor actor,
+                           @Qualifier("x") Axis x,
+                           @Qualifier("y") Axis y,
                            ApplicationEventPublisher applicationEventPublisher,
                            @Nullable BatteryInterpolator batteryInterpolator) {
-        this.axisFactory = axisFactory;
         this.actor = actor;
+        this.x = x;
+        this.y = y;
         this.applicationEventPublisher = applicationEventPublisher;
         this.batteryInterpolator = batteryInterpolator;
-
-        final AxisParameters axisParametersX = new AxisParameters(
-                new DefaultStepperParameters(),
-                MotorDriverParameters.MDP_16,
-                new SpurGearParameters(), true);
-        x = axisFactory.create(AxisIndex.X, axisParametersX);
-//        x = new AxisWithOffset(hardwareService.getPanoHead(), AxisIndex.X, axisParametersX, true);
-
-        final AxisParameters axisParametersY = new AxisParameters(
-                new DefaultStepperParameters(350),
-                MotorDriverParameters.MDP_16,
-                new WormGearParameters(), false);
-//        y = new AxisWithOffset(hardwareService.getPanoHead(), AxisIndex.Y, axisParametersY, false);
-        y = axisFactory.create(AxisIndex.Y, axisParametersY);
     }
 
     @EventListener

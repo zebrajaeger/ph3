@@ -3,7 +3,6 @@ package de.zebrajaeger.phserver.hardware.mqtt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.zebrajaeger.phserver.data.MqttCommand;
-import de.zebrajaeger.phserver.data.MqttPhStatus;
 import de.zebrajaeger.phserver.event.MqttEvent;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -43,6 +42,7 @@ public class MqttConnectionService implements MqttCallback{
         msg.setQos(1);
         msg.setRetained(false);
         msg.setPayload(objectMapper.writeValueAsBytes(cmd));
+        log.info("Send MQTT Command {}", msg);
         mqttClient.publish(commandTopic, msg);
     }
 

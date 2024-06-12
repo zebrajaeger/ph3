@@ -1,8 +1,6 @@
 package de.zebrajaeger.phserver.hardware.i2c;
 
 import de.zebrajaeger.phserver.data.Acceleration;
-import de.zebrajaeger.phserver.hardware.AccelerationSensor;
-import de.zebrajaeger.phserver.hardware.local.LocalI2cDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +17,7 @@ import java.nio.ByteOrder;
 @Service
 @Profile({"pi", "default"})
 @Slf4j
-public class I2CAccelerationSensorAdxl345 implements AccelerationSensor {
+public class I2CAccelerationSensorAdxl345  {
     private final I2CDeviceFactory deviceFactory;
     @Value("${i2c.address.adxl345:0x53}")
     private int i2cAddress;
@@ -56,7 +54,7 @@ public class I2CAccelerationSensorAdxl345 implements AccelerationSensor {
     double fYg = 0f;
     double fZg = 0f;
 
-    @Override
+//    @Override
     public void foo() throws IOException {
         Acceleration acc = readAcceleration();
         fXg = acc.getX() * alpha + (fXg * (1.0 - alpha));

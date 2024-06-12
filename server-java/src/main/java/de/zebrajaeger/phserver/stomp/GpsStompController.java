@@ -2,7 +2,6 @@ package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.event.GpsDataEvent;
-import de.zebrajaeger.phserver.service.GpsService;
 import de.zebrajaeger.phserver.util.StompUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

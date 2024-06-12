@@ -7,7 +7,6 @@ import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.papywizard.Papywizard;
 import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
-import de.zebrajaeger.phserver.service.GpsService;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.service.PanoService;
 import de.zebrajaeger.phserver.service.RecordService;

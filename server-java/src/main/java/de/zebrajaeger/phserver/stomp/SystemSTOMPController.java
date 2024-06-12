@@ -1,6 +1,5 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.hardware.HardwareService;
 import de.zebrajaeger.phserver.hardware.SystemControl;
 import de.zebrajaeger.phserver.service.CommonService;
 import de.zebrajaeger.phserver.util.StompUtils;

@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.stomp;
 
+import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.event.GpsDataEvent;
 import de.zebrajaeger.phserver.service.GpsService;
 import de.zebrajaeger.phserver.util.StompUtils;
@@ -15,17 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class GpsStompController {
 
     private final SimpMessagingTemplate template;
-    private final GpsService gpsService;
+    private GpsData gpsData = null;
 
-    public GpsStompController(
-            SimpMessagingTemplate template, GpsService gpsService) {
+    public GpsStompController(SimpMessagingTemplate template) {
         this.template = template;
-        this.gpsService = gpsService;
+    }
+
+    @EventListener
+    public void onGpsData(GpsDataEvent event) {
+        gpsData = event.gpsData();
     }
 
     @MessageMapping("/rpc/gps")
     public void rpcGpsData(@Header("correlation-id") String id, @Header("reply-to") String destination) {
-        StompUtils.rpcSendResponse(template, id, destination, gpsService.getGpsData());
+        StompUtils.rpcSendResponse(template, id, destination, gpsData);
     }
 
     @EventListener

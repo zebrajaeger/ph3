@@ -33,7 +33,7 @@ public class PanoHeadSTOMPController {
 
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
-        template.convertAndSend(destination, panoHeadService.getData().getActor(), header);
+        template.convertAndSend(destination, panoHeadService.getLatestPanoHeadData().getActorStatus(), header);
     }
 
     @EventListener

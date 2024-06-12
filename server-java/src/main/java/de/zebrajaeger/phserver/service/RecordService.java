@@ -159,7 +159,7 @@ public class RecordService {
                         // We need this, because no motion-stop event will occur
                         executorService.schedule(this::onTimer, 250, TimeUnit.MILLISECONDS);
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
                 }
 
@@ -176,7 +176,7 @@ public class RecordService {
                                 .findPictById(takeShotCommand.getId())
                                 .ifPresent(pict -> pict.setTime(LocalDateTime.now()));
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     setAutomateState(AutomateState.STOPPED_WITH_ERROR).sendUpdate(e);
                 }
 

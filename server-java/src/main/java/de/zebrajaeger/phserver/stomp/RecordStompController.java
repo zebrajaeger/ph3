@@ -1,6 +1,8 @@
 package de.zebrajaeger.phserver.stomp;
 
+import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.data.PanoMatrix;
+import de.zebrajaeger.phserver.event.GpsDataEvent;
 import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.papywizard.Papywizard;
@@ -28,18 +30,23 @@ public class RecordStompController {
     private final PanoService panoService;
     private final PanoHeadService panoHeadService;
     private final RecordService recordService;
-    private final GpsService gpsService;
     private final SimpMessagingTemplate template;
+    private GpsData gpsData = null;
 
     public RecordStompController(PanoService panoService, PanoHeadService panoHeadService,
                                  RecordService recordService,
-                                 GpsService gpsService, SimpMessagingTemplate template) {
+                                SimpMessagingTemplate template) {
         this.panoService = panoService;
         this.panoHeadService = panoHeadService;
         this.recordService = recordService;
-        this.gpsService = gpsService;
         this.template = template;
     }
+
+    @EventListener
+    public void onGpsData(GpsDataEvent event) {
+        gpsData = event.gpsData();
+    }
+
 
     @MessageMapping("/record/start")
     public void start(String name) {
@@ -53,7 +60,7 @@ public class RecordStompController {
 
             final Papywizard papywizard = g.generate(commands);
             papywizard.getHeader().getGeneral().setTitle(name);
-            papywizard.getHeader().getGeneral().setGps(gpsService.getLocation());
+            papywizard.getHeader().getGeneral().setGps(gpsData.geoLocation());
             PapywizardUtils.writePapywizardFile(papywizard, "B");
 
             recordService.requestStart(commands, papywizard);

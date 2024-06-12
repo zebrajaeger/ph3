@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver;
 
-import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.hardware.fake.FakeService;
+import de.zebrajaeger.phserver.hardware.Actor;
+import de.zebrajaeger.phserver.hardware.fake.FakePanoHead;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.TakeShotCommand;
 import de.zebrajaeger.phserver.pano.WaitCommand;
@@ -27,13 +27,11 @@ public class RobotTest {
     @Autowired
     private RecordService recordService;
     @Autowired
-    HardwareService hardwareService;
+    private Actor actor;
 
     @BeforeEach
     public void init() {
-        if (FakeService.class.equals(hardwareService.getClass())) {
-            ((FakeService) hardwareService).reset();
-        }
+        ((FakePanoHead) actor).reset();
     }
 
     @Test

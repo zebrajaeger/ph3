@@ -1,8 +1,17 @@
 package de.zebrajaeger.phserver.hardware.fake;
 
-import de.zebrajaeger.phserver.hardware.PowerGauge;
+import de.zebrajaeger.phserver.hardware.poll.PollingPowerGauge;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
-public class FakePowerGauge implements PowerGauge {
+@Service
+@Profile({"develop"})
+public class FakePowerGauge extends PollingPowerGauge {
+    public FakePowerGauge(ApplicationEventPublisher applicationEventPublisher) {
+        super(applicationEventPublisher);
+    }
+
     @Override
     public int readVoltageInMillivolt() {
         return (int) (15000 + (Math.random() * 6000));
@@ -11,10 +20,5 @@ public class FakePowerGauge implements PowerGauge {
     @Override
     public int readCurrentInMilliampere() {
         return (int) (400 + (Math.random() * 300));
-    }
-
-    @Override
-    public int readPower() {
-        return (int) (9 + (Math.random() * 3));
     }
 }

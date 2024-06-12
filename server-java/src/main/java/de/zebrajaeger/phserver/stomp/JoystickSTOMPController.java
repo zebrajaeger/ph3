@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
+import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;
-import de.zebrajaeger.phserver.service.JoystickService;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,19 +13,23 @@ import java.util.HashMap;
 @Controller
 public class JoystickSTOMPController {
 
-    private final JoystickService joystickService;
     private final SimpMessagingTemplate template;
+    private Position joystickPosition = null;
 
-    public JoystickSTOMPController(SimpMessagingTemplate template, JoystickService joystickService) {
+    public JoystickSTOMPController(SimpMessagingTemplate template) {
         this.template = template;
-        this.joystickService = joystickService;
+    }
+
+    @EventListener
+    public void onJoystick(JoystickPositionEvent event) {
+        joystickPosition = event.position();
     }
 
     @MessageMapping("/joystick/position")
     public void getJoystickPositionRpc(@Header("correlation-id") String id, @Header("reply-to") String destination) {
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
-        template.convertAndSend(destination, joystickService.getPosition(), header);
+        template.convertAndSend(destination, joystickPosition, header);
     }
 
 //    @MessageMapping("/joystick/center")

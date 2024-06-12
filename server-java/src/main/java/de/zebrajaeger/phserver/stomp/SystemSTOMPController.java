@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.hardware.SystemControl;
 import de.zebrajaeger.phserver.service.CommonService;
 import de.zebrajaeger.phserver.util.StompUtils;
 import org.slf4j.Logger;
@@ -18,31 +19,31 @@ public class SystemSTOMPController {
     private final static Logger LOG = LoggerFactory.getLogger(SystemSTOMPController.class);
 
     private final SimpMessagingTemplate template;
-    private final HardwareService hardwareService;
     private final CommonService commonService;
+    private final SystemControl systemControl;
 
-    public SystemSTOMPController(SimpMessagingTemplate template, HardwareService hardwareService, CommonService commonService) {
+    public SystemSTOMPController(SimpMessagingTemplate template, CommonService commonService, SystemControl systemControl) {
         this.template = template;
-        this.hardwareService = hardwareService;
         this.commonService = commonService;
+        this.systemControl = systemControl;
     }
 
     @MessageMapping("/system/shutdown")
     public void shutdown() throws IOException {
         LOG.info("Shutdown System (STOMP)");
-        hardwareService.getSystemDevice().shutdown();
+        systemControl.shutdown();
     }
 
     @MessageMapping("/system/reboot")
     public void reboot() throws IOException {
         LOG.info("Reboot System (STOMP)");
-        hardwareService.getSystemDevice().reboot();
+        systemControl.reboot();
     }
 
     @MessageMapping("/system/restartApp")
     public void restartApp() throws IOException {
         LOG.info("Restart App (STOMP)");
-        hardwareService.getSystemDevice().restartApp();
+        systemControl.restartApp();
     }
 
     @MessageMapping("/rpc/system/version")

@@ -14,67 +14,68 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Deprecated
 @Service
 @Profile({"develop"})
 public class FakeService implements HardwareService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FakeService.class);
-
-    private FakePanoHead panoHead;
-    private final FakeGpsDevice gpsDevice = new FakeGpsDevice();
-    private final FakeSystemDevice systemDevice = new FakeSystemDevice();
-
-    private final FakePowerGauge powerGauge = new FakePowerGauge();
-
-    @Value("${develop.updatesPerSecond:5}")
-    private int updatesPerSecond;
-
-    @Override
-    public PanoHead getPanoHead() {
-        return panoHead;
-    }
-
-    @Override
-    public PowerGauge getPowerGauge() {
-        return powerGauge;
-    }
-
-    @Override
-    public Optional<AccelerationSensor> getAccelerationSensor() {
-        return Optional.empty();
-    }
-
-    @Override
-    public SystemDevice getSystemDevice() {
-        return systemDevice;
-    }
-
-    @Override
-    public GpsDevice getGpsDevice() {
-        return gpsDevice;
-    }
-
-    @Scheduled(fixedRateString = "${develop.updatesPerSecond:5}")
-    public void update() {
-        panoHead.update();
-    }
-
-    public void reset() {
-        panoHead.reset();
-    }
-
-    @PostConstruct
-    public void init() {
-        panoHead = new FakePanoHead(1000 / updatesPerSecond);
-    }
-
-    @EventListener
-    public void printCameraEvent(CameraChangedEvent cameraChangedEvent) {
-        LOG.info("Camera changed: '{}'", cameraChangedEvent);
-    }
-
-    @EventListener
-    public void printShotDone(ShotDoneEvent shotDoneEvent) {
-        LOG.info("Camera shot done: '{}'", shotDoneEvent);
-    }
+//    private static final Logger LOG = LoggerFactory.getLogger(FakeService.class);
+//
+//    private FakePanoHead panoHead;
+//    private final FakeGpsReceiver gpsDevice = new FakeGpsReceiver();
+//    private final FakeSystemControl systemDevice = new FakeSystemControl();
+//
+//    private final FakePowerGauge powerGauge = new FakePowerGauge();
+//
+//    @Value("${develop.updatesPerSecond:5}")
+//    private int updatesPerSecond;
+//
+//    @Override
+//    public PollingPanoHead getPanoHead() {
+//        return panoHead;
+//    }
+//
+//    @Override
+//    public PowerGauge getPowerGauge() {
+//        return powerGauge;
+//    }
+//
+//    @Override
+//    public Optional<AccelerationSensor> getAccelerationSensor() {
+//        return Optional.empty();
+//    }
+//
+//    @Override
+//    public SystemControl getSystemDevice() {
+//        return systemDevice;
+//    }
+//
+//    @Override
+//    public GpsDevice getGpsDevice() {
+//        return gpsDevice;
+//    }
+//
+//    @Scheduled(fixedRateString = "${develop.updatesPerSecond:5}")
+//    public void update() {
+//        panoHead.update();
+//    }
+//
+//    public void reset() {
+//        panoHead.reset();
+//    }
+//
+//    @PostConstruct
+//    public void init() {
+//        panoHead = new FakePanoHead(1000 / updatesPerSecond);
+//    }
+//
+//    @EventListener
+//    public void printCameraEvent(CameraChangedEvent cameraChangedEvent) {
+//        LOG.info("Camera changed: '{}'", cameraChangedEvent);
+//    }
+//
+//    @EventListener
+//    public void printShotDone(ShotDoneEvent shotDoneEvent) {
+//        LOG.info("Camera shot done: '{}'", shotDoneEvent);
+//    }
 }

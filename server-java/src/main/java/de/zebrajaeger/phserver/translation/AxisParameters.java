@@ -12,15 +12,17 @@ public class AxisParameters {
   private final double ratio;
   private final int maxStepFrequency;
   private final int maxAccelerationFrequency;
+  private final boolean inverted;
 
   public AxisParameters(MotorParameters motorParameters,
       MotorDriverParameters motorDriverParameters,
-      GearParameters gearParameters) {
+      GearParameters gearParameters, boolean inverted) {
     this.motorParameters = motorParameters;
     this.motorDriverParameters = motorDriverParameters;
     this.gearParameters = gearParameters;
+      this.inverted = inverted;
 
-    ratio = motorParameters.getStepsPerRevolution()
+      ratio = motorParameters.getStepsPerRevolution()
         * motorDriverParameters.getMicrostepsPerFullStep()
         * gearParameters.translateMotorToOutput(1);
 

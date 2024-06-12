@@ -2,14 +2,17 @@ package de.zebrajaeger.phserver.hardware;
 
 import java.util.Optional;
 
+@Deprecated
 public interface HardwareService {
-    PanoHead getPanoHead();
-
-    PowerGauge getPowerGauge();
-
-    Optional<AccelerationSensor> getAccelerationSensor();
-
-    SystemDevice getSystemDevice();
-
-    GpsDevice getGpsDevice();
+//    PollingPanoHead getPanoHead();
+//
+//    PowerGauge getPowerGauge();
+//
+//    Optional<AccelerationSensor> getAccelerationSensor();
+//
+//    // TODO this should be a separate service, controlled by profiles
+//    SystemControl getSystemDevice();
+//
+//    // TODO Do we really need this???
+//    GpsDevice getGpsDevice();
 }

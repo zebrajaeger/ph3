@@ -2,7 +2,7 @@ package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Camera;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
-import de.zebrajaeger.phserver.hardware.HardwareService;
+import de.zebrajaeger.phserver.hardware.Actor;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
@@ -13,22 +13,22 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 @Controller
 public class CameraSTOMPController {
 
+    private final Actor actor;
     private final PanoHeadService panoHeadService;
-    private final HardwareService hardwareService;
     private final SimpMessagingTemplate template;
 
     private Camera camera = new Camera();
 
-    public CameraSTOMPController(PanoHeadService deviceService, HardwareService hardwareService,
+    public CameraSTOMPController(PanoHeadService deviceService, Actor actor,
                                  SimpMessagingTemplate template) {
         this.panoHeadService = deviceService;
-        this.hardwareService = hardwareService;
+        this.actor = actor;
+//        this.hardwareService = hardwareService;
         this.template = template;
     }
 
@@ -37,22 +37,22 @@ public class CameraSTOMPController {
                                   @Header("reply-to") String destination) {
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
-        template.convertAndSend(destination, panoHeadService.getData().getCamera(), header);
+        template.convertAndSend(destination, panoHeadService.getLatestPanoHeadData().getCamera(), header);
     }
 
     @MessageMapping("camera/focus")
-    public void focus(@Payload int focusTimeMs) throws IOException {
-        hardwareService.getPanoHead().startFocus(focusTimeMs);
+    public void focus(@Payload int focusTimeMs) throws Exception {
+        actor.startFocus(focusTimeMs);
     }
 
     @MessageMapping("camera/trigger")
-    public void trigger(@Payload int triggerTimeMs) throws IOException {
-        hardwareService.getPanoHead().startTrigger(triggerTimeMs);
+    public void trigger(@Payload int triggerTimeMs) throws Exception {
+        actor.startTrigger(triggerTimeMs);
     }
 
     @MessageMapping("camera/shot")
-    public void trigger(@Payload ShotSettings shot) throws IOException {
-        hardwareService.getPanoHead().startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+    public void trigger(@Payload ShotSettings shot) throws Exception {
+        actor.startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
     }
 
     @EventListener

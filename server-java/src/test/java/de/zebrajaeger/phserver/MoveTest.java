@@ -6,11 +6,12 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 
-import de.zebrajaeger.phserver.data.ActorAxis;
-import de.zebrajaeger.phserver.hardware.HardwareService;
-import de.zebrajaeger.phserver.hardware.fake.FakeService;
+import de.zebrajaeger.phserver.data.ActorAxisStatus;
+import de.zebrajaeger.phserver.data.AxisIndex;
+import de.zebrajaeger.phserver.hardware.Actor;
+import de.zebrajaeger.phserver.hardware.fake.FakePanoHead;
 import de.zebrajaeger.phserver.service.PanoHeadService;
-import java.io.IOException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,39 +25,39 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ActiveProfiles("develop")
 public class MoveTest {
 
-  @Autowired
-  HardwareService hardwareService;
-  @Autowired
-  PanoHeadService panoHeadService;
+    @Autowired
+    Actor actor;
+    @Autowired
+    PanoHeadService panoHeadService;
 
-  @BeforeEach
-  public void init() {
-    if (FakeService.class.equals(hardwareService.getClass())) {
-      ((FakeService) hardwareService).reset();
+    @BeforeEach
+    public void init() {
+        if (FakePanoHead.class.equals(actor.getClass())) {
+            ((FakePanoHead) actor).reset();
+        }
     }
-  }
 
-  @Test
-  public void velocity() throws InterruptedException, IOException {
-    hardwareService.getPanoHead().setTargetVelocity(0, 100);
-    Thread.sleep(1000);
+    @Test
+    public void velocity() throws Exception {
+        actor.setTargetVelocity(AxisIndex.X, 100);
+        Thread.sleep(1000);
 
-    ActorAxis x = panoHeadService.getData().getActor().getX();
-    assertThat(x.getPos(), allOf(greaterThan(90), lessThan(110)));
-    assertThat(x.isMoving(), is(true));
-    assertThat(x.isAtTargetPos(), is(false));
-  }
+        ActorAxisStatus x = panoHeadService.getLatestPanoHeadData().getActorStatus().getX();
+        assertThat(x.getPos(), allOf(greaterThan(90), lessThan(110)));
+        assertThat(x.isMoving(), is(true));
+        assertThat(x.isAtTargetPos(), is(false));
+    }
 
-  @Test
-  public void pos() throws InterruptedException, IOException {
-    hardwareService.getPanoHead().setLimit(0, 1000,1000,1000);
-    hardwareService.getPanoHead().setTargetPos(0, 750);
-    Thread.sleep(1000);
+    @Test
+    public void pos() throws Exception {
+        actor.setLimit(AxisIndex.X, 1000, 1000, 1000);
+        actor.setTargetPos(AxisIndex.X, 750);
+        Thread.sleep(1000);
 
-    ActorAxis x = panoHeadService.getData().getActor().getX();
-    System.out.println(x);
-    assertThat(x.getPos(), is(750));
-    assertThat(x.isMoving(), is(false));
-    assertThat(x.isAtTargetPos(), is(true));
-  }
+        ActorAxisStatus x = panoHeadService.getLatestPanoHeadData().getActorStatus().getX();
+        System.out.println(x);
+        assertThat(x.getPos(), is(750));
+        assertThat(x.isMoving(), is(false));
+        assertThat(x.isAtTargetPos(), is(true));
+    }
 }

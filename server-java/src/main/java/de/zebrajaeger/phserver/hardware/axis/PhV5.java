@@ -22,7 +22,7 @@ public class PhV5 {
         final AxisParameters axisParameters = new AxisParameters(
                 new DefaultStepperParameters(),
                 MotorDriverParameters.MDP_16,
-                new SpurGearParameters(), true);
+                new BeltGearParameters(15,60), true);
         return new AxisWithOffset(actor, AxisIndex.X, axisParameters);
     }
 
@@ -31,7 +31,7 @@ public class PhV5 {
         final AxisParameters axisParameters = new AxisParameters(
                 new DefaultStepperParameters(350),
                 MotorDriverParameters.MDP_16,
-                new WormGearParameters(), false);
+                new BeltGearParameters(15,60), false);
         return new AxisWithOffset(actor, AxisIndex.X, axisParameters);
     }
 }

@@ -24,7 +24,7 @@ public class AxisParameters {
 
       ratio = motorParameters.getStepsPerRevolution()
         * motorDriverParameters.getMicrostepsPerFullStep()
-        * gearParameters.translateMotorToOutput(1);
+        * gearParameters.outputToMotor(1);
 
     maxStepFrequency = calculateMaxStepFrequency();
 

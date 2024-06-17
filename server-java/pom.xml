@@ -1,348 +1,372 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>de.zebrajaeger</groupId>
-    <artifactId>ph3-root</artifactId>
+    <parent>
+        <groupId>de.zebrajaeger</groupId>
+        <artifactId>ph3-root</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ph3-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-  </parent>
 
-  <artifactId>ph3-server</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <java.version>17</java.version>
+        <spring-boot.version>3.3.0</spring-boot.version>
+        <pi4j.version>2.3.0</pi4j.version>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 
-  <properties>
-    <java.version>17</java.version>
-    <spring-boot.version>3.2.1</spring-boot.version>
-    <pi4j.version>2.3.0</pi4j.version>
-    <timestamp>${maven.build.timestamp}</timestamp>
-    <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+        <remote.user>pi</remote.user>
+        <remote.host>192.168.178.78</remote.host>
+        <remote.keyfile>~\.ssh\id_rsa.h</remote.keyfile>
+    </properties>
 
-    <remote.user>pi</remote.user>
-    <remote.host>192.168.178.78</remote.host>
-    <remote.keyfile>~\.ssh\id_rsa.h</remote.keyfile>
-  </properties>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
 
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>scp-to-remote</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <scp localFile="${project.basedir}/target/ph3-server-0.0.1-SNAPSHOT.jar"
+                                     remoteToFile="${remote.user}@${remote.host}:~"
+                                     verbose="true"
+                                     keyfile="${remote.keyfile}"
+                                     passphrase=""
+                                     trust="true"
+                                />
+                                <sshexec host="${remote.host}"
+                                         username="${remote.user}"
+                                         keyfile="${remote.keyfile}"
+                                         command="sudo service ph restart"
+                                         trust="true"
+                                />
+                                <sshexec host="${remote.host}"
+                                         username="${remote.user}"
+                                         keyfile="${remote.keyfile}"
+                                         command="sudo service browser stop"
+                                         trust="true"
+                                />
+                                <sshexec host="${remote.host}"
+                                         username="${remote.user}"
+                                         keyfile="${remote.keyfile}"
+                                         command="rm -rf ~/.cache/chromium"
+                                         trust="true"
+                                />
+                                <sshexec host="${remote.host}"
+                                         username="${remote.user}"
+                                         keyfile="${remote.keyfile}"
+                                         command="sudo service browser start"
+                                         trust="true"
+                                />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.jcraft</groupId>
+                        <artifactId>jsch</artifactId>
+                        <version>0.1.53</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>ant</groupId>
+                        <artifactId>ant-jsch</artifactId>
+                        <version>1.6.5</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
-        <executions>
-          <execution>
-            <id>scp-to-remote</id>
-            <phase>install</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <scp localFile="${project.basedir}/target/ph3-server-0.0.1-SNAPSHOT.jar"
-                  remoteToFile="${remote.user}@${remote.host}:~"
-                  verbose="true"
-                  keyfile="${remote.keyfile}"
-                  passphrase=""
-                  trust="true"
-                />
-                <sshexec host="${remote.host}"
-                  username="${remote.user}"
-                  keyfile="${remote.keyfile}"
-                  command="sudo service ph restart"
-                  trust="true"
-                />
-                <sshexec host="${remote.host}"
-                  username="${remote.user}"
-                  keyfile="${remote.keyfile}"
-                  command="sudo service browser stop"
-                  trust="true"
-                />
-                <sshexec host="${remote.host}"
-                  username="${remote.user}"
-                  keyfile="${remote.keyfile}"
-                  command="rm -rf ~/.cache/chromium"
-                  trust="true"
-                />
-                <sshexec host="${remote.host}"
-                  username="${remote.user}"
-                  keyfile="${remote.keyfile}"
-                  command="sudo service browser start"
-                  trust="true"
-                />
-              </target>
-            </configuration>
-          </execution>
-        </executions>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${project.basedir}/../.git</dotGitDirectory>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <verbose>true</verbose>
+                    <excludeProperties>
+                        <excludeProperty>git.build.user.*</excludeProperty>
+                        <excludeProperty>git.commit.user.*</excludeProperty>
+                    </excludeProperties>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <!-- layered jar-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+
+                    <execution>
+                        <id>docker-build-arm64</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <arguments>
+                                <argument>build</argument>
+                                <argument>--platform</argument>
+                                <argument>linux/arm64,linux/amd64</argument>
+                                <argument>-t</argument>
+                                <argument>ph5:arm64-${project.version}</argument>
+                                <argument>.</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <dependencyManagement>
         <dependencies>
-          <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.53</version>
-          </dependency>
-          <dependency>
-            <groupId>ant</groupId>
-            <artifactId>ant-jsch</artifactId>
-            <version>1.6.5</version>
-          </dependency>
+            <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-bom</artifactId>
+                <version>3.3.1</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
         </dependencies>
-      </plugin>
+    </dependencyManagement>
 
-      <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-        <version>2.2.1</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>revision</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <dotGitDirectory>${project.basedir}/../.git</dotGitDirectory>
-          <generateGitPropertiesFile>true</generateGitPropertiesFile>
-          <verbose>true</verbose>
-          <excludeProperties>
-            <excludeProperty>git.build.user.*</excludeProperty>
-            <excludeProperty>git.commit.user.*</excludeProperty>
-          </excludeProperties>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <source>17</source>
-          <target>17</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot.version}</version>
-        <configuration>
-          <executable>true</executable>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot.experimental</groupId>
-        <artifactId>spring-boot-thin-maven-plugin</artifactId>
-        <version>1.0.28.RELEASE</version>
-        <executions>
-          <execution>
-            <!-- Download the dependencies at build time -->
-            <id>resolve</id>
-            <goals>
-              <goal>resolve</goal>
-            </goals>
-            <inherited>false</inherited>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-  <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.lwjgl</groupId>
-        <artifactId>lwjgl-bom</artifactId>
-        <version>3.3.1</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.26</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>de.zebrajaeger</groupId>
+            <artifactId>ph3-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!--    Wee need this, because spring-boot-starter-test has an old dependency that prevents the application start -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <!--        TODO https://pi4j.com/documentation/io-examples/i2c/-->
+        <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-core -->
+        <!--    <dependency>-->
+        <!--      <groupId>com.pi4j</groupId>-->
+        <!--      <artifactId>pi4j-core</artifactId>-->
+        <!--      <version>${pi4j.version}</version>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--      <groupId>com.pi4j</groupId>-->
+        <!--      <artifactId>pi4j-plugin-linuxfs</artifactId>-->
+        <!--      <version>${pi4j.version}</version>-->
+        <!--    </dependency>-->
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-core</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!--    <dependency>-->
+        <!--      <groupId>am.ik.beansviz</groupId>-->
+        <!--        <artifactId>beansviz-spring-boot-actuator</artifactId>-->
+        <!--      <version>0.1.0</version>-->
+        <!--    </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.14.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.14.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.14.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.14.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.14.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.dirs</groupId>
+            <artifactId>directories</artifactId>
+            <version>26</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>jinput</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>jinput</artifactId>
+            <version>2.0.9</version>
+            <classifier>natives-all</classifier>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-  </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.26</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>de.zebrajaeger</groupId>
-      <artifactId>ph3-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-      <version>${spring-boot.version}</version>
-    </dependency>
-
-    <!--    Wee need this, because spring-boot-starter-test has an old dependency that prevents the application start -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.6</version>
-    </dependency>
-    <!--        TODO https://pi4j.com/documentation/io-examples/i2c/-->
-    <!-- https://mvnrepository.com/artifact/com.pi4j/pi4j-core -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.pi4j</groupId>-->
-    <!--      <artifactId>pi4j-core</artifactId>-->
-    <!--      <version>${pi4j.version}</version>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.pi4j</groupId>-->
-    <!--      <artifactId>pi4j-plugin-linuxfs</artifactId>-->
-    <!--      <version>${pi4j.version}</version>-->
-    <!--    </dependency>-->
-    <dependency>
-      <groupId>com.pi4j</groupId>
-      <artifactId>pi4j-core</artifactId>
-      <version>1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-websocket</artifactId>
-      <version>${spring-boot.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>${spring-boot.version}</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>2.14.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.14.2</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.14.2</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>2.14.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.14.2</version>
-    </dependency>
-
-    <dependency>
-        <groupId>org.eclipse.paho</groupId>
-        <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-        <version>1.2.5</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-math3</artifactId>
-      <version>3.6.1</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.11.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>dev.dirs</groupId>
-      <artifactId>directories</artifactId>
-      <version>26</version>
-    </dependency>
-
-    <dependency>
-      <groupId>net.java.jinput</groupId>
-      <artifactId>jinput</artifactId>
-      <version>2.0.9</version>
-    </dependency>
-    <dependency>
-      <groupId>net.java.jinput</groupId>
-      <artifactId>jinput</artifactId>
-      <version>2.0.9</version>
-      <classifier>natives-all</classifier>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.2</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.2</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <version>2.2</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>5.3.0</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <version>${spring-boot.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
 </project>

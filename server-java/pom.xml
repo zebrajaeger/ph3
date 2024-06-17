@@ -164,10 +164,24 @@
                             <executable>docker</executable>
                             <arguments>
                                 <argument>build</argument>
-                                <argument>--platform</argument>
-                                <argument>linux/arm64,linux/amd64</argument>
-                                <argument>-t</argument>
-                                <argument>ph5:arm64-${project.version}</argument>
+                                <argument>--platform=linux/arm64</argument>
+                                <argument>-t=zebrajaeger/ph5:arm64-${project.version}</argument>
+                                <argument>.</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docker-build-amd64</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <arguments>
+                                <argument>build</argument>
+                                <argument>--platform=linux/amd64</argument>
+                                <argument>-t=zebrajaeger/ph5:amd64-${project.version}</argument>
                                 <argument>.</argument>
                             </arguments>
                         </configuration>

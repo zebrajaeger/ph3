@@ -1,14 +1,13 @@
-package de.zebrajaeger.phserver.hardware.i2c;
+package de.zebrajaeger.phserver.hardware.powergauge;
 
-import de.zebrajaeger.phserver.hardware.poll.PollingPowerGauge;
-import de.zebrajaeger.phserver.hardware.local.LocalI2cDeviceFactory;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

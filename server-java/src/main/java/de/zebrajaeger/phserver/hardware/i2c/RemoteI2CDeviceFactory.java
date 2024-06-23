@@ -1,7 +1,5 @@
-package de.zebrajaeger.phserver.hardware.remote;
+package de.zebrajaeger.phserver.hardware.i2c;
 
-import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
-import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

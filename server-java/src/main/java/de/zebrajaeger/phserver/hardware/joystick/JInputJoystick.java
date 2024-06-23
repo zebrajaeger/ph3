@@ -1,8 +1,7 @@
-package de.zebrajaeger.phserver.hardware.local;
+package de.zebrajaeger.phserver.hardware.joystick;
 
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoystickConnectionEvent;
-import de.zebrajaeger.phserver.hardware.poll.PollingJoystick;
 import de.zebrajaeger.phserver.util.MathUtils;
 import java.util.Arrays;
 import java.util.Optional;

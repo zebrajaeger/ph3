@@ -1,10 +1,9 @@
-package de.zebrajaeger.phserver.hardware.fake;
+package de.zebrajaeger.phserver.hardware.gps;
 
 import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.data.GpsFlags;
 import de.zebrajaeger.phserver.data.GpsLocation;
 import de.zebrajaeger.phserver.data.GpsMetaData;
-import de.zebrajaeger.phserver.hardware.poll.PollingGpsReceiver;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Camera;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
-import de.zebrajaeger.phserver.hardware.Actor;
+import de.zebrajaeger.phserver.hardware.actor.Actor;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;

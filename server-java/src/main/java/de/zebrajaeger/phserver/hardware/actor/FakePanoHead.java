@@ -1,10 +1,9 @@
-package de.zebrajaeger.phserver.hardware.fake;
+package de.zebrajaeger.phserver.hardware.actor;
 
 import de.zebrajaeger.phserver.data.ActorAxisStatus;
 import de.zebrajaeger.phserver.data.AxisIndex;
 import de.zebrajaeger.phserver.data.PanoHeadData;
-import de.zebrajaeger.phserver.hardware.Actor;
-import de.zebrajaeger.phserver.hardware.poll.PollingActor;
+import de.zebrajaeger.phserver.hardware.axis.FakeActorAxis;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;

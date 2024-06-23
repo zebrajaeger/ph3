@@ -1,10 +1,10 @@
-package de.zebrajaeger.phserver.hardware.i2c;
+package de.zebrajaeger.phserver.hardware.actor;
 
 import de.zebrajaeger.phserver.data.ActorStatus;
 import de.zebrajaeger.phserver.data.AxisIndex;
 import de.zebrajaeger.phserver.data.PanoHeadData;
-import de.zebrajaeger.phserver.hardware.Actor;
-import de.zebrajaeger.phserver.hardware.poll.PollingActor;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

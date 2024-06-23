@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver;
 
-import de.zebrajaeger.phserver.hardware.Actor;
-import de.zebrajaeger.phserver.hardware.fake.FakePanoHead;
+import de.zebrajaeger.phserver.hardware.actor.Actor;
+import de.zebrajaeger.phserver.hardware.actor.FakePanoHead;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.TakeShotCommand;
 import de.zebrajaeger.phserver.pano.WaitCommand;

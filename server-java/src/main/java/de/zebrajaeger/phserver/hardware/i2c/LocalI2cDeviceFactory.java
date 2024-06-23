@@ -1,10 +1,8 @@
-package de.zebrajaeger.phserver.hardware.local;
+package de.zebrajaeger.phserver.hardware.i2c;
 
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.util.Console;
-import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
-import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

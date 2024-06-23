@@ -13,7 +13,7 @@ import de.zebrajaeger.phserver.event.PanoHeadDataEvent;
 import de.zebrajaeger.phserver.event.PositionEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.event.ShotDoneEvent;
-import de.zebrajaeger.phserver.hardware.Actor;
+import de.zebrajaeger.phserver.hardware.actor.Actor;
 import de.zebrajaeger.phserver.hardware.axis.Axis;
 import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import lombok.Data;

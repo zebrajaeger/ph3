@@ -1,6 +1,7 @@
-package de.zebrajaeger.phserver.hardware.i2c;
+package de.zebrajaeger.phserver.hardware.joystick;
 
 import de.zebrajaeger.phserver.data.RawPosition;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

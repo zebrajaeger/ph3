@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.hardware;
+package de.zebrajaeger.phserver.hardware.actor;
 
 import de.zebrajaeger.phserver.data.AxisIndex;
 

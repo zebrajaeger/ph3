@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.hardware.axis;
 
 import de.zebrajaeger.phserver.data.AxisIndex;
-import de.zebrajaeger.phserver.hardware.Actor;
+import de.zebrajaeger.phserver.hardware.actor.Actor;
 import de.zebrajaeger.phserver.translation.AxisParameters;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

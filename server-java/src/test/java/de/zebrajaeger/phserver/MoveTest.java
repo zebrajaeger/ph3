@@ -8,8 +8,8 @@ import static org.hamcrest.Matchers.lessThan;
 
 import de.zebrajaeger.phserver.data.ActorAxisStatus;
 import de.zebrajaeger.phserver.data.AxisIndex;
-import de.zebrajaeger.phserver.hardware.Actor;
-import de.zebrajaeger.phserver.hardware.fake.FakePanoHead;
+import de.zebrajaeger.phserver.hardware.actor.Actor;
+import de.zebrajaeger.phserver.hardware.actor.FakePanoHead;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 
 import org.junit.jupiter.api.BeforeEach;

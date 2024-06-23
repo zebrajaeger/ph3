@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.hardware;
+package de.zebrajaeger.phserver.hardware.systemcontrol;
 
 import java.io.IOException;
 

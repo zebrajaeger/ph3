@@ -1,18 +1,17 @@
-package de.zebrajaeger.phserver.hardware.i2c;
+package de.zebrajaeger.phserver.hardware.gps;
 
 import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.data.GpsFlags;
 import de.zebrajaeger.phserver.data.GpsLocation;
 import de.zebrajaeger.phserver.data.GpsMetaData;
-import de.zebrajaeger.phserver.hardware.poll.PollingGpsReceiver;
-import de.zebrajaeger.phserver.hardware.local.LocalI2cDeviceFactory;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

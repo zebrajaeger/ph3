@@ -1,6 +1,6 @@
-package de.zebrajaeger.phserver.hardware.fake;
+package de.zebrajaeger.phserver.hardware.axis;
 
-class FakeActorAxis {
+public class FakeActorAxis {
 
   private int maxSpeed;
   private float currentPos;

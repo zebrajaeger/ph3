@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.hardware.poll;
+package de.zebrajaeger.phserver.hardware.actor;
 
 import de.zebrajaeger.phserver.data.PanoHeadData;
 import de.zebrajaeger.phserver.event.PanoHeadDataEvent;

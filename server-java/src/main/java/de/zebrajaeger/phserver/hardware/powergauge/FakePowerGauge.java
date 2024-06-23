@@ -1,6 +1,5 @@
-package de.zebrajaeger.phserver.hardware.fake;
+package de.zebrajaeger.phserver.hardware.powergauge;
 
-import de.zebrajaeger.phserver.hardware.poll.PollingPowerGauge;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

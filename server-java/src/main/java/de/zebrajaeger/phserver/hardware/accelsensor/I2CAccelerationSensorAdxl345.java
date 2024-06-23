@@ -1,6 +1,8 @@
-package de.zebrajaeger.phserver.hardware.i2c;
+package de.zebrajaeger.phserver.hardware.accelsensor;
 
 import de.zebrajaeger.phserver.data.Acceleration;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
+import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

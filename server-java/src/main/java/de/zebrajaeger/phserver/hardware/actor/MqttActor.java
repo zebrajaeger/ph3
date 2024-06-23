@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.hardware.mqtt;
+package de.zebrajaeger.phserver.hardware.actor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,7 @@ import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.event.MqttEvent;
 import de.zebrajaeger.phserver.event.PanoHeadDataEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
-import de.zebrajaeger.phserver.hardware.Actor;
+import de.zebrajaeger.phserver.hardware.mqtt.MqttConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;

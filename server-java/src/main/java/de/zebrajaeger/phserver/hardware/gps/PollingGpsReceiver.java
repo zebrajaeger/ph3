@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.hardware.poll;
+package de.zebrajaeger.phserver.hardware.gps;
 
 import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.event.GpsDataEvent;

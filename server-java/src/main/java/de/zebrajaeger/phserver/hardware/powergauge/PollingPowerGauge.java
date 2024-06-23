@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.hardware.poll;
+package de.zebrajaeger.phserver.hardware.powergauge;
 
 import de.zebrajaeger.phserver.data.Power;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;

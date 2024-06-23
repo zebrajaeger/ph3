@@ -1,6 +1,6 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.hardware.SystemControl;
+import de.zebrajaeger.phserver.hardware.systemcontrol.SystemControl;
 import de.zebrajaeger.phserver.service.CommonService;
 import de.zebrajaeger.phserver.util.StompUtils;
 import org.slf4j.Logger;

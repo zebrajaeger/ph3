@@ -1,6 +1,5 @@
-package de.zebrajaeger.phserver.hardware.remote;
+package de.zebrajaeger.phserver.hardware.i2c;
 
-import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
 import de.zebrajaeger.phserver.util.HexUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;

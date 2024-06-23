@@ -2,7 +2,7 @@ package de.zebrajaeger.phserver.hardware.axis;
 
 
 import de.zebrajaeger.phserver.data.AxisIndex;
-import de.zebrajaeger.phserver.hardware.Actor;
+import de.zebrajaeger.phserver.hardware.actor.Actor;
 import de.zebrajaeger.phserver.translation.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;

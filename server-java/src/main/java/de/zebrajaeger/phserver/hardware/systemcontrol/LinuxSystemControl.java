@@ -1,6 +1,5 @@
-package de.zebrajaeger.phserver.hardware.local;
+package de.zebrajaeger.phserver.hardware.systemcontrol;
 
-import de.zebrajaeger.phserver.hardware.SystemControl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

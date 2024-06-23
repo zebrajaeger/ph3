@@ -1,6 +1,4 @@
-package de.zebrajaeger.phserver.hardware.local;
-
-import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
+package de.zebrajaeger.phserver.hardware.i2c;
 
 import java.io.IOException;
 

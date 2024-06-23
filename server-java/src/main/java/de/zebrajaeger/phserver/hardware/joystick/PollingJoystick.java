@@ -1,4 +1,4 @@
-package de.zebrajaeger.phserver.hardware.poll;
+package de.zebrajaeger.phserver.hardware.joystick;
 
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;

@@ -1,0 +1,1 @@
+.\node\yarn\dist\bin\yarn.cmd run start

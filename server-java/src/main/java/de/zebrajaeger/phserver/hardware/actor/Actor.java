@@ -3,11 +3,6 @@ package de.zebrajaeger.phserver.hardware.actor;
 import de.zebrajaeger.phserver.data.AxisIndex;
 
 public interface Actor {
-    void startFocus(int focusTimeMs) throws Exception;
-
-    void startTrigger(int triggerTimeMs) throws Exception;
-
-    void startShot(int focusTimeMs, int triggerTimeMs) throws Exception;
 
     void setLimit(AxisIndex axisIndex, int velocityMinHz, int velocityMaxHz, int accelerationMaxHzPerSecond) throws Exception;
 

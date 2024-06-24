@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver.event;
 
-import de.zebrajaeger.phserver.data.Camera;
+import de.zebrajaeger.phserver.data.CameraStatus;
 
-public record CameraChangedEvent(Camera camera) {
+public record CameraChangedEvent(CameraStatus cameraStatus) {
 
 }

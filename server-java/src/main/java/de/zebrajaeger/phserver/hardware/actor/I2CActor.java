@@ -2,7 +2,8 @@ package de.zebrajaeger.phserver.hardware.actor;
 
 import de.zebrajaeger.phserver.data.ActorStatus;
 import de.zebrajaeger.phserver.data.AxisIndex;
-import de.zebrajaeger.phserver.data.PanoHeadData;
+import de.zebrajaeger.phserver.data.ActorData;
+import de.zebrajaeger.phserver.data.CameraStatus;
 import de.zebrajaeger.phserver.hardware.i2c.I2CDevice;
 import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
@@ -19,7 +20,7 @@ import java.nio.ByteOrder;
 @Service
 @Profile({"locali2c", "remotei2c"})
 @Slf4j
-public class I2CActor extends PollingActor implements Actor {
+public class I2CActor extends PollingCameraActor implements Actor, Camera {
     private static final boolean X_INVERTED = true;
     private static final boolean Y_INVERTED = false;
 
@@ -27,6 +28,8 @@ public class I2CActor extends PollingActor implements Actor {
     @Value("${i2c.address.panohead:0x33}")
     private int i2cAddress;
     private I2CDevice i2CDevice;
+    private ActorStatus latestActorStatus = null;
+    private CameraStatus latestCameraStatus = null;
 
     public I2CActor(ApplicationEventPublisher applicationEventPublisher, I2CDeviceFactory deviceFactory) {
         super(applicationEventPublisher);
@@ -39,23 +42,44 @@ public class I2CActor extends PollingActor implements Actor {
     }
 
     @Override
-    public PanoHeadData read() throws IOException {
+    public void update() throws IOException {
         ByteBuffer buffer = ByteBuffer.wrap(i2CDevice.read(20)).order(ByteOrder.LITTLE_ENDIAN);
 
-        PanoHeadData result = new PanoHeadData();
+        // actor
+        latestActorStatus = new ActorStatus();
+        byte movementRaw = buffer.get();
+        latestActorStatus.getX().setPos(checkAndInvertIfNeeded(AxisIndex.X, buffer.getInt()));
+        latestActorStatus.getX().setSpeed(checkAndInvertIfNeeded(AxisIndex.X, buffer.getShort()));
+        latestActorStatus.getY().setPos(checkAndInvertIfNeeded(AxisIndex.Y, buffer.getInt()));
+        latestActorStatus.getY().setSpeed(checkAndInvertIfNeeded(AxisIndex.Y, buffer.getShort()));
+        latestActorStatus.getZ().setPos(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getInt()));
+        latestActorStatus.getZ().setSpeed(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getShort()));
 
-        result.setMovementRaw(buffer.get());
-        ActorStatus actorStatus = result.getActorStatus();
-        actorStatus.getX().setPos(checkAndInvertIfNeeded(AxisIndex.X, buffer.getInt()));
-        actorStatus.getX().setSpeed(checkAndInvertIfNeeded(AxisIndex.X, buffer.getShort()));
-        actorStatus.getY().setPos(checkAndInvertIfNeeded(AxisIndex.Y, buffer.getInt()));
-        actorStatus.getY().setSpeed(checkAndInvertIfNeeded(AxisIndex.Y, buffer.getShort()));
-        actorStatus.getZ().setPos(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getInt()));
-        actorStatus.getZ().setSpeed(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getShort()));
-        result.setCameraRaw(buffer.get());
+        latestActorStatus.getX().setAtTargetPos((movementRaw & 0x01) != 0);
+        latestActorStatus.getX().setMoving((movementRaw & 0x02) != 0);
 
-        result.init();
-        return result;
+        latestActorStatus.getY().setAtTargetPos((movementRaw & 0x04) != 0);
+        latestActorStatus.getY().setMoving((movementRaw & 0x08) != 0);
+
+        latestActorStatus.getZ().setAtTargetPos((movementRaw & 0x10) != 0);
+        latestActorStatus.getZ().setMoving((movementRaw & 0x20) != 0);
+
+        // camera
+        latestCameraStatus = new CameraStatus();
+        byte cameraRaw = buffer.get();
+
+        latestCameraStatus.setFocus((cameraRaw & 0x01) != 0);
+        latestCameraStatus.setTrigger((cameraRaw & 0x02) != 0);
+    }
+
+    @Override
+    public ActorStatus readActorStatus() {
+        return latestActorStatus;
+    }
+
+    @Override
+    public CameraStatus readCameraStatus() {
+        return latestCameraStatus;
     }
 
     @Override

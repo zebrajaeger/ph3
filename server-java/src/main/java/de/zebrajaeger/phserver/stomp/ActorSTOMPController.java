@@ -15,12 +15,12 @@ import java.util.HashMap;
 
 @Controller
 @Slf4j
-public class PanoHeadSTOMPController {
+public class ActorSTOMPController {
 
     private final PanoHeadService panoHeadService;
     private final SimpMessagingTemplate template;
 
-    public PanoHeadSTOMPController(PanoHeadService deviceService, SimpMessagingTemplate template) {
+    public ActorSTOMPController(PanoHeadService deviceService, SimpMessagingTemplate template) {
         this.panoHeadService = deviceService;
         this.template = template;
     }
@@ -33,7 +33,7 @@ public class PanoHeadSTOMPController {
 
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
-        template.convertAndSend(destination, panoHeadService.getLatestPanoHeadData().getActorStatus(), header);
+        template.convertAndSend(destination, panoHeadService.getLatestState().getActorStatus(), header);
     }
 
     @EventListener

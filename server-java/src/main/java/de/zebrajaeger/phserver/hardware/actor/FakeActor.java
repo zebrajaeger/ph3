@@ -1,8 +1,6 @@
 package de.zebrajaeger.phserver.hardware.actor;
 
-import de.zebrajaeger.phserver.data.ActorAxisStatus;
-import de.zebrajaeger.phserver.data.AxisIndex;
-import de.zebrajaeger.phserver.data.PanoHeadData;
+import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.hardware.axis.FakeActorAxis;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,20 +14,19 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Profile({"develop"})
-public class FakePanoHead extends PollingActor implements Actor {
+public class FakeActor extends PollingActor implements Actor {
 
     @Value("${develop.updatesPerSecond:5}")
     private int updatesPerSecond;
 
     public int ticsPerSec;
 
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private final PanoHeadData panoHeadData = new PanoHeadData();
+    private final ActorStatus actorStatus = new ActorStatus();
     private final FakeActorAxis x = new FakeActorAxis();
     private final FakeActorAxis y = new FakeActorAxis();
     private final FakeActorAxis z = new FakeActorAxis();
 
-    public FakePanoHead(ApplicationEventPublisher applicationEventPublisher) {
+    public FakeActor(ApplicationEventPublisher applicationEventPublisher) {
         super(applicationEventPublisher);
     }
 
@@ -42,36 +39,6 @@ public class FakePanoHead extends PollingActor implements Actor {
         x.reset();
         y.reset();
         z.reset();
-    }
-
-    @Override
-    public PanoHeadData read() {
-        return panoHeadData;
-    }
-
-      @Override
-    public void startFocus(int focusTimeMs) {
-        panoHeadData.getCamera().setFocus(true);
-        executorService.schedule(() -> panoHeadData.getCamera().setFocus(false), focusTimeMs,
-                TimeUnit.MILLISECONDS);
-    }
-
-    @Override
-    public void startTrigger(int triggerTimeMs) {
-        panoHeadData.getCamera().setTrigger(true);
-        executorService.schedule(() -> panoHeadData.getCamera().setTrigger(false), triggerTimeMs,
-                TimeUnit.MILLISECONDS);
-    }
-
-    @Override
-    public void startShot(int focusTimeMs, int triggerTimeMs) {
-        panoHeadData.getCamera().setFocus(true);
-        executorService.schedule(() -> {
-            panoHeadData.getCamera().setFocus(false);
-            panoHeadData.getCamera().setTrigger(true);
-            executorService.schedule(() -> panoHeadData.getCamera().setTrigger(false), triggerTimeMs,
-                    TimeUnit.MILLISECONDS);
-        }, focusTimeMs, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -123,23 +90,33 @@ public class FakePanoHead extends PollingActor implements Actor {
         };
     }
 
-    public void update() {
+    public void updateAxis() {
         x.update(ticsPerSec);
-        ActorAxisStatus dataX = panoHeadData.getActorStatus().getX();
+        ActorAxisStatus dataX = actorStatus.getX();
         dataX.setMoving(x.isMoving());
         dataX.setAtTargetPos(x.isAtPos());
         dataX.setPos(x.getPos());
 
         y.update(ticsPerSec);
-        ActorAxisStatus dataY = panoHeadData.getActorStatus().getY();
+        ActorAxisStatus dataY = actorStatus.getY();
         dataY.setMoving(y.isMoving());
         dataY.setAtTargetPos(y.isAtPos());
         dataY.setPos(y.getPos());
 
         z.update(ticsPerSec);
-        ActorAxisStatus dataZ = panoHeadData.getActorStatus().getZ();
+        ActorAxisStatus dataZ = actorStatus.getZ();
         dataZ.setMoving(z.isMoving());
         dataZ.setAtTargetPos(z.isAtPos());
         dataZ.setPos(z.getPos());
+    }
+
+    @Override
+    public void update() {
+        // ignore
+    }
+
+    @Override
+    public ActorStatus readActorStatus() {
+        return actorStatus;
     }
 }

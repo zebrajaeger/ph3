@@ -18,18 +18,21 @@ import java.nio.charset.StandardCharsets;
 @Profile("mqtt")
 @Service
 @Slf4j
-public class MqttConnectionService implements MqttCallback{
+public class MqttConnectionService implements MqttCallbackExtended {
 
     private IMqttClient mqttClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    @Value("${mqtt.server.url:tcp://192.168.8.142:1883}")
+//    @Value("${mqtt.server.url:ws://192.168.8.144:1883,ws://192.168.8.142:1883}")
+    @Value("${mqtt.server.url:tcp://192.168.8.144:1883,tcp://192.168.8.142:1883}")
     private String mqttServerUrl;
     @Value("${mqtt.topic.status:ph5/cmd}")
     private String commandTopic;
-    @Value("${mqtt.topic.status:ph5/status}")
-    private String statusTopic;
+    @Value("${mqtt.topic.status:ph5/actor}")
+    private String actorTopic;
     @Value("${mqtt.topic.status:ph5/power}")
     private String powerTopic;
+    @Value("${mqtt.topic.status:ph5/camera}")
+    private String cameraTopic;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -56,17 +59,27 @@ public class MqttConnectionService implements MqttCallback{
 
     @PostConstruct
     private void init() throws MqttException {
-        log.info("Connect to MQTT");
-        mqttClient = new MqttClient(mqttServerUrl, "ph5-" + System.currentTimeMillis());
+        log.info("Connect to first available host of '{}'", mqttServerUrl);
+        String[] hosts = mqttServerUrl.split(",");
+        if (hosts.length == 0) {
+            throw new IllegalArgumentException("No mqtt url in mqtt.server.url:" + mqttServerUrl);
+        }
 
+        mqttClient = new MqttClient(hosts[0], "ph5-" + System.currentTimeMillis());
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
-        options.setConnectionTimeout(10);
-        mqttClient.connect(options);
-
-        mqttClient.subscribe(statusTopic);
+        options.setConnectionTimeout(5);
+        options.setServerURIs(hosts);
         mqttClient.setCallback(this);
+
+        log.info("Connect to MQTT");
+        mqttClient.connect(options);
+        log.info("Connect to MQTT - Done");
+
+        mqttClient.subscribe(actorTopic);
+        mqttClient.subscribe(cameraTopic);
+        mqttClient.subscribe(powerTopic);
     }
 
     @PreDestroy
@@ -83,16 +96,22 @@ public class MqttConnectionService implements MqttCallback{
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String payload = message.toString();
-        if(statusTopic.equals(topic)){
-            applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.STATUS, payload));
-        }else if(powerTopic.equals(topic)){
+        if (actorTopic.equals(topic)) {
+            applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.ACTOR, payload));
+        } else if (cameraTopic.equals(topic)) {
+            applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.CAMERA, payload));
+        } else if (powerTopic.equals(topic)) {
             applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.POWER, payload));
         }
-//                applicationEventPublisher.publishEvent(objectMapper.readValue(payload, MqttPhStatus.class));
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-    // ignore
+        // ignore
+    }
+
+    @Override
+    public void connectComplete(boolean reconnect, String serverURI) {
+        log.info("Connected to MQTT host: '{}', reconnect: {}", serverURI, reconnect);
     }
 }

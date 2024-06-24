@@ -3,12 +3,12 @@ package de.zebrajaeger.phserver.data;
 import lombok.Data;
 
 @Data
-public class PanoHeadData {
+public class ActorData {
 
   protected ActorStatus actorStatus = new ActorStatus();
-  protected Camera camera = new Camera();
+//  protected CameraStatus cameraStatus = new CameraStatus();
   protected int movementRaw;
-  protected int cameraRaw;
+//  protected int cameraRaw;
 
   public void init() {
     actorStatus.x.setAtTargetPos((movementRaw & 0x01) != 0);
@@ -20,8 +20,8 @@ public class PanoHeadData {
     actorStatus.z.setAtTargetPos((movementRaw & 0x10) != 0);
     actorStatus.z.setMoving((movementRaw & 0x20) != 0);
 
-    camera.focus = ((cameraRaw & 0x01) != 0);
-
-    camera.trigger = ((cameraRaw & 0x02) != 0);
+//    cameraStatus.focus = ((cameraRaw & 0x01) != 0);
+//
+//    cameraStatus.trigger = ((cameraRaw & 0x02) != 0);
   }
 }

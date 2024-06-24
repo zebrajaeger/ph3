@@ -29,9 +29,7 @@ public class RemoteI2CDevice implements I2CDevice {
 
         String request = String.format("http://%s/read?address=%d&count=%d", host, address, count);
         log.trace("Request '{}'", request);
-//        URL url = new URL(request);
         String response = sendRequest(request);
-//        String response = IOUtils.toString(url, StandardCharsets.UTF_8);
         // TODO catch java.net.ConnectException and Restart connection
         return HexUtils.decodeHexString(response);
     }
@@ -43,13 +41,12 @@ public class RemoteI2CDevice implements I2CDevice {
 
         String hex = HexUtils.encodeHexString(data);
         String request = String.format("http://%s/write?address=%d&data=%s", host, address, hex);
-//        URL url = new URL(request);
         // TODO catch java.net.ConnectException and Restart connection
         sendRequest(request);
-//        String ignore = IOUtils.toString(url, StandardCharsets.UTF_8);
     }
 
     private String sendRequest(String request) throws IOException {
+        // TODO use java httpclient
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         try {

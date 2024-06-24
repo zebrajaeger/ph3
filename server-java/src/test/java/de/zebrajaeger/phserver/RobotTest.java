@@ -1,7 +1,7 @@
 package de.zebrajaeger.phserver;
 
 import de.zebrajaeger.phserver.hardware.actor.Actor;
-import de.zebrajaeger.phserver.hardware.actor.FakePanoHead;
+import de.zebrajaeger.phserver.hardware.actor.FakeActor;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.pano.TakeShotCommand;
 import de.zebrajaeger.phserver.pano.WaitCommand;
@@ -31,7 +31,7 @@ public class RobotTest {
 
     @BeforeEach
     public void init() {
-        ((FakePanoHead) actor).reset();
+        ((FakeActor) actor).reset();
     }
 
     @Test

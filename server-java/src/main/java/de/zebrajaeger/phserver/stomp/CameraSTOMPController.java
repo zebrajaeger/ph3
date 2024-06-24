@@ -1,8 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
-import de.zebrajaeger.phserver.data.Camera;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
-import de.zebrajaeger.phserver.hardware.actor.Actor;
+import de.zebrajaeger.phserver.hardware.actor.Camera;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
@@ -18,17 +17,14 @@ import java.util.HashMap;
 @Controller
 public class CameraSTOMPController {
 
-    private final Actor actor;
+    private final Camera camera;
     private final PanoHeadService panoHeadService;
     private final SimpMessagingTemplate template;
 
-    private Camera camera = new Camera();
-
-    public CameraSTOMPController(PanoHeadService deviceService, Actor actor,
+    public CameraSTOMPController(PanoHeadService deviceService, Camera camera,
                                  SimpMessagingTemplate template) {
         this.panoHeadService = deviceService;
-        this.actor = actor;
-//        this.hardwareService = hardwareService;
+        this.camera = camera;
         this.template = template;
     }
 
@@ -37,28 +33,27 @@ public class CameraSTOMPController {
                                   @Header("reply-to") String destination) {
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
-        template.convertAndSend(destination, panoHeadService.getLatestPanoHeadData().getCamera(), header);
+        template.convertAndSend(destination, panoHeadService.getLatestState().getCameraStatus(), header);
     }
 
     @MessageMapping("camera/focus")
     public void focus(@Payload int focusTimeMs) throws Exception {
-        actor.startFocus(focusTimeMs);
+        camera.startFocus(focusTimeMs);
     }
 
     @MessageMapping("camera/trigger")
     public void trigger(@Payload int triggerTimeMs) throws Exception {
-        actor.startTrigger(triggerTimeMs);
+        camera.startTrigger(triggerTimeMs);
     }
 
     @MessageMapping("camera/shot")
     public void trigger(@Payload ShotSettings shot) throws Exception {
-        actor.startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+        camera.startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
     }
 
     @EventListener
-    public void onPanoHeadChanged(CameraChangedEvent cameraChangedEvent) {
-        camera = cameraChangedEvent.camera();
-        template.convertAndSend("/topic/camera", camera);
+    public void onCameraChanged(CameraChangedEvent cameraChangedEvent) {
+        template.convertAndSend("/topic/camera", cameraChangedEvent.cameraStatus());
     }
 
     @MessageMapping("/rpc/camera")

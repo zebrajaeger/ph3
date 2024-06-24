@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.event.MqttEvent;
-import de.zebrajaeger.phserver.event.PanoHeadDataEvent;
+import de.zebrajaeger.phserver.event.ActorStatusEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.hardware.mqtt.MqttConnectionService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,24 +31,24 @@ public class MqttActor implements Actor {
     @EventListener
     public void mqttEvent(MqttEvent event) throws JsonProcessingException {
         switch (event.topic()) {
-            case STATUS -> {
-                MqttPhStatus mqttPhStatus = objectMapper.readValue(event.message(), MqttPhStatus.class);
-                PanoHeadData data = new PanoHeadData();
-                data.getCamera().setFocus(mqttPhStatus.c().focus());
-                data.getCamera().setTrigger(mqttPhStatus.c().trigger());
+            case ACTOR -> {
+                MqttActorStatus mqttActorStatus = objectMapper.readValue(event.message(), MqttActorStatus.class);
+                ActorStatus data = new ActorStatus();
+//                data.getCamera().setFocus(mqttPhStatus.c().focus());
+//                data.getCamera().setTrigger(mqttPhStatus.c().trigger());
 
-                data.getActorStatus().getX().setMoving(mqttPhStatus.x().running());
+                data.getX().setMoving(mqttActorStatus.x().running());
                 // fix for FastAccelStepper::getCurrentSpeedInMilliHz never reaches zero
-                data.getActorStatus().getX().setSpeed(mqttPhStatus.x().running() ? mqttPhStatus.x().speed() : 0);
-                data.getActorStatus().getX().setPos(mqttPhStatus.x().pos());
+                data.getX().setSpeed(mqttActorStatus.x().running() ? mqttActorStatus.x().speed() : 0);
+                data.getX().setPos(mqttActorStatus.x().pos());
 
                 // fix for FastAccelStepper::getCurrentSpeedInMilliHz never reaches zero
-                data.getActorStatus().getY().setMoving(mqttPhStatus.y().running());
-                data.getActorStatus().getX().setSpeed(mqttPhStatus.y().running() ? mqttPhStatus.y().speed() : 0);
-                data.getActorStatus().getY().setPos(mqttPhStatus.y().pos());
+                data.getY().setMoving(mqttActorStatus.y().running());
+                data.getX().setSpeed(mqttActorStatus.y().running() ? mqttActorStatus.y().speed() : 0);
+                data.getY().setPos(mqttActorStatus.y().pos());
 
                 log.info("PHData {}", data);
-                applicationEventPublisher.publishEvent(new PanoHeadDataEvent(data));
+                applicationEventPublisher.publishEvent(new ActorStatusEvent(data));
             }
             case POWER -> {
                 Power power = objectMapper.readValue(event.message(), Power.class);
@@ -58,21 +58,6 @@ public class MqttActor implements Actor {
                 log.warn("Unknown topic receive. Should it be processed?: {}/{}", event.topic(), event.rawTopic());
             }
         }
-    }
-
-    @Override
-    public void startFocus(int focusTimeMs) throws Exception {
-        mqttConnectionService.send(MqttCommand.focus(focusTimeMs));
-    }
-
-    @Override
-    public void startTrigger(int triggerTimeMs) throws Exception {
-        mqttConnectionService.send(MqttCommand.trigger(triggerTimeMs));
-    }
-
-    @Override
-    public void startShot(int focusTimeMs, int triggerTimeMs) throws Exception {
-        mqttConnectionService.send(MqttCommand.shot(focusTimeMs, triggerTimeMs));
     }
 
     @Override

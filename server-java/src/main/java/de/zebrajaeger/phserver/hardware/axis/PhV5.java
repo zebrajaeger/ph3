@@ -32,6 +32,6 @@ public class PhV5 {
                 new DefaultStepperParameters(350),
                 MotorDriverParameters.MDP_16,
                 new BeltGearParameters(15,60), false);
-        return new AxisWithOffset(actor, AxisIndex.X, axisParameters);
+        return new AxisWithOffset(actor, AxisIndex.Y, axisParameters);
     }
 }

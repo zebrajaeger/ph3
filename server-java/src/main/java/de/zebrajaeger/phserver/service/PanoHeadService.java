@@ -1,20 +1,11 @@
 package de.zebrajaeger.phserver.service;
 
-import de.zebrajaeger.phserver.hardware.battery.BatteryInterpolator;
 import de.zebrajaeger.phserver.data.*;
-import de.zebrajaeger.phserver.event.ActorActiveChangedEvent;
-import de.zebrajaeger.phserver.event.BatteryStateEvent;
-import de.zebrajaeger.phserver.event.CameraChangedEvent;
-import de.zebrajaeger.phserver.event.JoggingChangedEvent;
-import de.zebrajaeger.phserver.event.JoystickConnectionEvent;
-import de.zebrajaeger.phserver.event.JoystickPositionEvent;
-import de.zebrajaeger.phserver.event.MovementStoppedEvent;
-import de.zebrajaeger.phserver.event.PanoHeadDataEvent;
-import de.zebrajaeger.phserver.event.PositionEvent;
-import de.zebrajaeger.phserver.event.PowerMeasureEvent;
-import de.zebrajaeger.phserver.event.ShotDoneEvent;
+import de.zebrajaeger.phserver.event.*;
 import de.zebrajaeger.phserver.hardware.actor.Actor;
+import de.zebrajaeger.phserver.hardware.actor.Camera;
 import de.zebrajaeger.phserver.hardware.axis.Axis;
+import de.zebrajaeger.phserver.hardware.battery.BatteryInterpolator;
 import de.zebrajaeger.phserver.util.SigmoidCalculator;
 import lombok.Data;
 import lombok.Getter;
@@ -31,15 +22,18 @@ import org.springframework.stereotype.Service;
 public class PanoHeadService {
 
     private final Actor actor;
+    private final Camera camera;
     private final Axis x;
     private final Axis y;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final PanoHeadService.PreviousState previousState = new PanoHeadService.PreviousState();
+    @Getter
+    private final LatestState latestState = new LatestState();
     private boolean joggingEnabled;
     private final SigmoidCalculator sigmoid = new SigmoidCalculator();
 
-    @Getter
-    private PanoHeadData latestPanoHeadData;
+//    @Getter
+//    private PanoHeadData latestPanoHeadData;
+
 
     private long lastManualMove = 0;
     private boolean jogByJoystick = false;
@@ -47,17 +41,19 @@ public class PanoHeadService {
     private final BatteryInterpolator batteryInterpolator;
 
     @Data
-    static class PreviousState {
-        private Camera camera;
+    public static class LatestState {
+        private ActorStatus actorStatus;
+        private CameraStatus cameraStatus;
         private boolean actorActive = false;
     }
 
-    public PanoHeadService(Actor actor,
+    public PanoHeadService(Actor actor, Camera camera,
                            @Qualifier("x") Axis x,
                            @Qualifier("y") Axis y,
                            ApplicationEventPublisher applicationEventPublisher,
                            @Nullable BatteryInterpolator batteryInterpolator) {
         this.actor = actor;
+        this.camera = camera;
         this.x = x;
         this.y = y;
         this.applicationEventPublisher = applicationEventPublisher;
@@ -78,38 +74,42 @@ public class PanoHeadService {
     }
 
     @EventListener
-    public void onPanoHeadDataEvent(PanoHeadDataEvent event) {
-        latestPanoHeadData = event.data();
-        x.setRawValue(latestPanoHeadData.getActorStatus().getByIndex(AxisIndex.X).getPos());
-        y.setRawValue(latestPanoHeadData.getActorStatus().getByIndex(AxisIndex.Y).getPos());
-        applicationEventPublisher.publishEvent(
-                new PositionEvent(getCurrentRawPosition(), getCurrentPosition()));
+    public void onCameraStatusChanged(CameraChangedEvent e) {
+        CameraStatus cameraStatus = e.cameraStatus();
+        if (!cameraStatus.equals(latestState.getCameraStatus())) {
+            if (latestState.getCameraStatus() == null || (!cameraStatus.isTrigger() && latestState.getCameraStatus()
+                    .isTrigger())) {
+                applicationEventPublisher.publishEvent(new ShotDoneEvent());
+            }
+            latestState.setCameraStatus(new CameraStatus(cameraStatus));
+            applicationEventPublisher.publishEvent(new CameraChangedEvent(cameraStatus));
+        }
+    }
+
+    @EventListener
+    public void onActorStatusEvent(ActorStatusEvent event) {
+        ActorStatus actorStatus = event.status();
+
+        latestState.setActorStatus(actorStatus);
+        x.setRawValue(actorStatus.getByIndex(AxisIndex.X).getPos());
+        y.setRawValue(actorStatus.getByIndex(AxisIndex.Y).getPos());
+        applicationEventPublisher.publishEvent(new PositionEvent(getCurrentRawPosition(), getCurrentPosition()));
 
         // TODO set focus/trigger on start shot
         // TODO same with movement
 
-        boolean actorActive = latestPanoHeadData.getActorStatus().isActive();
+        boolean actorActive = actorStatus.isActive();
 
-        Camera camera = latestPanoHeadData.getCamera();
-        if (!camera.equals(previousState.getCamera())) {
-            if (previousState.getCamera() == null || (!camera.isTrigger() && previousState.getCamera()
-                    .isTrigger())) {
-                applicationEventPublisher.publishEvent(new ShotDoneEvent());
-            }
-            previousState.setCamera(new Camera(camera));
-            applicationEventPublisher.publishEvent(new CameraChangedEvent(camera));
-        }
-
-        if (previousState.isActorActive() && !actorActive) {
+        if (latestState.isActorActive() && !actorActive) {
 //      log.info("MOVEMENT STOPPED");
             applicationEventPublisher.publishEvent(new MovementStoppedEvent());
         }
 
-        if (previousState.isActorActive() != actorActive) {
+        if (latestState.isActorActive() != actorActive) {
             applicationEventPublisher.publishEvent(new ActorActiveChangedEvent(actorActive));
         }
 
-        previousState.setActorActive(actorActive);
+        latestState.setActorActive(actorActive);
     }
 
     public Position getCurrentPosition() {
@@ -204,7 +204,7 @@ public class PanoHeadService {
     }
 
     public void shot(int focusTimeMs, int triggerTimeMs) throws Exception {
-        actor.startShot(focusTimeMs, triggerTimeMs);
+        camera.startShot(focusTimeMs, triggerTimeMs);
     }
 
     public void adaptAxisOffset() {

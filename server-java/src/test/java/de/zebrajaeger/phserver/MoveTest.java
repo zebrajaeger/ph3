@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.lessThan;
 import de.zebrajaeger.phserver.data.ActorAxisStatus;
 import de.zebrajaeger.phserver.data.AxisIndex;
 import de.zebrajaeger.phserver.hardware.actor.Actor;
-import de.zebrajaeger.phserver.hardware.actor.FakePanoHead;
+import de.zebrajaeger.phserver.hardware.actor.FakeActor;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,8 +32,8 @@ public class MoveTest {
 
     @BeforeEach
     public void init() {
-        if (FakePanoHead.class.equals(actor.getClass())) {
-            ((FakePanoHead) actor).reset();
+        if (FakeActor.class.equals(actor.getClass())) {
+            ((FakeActor) actor).reset();
         }
     }
 

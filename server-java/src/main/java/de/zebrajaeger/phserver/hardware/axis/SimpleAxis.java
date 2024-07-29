@@ -1,22 +1,30 @@
 package de.zebrajaeger.phserver.hardware.axis;
 
 import de.zebrajaeger.phserver.data.AxisIndex;
+import de.zebrajaeger.phserver.event.ActorStatusEvent;
+import de.zebrajaeger.phserver.event.AxisChangedEvent;
 import de.zebrajaeger.phserver.hardware.actor.Actor;
 import de.zebrajaeger.phserver.translation.AxisParameters;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.ApplicationEventPublisher;
 
 
+@Getter
+@Setter
 public class SimpleAxis implements Axis {
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final Actor actor;
     private final AxisIndex axisIndex;
     private final AxisParameters axisParameters;
 
-    @Getter
-    @Setter
-    private int rawValue = 0;
+    private int targetRawValue = 0;
+    private int measuredRawValue = 0;
 
-    public SimpleAxis(Actor actor, AxisIndex axisIndex, AxisParameters axisParameters) {
+    private boolean targetInitialized = false;
+
+    public SimpleAxis(ApplicationEventPublisher applicationEventPublisher, Actor actor, AxisIndex axisIndex, AxisParameters axisParameters) {
+        this.applicationEventPublisher = applicationEventPublisher;
         this.actor = actor;
         this.axisIndex = axisIndex;
         this.axisParameters = axisParameters;
@@ -24,16 +32,16 @@ public class SimpleAxis implements Axis {
 
     @Override
     public void setVelocity(double velocity) throws Exception {
-        actor.setTargetVelocity(axisIndex, (int) (velocity * axisParameters.getMaxStepFrequency()));
+        getActor().setTargetVelocity(getAxisIndex(), (int) (velocity * getAxisParameters().getMaxStepFrequency()));
     }
 
     @Override
     public boolean moveTo(double posDeg) throws Exception {
-        if (axisParameters.isInverted()) {
+        if (getAxisParameters().isInverted()) {
             posDeg = -posDeg;
         }
-        int targetPos = axisParameters.degToRaw(posDeg);
-        if (rawValue != targetPos) {
+        int targetPos = getAxisParameters().degToRaw(posDeg);
+        if (getTargetRawValue() != targetPos) {
             setTargetPosRaw(targetPos);
             return false;
         } else {
@@ -47,20 +55,26 @@ public class SimpleAxis implements Axis {
             return;
         }
 
-        if (axisParameters.isInverted()) {
+        if (getAxisParameters().isInverted()) {
             angleDeg = -angleDeg;
         }
 
-        setTargetPosRaw(rawValue + axisParameters.degToRaw(angleDeg));
+        setTargetPosRaw(getTargetRawValue() + getAxisParameters().degToRaw(angleDeg));
     }
 
     @Override
-    public double getDegValue() {
-        return axisParameters.isInverted()
-                ? -(axisParameters.rawToDeg(rawValue))
-                : axisParameters.rawToDeg(rawValue);
+    public double getTargetDegValue() {
+        return getAxisParameters().isInverted()
+                ? -(getAxisParameters().rawToDeg(getTargetRawValue()))
+                : getAxisParameters().rawToDeg(getTargetRawValue());
     }
 
+    @Override
+    public double getMeasuredDegValue() {
+        return getAxisParameters().isInverted()
+                ? -(getAxisParameters().rawToDeg(getMeasuredRawValue()))
+                : getAxisParameters().rawToDeg(getMeasuredRawValue());
+    }
 
     @Override
     public void normalizeAxisPosition() {
@@ -69,7 +83,8 @@ public class SimpleAxis implements Axis {
 
     @Override
     public void setToZero() throws Exception {
-        // ignore
+        setTargetRawValue(0);
+        getActor().resetPos();
     }
 
     @Override
@@ -78,6 +93,25 @@ public class SimpleAxis implements Axis {
     }
 
     private void setTargetPosRaw(int pos) throws Exception {
-        actor.setTargetPos(axisIndex, pos);
+        sendChangeEvent();
+        getActor().setTargetPos(getAxisIndex(), pos);
+    }
+
+    public void setTargetRawValue(int targetRawValue) {
+        this.targetRawValue = targetRawValue;
+        sendChangeEvent();
+    }
+
+    public void setMeasuredRawValue(int measuredRawValue) {
+        this.measuredRawValue = measuredRawValue;
+        if (!isTargetInitialized()) {
+            setTargetInitialized(true);
+            targetRawValue = measuredRawValue;
+        }
+        sendChangeEvent();
+    }
+
+    private void sendChangeEvent() {
+        getApplicationEventPublisher().publishEvent(new AxisChangedEvent(this));
     }
 }

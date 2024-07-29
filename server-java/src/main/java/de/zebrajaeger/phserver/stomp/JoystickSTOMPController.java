@@ -2,9 +2,12 @@ package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Position;
 import de.zebrajaeger.phserver.event.JoystickPositionEvent;
+import de.zebrajaeger.phserver.service.PanoHeadService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -14,10 +17,16 @@ import java.util.HashMap;
 public class JoystickSTOMPController {
 
     private final SimpMessagingTemplate template;
+//    private final ApplicationEventPublisher applicationEventPublisher;
     private Position joystickPosition = null;
+    private final PanoHeadService panoHeadService;
 
-    public JoystickSTOMPController(SimpMessagingTemplate template) {
+    public JoystickSTOMPController(SimpMessagingTemplate template,
+//                                   ApplicationEventPublisher applicationEventPublisher,
+                                   PanoHeadService panoHeadService) {
         this.template = template;
+//        this.applicationEventPublisher = applicationEventPublisher;
+        this.panoHeadService = panoHeadService;
     }
 
     @EventListener
@@ -30,6 +39,13 @@ public class JoystickSTOMPController {
         HashMap<String, Object> header = new HashMap<>();
         header.put("correlation-id", id);
         template.convertAndSend(destination, joystickPosition, header);
+    }
+
+    @MessageMapping("/deviceorientation/position")
+    public void onDeviceOrientationPosition(@Payload Position position) {
+//        Position p2 = position.divide(10);
+//        System.out.println(position);
+        panoHeadService.manualMoveByJoystickWithEmergencyStopOnTimeout(position);
     }
 
 //    @MessageMapping("/joystick/center")

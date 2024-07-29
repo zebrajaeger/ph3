@@ -38,7 +38,7 @@ public class ActorSTOMPController {
 
     @EventListener
     public void onPanoHeadChanged(PositionEvent positionEvent) {
-        template.convertAndSend("/topic/actor/position/", positionEvent.position());
+        template.convertAndSend("/topic/actor/position/", positionEvent);
     }
 
     @EventListener
@@ -75,8 +75,8 @@ public class ActorSTOMPController {
     }
 
     @MessageMapping("/actor/manualMoveByJoystick")
-    public void manualMoveByJoystick(@Payload Position relSpeed) {
-        panoHeadService.manualMoveByJoystickWithEmergencyStopOnTimeout(relSpeed);
+    public void manualMoveByJoystick(@Payload Position joystickPosition) {
+        panoHeadService.manualMoveByJoystickWithEmergencyStopOnTimeout(joystickPosition);
     }
 
     @MessageMapping("/actor/manualMoveByJoystickStop")

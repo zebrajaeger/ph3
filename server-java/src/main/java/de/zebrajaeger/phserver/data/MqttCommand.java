@@ -14,15 +14,15 @@ public record MqttCommand(
         Integer focus,
         Integer trigger) {
     public static MqttCommand speed(int x, int y) {
-        return new MqttCommand(null, "speed", x, y, null, null, null, null);
+        return new MqttCommand(null, "speed", null, null, x, y, null, null);
     }
 
     public static MqttCommand speedX(int x) {
-        return new MqttCommand(null, "speed", x, null, null, null, null, null);
+        return new MqttCommand(null, "speed", null, null, x, null, null, null);
     }
 
     public static MqttCommand speedY(int y) {
-        return new MqttCommand(null, "speed", null, y, null, null, null, null);
+        return new MqttCommand(null, "speed", null, null, null, y, null, null);
     }
 
     public static MqttCommand move(int x, int y) {
@@ -67,5 +67,17 @@ public record MqttCommand(
 
     public static MqttCommand forceStop() {
         return new MqttCommand(null, "forceStop", null, null, null, null, null, null);
+    }
+
+    public static MqttCommand setPosX(int x) {
+        return new MqttCommand(null, "setPos", x, null, null, null, null, null);
+    }
+
+    public static MqttCommand setPosY(int y) {
+        return new MqttCommand(null, "setPos", null, y, null, null, null, null);
+    }
+
+    public static MqttCommand setPos(int x, int y) {
+        return new MqttCommand(null, "setPos", x, y, null, null, null, null);
     }
 }

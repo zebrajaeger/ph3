@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.stomp;
 
 import de.zebrajaeger.phserver.data.Border;
+import de.zebrajaeger.phserver.data.DoubleBorder;
 import de.zebrajaeger.phserver.data.Rename;
 import de.zebrajaeger.phserver.event.PictureFOVChangedEvent;
 import de.zebrajaeger.phserver.event.PictureFovNamesChangedEvent;
@@ -28,6 +29,20 @@ public class PictureFovStompController {
     @MessageMapping("/picture/border")
     public void pictureBorder(Border[] borders) {
         panoService.setCurrentPositionAsPictureBorder(borders);
+        panoService.publishPictureFOVChange();
+        panoService.updatePanoMatrix();
+    }
+
+    @MessageMapping("/picture/border/h")
+    public void pictureBorderH(DoubleBorder border) {
+        panoService.setPictureBorderH(border.getFrom(), border.getTo());
+        panoService.publishPictureFOVChange();
+        panoService.updatePanoMatrix();
+    }
+
+    @MessageMapping("/picture/border/v")
+    public void pictureBorderV(DoubleBorder border) {
+        panoService.setPictureBorderV(border.getFrom(), border.getTo());
         panoService.publishPictureFOVChange();
         panoService.updatePanoMatrix();
     }

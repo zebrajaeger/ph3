@@ -74,12 +74,13 @@ public class FakeActor extends PollingActor implements Actor {
         getAxis(axisIndex).setActualAndTargetPos(pos);
     }
 
-//    @Override
-//    public void resetPos() {
-//        x.reset();
-//        y.reset();
-//        z.reset();
-//    }
+
+    @Override
+    public void resetPos() {
+        x.reset();
+        y.reset();
+        z.reset();
+    }
 
     private FakeActorAxis getAxis(AxisIndex axisIndex) {
         return switch (axisIndex) {

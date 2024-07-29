@@ -14,6 +14,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ import java.util.Optional;
 @Slf4j
 public class PanoService {
 
+    @Value("${pano.positions.max:5000}")
+    private int maxPositions;
     private final PanoHeadService panoHeadService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final SettingsService settingsService;
@@ -70,6 +73,16 @@ public class PanoService {
         publishPicturePresetsChange();
     }
 
+    public void setPictureBorderH(double bFrom, double bTo) {
+        cameraFov.getX().setFrom(bFrom);
+        cameraFov.getX().setTo(bTo);
+    }
+
+    public void setPictureBorderV(double bFrom, double bTo) {
+        cameraFov.getY().setFrom(bFrom);
+        cameraFov.getY().setTo(bTo);
+    }
+
     public void setCurrentPositionAsPictureBorder(Border... borders) {
         setCurrentPositionAsBorder(cameraFov, borders);
     }
@@ -80,7 +93,7 @@ public class PanoService {
 
     public void setCurrentPositionAsBorder(PanoFovSettings fov, Border... borders) {
         for (Border b : borders) {
-            Position currentPosition = panoHeadService.getCurrentPosition();
+            Position currentPosition = panoHeadService.getCurrentPositionDeg();
             switch (b) {
                 case LEFT -> fov.getX().setFrom(currentPosition.getX());
                 case RIGHT -> fov.getX().setTo(currentPosition.getX());
@@ -111,8 +124,12 @@ public class PanoService {
                         pano);
             });
 
-            panoMatrix.ifPresent(
-                    value -> applicationEventPublisher.publishEvent(new PanoMatrixChangedEvent(value)));
+            if (panoMatrix.get().getPositionCount() > maxPositions) {
+                // too many positions -> prevent websocket buffer overflow due to big json
+                panoMatrix = Optional.empty();
+            } else {
+                applicationEventPublisher.publishEvent(new PanoMatrixChangedEvent(panoMatrix.get()));
+            }
         }
         return panoMatrix;
     }

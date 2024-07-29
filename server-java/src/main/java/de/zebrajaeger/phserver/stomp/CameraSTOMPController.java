@@ -1,10 +1,12 @@
 package de.zebrajaeger.phserver.stomp;
 
+import de.zebrajaeger.phserver.data.CameraShotResult;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
 import de.zebrajaeger.phserver.hardware.actor.Camera;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import java.util.HashMap;
 
 @Controller
+@Slf4j
 public class CameraSTOMPController {
 
     private final Camera camera;
@@ -59,5 +62,16 @@ public class CameraSTOMPController {
     @MessageMapping("/rpc/camera")
     public void rpcCamera(@Header("correlation-id") String id, @Header("reply-to") String destination) {
         StompUtils.rpcSendResponse(template, id, destination, camera);
+    }
+
+    @MessageMapping("/rpc/camera/shot")
+    public void rpcCameraShot(@Header("correlation-id") String id, @Header("reply-to") String destination, @Payload ShotSettings shot) {
+        try {
+            camera.startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+            StompUtils.rpcSendResponse(template, id, destination, new CameraShotResult(true, "Ok", null));
+        } catch (Exception e) {
+            StompUtils.rpcSendResponse(template, id, destination, new CameraShotResult(false, e.getMessage(), e));
+            log.error("Trigger Camera", e);
+        }
     }
 }

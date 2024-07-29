@@ -39,12 +39,12 @@ public class MqttActor implements Actor {
 
                 data.getX().setMoving(mqttActorStatus.x().running());
                 // fix for FastAccelStepper::getCurrentSpeedInMilliHz never reaches zero
-                data.getX().setSpeed(mqttActorStatus.x().running() ? mqttActorStatus.x().speed() : 0);
+                data.getX().setSpeed(mqttActorStatus.x().running() ? mqttActorStatus.x().speed() / 1000 : 0);
                 data.getX().setPos(mqttActorStatus.x().pos());
 
                 // fix for FastAccelStepper::getCurrentSpeedInMilliHz never reaches zero
                 data.getY().setMoving(mqttActorStatus.y().running());
-                data.getX().setSpeed(mqttActorStatus.y().running() ? mqttActorStatus.y().speed() : 0);
+                data.getY().setSpeed(mqttActorStatus.y().running() ? mqttActorStatus.y().speed() / 1000 : 0);
                 data.getY().setPos(mqttActorStatus.y().pos());
 
                 log.info("PHData {}", data);
@@ -65,12 +65,31 @@ public class MqttActor implements Actor {
         // TODO
     }
 
+    private int currentXVelocity = 0;
+    private int currentYVelocity = 0;
+
     @Override
     public void setTargetVelocity(AxisIndex axisIndex, int velocity) throws Exception {
         if (axisIndex == AxisIndex.X) {
-            mqttConnectionService.send(MqttCommand.speedX(velocity));
+//            if (velocity == 0) {
+//                mqttConnectionService.send(MqttCommand.stop());
+//            } else {
+            if (currentXVelocity != velocity) {
+                mqttConnectionService.send(MqttCommand.speedX(velocity));
+                currentXVelocity = velocity;
+            }
+//            }
         } else if (axisIndex == AxisIndex.Y) {
-            mqttConnectionService.send(MqttCommand.speedY(velocity));
+            if (currentYVelocity != velocity) {
+                mqttConnectionService.send(MqttCommand.speedY(velocity));
+                currentYVelocity = velocity;
+            }
+
+//            if (velocity == 0) {
+//                mqttConnectionService.send(MqttCommand.stop());
+//            } else {
+//                mqttConnectionService.send(MqttCommand.speedY(velocity));
+//            }
         }
     }
 
@@ -94,12 +113,16 @@ public class MqttActor implements Actor {
 //    }
 
     @Override
-    public void setActualAndTargetPos(AxisIndex axisIndex, int pos) throws IOException {
-        throw new UnsupportedOperationException();
+    public void setActualAndTargetPos(AxisIndex axisIndex, int pos) throws Exception {
+        if (axisIndex == AxisIndex.X) {
+            mqttConnectionService.send(MqttCommand.setPosX(pos));
+        } else if (axisIndex == AxisIndex.Y) {
+            mqttConnectionService.send(MqttCommand.setPosY(pos));
+        }
     }
 
-//    @Override
-//    public void resetPos() throws Exception {
-//
-//    }
+    @Override
+    public void resetPos() throws Exception {
+        mqttConnectionService.send(MqttCommand.setPos(0, 0));
+    }
 }

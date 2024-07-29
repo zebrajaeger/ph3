@@ -22,8 +22,8 @@ public class MqttConnectionService implements MqttCallbackExtended {
 
     private IMqttClient mqttClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
-//    @Value("${mqtt.server.url:ws://192.168.8.144:1883,ws://192.168.8.142:1883}")
-    @Value("${mqtt.server.url:tcp://192.168.8.144:1883,tcp://192.168.8.142:1883}")
+    //    @Value("${mqtt.server.url:ws://192.168.8.144:1883,ws://192.168.8.142:1883}")
+    @Value("${mqtt.server.url:tcp://192.168.178.42:1883,tcp://192.168.8.142:1883}")
     private String mqttServerUrl;
     @Value("${mqtt.topic.status:ph5/cmd}")
     private String commandTopic;
@@ -70,16 +70,30 @@ public class MqttConnectionService implements MqttCallbackExtended {
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
         options.setConnectionTimeout(5);
+        options.setKeepAliveInterval(5);
+        options.setMaxReconnectDelay(10000);
         options.setServerURIs(hosts);
         mqttClient.setCallback(this);
 
-        log.info("Connect to MQTT");
-        mqttClient.connect(options);
-        log.info("Connect to MQTT - Done");
-
-        mqttClient.subscribe(actorTopic);
-        mqttClient.subscribe(cameraTopic);
-        mqttClient.subscribe(powerTopic);
+        Thread.startVirtualThread(() -> {
+            for (; ; ) {
+                try {
+                    log.info("Try to connect to MQTT-Server {}", hosts[0]);
+                    mqttClient.connect(options);
+                    log.info("Connection to MQTT Server established");
+                    break;
+                } catch (Exception e) {
+                    log.warn("Initial MQTT connection to Server failed. Retry in 10s. Reason: {}", e.getCause().getMessage());
+                    log.trace("Initial MQTT connection to Server failed", e);
+                }
+                try {
+                    //noinspection BusyWait
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        });
     }
 
     @PreDestroy
@@ -113,5 +127,12 @@ public class MqttConnectionService implements MqttCallbackExtended {
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
         log.info("Connected to MQTT host: '{}', reconnect: {}", serverURI, reconnect);
+        try {
+            mqttClient.subscribe(actorTopic);
+            mqttClient.subscribe(cameraTopic);
+            mqttClient.subscribe(powerTopic);
+        } catch (MqttException e) {
+            log.error("Could not subscribe to topics");
+        }
     }
 }

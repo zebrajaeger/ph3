@@ -19,6 +19,13 @@ public class Position {
         return new Position(x + other.x(), y + other.y());
     }
 
+    public Position multiply(double v) {
+        return new Position(x * v, y * v);
+    }
+    public Position divide(double v) {
+        return new Position(x / v, y / v);
+    }
+
     public Position withBorderOfOne() {
         return new Position(withBorder(x, -1, 1), withBorder(y, -1, 1));
     }

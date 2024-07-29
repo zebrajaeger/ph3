@@ -93,6 +93,12 @@ public class I2CActor extends PollingCameraActor implements Actor, Camera {
     }
 
     @Override
+    public void resetPos() throws Exception {
+        setActualAndTargetPos(AxisIndex.X, 0);
+        setActualAndTargetPos(AxisIndex.Y, 0);
+    }
+
+    @Override
     public void startFocus(int focusTimeMs) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(5).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put((byte) 0x30);

@@ -87,13 +87,24 @@ public class PanoHeadService {
     }
 
     @EventListener
+    public void onAxisChangedEvent(AxisChangedEvent event) {
+        // we assume then an update of x before y happens
+        if (event.axis().getAxisIndex() == AxisIndex.Y) {
+            applicationEventPublisher.publishEvent(new PositionEvent(
+                    new RawPosition(x.getTargetRawValue(), y.getTargetRawValue()),
+                    new Position(x.getTargetDegValue(), y.getTargetDegValue()),
+                    new RawPosition(x.getMeasuredRawValue(), y.getMeasuredRawValue()),
+                    new Position(x.getMeasuredDegValue(), y.getMeasuredDegValue())));
+        }
+    }
+
+    @EventListener
     public void onActorStatusEvent(ActorStatusEvent event) {
         ActorStatus actorStatus = event.status();
 
         latestState.setActorStatus(actorStatus);
-        x.setRawValue(actorStatus.getByIndex(AxisIndex.X).getPos());
-        y.setRawValue(actorStatus.getByIndex(AxisIndex.Y).getPos());
-        applicationEventPublisher.publishEvent(new PositionEvent(getCurrentRawPosition(), getCurrentPosition()));
+        x.setMeasuredRawValue(actorStatus.getByIndex(AxisIndex.X).getPos());
+        y.setMeasuredRawValue(actorStatus.getByIndex(AxisIndex.Y).getPos());
 
         // TODO set focus/trigger on start shot
         // TODO same with movement
@@ -112,14 +123,9 @@ public class PanoHeadService {
         latestState.setActorActive(actorActive);
     }
 
-    public Position getCurrentPosition() {
-        return new Position(x.getDegValue(), y.getDegValue());
+    public Position getCurrentPositionDeg() {
+        return new Position(x.getTargetDegValue(), y.getTargetDegValue());
     }
-
-    public RawPosition getCurrentRawPosition() {
-        return new RawPosition(x.getRawValue(), y.getRawValue());
-    }
-
 
     //    public boolean isJoggingEnabled() {
 //        return joggingEnabled;
@@ -163,6 +169,7 @@ public class PanoHeadService {
         }
 
         try {
+//            System.out.println("####" + relPosition);
             x.moveRelative(relPosition.getX());
             y.moveRelative(relPosition.getY());
         } catch (Exception e) {
@@ -251,6 +258,8 @@ public class PanoHeadService {
             return;
         }
 
+//        System.out.println("###### " + joystickPosition);
+
         jogByJoystick = true;
 
         // reset watchdog timeout
@@ -283,14 +292,12 @@ public class PanoHeadService {
     private void setSigmoidSpeed(Position speed) {
         Position speed1 = speed.withBorderOfOne();
         try {
-            x.setVelocity(sigmoid.value(speed1.getX()));
-            y.setVelocity(sigmoid.value(speed1.getY()));
+            double sx = sigmoid.value(speed1.getX());
+            double sy = sigmoid.value(speed1.getY());
+            x.setVelocity(sx);
+            y.setVelocity(sy);
         } catch (Exception e) {
             log.debug("Could not set velocity", e);
         }
-    }
-
-    public Position getCurrentPositionDeg() {
-        return new Position(x.getDegValue(), y.getDegValue());
     }
 }

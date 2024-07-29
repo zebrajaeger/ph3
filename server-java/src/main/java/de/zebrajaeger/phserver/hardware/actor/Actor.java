@@ -14,9 +14,9 @@ public interface Actor {
 
     // --- For Offset
 
-//    void setActualPos(AxisIndex axisIndex, int pos) throws Exception;
+    //    void setActualPos(AxisIndex axisIndex, int pos) throws Exception;
 //
     void setActualAndTargetPos(AxisIndex axisIndex, int pos) throws Exception;
-//
-//    void resetPos() throws Exception;
+
+    void resetPos() throws Exception;
 }

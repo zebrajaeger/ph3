@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "xxx": "ng generate component ui/device-orientation-joystick",
+    "start:http": "ng serve --host=0.0.0.0 --disable-host-check",
+    "start:https": "ng serve --host=0.0.0.0 --disable-host-check --ssl --ssl-key ssl/key.pem --ssl-cert ssl/cert.pem",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

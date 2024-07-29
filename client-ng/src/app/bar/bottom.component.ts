@@ -3,7 +3,7 @@ import {PanoHeadService} from '../service/panohead.service';
 import {Subscription} from 'rxjs';
 import {PanoService} from '../service/pano.service';
 import {CameraOfView, Gps, PanoFieldOfView, PanoMatrix} from '../../data/pano';
-import {Position, Power} from '../../data/panohead';
+import {AxesPosition, Position, Power} from '../../data/panohead';
 import {RobotState} from "../../data/record";
 import {GpsService} from "../service/gps.service";
 import {UiService} from "../service/ui.service";
@@ -19,7 +19,7 @@ export class BottomComponent implements OnInit, OnDestroy {
     private backButtonSubscription!: Subscription;
 
     private actorSubscription!: Subscription;
-    public actorPos?: Position;
+    public axesPosition?: AxesPosition;
 
     private calculatedPanoSubscription!: Subscription;
     public panoMatrix?: PanoMatrix;
@@ -56,7 +56,7 @@ export class BottomComponent implements OnInit, OnDestroy {
         this.backButtonSubscription = this.uiService.backButton.subscribe(enabled => this.backButton = enabled);
 
         this.actorSubscription = this.panoHeadService.subscribeActorPosition(position => {
-            this.actorPos = position;
+            this.axesPosition = position;
         });
 
         this.panoService.subscribePanoMatrix(panoMatrix => {

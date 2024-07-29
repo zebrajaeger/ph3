@@ -61,7 +61,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
 
         this.actorSubscription = this.panoHeadService.subscribeActorPosition(position => {
-            this.actorPos = position;
+            this.actorPos = position.measuredDegPosition;
         });
     }
 

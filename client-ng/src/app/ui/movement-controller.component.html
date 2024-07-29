@@ -1,25 +1,30 @@
 <div class="control">
   <!--  +y-->
-  <div class="button h-center" (click)="manualMove(0,-10)">10</div>
-  <div class="button h-center" (click)="manualMove(0,-1)">1</div>
-  <div class="button h-center" (click)="manualMove(0,-0.1)">0.1</div>
+  <div class="button h-center" [style.opacity]="buttonOpacity" (click)="onManualMove(0,-10)">10</div>
+  <div class="button h-center" [style.opacity]="buttonOpacity" (click)="onManualMove(0,-1)">1</div>
+  <div class="button h-center" [style.opacity]="buttonOpacity" (click)="onManualMove(0,-0.1)">0.1</div>
 
   <!--  +x-->
-  <div class="button h-left v-center" (click)="manualMove(10,0)">10</div>
-  <div class="button v-center" (click)="manualMove(1,0)">1</div>
-  <div class="button v-center" (click)="manualMove(0.1,0)">0.1</div>
+  <div class="button h-left v-center" [style.opacity]="buttonOpacity" (click)="onManualMove(10,0)">10</div>
+  <div class="button v-center" [style.opacity]="buttonOpacity" (click)="onManualMove(1,0)">1</div>
+  <div class="button v-center" [style.opacity]="buttonOpacity" (click)="onManualMove(0.1,0)">0.1</div>
 
-  <div class="v-center">
+  <div class="button h-center v-center symbol-joystick" (click)="toggleDeviceOrientationMove()">
+
+    <!-- <img *ngIf="deviceOrientationActive" style="width:40px"
+      src="/assets/font/google-material-icons/motion_sensor_active.svg" alt="motion sensor active">
+    <img *ngIf="!deviceOrientationActive" style="width:40px"
+      src="/assets/font/google-material-icons/motion_sensor_idle.svg" alt="motion sensor active"> -->
   </div>
 
   <!--  -x-->
-  <div class="button v-center" (click)="manualMove(-0.1,0)">0.1</div>
-  <div class="button v-center" (click)="manualMove(-1,0)">1</div>
-  <div class="button v-center" (click)="manualMove(-10,0)">10</div>
+  <div class="button v-center" [style.opacity]="buttonOpacity" (click)="onManualMove(-0.1,0)">0.1</div>
+  <div class="button v-center" [style.opacity]="buttonOpacity" (click)="onManualMove(-1,0)">1</div>
+  <div class="button v-center" [style.opacity]="buttonOpacity" (click)="onManualMove(-10,0)">10</div>
 
-  <div class="button h-center" (click)="manualMove(0, 0.1)">0.1</div>
-  <div class="button h-center" (click)="manualMove(0, 1)">1</div>
-  <div class="button h-center" (click)="manualMove(0, 10)">10</div>
+  <div class="button h-center" [style.opacity]="buttonOpacity" (click)="onManualMove(0, 0.1)">0.1</div>
+  <div class="button h-center" [style.opacity]="buttonOpacity" (click)="onManualMove(0, 1)">1</div>
+  <div class="button h-center" [style.opacity]="buttonOpacity" (click)="onManualMove(0, 10)">10</div>
 
   <!--  additional content-->
   <div class="additional-content top left">
@@ -35,3 +40,13 @@
     <ng-content select="[bottom-right]"></ng-content>
   </div>
 </div>
+
+<!-- <div class="joystick" [style.opacity]="joystickOpacity" *ngIf="deviceOrientationAvailable && inputType==='joystick'">
+  <div class="joystick-handle" [style.transform]="handleTransform"></div>
+</div> -->
+
+<app-touchpad *ngIf="showTouchpad" (relPosition)="onTouchpadPosition($event)" (doubleTap)="closeTouchpad()" />
+<!-- <app-touchpad *ngIf="showTouchpad" (relPosition)="onTouchpadPosition($event)") (doubleTap)="closeTouchpad()" /> -->
+
+<app-device-orientation-joystick *ngIf="showJoystick" [active]="joystickActive" (doubleTap)="closeJoystick()" 
+  (position)="onJoystickPosition($event)" />

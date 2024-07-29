@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
-import {Camera, Shot} from '../../data/camera';
-import {RxStompService} from "./rx-stomp.service";
-import {RxStompRPCService} from "./rx-stomp-rpc.service";
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { Camera, CameraShotResult, Shot } from '../../data/camera';
+import { RxStompService } from "./rx-stomp.service";
+import { RxStompRPCService } from "./rx-stomp-rpc.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +14,37 @@ export class CameraService {
   }
 
   focus(focusTimeMs: number): void {
-    this.rxStompService.publish({destination: '/camera/focus', body: focusTimeMs.toString()});
+    this.rxStompService.publish({ destination: '/camera/focus', body: focusTimeMs.toString() });
   }
 
   trigger(triggerTimeMs: number): void {
-    this.rxStompService.publish({destination: '/camera/trigger', body: triggerTimeMs.toString()});
+    this.rxStompService.publish({ destination: '/camera/trigger', body: triggerTimeMs.toString() });
   }
 
   shot(focusTimeMs: number, triggerTimeMs: number): void {
-    const data = new Shot().setFromJson({focusTimeMs, triggerTimeMs});
-    this.rxStompService.publish({destination: '/camera/shot', body: JSON.stringify(data)});
+    const data = new Shot().setFromJson({ focusTimeMs, triggerTimeMs });
+    this.rxStompService.publish({ destination: '/camera/shot', body: JSON.stringify(data) });
   }
 
   subscribeCamera(cb: (fov: Camera) => void): Subscription {
     return this.rxStompService
-    .watch('/topic/camera')
-    .pipe(map(msg => JSON.parse(msg.body) as Camera))
-    .subscribe(cb);
+      .watch('/topic/camera')
+      .pipe(map(msg => JSON.parse(msg.body) as Camera))
+      .subscribe(cb);
   }
 
   public requestCamera(cb: (actor: Camera) => void): Subscription {
     return this.rxStompRPCService
-    .rpc({destination: '/rpc/camera'})
-    .pipe(map(msg => JSON.parse(msg.body) as Camera))
-    .subscribe(cb);
+      .rpc({ destination: '/rpc/camera' })
+      .pipe(map(msg => JSON.parse(msg.body) as Camera))
+      .subscribe(cb);
+  }
+
+  public requestShot(focusTimeMs: number, triggerTimeMs: number, cb: (actor: CameraShotResult) => void): Subscription {
+    const data = new Shot().setFromJson({ focusTimeMs, triggerTimeMs });
+    return this.rxStompRPCService
+      .rpc({ destination: '/rpc/camera/shot', body: JSON.stringify(data) })
+      .pipe(map(msg => JSON.parse(msg.body) as CameraShotResult))
+      .subscribe(cb);
   }
 }

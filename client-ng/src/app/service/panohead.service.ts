@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {Actor, ActorState, BatteryState, Position, Power} from '../../data/panohead';
+import {ActorState, AxesPosition, BatteryState, Position, Power} from '../../data/panohead';
 import {RobotState} from '../../data/record';
 import {RxStompService} from "./rx-stomp.service";
 import {RxStompRPCService} from "./rx-stomp-rpc.service";
@@ -36,10 +36,10 @@ export class PanoHeadService {
             .subscribe(cb);
     }
 
-    public subscribeActorPosition(cb: (position: Position) => void): Subscription {
+    public subscribeActorPosition(cb: (position: AxesPosition) => void): Subscription {
         return this.rxStompService
             .watch('/topic/actor/position/')
-            .pipe(map(msg => JSON.parse(msg.body) as Position))
+            .pipe(map(msg => JSON.parse(msg.body) as AxesPosition))
             .subscribe(cb);
     }
 
@@ -50,10 +50,10 @@ export class PanoHeadService {
             .subscribe(cb);
     }
 
-    public subscribeActor(cb: (actor: Actor) => void): Subscription {
+    public subscribeActor(cb: (actor: ActorState) => void): Subscription {
         return this.rxStompRPCService
             .rpc({destination: '/topic/actor/'})
-            .pipe(map(msg => JSON.parse(msg.body) as Actor))
+            .pipe(map(msg => JSON.parse(msg.body) as ActorState))
             .subscribe(cb);
     }
 

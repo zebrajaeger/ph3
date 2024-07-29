@@ -1,5 +1,3 @@
-import {Camera} from './camera';
-
 export class ActorAxis {
     public pos!: number;
     public speed!: number;
@@ -7,14 +5,9 @@ export class ActorAxis {
     public atTargetPos!: boolean;
 }
 
-export class Actor {
+export class ActorState {
     public x!: ActorAxis;
     public y!: ActorAxis;
-}
-
-export class ActorState {
-    public x!: number;
-    public y!: number;
 }
 
 export class Power {
@@ -40,13 +33,17 @@ export class BatteryState {
 }
 
 export class Position {
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
     public x!: number;
     public y!: number;
 }
 
-export class PanoHeadData {
-    public actor!: Actor;
-    public camera!: Camera;
-    public movementRaw!: number;
-    public cameraRaw!: number;
+export class AxesPosition {
+    public targetRawPosition!: Position;
+    public targetDegPosition!: Position;
+    public measuredRawPosition!: Position;
+    public measuredDegPosition!: Position;
 }

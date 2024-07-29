@@ -32,13 +32,13 @@
                 2014-02-23_13h53m33s
             </endTime>
         </shooting>
-        <camera>
+        <cameraStatus>
             <timeValue>
                 5.0
             </timeValue>
             <bracketing nbPicts="1"/>
             <sensor coef ="1.61" ratio="3:2"/>
-        </camera>
+        </cameraStatus>
         <lens type="rectilinear">
             <focal>
                 12.7

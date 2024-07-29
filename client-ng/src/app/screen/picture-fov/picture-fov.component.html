@@ -10,10 +10,10 @@
     </div>
 
     <div top-right class="info-range">
-        <div class="left-center-content h-label"><span class="value">H:</span></div>
-        <div class="left-center-content h-value"><span class="value">{{hText}}</span></div>
-        <div class="left-center-content v-label"><span class="value">V:</span></div>
-        <div class="left-center-content v-value"><span class="value">{{vText}}</span></div>
+        <div class="left-center-content h-label" (click)="onEditH()"><span class="value">H:</span></div>
+        <div class="left-center-content h-value"(click)="onEditH()"><span class="value">{{hText}}</span></div>
+        <div class="left-center-content v-label"(click)="onEditV()"><span class="value">V:</span></div>
+        <div class="left-center-content v-value"(click)="onEditV()"><span class="value">{{vText}}</span></div>
     </div>
     <div bottom-left class="bottom-left">
         <button class="button load edit" [routerLink]="['/picture-fov/load']">
@@ -42,4 +42,8 @@
             <button class="button bottom" (click)="onBottom()">Bottom</button>
         </div>
     </div>
+</app-modal>
+
+<app-modal class="modal-num-pad" id="calcPictureFov" (close)="onNumPadCloseModal()">
+    <app-number-pad [(value)]="editTemp" (close)="onNumPadClose()"/>
 </app-modal>

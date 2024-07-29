@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PanoService} from '../../service/pano.service';
-import {Border, CameraOfView} from '../../../data/pano';
-import {Subscription} from 'rxjs';
-import {RouterService} from '../../service/router.service';
-import {UiService} from '../../service/ui.service';
-import {PanoHeadService} from '../../service/panohead.service';
-import {ConnectionService} from '../../service/connection.service';
-import {degToString} from '../../utils';
-import {ModalService} from "../../ui/modal.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PanoService } from '../../service/pano.service';
+import { Border, CameraOfView } from '../../../data/pano';
+import { Subscription } from 'rxjs';
+import { RouterService } from '../../service/router.service';
+import { UiService } from '../../service/ui.service';
+import { PanoHeadService } from '../../service/panohead.service';
+import { ConnectionService } from '../../service/connection.service';
+import { degToString } from '../../utils';
+import { ModalService } from "../../ui/modal.service";
 
 @Component({
     selector: 'app-picture-fov',
@@ -28,12 +28,15 @@ export class PictureFovComponent implements OnInit, OnDestroy {
     public vFromText?: string;
     public vToText?: string;
 
+    public editId: string = '';
+    public editTemp: number = 0;
+
     constructor(private connectionService: ConnectionService,
-                private panoService: PanoService,
-                private panoHeadService: PanoHeadService,
-                private routerService: RouterService,
-                public modalService: ModalService,
-                private uiService: UiService) {
+        private panoService: PanoService,
+        private panoHeadService: PanoHeadService,
+        private routerService: RouterService,
+        public modalService: ModalService,
+        private uiService: UiService) {
         this.routerService.onActivate(this, () => this.onActivate());
     }
 
@@ -88,4 +91,38 @@ export class PictureFovComponent implements OnInit, OnDestroy {
     onClosePopup() {
         this.modalService.close('picture-fov-set');
     }
+
+    onEditH(): void {
+        if (this.hFromText && this.hToText) {
+            this.editTemp = (parseFloat(this.hToText) - parseFloat(this.hFromText));
+        } else {
+            this.editTemp = 0;
+        }
+        this.editId = 'h';
+        this.modalService.open('calcPictureFov');
+    }
+    onEditV(): void {
+        if (this.vFromText && this.vToText) {
+            this.editTemp = (parseFloat(this.vToText) - parseFloat(this.vFromText));
+        } else {
+            this.editTemp = 0;
+        }
+        this.editId = 'v';
+        this.modalService.open('calcPictureFov');
+    }
+
+    onNumPadCloseModal(): void {
+        console.log('onNumPadCloseModal')
+        if (this.editId === 'h') {
+            this.panoService.setPictureBorderH(0, this.editTemp);
+        } else if (this.editId === 'v') {
+            this.panoService.setPictureBorderV(0, this.editTemp);
+        }
+    }
+
+    onNumPadClose(): void {
+        console.log('onNumPadClose')
+        this.modalService.close('calcPictureFov');
+    }
+
 }

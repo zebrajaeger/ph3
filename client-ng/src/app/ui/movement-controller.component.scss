@@ -4,20 +4,6 @@
   grid-template-rows: repeat(7, 57px);
 }
 
-.joystick {
-  width: 40px;
-  height: 40px;
-  top: calc((57px - 40px) / 2);
-  left: calc((114px - 40px) / 2);
-  border-radius: 20px;
-  background-color: blue;
-}
-
-.zone {
-  position: relative;
-  border: 1px solid black;
-}
-
 .h-center {
   grid-column-start: 4;
 }
@@ -53,4 +39,21 @@
 .right {
   grid-column-start: 5;
   grid-column-end: 8;
+}
+
+app-touchpad {
+  position: absolute;
+  left:0px;
+  top:40px;
+  width: 800px;
+  height: 400px;
+}
+
+app-device-orientation-joystick {
+  position: absolute;
+  left:200px;
+  top:40px;
+  width: 400px;
+  height: 400px;
+
 }

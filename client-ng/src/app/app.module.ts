@@ -52,6 +52,8 @@ import {OkCancelDialogComponent} from './ui/ok-cancel-dialog.component';
 import {GpsToStringPipe} from './pipes/gps-to-string.pipe';
 import {KeyboardComponent} from './ui/keyboard/keyboard.component';
 import { ShutdownComponent } from './screen/shutdown/shutdown.component';
+import { TouchpadComponent } from './ui/touchpad/touchpad.component';
+import { DeviceOrientationJoystickComponent } from './ui/device-orientation-joystick/device-orientation-joystick.component';
 
 @NgModule({
     declarations: [
@@ -96,7 +98,9 @@ import { ShutdownComponent } from './screen/shutdown/shutdown.component';
         OkCancelDialogComponent,
         GpsToStringPipe,
         KeyboardComponent,
-        ShutdownComponent
+        ShutdownComponent,
+        TouchpadComponent,
+        DeviceOrientationJoystickComponent
     ],
     imports: [
         BrowserModule,

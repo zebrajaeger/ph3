@@ -21,6 +21,12 @@ export class Shot {
     }
 }
 
+export class CameraShotResult {
+    public successfully!: boolean ;
+    public message!: String;
+    public exception!: String ;
+}
+
 export class Shots extends Array<Shot> {
     public setFromJson(jsonObj: any): Shots {
         for (let e of jsonObj) {

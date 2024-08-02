@@ -23,9 +23,11 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 
-        <remote.user>pi</remote.user>
-        <remote.host>192.168.178.78</remote.host>
-        <remote.keyfile>~\.ssh\id_rsa.h</remote.keyfile>
+        <!--        <remote.user>pi</remote.user>-->
+        <!--        <remote.host>192.168.178.78</remote.host>-->
+        <!--        <remote.keyfile>~\.ssh\id_rsa.h</remote.keyfile>-->
+        <remote.host>ph5</remote.host>
+        <docker.image.arm64>./target/ph5-arm64-${project.version}.tar</docker.image.arm64>
     </properties>
 
     <build>
@@ -50,67 +52,67 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>scp-to-remote</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <scp localFile="${project.basedir}/target/ph3-server-0.0.1-SNAPSHOT.jar"
-                                     remoteToFile="${remote.user}@${remote.host}:~"
-                                     verbose="true"
-                                     keyfile="${remote.keyfile}"
-                                     passphrase=""
-                                     trust="true"
-                                />
-                                <sshexec host="${remote.host}"
-                                         username="${remote.user}"
-                                         keyfile="${remote.keyfile}"
-                                         command="sudo service ph restart"
-                                         trust="true"
-                                />
-                                <sshexec host="${remote.host}"
-                                         username="${remote.user}"
-                                         keyfile="${remote.keyfile}"
-                                         command="sudo service browser stop"
-                                         trust="true"
-                                />
-                                <sshexec host="${remote.host}"
-                                         username="${remote.user}"
-                                         keyfile="${remote.keyfile}"
-                                         command="rm -rf ~/.cache/chromium"
-                                         trust="true"
-                                />
-                                <sshexec host="${remote.host}"
-                                         username="${remote.user}"
-                                         keyfile="${remote.keyfile}"
-                                         command="sudo service browser start"
-                                         trust="true"
-                                />
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.jcraft</groupId>
-                        <artifactId>jsch</artifactId>
-                        <version>0.1.53</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>ant</groupId>
-                        <artifactId>ant-jsch</artifactId>
-                        <version>1.6.5</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-antrun-plugin</artifactId>-->
+            <!--                <version>1.8</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>scp-to-remote</id>-->
+            <!--                        <phase>install</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>run</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <target>-->
+            <!--                                <scp localFile="${project.basedir}/target/ph3-server-0.0.1-SNAPSHOT.jar"-->
+            <!--                                     remoteToFile="${remote.user}@${remote.host}:~"-->
+            <!--                                     verbose="true"-->
+            <!--                                     keyfile="${remote.keyfile}"-->
+            <!--                                     passphrase=""-->
+            <!--                                     trust="true"-->
+            <!--                                />-->
+            <!--                                <sshexec host="${remote.host}"-->
+            <!--                                         username="${remote.user}"-->
+            <!--                                         keyfile="${remote.keyfile}"-->
+            <!--                                         command="sudo service ph restart"-->
+            <!--                                         trust="true"-->
+            <!--                                />-->
+            <!--                                <sshexec host="${remote.host}"-->
+            <!--                                         username="${remote.user}"-->
+            <!--                                         keyfile="${remote.keyfile}"-->
+            <!--                                         command="sudo service browser stop"-->
+            <!--                                         trust="true"-->
+            <!--                                />-->
+            <!--                                <sshexec host="${remote.host}"-->
+            <!--                                         username="${remote.user}"-->
+            <!--                                         keyfile="${remote.keyfile}"-->
+            <!--                                         command="rm -rf ~/.cache/chromium"-->
+            <!--                                         trust="true"-->
+            <!--                                />-->
+            <!--                                <sshexec host="${remote.host}"-->
+            <!--                                         username="${remote.user}"-->
+            <!--                                         keyfile="${remote.keyfile}"-->
+            <!--                                         command="sudo service browser start"-->
+            <!--                                         trust="true"-->
+            <!--                                />-->
+            <!--                            </target>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <dependencies>-->
+            <!--                    <dependency>-->
+            <!--                        <groupId>com.jcraft</groupId>-->
+            <!--                        <artifactId>jsch</artifactId>-->
+            <!--                        <version>0.1.53</version>-->
+            <!--                    </dependency>-->
+            <!--                    <dependency>-->
+            <!--                        <groupId>ant</groupId>-->
+            <!--                        <artifactId>ant-jsch</artifactId>-->
+            <!--                        <version>1.6.5</version>-->
+            <!--                    </dependency>-->
+            <!--                </dependencies>-->
+            <!--            </plugin>-->
 
             <plugin>
                 <groupId>pl.project13.maven</groupId>
@@ -184,6 +186,15 @@
                 </configuration>
             </plugin>
 
+<!--            <plugin>-->
+<!--                <artifactId>maven-deploy-plugin</artifactId>-->
+<!--                <version>3.1.2</version>-->
+<!--                <configuration>-->
+<!--                    <skip>true</skip>-->
+<!--                    &lt;!&ndash; We don't want to deploy stuff to any repo &ndash;&gt;-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -202,26 +213,88 @@
                                 <argument>build</argument>
                                 <argument>--platform=linux/arm64</argument>
                                 <argument>-t=zebrajaeger/ph5:arm64-${project.version}</argument>
+                                <argument>--output</argument>
+                                <argument>type=docker,dest=${docker.image.arm64}</argument>
                                 <argument>.</argument>
                             </arguments>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>docker-build-amd64</id>
-                        <phase>package</phase>
+                        <id>transfer-shell-script</id>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>docker</executable>
+                            <executable>scp</executable>
                             <arguments>
-                                <argument>build</argument>
-                                <argument>--platform=linux/amd64</argument>
-                                <argument>-t=zebrajaeger/ph5:amd64-${project.version}</argument>
-                                <argument>.</argument>
+                                <argument>./ph5-restart.sh</argument>
+                                <argument>${remote.host}:~</argument>
                             </arguments>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>set shell script permissions</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>ssh</executable>
+                            <arguments>
+                                <argument>${remote.host}</argument>
+                                <argument>chmod</argument>
+                                <argument>u+x</argument>
+                                <argument>~/ph5-restart.sh</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>transfer-docker-image</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>scp</executable>
+                            <arguments>
+                                <argument>${docker.image.arm64}</argument>
+                                <argument>${remote.host}:~</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>(re)start container</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>ssh</executable>
+                            <arguments>
+                                <argument>${remote.host}</argument>
+                                <argument>~/ph5-restart.sh</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <!-- Do we really want this? Maybe for local testing? -->
+                    <!--                    <execution>-->
+                    <!--                        <id>docker-build-amd64</id>-->
+                    <!--                        <phase>package</phase>-->
+                    <!--                        <goals>-->
+                    <!--                            <goal>exec</goal>-->
+                    <!--                        </goals>-->
+                    <!--                        <configuration>-->
+                    <!--                            <executable>docker</executable>-->
+                    <!--                            <arguments>-->
+                    <!--                                <argument>build</argument>-->
+                    <!--                                <argument>&#45;&#45;platform=linux/amd64</argument>-->
+                    <!--                                <argument>-t=zebrajaeger/ph5:amd64-${project.version}</argument>-->
+                    <!--                                <argument>.</argument>-->
+                    <!--                            </arguments>-->
+                    <!--                        </configuration>-->
+                    <!--                    </execution>-->
                 </executions>
             </plugin>
 

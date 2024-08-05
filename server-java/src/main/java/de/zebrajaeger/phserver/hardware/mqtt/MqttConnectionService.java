@@ -23,7 +23,7 @@ public class MqttConnectionService implements MqttCallbackExtended {
     private IMqttClient mqttClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
     //    @Value("${mqtt.server.url:ws://192.168.8.144:1883,ws://192.168.8.142:1883}")
-    @Value("${mqtt.server.url:tcp://192.168.178.42:1883,tcp://192.168.8.142:1883}")
+    @Value("${mqtt.server.url:tcp://localhost:1883}")
     private String mqttServerUrl;
     @Value("${mqtt.topic.status:ph5/cmd}")
     private String commandTopic;

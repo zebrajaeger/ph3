@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"develop", "remotei2c"})
+@Profile({"fake-sysctrl"})
 public class FakeSystemControl implements SystemControl {
 
   private static final Logger LOG = LoggerFactory.getLogger(FakeSystemControl.class);

@@ -34,7 +34,7 @@ public class RecordStompController {
 
     public RecordStompController(PanoService panoService, PanoHeadService panoHeadService,
                                  RecordService recordService,
-                                SimpMessagingTemplate template) {
+                                 SimpMessagingTemplate template) {
         this.panoService = panoService;
         this.panoHeadService = panoHeadService;
         this.recordService = recordService;
@@ -45,7 +45,6 @@ public class RecordStompController {
     public void onGpsData(GpsDataEvent event) {
         gpsData = event.gpsData();
     }
-
 
     @MessageMapping("/record/start")
     public void start(String name) {
@@ -59,7 +58,9 @@ public class RecordStompController {
 
             final Papywizard papywizard = g.generate(commands);
             papywizard.getHeader().getGeneral().setTitle(name);
-            papywizard.getHeader().getGeneral().setGps(gpsData.geoLocation());
+            if (gpsData != null) {
+                papywizard.getHeader().getGeneral().setGps(gpsData.geoLocation());
+            }
             PapywizardUtils.writePapywizardFile(papywizard, "B");
 
             recordService.requestStart(commands, papywizard);

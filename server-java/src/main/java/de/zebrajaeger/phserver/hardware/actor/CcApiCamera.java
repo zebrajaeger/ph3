@@ -15,7 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-@Profile({"ccapi"})
+@Profile({"ccapi-cam"})
 @Service
 @Slf4j
 public class CcApiCamera implements Camera {
@@ -39,9 +39,14 @@ public class CcApiCamera implements Camera {
 
     @Override
     public void startTrigger(int triggerTimeMs) throws Exception {
+        log.debug("startTrigger({})", triggerTimeMs);
         applicationEventPublisher.publishEvent(new CameraStatus(false, true));
         try {
             post("/ver100/shooting/control/shutterbutton", "{\"af\":false}");
+        } catch (Exception e) {
+            log.error("Could not trigger: {}", e.getMessage());
+            log.debug("Could not trigger", e);
+            throw e;
         } finally {
             applicationEventPublisher.publishEvent(new CameraStatus(false, false));
         }
@@ -49,11 +54,16 @@ public class CcApiCamera implements Camera {
 
     @Override
     public void startShot(int focusTimeMs, int triggerTimeMs) throws Exception {
+        log.debug("startShot({},{})", focusTimeMs, triggerTimeMs);
         // for a happy logic
         applicationEventPublisher.publishEvent(new CameraStatus(true, false));
         applicationEventPublisher.publishEvent(new CameraStatus(false, true));
         try {
             post("/ver100/shooting/control/shutterbutton", "{\"af\":false}");
+        } catch (Exception e) {
+            log.error("Could not shot: {}", e.getMessage());
+            log.debug("Could not shot", e);
+            throw e;
         } finally {
             applicationEventPublisher.publishEvent(new CameraStatus(false, false));
         }

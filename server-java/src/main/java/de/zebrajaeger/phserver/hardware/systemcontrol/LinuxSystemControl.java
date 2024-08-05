@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"locali2c", "mqtt"})
+@Profile({"linux-sysctrl"})
 public class LinuxSystemControl implements SystemControl {
 
   private static final Logger LOG = LoggerFactory.getLogger(LinuxSystemControl.class);

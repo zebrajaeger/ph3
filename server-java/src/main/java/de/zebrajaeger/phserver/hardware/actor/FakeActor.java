@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@Profile({"develop"})
+@Profile({"fake-actor"})
 public class FakeActor extends PollingActor implements Actor {
 
     @Value("${develop.updatesPerSecond:5}")

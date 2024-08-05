@@ -10,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@Profile({"develop"})
+@Profile({"fake-cam"})
 public class FakeCamera extends PollingCamera implements Camera {
     private final CameraStatus cameraStatus = new CameraStatus();
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();

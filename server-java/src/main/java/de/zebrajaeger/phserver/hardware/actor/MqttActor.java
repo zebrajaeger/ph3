@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Profile("mqtt")
+@Profile({"mqtt-actor"})
 @Service
 @Slf4j
 public class MqttActor implements Actor {
@@ -47,7 +47,7 @@ public class MqttActor implements Actor {
                 data.getY().setSpeed(mqttActorStatus.y().running() ? mqttActorStatus.y().speed() / 1000 : 0);
                 data.getY().setPos(mqttActorStatus.y().pos());
 
-                log.info("PHData {}", data);
+//                log.info("PHData {}", data);
                 applicationEventPublisher.publishEvent(new ActorStatusEvent(data));
             }
             case POWER -> {

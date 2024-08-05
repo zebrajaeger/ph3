@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
-@Profile("mqtt")
+@Profile("mqtt | mqtt-actor | mqtt-cam")
 @Service
 @Slf4j
 public class MqttConnectionService implements MqttCallbackExtended {

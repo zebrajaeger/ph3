@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class SystemService {
-    @Scheduled(fixedRateString = "10000")
+    @Scheduled(fixedRateString = "60000")
     public void onShowMemoryUsage() {
         Runtime runtime = Runtime.getRuntime();
         long totalMemory = runtime.totalMemory();

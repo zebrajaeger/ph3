@@ -201,24 +201,25 @@
                 <version>3.3.0</version>
                 <executions>
 
-<!--                    <execution>-->
-<!--                        <id>docker-build-arm64</id>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>exec</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <executable>docker</executable>-->
-<!--                            <arguments>-->
-<!--                                <argument>build</argument>-->
-<!--                                <argument>&#45;&#45;platform=linux/arm64</argument>-->
-<!--                                <argument>-t=zebrajaeger/ph5:arm64-${project.version}</argument>-->
-<!--                                <argument>&#45;&#45;output</argument>-->
-<!--                                <argument>type=docker,dest=${docker.image.arm64}</argument>-->
-<!--                                <argument>.</argument>-->
-<!--                            </arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
+                    <execution>
+                        <id>docker-build-arm64</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <arguments>
+                                <argument>build</argument>
+                                <argument>-f=docker-deployment/Dockerfile</argument>
+                                <argument>--platform=linux/arm64</argument>
+                                <argument>-t=zebrajaeger/ph5:arm64-${project.version}</argument>
+                                <argument>--output</argument>
+                                <argument>type=docker,dest=${docker.image.arm64}</argument>
+                                <argument>.</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
 
                     <execution>
                         <id>create-target-directory</id>

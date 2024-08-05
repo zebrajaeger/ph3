@@ -1,0 +1,45 @@
+services:
+  ph5:
+    image: zebrajaeger/ph5:arm64-0.0.1-SNAPSHOT
+    container_name: ph5
+    restart: unless-stopped
+    environment:
+      - 'mqtt.server.url=tcp://mqtt-server:1883'
+    ports:
+      - 8080:8080
+      - 8433:8433
+    expose:
+      - 8088
+      - 8433
+    volumes:
+      - ~/ph5:/root/.config/panohead
+    depends_on:
+      - mqtt-server
+    networks:
+      - mqtt-network
+
+  mqtt-server:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 1883:1883
+      - 8883:8883
+      - 9001:9001
+    volumes:
+      - mqtt-data:/mosquitto/data
+      - mqtt-logs:/mosquitto/log
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - mqtt-network
+
+volumes:
+  mqtt-data:
+  mqtt-logs:
+
+networks:
+  mqtt-network:
+    name: mqtt
+    driver: bridge

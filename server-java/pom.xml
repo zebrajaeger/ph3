@@ -201,26 +201,41 @@
                 <version>3.3.0</version>
                 <executions>
 
+<!--                    <execution>-->
+<!--                        <id>docker-build-arm64</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <executable>docker</executable>-->
+<!--                            <arguments>-->
+<!--                                <argument>build</argument>-->
+<!--                                <argument>&#45;&#45;platform=linux/arm64</argument>-->
+<!--                                <argument>-t=zebrajaeger/ph5:arm64-${project.version}</argument>-->
+<!--                                <argument>&#45;&#45;output</argument>-->
+<!--                                <argument>type=docker,dest=${docker.image.arm64}</argument>-->
+<!--                                <argument>.</argument>-->
+<!--                            </arguments>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+
                     <execution>
-                        <id>docker-build-arm64</id>
-                        <phase>package</phase>
+                        <id>create-target-directory</id>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>docker</executable>
+                            <executable>ssh</executable>
                             <arguments>
-                                <argument>build</argument>
-                                <argument>--platform=linux/arm64</argument>
-                                <argument>-t=zebrajaeger/ph5:arm64-${project.version}</argument>
-                                <argument>--output</argument>
-                                <argument>type=docker,dest=${docker.image.arm64}</argument>
-                                <argument>.</argument>
+                                <argument>${remote.host}</argument>
+                                <argument>mkdir -p ~/ph5</argument>
                             </arguments>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>transfer-shell-script</id>
+                        <id>transfer-docker-compose-stuff</id>
                         <phase>deploy</phase>
                         <goals>
                             <goal>exec</goal>
@@ -228,11 +243,12 @@
                         <configuration>
                             <executable>scp</executable>
                             <arguments>
-                                <argument>./ph5-restart.sh</argument>
-                                <argument>${remote.host}:~</argument>
+                                <argument>./docker-deployment/*</argument>
+                                <argument>${remote.host}:~/ph5/</argument>
                             </arguments>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>set shell script permissions</id>
                         <phase>deploy</phase>
@@ -245,7 +261,7 @@
                                 <argument>${remote.host}</argument>
                                 <argument>chmod</argument>
                                 <argument>u+x</argument>
-                                <argument>~/ph5-restart.sh</argument>
+                                <argument>~/ph5/restart.sh</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -260,10 +276,11 @@
                             <executable>scp</executable>
                             <arguments>
                                 <argument>${docker.image.arm64}</argument>
-                                <argument>${remote.host}:~</argument>
+                                <argument>${remote.host}:~/ph5/</argument>
                             </arguments>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>(re)start container</id>
                         <phase>deploy</phase>
@@ -273,8 +290,10 @@
                         <configuration>
                             <executable>ssh</executable>
                             <arguments>
+<!--                                <argument>-t</argument>-->
                                 <argument>${remote.host}</argument>
-                                <argument>~/ph5-restart.sh</argument>
+<!--                                <argument>cd ~/ph5 &amp;&amp; ./restart.sh</argument>-->
+                                <argument>cd ~/ph5 ; ./restart.sh</argument>
                             </arguments>
                         </configuration>
                     </execution>

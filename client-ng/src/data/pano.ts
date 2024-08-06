@@ -106,7 +106,7 @@ export class GpsFlags {
 export class GeoLocation {
     public latitude!: number;
     public longitude!: number;
-    public altitude!: number;
+    public altitude?: number;
 }
 
 export class GpsMetaData {
@@ -116,7 +116,4 @@ export class GpsMetaData {
 
 export class Gps {
     public geoLocation!: GeoLocation;
-    public gpsMetaData!: GpsMetaData;
-    public updated!: GpsFlags;
-    public valid!: GpsFlags;
 }

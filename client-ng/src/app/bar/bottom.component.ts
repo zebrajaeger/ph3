@@ -26,8 +26,8 @@ export class BottomComponent implements OnInit, OnDestroy {
     public panoMsg?: string;
 
     private powerSubscription!: Subscription;
-    public gauge!: Power;
-    public gaugeString!: string;
+    public gauge?: Power;
+    public gaugeString?: string;
 
     private batterySubscription!: Subscription;
     public batteryString: string = '';

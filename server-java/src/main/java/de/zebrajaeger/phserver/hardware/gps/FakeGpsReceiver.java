@@ -23,9 +23,9 @@ public class FakeGpsReceiver extends PollingGpsReceiver {
     public GpsData read() throws IOException {
         return new GpsData(
                 new GpsLocation(53.555199146125446f, 9.996066819046005f, 25f),
-                LocalDateTime.now(),
-                new GpsMetaData(5, 500),
-                new GpsFlags(true, true, true, true, true, true),
-                new GpsFlags(true, true, true, true, true, true));
+                LocalDateTime.now());
+//                new GpsMetaData(5, 500),
+//                new GpsFlags(true, true, true, true, true, true),
+//                new GpsFlags(true, true, true, true, true, true));
     }
 }

@@ -54,10 +54,10 @@ public class I2CGpsReceiver extends PollingGpsReceiver {
 
         return new GpsData(
                 geoLocation,
-                dateTime,
-                new GpsMetaData(buffer.getInt(), buffer.getInt()),
-                toGpsFlags(buffer.get()),
-                toGpsFlags(buffer.get())
+                dateTime
+//                new GpsMetaData(buffer.getInt(), buffer.getInt()),
+//                toGpsFlags(buffer.get()),
+//                toGpsFlags(buffer.get())
         );
     }
 

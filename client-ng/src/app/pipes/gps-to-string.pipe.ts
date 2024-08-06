@@ -1,5 +1,5 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {Gps} from "../../data/pano";
+import { Pipe, PipeTransform } from '@angular/core';
+import { Gps } from "../../data/pano";
 
 @Pipe({
     name: 'gpsToString'
@@ -7,17 +7,16 @@ import {Gps} from "../../data/pano";
 export class GpsToStringPipe implements PipeTransform {
 
     transform(gps: Gps | undefined): unknown {
-        if (gps && gps.valid && gps.geoLocation) {
-            if (!gps.valid.location && !gps.valid.altitude) {
-                return '-, -, -';
-            } else if (gps.valid.location && !gps.valid.altitude) {
-                return `${gps.geoLocation.latitude.toFixed(4)}, ${gps.geoLocation.longitude.toFixed(4)}, -`;
-            } else if (!gps.valid.location && gps.valid.altitude) {
-                return `-, -, ${gps.geoLocation.altitude.toFixed(1)}`;
-            } else {
-                return `${gps.geoLocation.latitude.toFixed(4)}, ${gps.geoLocation.longitude.toFixed(4)}, ${gps.geoLocation.altitude.toFixed(1)}`;
-            }
+        if (!gps || !gps.geoLocation) {
+            return '-, -, -';
         }
-        return null;
+
+        const lat = gps.geoLocation.latitude ? gps.geoLocation.latitude.toFixed(4) : '-';
+        const lng = gps.geoLocation.longitude ? gps.geoLocation.longitude.toFixed(4) : '-';
+        if (gps.geoLocation.altitude) {
+            return `${lat}, ${lng}, ${gps.geoLocation.altitude.toFixed(1)}`;
+        } else {
+            return `${lat}, ${lng}`;
+        }
     }
 }

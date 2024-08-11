@@ -1,0 +1,37 @@
+{
+    "ca": {
+        "common": "zebrajaegerRootCA",
+        "keyPassword": "geheim"
+    },
+    "server": [
+        {
+            "name": "pcw",
+            "ip": "192.168.178.31"
+        },
+        {
+            "name": "actor",
+            "ip": "192.168.1.170"
+        },
+        {
+            "name": "server",
+            "ip": "192.168.1.205"
+        },
+        {
+            "name": "mqtt",
+            "ip": "192.168.1.205"
+        },
+        {
+            "name": "router",
+            "ip": "192.168.1.205"
+        }
+    ],
+    "defaults": {
+        "country": "DE",
+        "stateOrProvince": "Hamburg",
+        "locality": "Hamburg",
+        "organization": "zebrajaeger",
+        "days": 3650,
+        "keyPassword": "geheim",
+        "storePassword": "geheim"
+    }
+}

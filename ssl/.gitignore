@@ -1,0 +1,8 @@
+__pycache__
+*.pyc
+ca
+**/*.{crt,csr,key}
+*.temp
+*/*
+out.txt
+*.cfg

@@ -4,6 +4,7 @@ import de.zebrajaeger.phserver.data.*;
 import de.zebrajaeger.phserver.hardware.axis.FakeActorAxis;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@Profile({"fake-actor"})
+//@Profile({"fake-actor"})
+@ConditionalOnProperty("enable.actor.fake")
 public class FakeActor extends PollingActor implements Actor {
 
     @Value("${develop.updatesPerSecond:5}")

@@ -4,6 +4,7 @@ import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.data.GpsFlags;
 import de.zebrajaeger.phserver.data.GpsLocation;
 import de.zebrajaeger.phserver.data.GpsMetaData;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Service
-@Profile({"develop"})
+//@Profile({"develop"})
+@ConditionalOnProperty("enable.gps.fake")
 public class FakeGpsReceiver extends PollingGpsReceiver {
 
     public FakeGpsReceiver(ApplicationEventPublisher applicationEventPublisher) {

@@ -1,6 +1,7 @@
 package de.zebrajaeger.phserver.hardware.actor;
 
 import de.zebrajaeger.phserver.data.CameraStatus;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@Profile({"fake-cam"})
+@ConditionalOnProperty("enable.camera.fake")
+//@Profile({"fake-cam"})
 public class FakeCamera extends PollingCamera implements Camera {
     private final CameraStatus cameraStatus = new CameraStatus();
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();

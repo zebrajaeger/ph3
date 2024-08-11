@@ -5,6 +5,7 @@ import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,8 @@ import java.nio.ByteOrder;
  * Datasheet: <a href="https://www.ti.com/lit/ds/symlink/ina219.pdf">https://www.ti.com/lit/ds/symlink/ina219.pdf</a>
  */
 @Component
-@Profile({"locali2c", "remotei2c"})
+//@Profile({"locali2c", "remotei2c"})
+@ConditionalOnProperty(name="enable.powergauge.i2c.ina219")
 @Slf4j
 public class I2CPowerGaugeIna219 extends PollingPowerGauge {
     private static final int SHUNT_RESISTOR_VALUE_IN_MILLIOHM = 100;

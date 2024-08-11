@@ -10,13 +10,15 @@ import de.zebrajaeger.phserver.event.MqttEvent;
 import de.zebrajaeger.phserver.hardware.mqtt.MqttConnectionService;
 import de.zebrajaeger.phserver.hardware.mqtt.MqttTopic;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-@Profile({"mqtt-cam" })
+//@Profile({"mqtt-cam" })
 @Service
+@ConditionalOnProperty("enable.camera.mqtt")
 @Slf4j
 public class MqttCamera implements Camera {
     private final MqttConnectionService mqttConnectionService;

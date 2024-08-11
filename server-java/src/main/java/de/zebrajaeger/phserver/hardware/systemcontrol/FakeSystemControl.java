@@ -2,11 +2,13 @@ package de.zebrajaeger.phserver.hardware.systemcontrol;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"fake-sysctrl"})
+//@Profile({"fake-sysctrl"})
+@ConditionalOnProperty(name="enable.syscontrol.fake")
 public class FakeSystemControl implements SystemControl {
 
   private static final Logger LOG = LoggerFactory.getLogger(FakeSystemControl.class);

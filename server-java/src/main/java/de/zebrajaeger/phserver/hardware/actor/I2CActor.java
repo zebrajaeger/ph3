@@ -9,6 +9,7 @@ import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 @Service
-@Profile({"locali2c", "remotei2c"})
+//@Profile({"locali2c", "remotei2c"})
+@ConditionalOnProperty("enable.actor.i2c")
 @Slf4j
 public class I2CActor extends PollingCameraActor implements Actor, Camera {
     private static final boolean X_INVERTED = true;

@@ -8,6 +8,7 @@ import de.zebrajaeger.phserver.event.ActorStatusEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.hardware.mqtt.MqttConnectionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -15,8 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Profile({"mqtt-actor"})
+//@Profile({"mqtt-actor"})
 @Service
+@ConditionalOnProperty("enable.actor.mqtt")
 @Slf4j
 public class MqttActor implements Actor {
     private final MqttConnectionService mqttConnectionService;

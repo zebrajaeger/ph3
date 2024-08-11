@@ -9,6 +9,7 @@ import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,8 @@ import java.nio.ByteOrder;
 import java.time.LocalDateTime;
 
 @Component
-@Profile({"locali2c", "remotei2c"})
+//@Profile({"locali2c", "remotei2c"})
+@ConditionalOnProperty("enable.gps.i2c")
 @Slf4j
 public class I2CGpsReceiver extends PollingGpsReceiver {
     private final I2CDeviceFactory deviceFactory;

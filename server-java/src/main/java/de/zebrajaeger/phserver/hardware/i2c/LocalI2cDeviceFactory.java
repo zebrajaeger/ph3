@@ -6,14 +6,16 @@ import com.pi4j.util.Console;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-@Profile({"locali2c"})
+//@Profile({"locali2c"})
 @Service
+@ConditionalOnProperty(name="enable.i2c.local")
 @Slf4j
 public class LocalI2cDeviceFactory implements I2CDeviceFactory {
     @Value("${i2c.bus:0x01}")

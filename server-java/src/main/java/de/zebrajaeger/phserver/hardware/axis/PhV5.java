@@ -7,13 +7,15 @@ import de.zebrajaeger.phserver.translation.AxisParameters;
 import de.zebrajaeger.phserver.translation.BeltGearParameters;
 import de.zebrajaeger.phserver.translation.DefaultStepperParameters;
 import de.zebrajaeger.phserver.translation.MotorDriverParameters;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("v5")
+//@Profile("v5")
 @Component
+@ConditionalOnProperty(name="enable.ph.version", havingValue = "v5")
 public class PhV5 {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final Actor actor;

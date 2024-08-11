@@ -9,14 +9,16 @@ import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
-@Profile("mqtt | mqtt-actor | mqtt-cam")
+//@Profile("mqtt | mqtt-actor | mqtt-cam")
 @Service
+@ConditionalOnProperty("enable.mqtt")
 @Slf4j
 public class MqttConnectionService implements MqttCallbackExtended {
 

@@ -6,6 +6,7 @@ import de.zebrajaeger.phserver.hardware.i2c.I2CDeviceFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,8 @@ import java.nio.ByteOrder;
  * <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL345.pdf">ADXL345.pdf</a>
  */
 @Service
-@Profile({"pi", "default"})
+//@Profile({"pi", "default"})
+@ConditionalOnProperty("enable.accelerationsensor.adxl345")
 @Slf4j
 public class I2CAccelerationSensorAdxl345  {
     private final I2CDeviceFactory deviceFactory;

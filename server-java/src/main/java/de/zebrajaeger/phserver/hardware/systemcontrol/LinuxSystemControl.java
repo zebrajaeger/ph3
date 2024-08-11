@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"linux-sysctrl"})
+//@Profile({"linux-sysctrl"})
+@ConditionalOnProperty(name="enable.syscontrol.linux")
 public class LinuxSystemControl implements SystemControl {
 
   private static final Logger LOG = LoggerFactory.getLogger(LinuxSystemControl.class);

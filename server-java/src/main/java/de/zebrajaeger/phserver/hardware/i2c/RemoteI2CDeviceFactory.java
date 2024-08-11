@@ -1,10 +1,12 @@
 package de.zebrajaeger.phserver.hardware.i2c;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile("remotei2c")
+//@Profile("remotei2c")
+@ConditionalOnProperty(name="enable.i2c.remote")
 @Service
 public class RemoteI2CDeviceFactory implements I2CDeviceFactory {
     @Value("${i2c.remote.host}")

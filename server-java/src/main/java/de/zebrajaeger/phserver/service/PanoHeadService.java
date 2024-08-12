@@ -28,12 +28,9 @@ public class PanoHeadService {
     private final ApplicationEventPublisher applicationEventPublisher;
     @Getter
     private final LatestState latestState = new LatestState();
+    @Getter
     private boolean joggingEnabled;
     private final SigmoidCalculator sigmoid = new SigmoidCalculator();
-
-//    @Getter
-//    private PanoHeadData latestPanoHeadData;
-
 
     private long lastManualMove = 0;
     private boolean jogByJoystick = false;
@@ -126,10 +123,6 @@ public class PanoHeadService {
     public Position getCurrentPositionDeg() {
         return new Position(x.getTargetDegValue(), y.getTargetDegValue());
     }
-
-    //    public boolean isJoggingEnabled() {
-//        return joggingEnabled;
-//    }
 
     public void setToZero() {
         try {

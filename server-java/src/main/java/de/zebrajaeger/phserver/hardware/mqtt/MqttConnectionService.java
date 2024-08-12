@@ -131,8 +131,11 @@ public class MqttConnectionService implements MqttCallbackExtended {
         log.info("Connected to MQTT host: '{}', reconnect: {}", serverURI, reconnect);
         try {
             mqttClient.subscribe(actorTopic);
+            log.info("subscribe to: {}", actorTopic);
             mqttClient.subscribe(cameraTopic);
+            log.info("subscribe to: {}", cameraTopic);
             mqttClient.subscribe(powerTopic);
+            log.info("subscribe to: {}", powerTopic);
         } catch (MqttException e) {
             log.error("Could not subscribe to topics");
         }

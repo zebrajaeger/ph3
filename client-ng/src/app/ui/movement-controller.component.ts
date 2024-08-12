@@ -62,7 +62,7 @@ export class MovementControllerComponent implements OnInit, OnDestroy {
 
   onManualMove(x: number, y: number): void {
     if (!this.showJoystick && !this.showTouchpad) {
-      this.panoHeadService.sendManualMove(new Position(x, y));
+      this.panoHeadService.sendManualMoveForced(new Position(x, y));
     }
   }
 

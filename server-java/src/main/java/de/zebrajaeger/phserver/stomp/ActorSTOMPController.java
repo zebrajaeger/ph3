@@ -74,6 +74,12 @@ public class ActorSTOMPController {
         panoHeadService.manualRelativeMove(relPosition);
     }
 
+    @MessageMapping("/actor/manualMove/force")
+    public void manualMoveForced(@Payload Position relPosition) {
+        panoHeadService.setJoggingEnabled(true);
+        panoHeadService.manualRelativeMove(relPosition);
+    }
+
     @MessageMapping("/actor/manualMoveByJoystick")
     public void manualMoveByJoystick(@Payload Position joystickPosition) {
         panoHeadService.manualMoveByJoystickWithEmergencyStopOnTimeout(joystickPosition);

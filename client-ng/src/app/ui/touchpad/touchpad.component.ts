@@ -44,14 +44,14 @@ export class TouchpadComponent implements OnInit, AfterViewInit {
     this.ctx.lineCap = 'round';
     this.ctx.lineWidth = 5;
 
-    this.canvas.nativeElement.addEventListener('mousedown', this.startDrawing.bind(this));
+    this.canvas.nativeElement.addEventListener('mousedown', this.handleMouseDown.bind(this));
     this.canvas.nativeElement.addEventListener('touchstart', this.handleTouchStart.bind(this));
 
-    this.canvas.nativeElement.addEventListener('mousemove', this.draw.bind(this));
-    this.canvas.nativeElement.addEventListener('touchmove', this.draw.bind(this));
+    this.canvas.nativeElement.addEventListener('mousemove', this.handleMouseMove.bind(this));
+    this.canvas.nativeElement.addEventListener('touchmove', this.handleTouchMove.bind(this));
 
-    this.canvas.nativeElement.addEventListener('mouseup', this.stopDrawing.bind(this));
-    this.canvas.nativeElement.addEventListener('mouseout', this.stopDrawing.bind(this));
+    this.canvas.nativeElement.addEventListener('mouseup', this.handleMouseUp.bind(this));
+    this.canvas.nativeElement.addEventListener('mouseout', this.handleMouseUp.bind(this));
     this.canvas.nativeElement.addEventListener('touchend', this.handleTouchEnd.bind(this));
     this.canvas.nativeElement.addEventListener('touchcancel', this.stopDrawing.bind(this));
 
@@ -71,6 +71,29 @@ export class TouchpadComponent implements OnInit, AfterViewInit {
 
   private handleTouchStart(event: TouchEvent): void {
     this.startDrawing(event);
+  }
+  private handleTouchEnd(event: TouchEvent): void {
+    this.stopDrawing();
+  }
+  private handleTouchMove(event: TouchEvent): void {
+    this.draw(event);
+  }
+
+  private handleMouseDown(event: MouseEvent): void {
+    this.startDrawing(event);
+  }
+  private handleMouseUp(event: MouseEvent): void {
+    this.stopDrawing();
+  }
+  private handleMouseMove(event: MouseEvent): void {
+    this.draw(event);
+  }
+
+
+  private startDrawing(event: MouseEvent | TouchEvent): void {
+    this.isDrawing = true;
+    [this.lastX, this.lastY] = this.getCoordinates(event);
+    this.lastTime = Date.now();
 
     const currentTime = new Date().getTime();
     const timeSinceLastTouch = currentTime - this.lastTouchEndTime;
@@ -82,21 +105,15 @@ export class TouchpadComponent implements OnInit, AfterViewInit {
     this.touchStartTime = currentTime;
   }
 
-  private handleTouchEnd(event: TouchEvent): void {
-    this.stopDrawing();
-
+  private stopDrawing(): void {
+    this.isDrawing = false;
     const currentTime = new Date().getTime();
     const touchDuration = currentTime - this.touchStartTime;
 
     if (touchDuration < this.doubleTabMaxTime) {
       this.lastTouchEndTime = currentTime;
     }
-  }
 
-  private startDrawing(event: MouseEvent | TouchEvent): void {
-    this.isDrawing = true;
-    [this.lastX, this.lastY] = this.getCoordinates(event);
-    this.lastTime = Date.now();
   }
 
   private draw(event: MouseEvent | TouchEvent): void {
@@ -113,7 +130,7 @@ export class TouchpadComponent implements OnInit, AfterViewInit {
     let multiplier = this.baseMultiplier;
     // Farbe basierend auf der Anzahl der Finger setzen
     if (event instanceof MouseEvent) {
-      this.ctx.strokeStyle = '#000'; // Schwarz für Maus
+      this.ctx.strokeStyle = '#FF0000'; // Rot für Maus
     } else {
       const touches = event.touches.length;
       switch (touches) {
@@ -149,10 +166,6 @@ export class TouchpadComponent implements OnInit, AfterViewInit {
 
     [this.lastX, this.lastY] = [x, y];
     this.lastTime = currentTime;
-  }
-
-  private stopDrawing(): void {
-    this.isDrawing = false;
   }
 
   private getCoordinates(event: MouseEvent | TouchEvent): [number, number] {

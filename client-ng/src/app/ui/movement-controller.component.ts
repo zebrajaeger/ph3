@@ -45,7 +45,6 @@ export class MovementControllerComponent implements OnInit, OnDestroy {
     }
 
     if (this.showTouchpad) {
-      console.log('####', this.touchpadSumX, this.touchpadSumY)
       this.panoHeadService.sendManualMove(new Position(this.touchpadSumX, this.touchpadSumY))
       this.touchpadSumX = 0;
       this.touchpadSumY = 0;

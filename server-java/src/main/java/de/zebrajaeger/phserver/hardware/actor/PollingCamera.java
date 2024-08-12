@@ -6,9 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.Objects;
+
 @Slf4j
-public abstract class PollingCamera implements ReadableCamera{
+public abstract class PollingCamera implements ReadableCamera {
     private final ApplicationEventPublisher applicationEventPublisher;
+    private CameraStatus lastCameraStatus = null;
 
     public PollingCamera(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
@@ -24,6 +27,9 @@ public abstract class PollingCamera implements ReadableCamera{
             log.debug("Could not read data from hardware device", e);
             return;
         }
-        applicationEventPublisher.publishEvent(new CameraChangedEvent(cameraStatus));
+        if (lastCameraStatus == null || !Objects.equals(lastCameraStatus, cameraStatus)) {
+            lastCameraStatus = cameraStatus;
+            applicationEventPublisher.publishEvent(new CameraChangedEvent(cameraStatus));
+        }
     }
 }

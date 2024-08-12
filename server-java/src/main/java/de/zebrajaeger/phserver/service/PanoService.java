@@ -106,7 +106,8 @@ public class PanoService {
     public Optional<PanoMatrix> updatePanoMatrix() {
         log.info("updateCalculatedPano() - CALL");
 
-        if (cameraFov.isComplete() && panoFov.isComplete()) {
+        if (cameraFov.hasMinimumAngelOf(2d) && panoFov.hasMinimumAngelOf(2)) {
+            // TODO maybe just clear the current matrix!?
 
             log.info("updateCalculatedPano() - RECALCULATE");
             final CameraFovSettings camera = new CameraFovSettings();

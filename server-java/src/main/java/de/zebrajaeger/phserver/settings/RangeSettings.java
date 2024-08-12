@@ -38,4 +38,13 @@ public class RangeSettings implements SettingsValue<RangeSettings> {
     public Double getSize() {
         return isComplete() ? to - from : null;
     }
+
+    @JsonIgnore
+    public boolean hasMinimumAngelOf( double minAngel ){
+        if(!isComplete()) {
+            return false;
+        }
+
+        return Math.abs(to-from) >= minAngel;
+    }
 }

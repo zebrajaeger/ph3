@@ -42,4 +42,9 @@ public class PanoFovSettings implements SettingsValue<PanoFovSettings> {
     public boolean isComplete() {
         return (fullX ||x.isComplete()) && (fullY || y.isComplete());
     }
+
+    @JsonIgnore
+    public boolean hasMinimumAngelOf( double minAngel ){
+        return getX().hasMinimumAngelOf(minAngel) && getY().hasMinimumAngelOf(minAngel);
+    }
 }

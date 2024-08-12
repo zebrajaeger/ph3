@@ -77,8 +77,8 @@
           "defaultConfiguration": "development",
           "options": {
             "ssl": true,
-            "sslKey": "ssl/key.pem",
-            "sslCert": "ssl/cert.pem"
+            "sslKey": "../ssl/pcw/pcw.key",
+            "sslCert": "../ssl/pcw/pcw.crt"
           }
         },
         "extract-i18n": {

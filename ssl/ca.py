@@ -77,10 +77,10 @@ def generate(cfg):
 
     commands = [
         # Generate key
-        f"openssl genpkey -algorithm RSA -out {directory}/ca.key -aes256 -pass \"pass:{caPassword}\"",
+        f"openssl genpkey -algorithm RSA -out \"{directory}/ca.key\" -aes256 -pass \"pass:{caPassword}\"",
 
         # Self sign
-        f"openssl req -config ca.cfg -new -x509 -days {days} -key {directory}/ca.key -out {directory}/ca.crt -extensions v3_ca -passin \"pass:{caPassword}\" -batch"
+        f"openssl req -config ca.cfg -new -x509 -days {days} -key \"{directory}/ca.key\" -out \"{directory}/ca.crt\" -extensions v3_ca -passin \"pass:{caPassword}\" -batch"
     ]
 
     for command in commands:

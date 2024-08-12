@@ -6,23 +6,28 @@
     "server": [
         {
             "name": "pcw",
-            "ip": "192.168.178.31"
+            "ip": "192.168.178.31",
+            "nopass": true
         },
         {
             "name": "actor",
-            "ip": "192.168.1.170"
+            "ip": "192.168.1.170",
+            "nopass": false
         },
         {
             "name": "server",
-            "ip": "192.168.1.205"
+            "ip": "192.168.1.205",
+            "nopass": false
         },
         {
             "name": "mqtt",
-            "ip": "192.168.1.205"
+            "ip": "192.168.1.205",
+            "nopass": false
         },
         {
             "name": "router",
-            "ip": "192.168.1.1"
+            "ip": "192.168.1.1",
+            "nopass": false
         }
     ],
     "defaults": {

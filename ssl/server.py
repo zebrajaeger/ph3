@@ -61,7 +61,6 @@ def generate(s, cfg):
     with open(f"{cfgName}", "w") as caCfg:
         caCfg.write(generateConfig(s,cfg))
 
-
     caDirectory = "ca"
     caPassword = cfg['ca']['keyPassword']
 
@@ -77,22 +76,25 @@ def generate(s, cfg):
     # Java: openssl pkcs12 -info  -in pcw/pcw-java.p12 -nodes -passin pass:{storePassword}
     commands = [
         # Generate Key
-        f"openssl genpkey -algorithm RSA -out {directory}/{host}.key -aes256 -pass pass:{keyPassword}",
+        f"openssl genpkey -algorithm RSA -out \"{directory}/{host}.key\" -aes256 -pass \"pass:{keyPassword}\"",
 
         # Create Certificate Request
-        f"openssl req -new -config {cfgName} -key {directory}/{host}.key -out {directory}/{host}.csr -passin pass:{keyPassword} -batch",
+        f"openssl req -new -config {cfgName} -key \"{directory}/{host}.key\" -out \"{directory}/{host}.csr\" -passin \"pass:{keyPassword}\" -batch",
 
         # Sign key with Root Certificate
-        f"openssl x509 -req -extfile {cfgName} -in {directory}/{host}.csr -CA {caDirectory}/ca.crt -CAkey {caDirectory}/ca.key -CAcreateserial -out {directory}/{host}.crt -days {days} -extensions v3_req -passin pass:{caPassword}",
+        f"openssl x509 -req -extfile {cfgName} -in \"{directory}/{host}.csr\" -CA \"{caDirectory}/ca.crt\" -CAkey \"{caDirectory}/ca.key\" -CAcreateserial -out {directory}/{host}.crt -days {days} -extensions v3_req -passin \"pass:{caPassword}\"",
 
         # Put Server Certificate and key in legacy-keystore for Android
-        f"openssl pkcs12 -export --legacy -out {directory}/{host}-android.p12 -inkey {directory}/{host}.key -in {directory}/{host}.crt -certfile {caDirectory}/ca.crt -passout pass:{storePassword} -passin pass:{keyPassword} -name \"{host}\"",
+        f"openssl pkcs12 -export --legacy -out \"{directory}/{host}-android.p12\" -inkey \"{directory}/{host}.key\" -in \"{directory}/{host}.crt\" -certfile \"{caDirectory}/ca.crt\" -passout \"pass:{storePassword}\" -passin \"pass:{keyPassword}\" -name \"{host}\"",
         #f"openssl pkcs12 -info --legacy -in {directory}/{host}-android.p12 -nodes -passin pass:{storePassword}" ,
 
         # Put Server Certificate and key in (non-legacy) keystore for Java
-        f"openssl pkcs12 -export          -out {directory}/{host}-java.p12    -inkey {directory}/{host}.key -in {directory}/{host}.crt -certfile {caDirectory}/ca.crt -passout pass:{storePassword} -passin pass:{keyPassword} -name \"{host}\"",
+        f"openssl pkcs12 -export          -out \"{directory}/{host}-java.p12\"    -inkey \"{directory}/{host}.key\" -in \"{directory}/{host}.crt\" -certfile \"{caDirectory}/ca.crt\" -passout \"pass:{storePassword}\" -passin \"pass:{keyPassword}\" -name \"{host}\"",
         #f"openssl pkcs12 -info          -in {directory}/{host}-java.p12    -nodes -passin pass:{storePassword}"
     ]
 
     for command in commands:
         run_command(command)
+
+    if s['nopass'] == True:
+        run_command(f"openssl rsa -in \"{directory}/{host}.key\" -out \"{directory}/{host}.key.nopass\" -passin \"pass:{keyPassword}\"")

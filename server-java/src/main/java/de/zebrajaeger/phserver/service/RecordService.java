@@ -72,6 +72,7 @@ public class RecordService {
             setAutomateState(AutomateState.STOP_REQUEST)
                     .setPauseState(PauseState.RUNNING)
                     .sendUpdate();
+            next();
         }
     }
 

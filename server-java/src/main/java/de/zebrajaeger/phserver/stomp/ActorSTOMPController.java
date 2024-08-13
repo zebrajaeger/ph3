@@ -41,6 +41,11 @@ public class ActorSTOMPController {
         template.convertAndSend("/topic/actor/position/", positionEvent);
     }
 
+//    @EventListener
+//    public void onDebug(Object o) {
+//        log.info("DEBUG: {}", o);
+//    }
+
     @EventListener
     public void onActorActiveChanged(ActorActiveChangedEvent actorActiveChangedEvent) {
         template.convertAndSend("/topic/actor/active/", actorActiveChangedEvent.isActive());

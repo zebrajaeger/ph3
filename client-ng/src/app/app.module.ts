@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, isDevMode} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -54,6 +54,7 @@ import {KeyboardComponent} from './ui/keyboard/keyboard.component';
 import { ShutdownComponent } from './screen/shutdown/shutdown.component';
 import { TouchpadComponent } from './ui/touchpad/touchpad.component';
 import { DeviceOrientationJoystickComponent } from './ui/device-orientation-joystick/device-orientation-joystick.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
     declarations: [
@@ -105,7 +106,13 @@ import { DeviceOrientationJoystickComponent } from './ui/device-orientation-joys
     imports: [
         BrowserModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: !isDevMode(),
+          // Register the ServiceWorker as soon as the application is stable
+          // or after 30 seconds (whichever comes first).
+          registrationStrategy: 'registerWhenStable:30000'
+        })
     ],
     providers: [
         CameraService,

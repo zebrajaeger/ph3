@@ -40,10 +40,9 @@ export class CameraService {
       .subscribe(cb);
   }
 
-  public requestShot(focusTimeMs: number, triggerTimeMs: number, cb: (actor: CameraShotResult) => void): Subscription {
-    const data = new Shot().setFromJson({ focusTimeMs, triggerTimeMs });
+  public requestShot( cb: (actor: CameraShotResult) => void): Subscription {
     return this.rxStompRPCService
-      .rpc({ destination: '/rpc/camera/shot', body: JSON.stringify(data) })
+      .rpc({ destination: '/rpc/camera/shot' })
       .pipe(map(msg => JSON.parse(msg.body) as CameraShotResult))
       .subscribe(cb);
   }

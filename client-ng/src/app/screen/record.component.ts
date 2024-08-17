@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {RouterService} from '../service/router.service';
-import {UiService} from '../service/ui.service';
-import {PanoHeadService} from '../service/panohead.service';
-import {AutomateState, RobotState} from '../../data/record';
-import {Subscription} from 'rxjs';
-import {PanoService} from '../service/pano.service';
-import {Pattern} from "../../data/pano";
-import {KeyboardDialogComponent} from "../ui/keyboard-dialog.component";
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { RouterService } from '../service/router.service';
+import { UiService } from '../service/ui.service';
+import { PanoHeadService } from '../service/panohead.service';
+import { AutomateState, RecordState } from '../../data/record';
+import { Subscription } from 'rxjs';
+import { PanoService } from '../service/pano.service';
+import { Pattern } from "../../data/pano";
+import { KeyboardDialogComponent } from "../ui/keyboard-dialog.component";
 
 @Component({
     selector: 'app-record',
@@ -17,8 +17,8 @@ export class RecordComponent implements OnInit, OnDestroy {
     @ViewChild('keyboard')
     private keyboardDialog!: KeyboardDialogComponent;
 
-    private robotStateSubscription!: Subscription;
-    public _robotState!: RobotState;
+    private recordStateSubscription!: Subscription;
+    public _recordState!: RecordState;
 
     private patternSubscription!: Subscription;
     gridChecked: any;
@@ -32,29 +32,30 @@ export class RecordComponent implements OnInit, OnDestroy {
     public name = '';
 
     constructor(private routerService: RouterService,
-                private panoHeadService: PanoHeadService,
-                private panoService: PanoService,
-                private uiService: UiService) {
+        private panoHeadService: PanoHeadService,
+        private panoService: PanoService,
+        private uiService: UiService) {
         routerService.onActivate(this, () => this.onActivate());
     }
 
     ngOnInit(): void {
-        this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
-        this.panoHeadService.requestRobotState(robotState => this.robotState = robotState)
+        this.recordStateSubscription = this.panoHeadService.subscribeRecordState(recordState => this.recordState = recordState);
+        this.panoHeadService.requestRecordState(recordState => this.recordState = recordState)
 
         this.patternSubscription = this.panoService.subscribePatternType(pattern => this.pattern = pattern);
         this.panoService.requestPatternType(pattern => this.pattern = pattern)
     }
 
     ngOnDestroy(): void {
-        this.robotStateSubscription?.unsubscribe();
+        this.recordStateSubscription?.unsubscribe();
         this.patternSubscription?.unsubscribe();
     }
 
-    set robotState(value: RobotState) {
-        this._robotState = value;
+    set recordState(value: RecordState) {
+        console.log('SET RS', value)
+        this._recordState = value;
         const cmd = value?.command;
-        if (value.automateState !== AutomateState.STOPPED) {
+        if (value.states[0] !== AutomateState.STOPPED) {
             this.msg = `[${value?.commandIndex + 1}/${value?.commandCount}] ${cmd?.description}`;
         } else {
             this.msg = '';
@@ -97,7 +98,7 @@ export class RecordComponent implements OnInit, OnDestroy {
         this.uiService.title.next('Record');
         this.uiService.backButton.next(true);
 
-        this.panoHeadService.requestRobotState(state => this.robotState = state);
+        this.panoHeadService.requestRecordState(state => this.recordState = state);
         this.panoService.requestRecalculatePano();
     }
 

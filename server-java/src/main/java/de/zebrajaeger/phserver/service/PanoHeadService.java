@@ -109,7 +109,7 @@ public class PanoHeadService {
         boolean actorActive = actorStatus.isActive();
 
         if (latestState.isActorActive() && !actorActive) {
-//      log.info("MOVEMENT STOPPED");
+            log.debug("MOVEMENT STOPPED");
             applicationEventPublisher.publishEvent(new MovementStoppedEvent());
         }
 

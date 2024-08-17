@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PanoHeadService} from '../service/panohead.service';
-import {Subscription} from 'rxjs';
-import {PanoService} from '../service/pano.service';
-import {CameraOfView, Gps, PanoFieldOfView, PanoMatrix} from '../../data/pano';
-import {AxesPosition, Position, Power} from '../../data/panohead';
-import {RobotState} from "../../data/record";
-import {GpsService} from "../service/gps.service";
-import {UiService} from "../service/ui.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PanoHeadService } from '../service/panohead.service';
+import { Subscription } from 'rxjs';
+import { PanoService } from '../service/pano.service';
+import { CameraOfView, Gps, PanoFieldOfView, PanoMatrix } from '../../data/pano';
+import { AxesPosition, Position, Power } from '../../data/panohead';
+import { RecordState } from "../../data/record";
+import { GpsService } from "../service/gps.service";
+import { UiService } from "../service/ui.service";
 
 @Component({
     selector: 'app-bottom',
@@ -32,8 +32,8 @@ export class BottomComponent implements OnInit, OnDestroy {
     private batterySubscription!: Subscription;
     public batteryString: string = '';
 
-    private robotStateSubscription!: Subscription;
-    public robotState?: RobotState;
+    private recordStateSubscription!: Subscription;
+    public recordState?: RecordState;
 
     private pictureFovSubscription!: Subscription;
     public pictureFov?: CameraOfView;
@@ -47,9 +47,9 @@ export class BottomComponent implements OnInit, OnDestroy {
     showSystemDialog = false;
 
     constructor(private panoHeadService: PanoHeadService,
-                private panoService: PanoService,
-                private gpsService: GpsService,
-                private uiService: UiService) {
+        private panoService: PanoService,
+        private gpsService: GpsService,
+        private uiService: UiService) {
     }
 
     ngOnInit(): void {
@@ -77,9 +77,8 @@ export class BottomComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
-        this.panoHeadService.requestRobotState(robotState => this.robotState = robotState);
-
+        this.recordStateSubscription = this.panoHeadService.subscribeRecordState(recordState => this.recordState = recordState);
+        this.panoHeadService.requestRecordState(recordState => this.recordState = recordState);
 
         this.pictureFovSubscription = this.panoService.subscribePictureFov(fov => this.pictureFov = fov);
         this.panoService.requestPictureFov(fov => this.pictureFov = fov);
@@ -95,7 +94,7 @@ export class BottomComponent implements OnInit, OnDestroy {
         this.actorSubscription?.unsubscribe();
         this.calculatedPanoSubscription?.unsubscribe();
         this.powerSubscription?.unsubscribe();
-        this.robotStateSubscription?.unsubscribe();
+        this.recordStateSubscription?.unsubscribe();
         this.pictureFovSubscription?.unsubscribe();
         this.panoFovSubscription?.unsubscribe();
     }

@@ -3,7 +3,7 @@
         <div class="item">Pos: <span class="value symbol">({{axesPosition?.targetDegPosition| position }})/({{axesPosition?.measuredDegPosition| position }})</span></div>
         <div class="item" *ngIf="gaugeString"> Power: (<span class="value">{{gaugeString}}</span>)</div>
         <div class="item" * ngIf="batteryString"> Battery: <span class="value">{{batteryString}}</span></div>
-        <div class="item"> RobotState: (<span class="value">{{robotState?.automateState}}</span>)</div>
+        <div class="item"> RecordState: (<span class="value">{{recordState?.states}}</span>)</div>
     </div>
     <div class="line">
         <div class="item">Img: (<span class="value symbol">{{pictureFov | fovSize}}</span>)</div>

@@ -30,7 +30,7 @@ export class CameraComponent {
 
     onShot(): void {
         this.statusText = 'Request shot';
-        this.cameraService.requestShot(1000, 500, csr => {
+        this.cameraService.requestShot(csr => {
             if(!csr.successfully){
                 this.statusText = csr.message;
                 console.log(csr)

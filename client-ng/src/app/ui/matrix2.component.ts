@@ -11,7 +11,7 @@ import {
 import {CameraOfView, PanoFieldOfView, PanoMatrix, PanoMatrixPosition} from "../../data/pano";
 import {PanoService} from "../service/pano.service";
 import {Subscription} from "rxjs";
-import {AutomateState, RobotState} from "../../data/record";
+import {AutomateState, RecordState} from "../../data/record";
 import {PanoHeadService} from "../service/panohead.service";
 import {Position} from "../../data/panohead";
 
@@ -41,8 +41,8 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     public panoMatrix_!: PanoMatrix;
     private panoMatrixSubscription!: Subscription;
 
-    private robotStateSubscription!: Subscription;
-    public _robotState!: RobotState;
+    private recordStateSubscription!: Subscription;
+    public _recordState!: RecordState;
 
     private actorSubscription!: Subscription;
     public actorPos_!: Position;
@@ -58,7 +58,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         this.panoMatrixSubscription = this.panoService.subscribePanoMatrix(matrix => this.panoMatrix = matrix);
         this.panoService.requestPanoMatrix(matrix => this.panoMatrix = matrix);
 
-        this.robotStateSubscription = this.panoHeadService.subscribeRobotState(robotState => this.robotState = robotState);
+        this.recordStateSubscription = this.panoHeadService.subscribeRecordState(recordState => this.recordState = recordState);
 
         this.actorSubscription = this.panoHeadService.subscribeActorPosition(position => {
             this.actorPos = position.measuredDegPosition;
@@ -69,7 +69,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         this.panoFovSubscription?.unsubscribe();
         this.pictureFovSubscription?.unsubscribe();
         this.panoMatrixSubscription?.unsubscribe();
-        this.robotStateSubscription?.unsubscribe();
+        this.recordStateSubscription?.unsubscribe();
     }
 
     ngAfterViewInit(): void {
@@ -97,8 +97,8 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         this.draw();
     }
 
-    set robotState(value: RobotState) {
-        this._robotState = value;
+    set recordState(value: RecordState) {
+        this._recordState = value;
         this.draw();
     }
 
@@ -212,12 +212,12 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
                 camY = 20;
             }
 
-            let imgIndex = this._robotState?.command?.shotPosition?.index;
+            let imgIndex = this._recordState?.command?.shotPosition?.index;
             if (imgIndex == null) {
                 imgIndex = -1;
             }
 
-            let isShooting = this._robotState?.automateState == AutomateState.CMD_SHOT;
+            let isShooting = this._recordState?.states[1] == AutomateState.EXEC_SHOT;
             let i = 0;
             ctx.lineWidth = 2;
             ctx.font = "bold 15px Roboto";

@@ -49,7 +49,6 @@ export class NumberPadComponent {
   }
 
   onNumber(digit: number): void {
-    console.log('onNumber', digit)
     const newValue = this._value * 10 + digit;
     if (newValue < this.max) {
       this.setValueInternal(this._value * 10 + digit);
@@ -57,7 +56,6 @@ export class NumberPadComponent {
   }
 
   onDelete(): void {
-    console.log('onDelete')
     this.setValueInternal(Math.floor(this._value / 10));
   }
 

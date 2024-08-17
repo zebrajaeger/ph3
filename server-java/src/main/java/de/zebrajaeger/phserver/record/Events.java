@@ -1,0 +1,21 @@
+package de.zebrajaeger.phserver.record;
+
+public enum Events {
+    START_PAUSE,
+    STOP,
+
+    STARTED,
+
+    MOVE, MOVE_DONE,
+    SHOT, SHOT_DONE,
+    DELAY, DELAY_DONE,
+    APPLY_OFFSET, APPLY_OFFSET_DONE,
+    NORMALIZE_POSITION, NORMALIZE_POSITION_DONE,
+
+    SAVE_PAPYWIZARD_DONE,
+
+    NO_MORE_COMMANDS,
+    DONE,
+
+    ERROR
+}

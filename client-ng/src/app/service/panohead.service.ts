@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ActorState, AxesPosition, BatteryState, Position, Power } from '../../data/panohead';
-import { RobotState } from '../../data/record';
+import { RecordState } from '../../data/record';
 import { RxStompService } from "./rx-stomp.service";
 import { RxStompRPCService } from "./rx-stomp-rpc.service";
 
@@ -98,17 +98,17 @@ export class PanoHeadService {
     }
 
     // <editor-fold desc="Record">
-    public subscribeRobotState(cb: (actor: RobotState) => void): Subscription {
+    public subscribeRecordState(cb: (actor: RecordState) => void): Subscription {
         return this.rxStompService
-            .watch('/topic/robot/state')
-            .pipe(map(msg => new RobotState(msg.body)))
+            .watch('/topic/record/state')
+            .pipe(map(msg => new RecordState(msg.body)))
             .subscribe(cb);
     }
 
-    public requestRobotState(cb: (actor: RobotState) => void): Subscription {
+    public requestRecordState(cb: (actor: RecordState) => void): Subscription {
         return this.rxStompRPCService
-            .rpc({ destination: '/rpc/robot/state' })
-            .pipe(map(msg => new RobotState(msg.body)))
+            .rpc({ destination: '/rpc/record/state' })
+            .pipe(map(msg => new RecordState(msg.body)))
             .subscribe(cb);
     }
 

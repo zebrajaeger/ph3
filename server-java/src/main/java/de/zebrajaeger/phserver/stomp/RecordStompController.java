@@ -3,13 +3,13 @@ package de.zebrajaeger.phserver.stomp;
 import de.zebrajaeger.phserver.data.GpsData;
 import de.zebrajaeger.phserver.data.PanoMatrix;
 import de.zebrajaeger.phserver.event.GpsDataEvent;
-import de.zebrajaeger.phserver.event.RobotStateEvent;
 import de.zebrajaeger.phserver.pano.Command;
 import de.zebrajaeger.phserver.papywizard.Papywizard;
 import de.zebrajaeger.phserver.papywizard.PapywizardGenerator;
+import de.zebrajaeger.phserver.record.RecordSMService;
+import de.zebrajaeger.phserver.record.RecordStateEvent;
 import de.zebrajaeger.phserver.service.PanoHeadService;
 import de.zebrajaeger.phserver.service.PanoService;
-import de.zebrajaeger.phserver.service.RecordService;
 import de.zebrajaeger.phserver.util.PapywizardUtils;
 import de.zebrajaeger.phserver.util.StompUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +28,13 @@ public class RecordStompController {
 
     private final PanoService panoService;
     private final PanoHeadService panoHeadService;
-    private final RecordService recordService;
+    private final RecordSMService recordService;
+    //    private final RecordService recordService;
     private final SimpMessagingTemplate template;
     private GpsData gpsData = null;
 
     public RecordStompController(PanoService panoService, PanoHeadService panoHeadService,
-                                 RecordService recordService,
+                                 RecordSMService recordService,
                                  SimpMessagingTemplate template) {
         this.panoService = panoService;
         this.panoHeadService = panoHeadService;
@@ -77,14 +78,14 @@ public class RecordStompController {
         recordService.requestPauseOrResume();
     }
 
-    @MessageMapping("/rpc/robot/state")
+    @MessageMapping("/rpc/record/state")
     public void rpcRobotState(@Header("correlation-id") String id,
                               @Header("reply-to") String destination) {
-        StompUtils.rpcSendResponse(template, id, destination, recordService.getRobotState());
+        StompUtils.rpcSendResponse(template, id, destination, recordService.getState());
     }
 
     @EventListener
-    public void onRobotChanged(RobotStateEvent robotStateEvent) {
-        template.convertAndSend("/topic/robot/state", robotStateEvent.robotState());
+    public void onRobotChanged(RecordStateEvent event) {
+        template.convertAndSend("/topic/record/state", event.state());
     }
 }

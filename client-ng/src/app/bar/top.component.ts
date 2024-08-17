@@ -83,16 +83,12 @@ export class TopComponent implements OnInit, OnDestroy {
     }
 
     private set actorActive(isActive: boolean) {
-        console.log("actorActive", isActive)
         this._actorActive = isActive;
         this.updateActiveIndicator();
     }
 
     private set isJogging(isJogging: boolean) {
-        console.log("isJogging", isJogging)
         this._isJogging = isJogging;
         this.updateActiveIndicator();
     }
-
-    // protected readonly undefined = undefined; // TODO WTF is this? Art or garbage?
 }

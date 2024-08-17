@@ -1,16 +1,15 @@
 import {Shot} from './camera';
 
 export enum AutomateState {
-  STOP_REQUEST = 'STOP_REQUEST',
   STOPPING = 'STOPPING',
   STOPPED = 'STOPPED',
   STOPPED_WITH_ERROR = 'STOPPED_WITH_ERROR',
 
   STARTED = 'STARTED',
 
-  CMD_DELAY = 'CMD_DELAY',
-  CMD_SHOT = 'CMD_SHOT',
-  CMD_MOVE = 'CMD_MOVE',
+  EXEC_DELAY = 'EXEC_DELAY',
+  EXEC_SHOT = 'EXEC_SHOT',
+  EXEC_MOVE = 'EXEC_MOVE',
 
   APPLY_OFFSET = 'APPLY_OFFSET',
   NORMALIZE_POSITION = 'NORMALIZE_POSITION'
@@ -44,17 +43,33 @@ export class Command {
   shot?: Shot;
 }
 
-export class RobotState {
-  automateState!: AutomateState;
-  pauseState!: PauseState;
+// export class RobotState {
+//   automateState!: AutomateState;
+//   pauseState!: PauseState;
+//   command?: Command;
+//   commandIndex!: number;
+//   commandCount!: number;
+
+//   constructor(body: string) {
+//     const o = JSON.parse(body);
+//     this.automateState = (<any>AutomateState)[o.automateState];
+//     this.pauseState = (<any>PauseState)[o.pauseState];
+//     this.command = o.command;
+//     this.commandIndex = o.commandIndex;
+//     this.commandCount = o.commandCount;
+//   }
+// }
+
+export class RecordState {
+  states!: string[];
   command?: Command;
   commandIndex!: number;
   commandCount!: number;
 
   constructor(body: string) {
+    console.log(body)
     const o = JSON.parse(body);
-    this.automateState = (<any>AutomateState)[o.automateState];
-    this.pauseState = (<any>PauseState)[o.pauseState];
+    this.states = o.states;
     this.command = o.command;
     this.commandIndex = o.commandIndex;
     this.commandCount = o.commandCount;

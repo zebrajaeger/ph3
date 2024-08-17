@@ -4,6 +4,7 @@ import de.zebrajaeger.phserver.data.CameraShotResult;
 import de.zebrajaeger.phserver.event.CameraChangedEvent;
 import de.zebrajaeger.phserver.hardware.actor.Camera;
 import de.zebrajaeger.phserver.service.PanoHeadService;
+import de.zebrajaeger.phserver.service.ShotService;
 import de.zebrajaeger.phserver.settings.ShotSettings;
 import de.zebrajaeger.phserver.util.StompUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +23,14 @@ public class CameraSTOMPController {
 
     private final Camera camera;
     private final PanoHeadService panoHeadService;
+    private final ShotService shotService;
     private final SimpMessagingTemplate template;
 
-    public CameraSTOMPController(PanoHeadService deviceService, Camera camera,
+    public CameraSTOMPController(PanoHeadService deviceService, Camera camera, ShotService shotService,
                                  SimpMessagingTemplate template) {
         this.panoHeadService = deviceService;
         this.camera = camera;
+        this.shotService = shotService;
         this.template = template;
     }
 
@@ -65,9 +68,11 @@ public class CameraSTOMPController {
     }
 
     @MessageMapping("/rpc/camera/shot")
-    public void rpcCameraShot(@Header("correlation-id") String id, @Header("reply-to") String destination, @Payload ShotSettings shot) {
+    public void rpcCameraShot(@Header("correlation-id") String id, @Header("reply-to") String destination) {
         try {
-            camera.startShot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+            for (ShotSettings ss : shotService.getCurrent()) {
+                camera.startShot(ss.getFocusTimeMs(), ss.getTriggerTimeMs());
+            }
             StompUtils.rpcSendResponse(template, id, destination, new CameraShotResult(true, "Ok", null));
         } catch (Exception e) {
             StompUtils.rpcSendResponse(template, id, destination, new CameraShotResult(false, e.getMessage(), e));

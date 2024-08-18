@@ -145,6 +145,7 @@ public class RecordSMService extends StateMachineListenerAdapter<States, Events>
         boolean alreadyAtPosition = panoHeadService.goTo(new Position(
                 currentCommand.getShotPosition().getX(),
                 currentCommand.getShotPosition().getY()));
+        log.info("    alreadyAtPosition: {}", alreadyAtPosition);
         if (alreadyAtPosition) {
             sendEvent(Events.MOVE_DONE);
         }
@@ -178,7 +179,7 @@ public class RecordSMService extends StateMachineListenerAdapter<States, Events>
     @OnStateEntry(target = "EXEC_APPLY_OFFSET")
     public void onApplyOffset() {
         log.info("[onApplyOffset] {}]", stateMachine.getState().getIds().toString());
-        panoHeadService.adaptAxisOffset();
+//        panoHeadService.adaptAxisOffset();
         sendEvent(Events.APPLY_OFFSET_DONE);
     }
 

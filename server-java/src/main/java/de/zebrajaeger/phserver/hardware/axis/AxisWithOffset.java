@@ -51,10 +51,10 @@ public class AxisWithOffset implements Axis {
         if (getAxisParameters().isInverted()) {
             posDeg = -posDeg;
         }
-        int raw = getAxisParameters().degToRaw(posDeg);
-        final int targetPos = raw - getOffsetRaw();
-        if (getTargetRawValue() != targetPos) {
-            setTargetRawValue(targetPos);
+        int targetPositionSteps = getAxisParameters().degToRaw(posDeg);
+        final int targetPosStepsWithoutOffset = targetPositionSteps - getOffsetRaw();
+        if (getTargetRawValue() != targetPosStepsWithoutOffset) {
+            setTargetRawValue(targetPosStepsWithoutOffset);
             return false;
         } else {
             return true;

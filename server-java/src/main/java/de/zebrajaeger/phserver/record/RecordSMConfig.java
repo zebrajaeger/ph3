@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.record;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.EnableStateMachine;
@@ -12,6 +13,10 @@ import org.springframework.statemachine.monitor.StateMachineMonitor;
 @Configuration
 @EnableStateMachine
 public class RecordSMConfig extends StateMachineConfigurerAdapter<States, Events> {
+
+    @Value("${actor.move.timeout:25000}")
+    public int MOVE_TIMEOUT;
+
     @Bean
     public StateMachineMonitor<States, Events> stateMachineMonitor() {
         return new Monitor();
@@ -86,7 +91,10 @@ public class RecordSMConfig extends StateMachineConfigurerAdapter<States, Events
                 // Move
                 .and().withExternal().source(States.EXEC_MOVE).target(States.IDLE).event(Events.MOVE_DONE)
                 .and().withExternal().source(States.EXEC_MOVE).target(States.EXEC_MOVE_STOP).event(Events.STOP)
+                .and().withExternal().source(States.EXEC_MOVE).target(States.STOPPED_WITH_ERROR)
+                .timerOnce(MOVE_TIMEOUT).guard(ctx -> ctx.getStateMachine().getState().getIds().stream().anyMatch(id->id==States.EXEC_MOVE))
                 .and().withExternal().source(States.EXEC_MOVE_STOP).target(States.STOPPED_WITH_ERROR).event(Events.MOVE_DONE)
+                .and().withExternal().source(States.EXEC_MOVE_STOP).target(States.STOPPED_WITH_ERROR).event(Events.STOP)
                 .and().withExternal().source(States.EXEC_MOVE).target(States.EXEC_MOVE_PAUSE_RUNNING).event(Events.START_PAUSE)
                 .and().withExternal().source(States.EXEC_MOVE_PAUSE_RUNNING).target(States.EXEC_MOVE).event(Events.START_PAUSE)
                 .and().withExternal().source(States.EXEC_MOVE_PAUSE_RUNNING).target(States.EXEC_MOVE_PAUSE_IDLE).event(Events.MOVE_DONE)
@@ -96,6 +104,7 @@ public class RecordSMConfig extends StateMachineConfigurerAdapter<States, Events
                 .and().withExternal().source(States.EXEC_DELAY).target(States.IDLE).event(Events.DELAY_DONE)
                 .and().withExternal().source(States.EXEC_DELAY).target(States.EXEC_DELAY_STOP).event(Events.STOP)
                 .and().withExternal().source(States.EXEC_DELAY_STOP).target(States.STOPPED_WITH_ERROR).event(Events.DELAY_DONE)
+                .and().withExternal().source(States.EXEC_DELAY_STOP).target(States.STOPPED_WITH_ERROR).event(Events.STOP)
                 .and().withExternal().source(States.EXEC_DELAY).target(States.EXEC_DELAY_PAUSE_RUNNING).event(Events.START_PAUSE)
                 .and().withExternal().source(States.EXEC_DELAY_PAUSE_RUNNING).target(States.EXEC_DELAY).event(Events.START_PAUSE)
                 .and().withExternal().source(States.EXEC_DELAY_PAUSE_RUNNING).target(States.EXEC_DELAY_PAUSE_IDLE).event(Events.DELAY_DONE)
@@ -105,6 +114,7 @@ public class RecordSMConfig extends StateMachineConfigurerAdapter<States, Events
                 .and().withExternal().source(States.EXEC_SHOT).target(States.IDLE).event(Events.SHOT_DONE)
                 .and().withExternal().source(States.EXEC_SHOT).target(States.EXEC_SHOT_STOP).event(Events.STOP)
                 .and().withExternal().source(States.EXEC_SHOT_STOP).target(States.STOPPED_WITH_ERROR).event(Events.SHOT_DONE)
+                .and().withExternal().source(States.EXEC_SHOT_STOP).target(States.STOPPED_WITH_ERROR).event(Events.STOP)
                 .and().withExternal().source(States.EXEC_SHOT).target(States.EXEC_SHOT_PAUSE_RUNNING).event(Events.START_PAUSE)
                 .and().withExternal().source(States.EXEC_SHOT_PAUSE_RUNNING).target(States.EXEC_SHOT).event(Events.START_PAUSE)
                 .and().withExternal().source(States.EXEC_SHOT_PAUSE_RUNNING).target(States.EXEC_SHOT_PAUSE_IDLE).event(Events.SHOT_DONE)

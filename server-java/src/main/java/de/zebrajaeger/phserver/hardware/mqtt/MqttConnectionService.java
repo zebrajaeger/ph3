@@ -11,12 +11,9 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-
-//@Profile("mqtt | mqtt-actor | mqtt-cam")
 @Service
 @ConditionalOnProperty("enable.mqtt")
 @Slf4j
@@ -24,6 +21,10 @@ public class MqttConnectionService implements MqttCallbackExtended {
 
     private IMqttClient mqttClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Value("${enable.actor.mqtt.status:false}")
+    private boolean enableStatus;
+
     //    @Value("${mqtt.server.url:ws://192.168.8.144:1883,ws://192.168.8.142:1883}")
     @Value("${mqtt.server.url:tcp://localhost:1883}")
     private String mqttServerUrl;
@@ -111,13 +112,16 @@ public class MqttConnectionService implements MqttCallbackExtended {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        String payload = message.toString();
-        if (actorTopic.equals(topic)) {
-            applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.ACTOR, payload));
-        } else if (cameraTopic.equals(topic)) {
-            applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.CAMERA, payload));
-        } else if (powerTopic.equals(topic)) {
-            applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.POWER, payload));
+        // check SHOULD be unnecessary, because we don't subscribe to andy topic
+        if(enableStatus) {
+            String payload = message.toString();
+            if (actorTopic.equals(topic)) {
+                applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.ACTOR, payload));
+            } else if (cameraTopic.equals(topic)) {
+                applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.CAMERA, payload));
+            } else if (powerTopic.equals(topic)) {
+                applicationEventPublisher.publishEvent(new MqttEvent(topic, MqttTopic.POWER, payload));
+            }
         }
     }
 
@@ -129,15 +133,18 @@ public class MqttConnectionService implements MqttCallbackExtended {
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
         log.info("Connected to MQTT host: '{}', reconnect: {}", serverURI, reconnect);
-        try {
-            mqttClient.subscribe(actorTopic);
-            log.info("subscribe to: {}", actorTopic);
-            mqttClient.subscribe(cameraTopic);
-            log.info("subscribe to: {}", cameraTopic);
-            mqttClient.subscribe(powerTopic);
-            log.info("subscribe to: {}", powerTopic);
-        } catch (MqttException e) {
-            log.error("Could not subscribe to topics");
+
+        if(enableStatus) {
+            try {
+                mqttClient.subscribe(actorTopic);
+                log.info("subscribe to: {}", actorTopic);
+                mqttClient.subscribe(cameraTopic);
+                log.info("subscribe to: {}", cameraTopic);
+                mqttClient.subscribe(powerTopic);
+                log.info("subscribe to: {}", powerTopic);
+            } catch (MqttException e) {
+                log.error("Could not subscribe to topics");
+            }
         }
     }
 }

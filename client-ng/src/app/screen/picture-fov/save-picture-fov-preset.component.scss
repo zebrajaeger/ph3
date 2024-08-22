@@ -1,30 +1,32 @@
-ul {
-  text-align: center;
+
+:host {
+  display:grid;
+  grid-template-rows: 12vh 58vh 10vh;
+  grid-template-columns: 100vw;
 }
 
-.input {
-  width: 100%;
-  height: 100px;
-  padding: 20px;
-  font-size: 30px;
-  font-weight: bold;
-  border: none;
-  box-sizing: border-box;
+.display {
+  height: 10vh;
+  font-size: min(5vw, 7vh);
 }
 
-.buttons {
-  display: flex;
-  width:100%;
-  flex-direction: row;
-  justify-content: flex-end;
-  .button {
-    width: 200px;
-    margin-right: 10px;
-    .ok{
-      color: green;
-    }
-    .cancel{
-      color: red;
-    }
+@media all and (orientation:portrait) { 
+
+}
+@media all and (orientation:landscape) { 
+  .buttons{
+    display:grid;
+    grid-template-columns: auto 30vw 30vw;
+    grid-template-rows: 10vh;
+  }
+  .button{
+    font-size: 7vh;
+
+  }
+  .button.ok{
+    grid-column-start: 2;
+  }
+  .button.cancel{
+    grid-column-start: 3;
   }
 }

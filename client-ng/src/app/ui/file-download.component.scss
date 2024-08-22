@@ -1,4 +1,23 @@
 .button {
-  font-size: 1.5rem;
   justify-content: start;
+  display:block;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  padding: 1vh 1vw;
+}
+
+@media all and (orientation:landscape) {
+  .button {
+    font-size: 4vh;
+  }  
+}
+
+@media all and (orientation:portrait) {
+  .button {
+    font-size: 2vh;
+  }  
 }

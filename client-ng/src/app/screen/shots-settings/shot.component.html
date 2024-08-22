@@ -2,7 +2,7 @@
     <span class=symbol-delete> </span>
 </div>
 
-<div class="label f">F:</div>
+<div class="label f right-center-content">F:</div>
 <input class="input f"
        type="text"
        readonly
@@ -10,7 +10,7 @@
        (click)="_onEditFocus()"
 >
 
-<div class="label  t">T:</div>
+<div class="label  t right-center-content">T:</div>
 <input class="input t"
        type="text"
        readonly
@@ -25,6 +25,7 @@
     <span class="symbol-arrow_downward"></span>
 </div>
 
+<!-- // TODO use predefined ok/cancel dialog like in edit picture vov preset-->
 <div class="modal" *ngIf="edit">
     <app-number-pad [(value)]="temp"/>
     <div class="buttons">

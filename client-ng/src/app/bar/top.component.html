@@ -1,21 +1,24 @@
-<div class="box state {{stateName}}" >{{stateName}}</div>
+<div class="box state center-content {{stateName}}">{{stateName}}</div>
 
 <div class="box title">
   <div>
-    <span>{{title}}</span>
-    <span *ngIf="!backButton">&nbsp;&nbsp;&nbsp;{{version?.version}}({{version?.commitIdAbbrev}})</span>
+    <span class="text">{{title}}</span>
+    <span class="text" *ngIf="!backButton">{{version?.version}}({{version?.commitIdAbbrev}})</span>
   </div>
 </div>
 
-<div class="center-content">
-  <led class="led" [color]="actorActiveIndicator"></led>
+<div class="leds">
+  <div class="actor center-content">
+    <led class="led" [color]="actorActiveIndicator"></led>
+  </div>
+
+  <div class="camera center-content">
+    <led class="led" [color]="cameraActivityIndicator"></led>
+  </div>
 </div>
 
-<div class="center-content">
-  <led class="led" [color]="cameraActivityIndicator"></led>
-</div>
-
-<div class="box back-button center-content" [style.visibility]="backButton? 'visible':'hidden'" backButton>
+<!-- <div class="box back-button center-content" [style.visibility]="backButton? 'visible':'hidden'" backButton> -->
+<div class="box back-button center-content" backButton>
   <div class="text-wrapper">
     <span class="back-arrow">«</span>&nbsp;<span class="back-text">Back</span>
   </div>

@@ -1,11 +1,27 @@
 
 :host {
-  height: 400px;
-  display: block;
   overflow-x: hidden;
   overflow-y: auto;
+  height: 80vh;
 
-  .item {
-    margin: 10px;
+  & .items {
+    display: grid;
+    & .item {
+      font-size: min(4vh, 4vw);
+    }
+  }
+}
+
+@media (max-width:499px) {
+  .items {
+    grid-template-rows: repeat(8, 10vh);
+    grid-template-columns: 100vw;
+  }
+}
+
+@media (min-width:500px) {
+  .items {
+    grid-template-rows: repeat(8, 10vh);
+    grid-template-columns: repeat(2, 50vw);
   }
 }

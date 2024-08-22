@@ -8,12 +8,12 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import {CameraOfView, PanoFieldOfView, PanoMatrix, PanoMatrixPosition} from "../../data/pano";
-import {PanoService} from "../service/pano.service";
-import {Subscription} from "rxjs";
-import {AutomateState, RecordState} from "../../data/record";
-import {PanoHeadService} from "../service/panohead.service";
-import {Position} from "../../data/panohead";
+import { CameraOfView, PanoFieldOfView, PanoMatrix, PanoMatrixPosition } from "../../data/pano";
+import { PanoService } from "../service/pano.service";
+import { Subscription, timer } from "rxjs";
+import { AutomateState, RecordState } from "../../data/record";
+import { PanoHeadService } from "../service/panohead.service";
+import { Position } from "../../data/panohead";
 
 @Component({
     selector: 'matrix2',
@@ -21,15 +21,13 @@ import {Position} from "../../data/panohead";
     styleUrls: ['./matrix2.component.scss']
 })
 export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
-    @Input()
     public width!: number;
-    @Input()
     public height!: number;
     @Input()
     public color?: string;
-    @ViewChild('matrix2', {static: true})
+    @ViewChild('matrix2', { static: true })
     canvas!: ElementRef<HTMLCanvasElement>;
-    @ViewChild('matrix2pos', {static: true})
+    @ViewChild('matrix2pos', { static: true })
     canvasPos!: ElementRef<HTMLCanvasElement>;
 
     public pictureFov_!: CameraOfView;
@@ -47,8 +45,9 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     private actorSubscription!: Subscription;
     public actorPos_!: Position;
 
-    constructor(private panoService: PanoService,
-                private panoHeadService: PanoHeadService,) {
+    private resizeObserver?: ResizeObserver;
+
+    constructor(private elementRef: ElementRef, private panoService: PanoService, private panoHeadService: PanoHeadService) {
         this.pictureFovSubscription = this.panoService.subscribePictureFov(fov => this.pictureFov = fov);
         this.panoService.requestPictureFov(fov => this.pictureFov = fov);
 
@@ -66,6 +65,8 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
+
         this.panoFovSubscription?.unsubscribe();
         this.pictureFovSubscription?.unsubscribe();
         this.panoMatrixSubscription?.unsubscribe();
@@ -73,7 +74,27 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.draw();
+        const element = this.elementRef.nativeElement;
+
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                this.canvas.nativeElement.width = entry.contentRect.width;
+                this.canvas.nativeElement.height = entry.contentRect.height;
+
+                this.width = entry.contentRect.width;
+                this.height = entry.contentRect.height;
+
+                console.log(`Observed - Width: ${this.width}, Height: ${this.height}`, this.elementRef.nativeElement);
+                timer(1).subscribe(() => {
+                    this.draw();
+                });
+                // this.draw();
+            }
+        });
+
+        this.resizeObserver.observe(element);
+
+        // this.draw();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -111,6 +132,11 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private drawPos() {
+//         const element = this.canvas.nativeElement;
+//         const aaa = element.offsetWidth;
+//         const bbb = element.offsetHeight;
+//         console.log({ aaa, bbb });
+
         const ctx = this.canvasPos.nativeElement.getContext("2d");
         if (ctx === null) {
             return;
@@ -126,7 +152,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
         let y = this.normalizeAndConvertY(this.actorPos_.y) % this.height;
         const l = 30;
 
-        y = this.height-y; // TODO why?
+        y = this.height - y; // TODO why?
 
         ctx.strokeStyle = 'black'
         ctx.lineWidth = 2;
@@ -224,7 +250,7 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
             ctx.stroke();
             for (let yi = 0; yi < this.panoMatrix_.ySize; ++yi) {
                 const y = this.normalizeAndConvertY(this.panoMatrix_.yPositions[yi]);
-                const row : PanoMatrixPosition[] = this.panoMatrix_.xPositions[yi];
+                const row: PanoMatrixPosition[] = this.panoMatrix_.xPositions[yi];
                 for (let xi = 0; xi < row.length; ++xi) {
                     const panoMatrixPosition = row[xi];
                     let xx = panoMatrixPosition.x % 360;
@@ -288,16 +314,16 @@ export class Matrix2Component implements AfterViewInit, OnChanges, OnDestroy {
             } else if (!this.panoFov_.fullX && this.panoFov_.fullY) {
                 let x1 = this.normalizeAndConvertX(this.panoFov_.x.from);
                 let x2 = this.normalizeAndConvertX(this.panoFov_.x.to);
-                console.log('C1', {x1: this.panoFov_.x.from, x2: this.panoFov_.x.to}, {x1, x2})
+                console.log('C1', { x1: this.panoFov_.x.from, x2: this.panoFov_.x.to }, { x1, x2 })
                 if (x1 < 0) {
                     x1 += this.width
-                    console.log('C2', {x1: this.panoFov_.x.from, x2: this.panoFov_.x.to}, {x1, x2})
+                    console.log('C2', { x1: this.panoFov_.x.from, x2: this.panoFov_.x.to }, { x1, x2 })
                     ctx.strokeRect(x1, -1, this.width, this.height + 2);
                     ctx.strokeRect(x2, -1, -this.width, this.height + 2);
                 }
                 if (x2 > this.width) {
                     x2 -= this.width
-                    console.log('C3', {x1: this.panoFov_.x.from, x2: this.panoFov_.x.to}, {x1, x2})
+                    console.log('C3', { x1: this.panoFov_.x.from, x2: this.panoFov_.x.to }, { x1, x2 })
                     ctx.strokeRect(x1, -1, this.width, this.height + 2);
                     ctx.strokeRect(x2, -1, -this.width, this.height + 2);
                 }

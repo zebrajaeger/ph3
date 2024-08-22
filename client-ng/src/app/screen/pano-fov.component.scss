@@ -2,114 +2,65 @@
   caret-color: transparent;
 }
 
-.close-button {
-  background-color: orange;
-}
+$bw: calc((100vw / 7) - 0.5vw);
+$bh: calc((80vh / 7) - 0.5vh);
 
-.button-left {
-  grid-row-start: 2;
-}
-
-.button-right {
-  grid-row-start: 3;
-}
-
-.value {
-  font-size: 2rem;
-  margin: 10px;
-}
-
-.h-value, .v-value {
-  margin: 10px;
-}
-
-.info-border {
-  border: 1px solid black;
-  border-radius: 5px;
-  height: 160px;
-
-  .info-content {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 50px);
-    margin: 5px 10px;
-  }
-}
-
-.info-range {
+.infobox {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: repeat(3, $bw);
+  grid-template-rows: repeat(3, $bh);
 
   border: 1px solid black;
-  border-radius: 5px;
-  margin: 10px;
+  border-radius: 1vh;
+  margin: 0.5vh 0.5vw;
 
-  .h-label {
+  font-size: min(6vh, 4vw);
+
+  & img {
+    width: min(6vh, 6vw);
+  }
+  & .button{
+    font-size: min(3vh, 1.5vw);
+  }
+  & .h-label {
     grid-column-start: 1;
     grid-row-start: 1;
   }
 
-  .h-value {
+  & .h-value {
     grid-column-start: 2;
     grid-row-start: 1;
   }
 
-  .v-label {
+  & .v-label {
     grid-column-start: 1;
     grid-row-start: 2;
   }
 
-  .v-value {
+  & .v-value {
     grid-column-start: 2;
     grid-row-start: 2;
   }
-}
-
-.pano-calc {
-  display: grid;
-  grid-template-columns: repeat(2, 140px);
-  grid-template-rows: repeat(3, 50px);
-
-  border: 1px solid black;
-  border-radius: 5px;
-  margin: 10px;
-
-  font-size: 2rem;
-}
-
-.set-partial {
-  height: 150px;
-
-  .button {
-    height: 60px;
-  }
-
-  .checked {
-    color: green;
-  }
-  .unchecked {
-    color: red;
+  & .h-label,.v-label{
+    margin-right: 1vw;
+    font-weight: bold;
   }
 }
 
-.set-dialog {
-  width: 470px;
-  height: 470px;
+.button.toggle{
+  display:grid;
+  grid-template-rows: calc($bh - 3vh);
+  grid-template-columns: calc($bw/4) auto;
 }
 
-.set-dialog-content {
-  display: grid;
-  grid-template-columns: repeat(3, 150px);
-  grid-template-rows: repeat(3, 150px);
-}
-
-.full-xy {
-  flex-direction: column;
-  padding-top: 27px;
-
-  .button {
-    width: 200px
+.infobox.set-partial {
+  & .button.x {
+    grid-column-start: 1;
+    grid-row-start: 3;
+  }
+  & .button.y {
+    grid-column-start: 2;
+    grid-row-start: 3;
   }
 }
 
@@ -136,4 +87,15 @@
 .center {
   grid-column-start: 2;
   grid-row-start: 2;
+}
+
+.set-dialog {
+  width: 60vw;
+  height: 60vh;
+  display: grid;
+  grid-template-columns: repeat(3, 20vw);
+  grid-template-rows: repeat(3, 20vh);
+  & .close-button {
+    background-color: orange;
+  }
 }

@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Shot} from "../../../data/camera";
+import { OkCancelDialogComponent } from 'src/app/ui/ok-cancel-dialog.component';
 
 @Component({
     selector: 'shot',
@@ -19,7 +20,7 @@ export class ShotComponent {
 
     public edit: string | undefined = undefined;
     public temp!: number;
-
+    
     _onDown() {
         this.onDown.emit(this.index);
     }

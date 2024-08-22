@@ -1,39 +1,88 @@
-:host{
-  font-size: 1.5rem;
+:host {
   font-weight: bold;
-  display: flex;
+  display: grid;
 }
 
-.form {
-  display: grid;
-  grid-template-columns: 200px 120px 50px;
-  grid-template-rows: repeat(7, 50px);
-  width: 410px;
-
-  margin: 5px;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
+.unit {
+  margin-left: 1vw;
 }
 
-.form2  {
-  display: grid;
-  grid-template-columns: 100px 100px;
-  grid-template-rows: repeat(7, 50px);
-  width: 300px;
-
-  margin: 5px;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
+.editable {
+  background-color: white;
 }
 
 .value {
   border: 1px solid black;
-  border-radius: 5px;
-  height: 40px;
+  border-radius: 1vh;
+  padding: 0.5vh 0.5vw;
 
   &.editable {
     border: 3px solid black;
+  }
+}
+
+.label {
+  margin-right: 1vw;
+}
+
+.value {
+  width: 100%;
+}
+
+.form {
+  margin: 1vh 1vw;
+  padding: 1vh 1vw;
+  border: 1px solid black;
+  border-radius: 2vh;
+}
+
+
+@media all and (orientation:landscape) {
+  :host {
+    font-size: 4vh;
+    grid-template-columns: 50vw 50vw;
+    grid-template-rows: 80vh;
+  }
+
+  .value {
+    height: 7vh;
+
+  }
+
+  .form1 {
+    display: grid;
+    grid-template-columns: 20vw 10vw 5vw;
+    grid-template-rows: repeat(7, (80vh / 8));
+  }
+
+  .form2 {
+    display: grid;
+    grid-template-columns: 20vw 10vw;
+    grid-template-rows: repeat(7, (80vh / 8));
+  }
+}
+
+@media all and (orientation:portrait) {
+  :host {
+    font-size: 2vh;
+    grid-template-columns: 100vw;
+    grid-template-rows: 40vh 40vh;
+  }
+
+  .value {
+    height: 3.5vh;
+
+  }
+
+  .form1 {
+    display: grid;
+    grid-template-columns: 40vw 20vw 10vw;
+    grid-template-rows: repeat(7, (80vh / 15));
+  }
+
+  .form2 {
+    display: grid;
+    grid-template-columns: 40vw 20vw;
+    grid-template-rows: calc(80vh / 15) repeat(3, 0) repeat(4, calc(80vh / 15));
   }
 }

@@ -1,7 +1,7 @@
 :host {
   display:grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: repeat(3,128px);
+  grid-template-columns: repeat(3, (100vw/3));
+  grid-template-rows: repeat(3, (80vh/3));
 }
 
 .button {

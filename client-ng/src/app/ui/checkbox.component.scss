@@ -1,0 +1,15 @@
+:host {
+    display:flex;    
+    justify-content: left;
+    align-items: center;
+    padding: 0.5vw 1vh;
+}
+
+.box {
+    width: 3vw;
+    height: 3vh;
+}
+
+.label {
+    padding-left: 1vw;
+}

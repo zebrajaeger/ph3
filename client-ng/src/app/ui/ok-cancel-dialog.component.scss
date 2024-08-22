@@ -1,28 +1,14 @@
 .ok-cancel-root {
-  display:flex;
-  flex-direction: column;
-  padding: 20px;
-}
+  position: absolute;
+  width: 50vw;
+  height: 50vh;
+  left: 25vw;
+  top:25vh;
+  background-color: white;
 
-.message {
-  font-size: 2rem;
-  font-weight: bold;
-}
+  display:grid;
+  grid-template-columns: 50vw;
+  grid-template-rows: 30vh 10vh 10vh;
 
-.placeholder{
-  flex-grow: 1;
-}
-
-.buttons {
-  display: flex;
-  width:100%;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top:80px;
-  .button {
-    width: 200px;
-    &.ok{
-      margin-right: 50px;
-    }
-  }
+  font-size: min(6vh, 4vw);
 }

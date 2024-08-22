@@ -1,9 +1,13 @@
 <movement-controller>
-  <button bottom-left class="top-left set-as-zero button edit" (click)="setAsZero()">
-    <span class=symbol-center_focus_strong> Set as Zero</span>
-  </button>
-  <button bottom-right class="top-right go-to-zero button" (click)="goToZero()">
-    <span class=symbol-flare> Go to Zero</span>
-  </button>
-<!--  <button bottom-right class="top-right go-to-zero button edit" (click)="adaptOffset()">!Adapt Offset!</button>-->
+  <div bottom-left class="infobox bottom-left">
+    <div bottom-left class="set-as-zero button" (click)="setAsZero()">
+      <div class=symbol-center_focus_strong> Set as Zero</div>
+    </div>
+  </div>
+  <div bottom-right class="infobox bottom-right">
+    <div bottom-right class="go-to-zero button" (click)="goToZero()">
+      <div class=symbol-flare> Go to Zero</div>
+    </div>
+  </div>
+  <!--  <button bottom-right class="top-right go-to-zero button edit" (click)="adaptOffset()">!Adapt Offset!</button>-->
 </movement-controller>

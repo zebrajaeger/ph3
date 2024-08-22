@@ -1,34 +1,24 @@
 <!--Current shots-->
-<div class="left">
-    <shots class="shots"
-           [shots]="_shots"
-           [editable]="true"
-           (onChange)="onCurrentShotChanged($event)"
-    />
-    <div class="button add edit"
-         (click)="onAsNewPreset()">
+<div class="left box">
+    <shots class="shots" [shots]="_shots" [editable]="true" (onChange)="onCurrentShotChanged($event)" />
+</div>
+
+<div class="center-content">
+    <div class="button add edit" (click)="onAsNewPreset()">
         <span class="symbol-add"> &nbsp;As new Preset</span>
     </div>
 </div>
 
 <!--Presets-->
-<div class="right">
-    <presets class="presets"
-             [presets]="_presets"
-             (onDelete)="_onDeletePreset($event)"
-             (onLoad)="_onLoadPreset($event)"
-             (onEdit)="_onEditPreset($event)"
-             (onAdd)="_onAddPreset()"
-    />
+<div class="right box">
+    <presets class="presets" [presets]="_presets" (onDelete)="_onDeletePreset($event)" (onLoad)="_onLoadPreset($event)"
+        (onEdit)="_onEditPreset($event)" (onAdd)="_onAddPreset()" />
 </div>
 
 <!--Edit Preset Dialog-->
 <div class="modal edit-preset-dialog" *ngIf="editPreset">
     <div class="headline">Edit preset '{{editPreset}}'</div>
-    <shots class="shots"
-           [shots]="tempShots"
-           [editable]="true"
-    />
+    <shots class="shots" [shots]="tempShots" [editable]="true" />
     <div class="placeholder"></div>
     <div class="buttons">
         <div class="button ok" (click)="_onEditPresetOk()">
@@ -41,8 +31,8 @@
 </div>
 
 <!--New Preset Dialog-->
-<app-keyboard-dialog #keyboard class="keyboard-dialog" (onOk)="onKeyboardOk($event)"/>
+<app-keyboard-dialog #keyboard class="keyboard-dialog" (onOk)="onKeyboardOk($event)" />
 
 <!--Delete Preset Dialog-->
-<app-ok-cancel-dialog #okCancelDelete (onOk)="_onDeletePresetOk($event)"/>
-<app-ok-cancel-dialog #okCancelLoad (onOk)="_onLoadPresetOk($event)"/>
+<app-ok-cancel-dialog #okCancelDelete (onOk)="_onDeletePresetOk($event)" />
+<app-ok-cancel-dialog #okCancelLoad (onOk)="_onLoadPresetOk($event)" />

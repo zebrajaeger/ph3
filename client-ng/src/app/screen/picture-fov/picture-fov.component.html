@@ -1,5 +1,5 @@
 <movement-controller>
-    <div top-left class="info-border" (click)="modalService.open('picture-fov-set')">
+    <div top-left class="infobox info-border " (click)="modalService.open('picture-fov-set')">
         <div class="top center-content"><span class="value">{{vFromText}}</span></div>
         <div class="bottom center-content"><span class="value">{{vToText}}</span></div>
         <div class="left center-content"><span class="value">{{hFromText}}</span></div>
@@ -9,41 +9,39 @@
         </div>
     </div>
 
-    <div top-right class="info-range">
-        <div class="left-center-content h-label" (click)="onEditH()"><span class="value">H:</span></div>
-        <div class="left-center-content h-value"(click)="onEditH()"><span class="value">{{hText}}</span></div>
-        <div class="left-center-content v-label"(click)="onEditV()"><span class="value">V:</span></div>
-        <div class="left-center-content v-value"(click)="onEditV()"><span class="value">{{vText}}</span></div>
+    <div top-right class="infobox info-range">
+        <div class="right-center-content h-label" (click)="onEditH()"><span class="value">H:</span></div>
+        <div class="left-center-content h-value" (click)="onEditH()"><span class="value">{{hText}}</span></div>
+        <div class="right-center-content v-label" (click)="onEditV()"><span class="value">V:</span></div>
+        <div class="left-center-content v-value" (click)="onEditV()"><span class="value">{{vText}}</span></div>
     </div>
-    <div bottom-left class="bottom-left">
-        <button class="button load edit" [routerLink]="['/picture-fov/load']">
+    <div bottom-left class="infobox bottom-left">
+        <div class="button load" [routerLink]="['/picture-fov/load']">
             <span class=symbol-label_important> Load FOV</span>
-        </button>
+        </div>
     </div>
-    <div bottom-right class="bottom-right">
-        <button class="button save edit" [routerLink]="['/picture-fov/save']">
+    <div bottom-right class="infobox bottom-right">
+        <div class="button save" [routerLink]="['/picture-fov/save']">
             <span class=symbol-save> Save FOV</span>
-        </button>
-        <button class="button edit" [routerLink]="['/picture-fov/edit']">
+        </div>
+        <div class="button edit" [routerLink]="['/picture-fov/edit']">
             <span class=symbol-edit> Edit FOV</span>
-        </button>
+        </div>
     </div>
 </movement-controller>
 
 <app-modal class="modal-system-dialog" id="picture-fov-set">
-    <div class="set-dialog center-content">
-        <div class="set-dialog-content">
-            <button class="button top" (click)="onTop()">Top</button>
-            <button class="button left" (click)="onLeft()">Left</button>
-            <button class="close-button button center" (click)="onClosePopup()">
-                <span class=symbol-close></span>
-            </button>
-            <button class="button right" (click)="onRight()">Right</button>
-            <button class="button bottom" (click)="onBottom()">Bottom</button>
+    <div class="set-dialog">
+        <div class="button top" (click)="onTop()">Top</div>
+        <div class="button left" (click)="onLeft()">Left</div>
+        <div class="close-button button center" (click)="onClosePopup()">
+            <span class=symbol-close></span>
         </div>
+        <div class="button right" (click)="onRight()">Right</div>
+        <div class="button bottom" (click)="onBottom()">Bottom</div>
     </div>
 </app-modal>
 
 <app-modal class="modal-num-pad" id="calcPictureFov" (close)="onNumPadCloseModal()">
-    <app-number-pad [(value)]="editTemp" (close)="onNumPadClose()"/>
+    <app-number-pad [(value)]="editTemp" (close)="onNumPadClose()" />
 </app-modal>

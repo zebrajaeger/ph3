@@ -2,90 +2,12 @@
   caret-color: transparent;
 }
 
-.close-button {
-  background-color: orange;
-}
-
 .button-left {
   grid-row-start: 2;
 }
 
 .button-right {
   grid-row-start: 3;
-}
-
-.info-border {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 50px);
-
-  border: 1px solid black;
-  border-radius: 5px;
-
-
-  margin: 10px;
-
-  .value {
-    font-size: 2em;
-  }
-}
-
-.info-range {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 50px);
-
-  border: 1px solid black;
-  border-radius: 5px;
-  margin: 10px;
-
-  .h-label {
-    grid-column-start: 1;
-    grid-row-start: 1;
-  }
-
-  .h-value {
-    grid-column-start: 2;
-    grid-row-start: 1;
-  }
-
-  .v-label {
-    grid-column-start: 1;
-    grid-row-start: 2;
-  }
-
-  .v-value {
-    grid-column-start: 2;
-    grid-row-start: 2;
-  }
-
-  .value {
-    font-size: 2em;
-    margin: 10px;
-  }
-}
-
-.button.load, .button.save, .button.edit {
-  width: 250px
-}
-
-.bottom-left {
-  margin: 90px 0 0 10px;
-}
-
-.bottom-right {
-  margin: 25px 0 0 70px;
-}
-
-.set-dialog {
-  width: 470px;
-  height: 470px;
-}
-
-.set-dialog-content {
-  display: grid;
-  grid-template-columns: repeat(3, 150px);
-  grid-template-rows: repeat(3, 150px);
 }
 
 .top {
@@ -111,4 +33,86 @@
 .center {
   grid-column-start: 2;
   grid-row-start: 2;
+}
+
+.infobox {
+  display: grid;
+  grid-template-columns: repeat(3, (100vw / 7)-0.5vw);
+  grid-template-rows: repeat(3, (80vh / 7)-0.5vh);
+
+  border: 1px solid black;
+  border-radius: 1vh;
+  margin: 0.5vh 0.5vw;
+
+  font-size: min(6vh, 4vw);
+
+  & img {
+    width: min(6vh, 6vw);
+  }
+
+  & .button {
+    font-size: min(3vh, 1.5vw);
+  }
+}
+
+.info-border {}
+
+.info-range {
+  .h-label {
+    grid-column-start: 1;
+    grid-row-start: 1;
+  }
+
+  .h-value {
+    grid-column-start: 2;
+    grid-row-start: 1;
+  }
+
+  .v-label {
+    grid-column-start: 1;
+    grid-row-start: 2;
+  }
+
+  .v-value {
+    grid-column-start: 2;
+    grid-row-start: 2;
+  }
+
+  .h-label,
+  .v-label {
+    margin-right: 1vw;
+    font-weight: bold;
+  }
+
+}
+
+.bottom-left {
+  & .button.load {
+    grid-column-start: 1;
+    grid-row-start: 3;
+  }
+}
+
+.bottom-right {
+  & .button.save {
+    grid-column-start: 2;
+    grid-row-start: 3;
+  }
+
+  & .button.edit {
+    grid-column-start: 3;
+    grid-row-start: 3;
+  }
+}
+
+.set-dialog {
+  width: 60vw;
+  height: 60vh;
+  display: grid;
+  grid-template-columns: repeat(3, 20vw);
+  grid-template-rows: repeat(3, 20vh);
+
+  & .close-button {
+    background-color: orange;
+  }
 }

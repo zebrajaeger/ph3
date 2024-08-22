@@ -1,86 +1,77 @@
 :host {
-  width: 800px;
-  height: 40px;
-  box-sizing: border-box;
-  border: 1px solid black;
-  margin: 0;
+  user-select: none;
+
+  border-bottom: 1px solid black;
   background-color: silver;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-content: space-between;
-  user-select: none;
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-columns: 15vh auto 6vh 20vh;
 }
 
-.box {
-  text-align: center;
-  height: 40px;
-  box-sizing: border-box;
 
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
+.state {
+  width: 100%;
+  border-right: 1px solid black;
 
-  &.state {
-    width: 120px;
-    border-right: 1px solid black;
+  font-size: 1.7vh;
+  font-weight: bold;
 
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    font-size: 0.9em;
-    &.CONNECTING {
-      background-color: yellow;
-    }
-    &.OPEN {
-      background-color: green;
-    }
-    &.CLOSING {
-      background-color: orange;
-    }
-    &.CLOSED {
-      background-color: red;
-    }
+  &.CONNECTING {
+    background-color: yellow;
   }
 
-  &.title {
-    width: 540px;
-    text-align: left;
-    border-right: 1px solid black;
-    padding: 0 10px 0 10px;
-
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    font-size: 1.5em;
+  &.OPEN {
+    background-color: green;
   }
 
-  &.back-button {
-    width: 139px;
-    height: 39px;
-    background-color: #fdd;
-    position: relative;
-
-    .text-wrapper {
-      margin-bottom: 7px;
-
-    .back-arrow {
-      position: relative;
-      top: -1px;
-      font-weight: bold;
-      font-size: 2em;
-    }
-
-    .back-text {
-      font-weight: bold;
-      font-size: 1.5em;
-    }
+  &.CLOSING {
+    background-color: orange;
   }
+
+  &.CLOSED {
+    background-color: red;
   }
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-right: 1px solid black;
+  padding: 0 10px 0 10px;
+
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 3vw;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .led {
-  border-right: 1px solid black;
-  padding: 10px 5px 0 5px;
-  height: 40px;
-  box-sizing: border-box;
+  width: 4vh;
+  height: 4vh;
+  margin: 0.5vh;
+}
+
+.back-button {
+  background-color: #fdd;
+
+  &>.text-wrapper {
+
+    &>.back-arrow {
+      position: relative;
+      top: -0.2vh;
+      font-weight: bold;
+      font-size: 6vh;
+    }
+
+    &>.back-text {
+      font-weight: bold;
+      font-size: 4vh;
+      position: relative;
+      top: -0.3vh;
+    }
+  }
 }

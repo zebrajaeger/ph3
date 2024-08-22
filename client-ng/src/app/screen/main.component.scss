@@ -1,9 +1,5 @@
-:host {
-  display:grid;
-  grid-template-columns: repeat(3,266px);
-  grid-template-rows: repeat(3,128px);
-}
-
-.button {
-  margin: 10px;
-}
+  :host {
+    display: grid;
+    grid-template-columns: repeat(3, calc(100vw / 3));
+    grid-template-rows: repeat(3, calc(80vh / 3));
+  }

@@ -1,58 +1,39 @@
+:host {
+  width: 0;
+  height: 0;
+}
+
 .root {
-  display: flex;
-  flex-direction: column;
+  display:grid;
+  grid-template-columns: 100vw;
+  grid-template-rows: 10vh 58vh 10vh;
+  position: absolute;
+  top:10vh;
+  left:0;
 }
 
-ul {
-  text-align: center;
-}
-
-.input {
-  width: 100%;
-  height: 100px;
-  padding: 20px;
-  font-size: 30px;
-  font-weight: bold;
-  border: none;
-  box-sizing: border-box;
+.display{
+  font-size: min(5vw, 7vh);
 }
 
 .keyboard {
-  width: 760px;
-  height: 100px;
-  border: 1px solid green;
+  margin-top: 1vh;
+}
 
-  .hg-button .hg-standardBtn {
-    background-color: #0d78ee;
+@media all and (orientation:landscape) { 
+  .buttons{
+    display:grid;
+    grid-template-columns: auto 30vw 30vw;
+    grid-template-rows: 10vh;
+  }
+  .button{
+    font-size: 6vh;
 
   }
-}
-
-.placeholder {
-  flex-grow: 1;
-}
-
-.buttons {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  justify-content: flex-end;
-
-  .button {
-    width: 200px;
-    margin-bottom: 20px;
-
-    &.ok {
-      margin-right: 50px;
-
-      &.disabled {
-        background-color: gray;
-        color: white;
-      }
-    }
-
-    &.cancel {
-      margin-right: 20px;
-    }
+  .button.ok{
+    grid-column-start: 2;
+  }
+  .button.cancel{
+    grid-column-start: 3;
   }
 }

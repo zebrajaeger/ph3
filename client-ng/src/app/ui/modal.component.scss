@@ -3,9 +3,6 @@
 }
 
 .jw-modal {
-  box-sizing: border-box;
-  max-width: 800px;
-  max-height: 480px;
   z-index: 1000;
 
   .jw-modal-body {
@@ -25,7 +22,6 @@
   align-items: center;
   justify-content: center;
 
-  border: 1px solid black;
   backdrop-filter: blur(3px) brightness(0.5);
 
   z-index: 900;

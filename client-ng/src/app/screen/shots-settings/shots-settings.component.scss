@@ -1,51 +1,37 @@
 :host {
-  display: flex;
+  display: grid;
 }
 
-.left, .right {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+@media all and (orientation:landscape) {
+  :host {
+    grid-template-columns: 40vw 20vw 40vw;
+    grid-template-rows: 80vh;
+  }
+  .button.add {
+    height: 20vh;
+    font-size: 6vh;
+    text-align: center;
+  }
 }
 
-.shots, .presets {
+@media all and (orientation:portrait) {
+  :host {
+    grid-template-columns: 100vw;
+    grid-template-rows: 35vh 10vh 35vh;
+  }
+
+  .button.add {
+    height: 8vh;
+    font-size: 3vh;
+  }
+}
+
+.box {
   border: 1px solid black;
-  border-radius: 5px;
-  margin: 5px 0 5px 5px;
-  height: 300px;
-  width: 382px;
+  border-radius: 2vh;
+  margin: 1vh 1vw;
 }
 
-.edit-preset-dialog {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-
-  .headline {
-    font-weight: bold;
-    font-size: 2rem;
-  }
-
-  .placeholder {
-    flex-grow: 1;
-  }
-
-  .buttons {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: flex-end;
-
-    .button {
-      width: 200px;
-
-      &.ok {
-        margin-right: 50px;
-      }
-    }
-  }
-}
-
-.keyboard-dialog {
-  padding: 20px;
+.shots, presets {
+  height: 100%;
 }

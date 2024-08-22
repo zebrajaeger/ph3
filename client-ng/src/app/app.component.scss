@@ -1,10 +1,7 @@
-:host {
-  width:800px;
-  height: 480px;
-  position: relative;
-}
-
-.content {
-  width:800px;
-  height: 400px;
-}
+  :host {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 100vw;
+    grid-template-rows: 10vh 80vh 10vh;
+  }

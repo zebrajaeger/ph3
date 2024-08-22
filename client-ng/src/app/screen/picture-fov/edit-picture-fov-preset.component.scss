@@ -1,43 +1,45 @@
 
+@media (max-width:499px) {
+  :host {
+    grid-template-rows: repepeat(8, 10vh);
+    grid-template-columns: 100vw;
+  }
+}
+
+@media (min-width:500px) {
+  :host {
+    grid-template-rows: repepeat(8, 10vh);
+    grid-template-columns: repepeat(2, 50vw);
+  }
+}
+
 :host {
-  height: 400px;
-  display: block;
+  height: 80vh;
   overflow-x: hidden;
   overflow-y: auto;
+  display: grid;
+  grid-template-rows: repepeat(8, 10vh);
+  grid-template-columns: 100vw;
 
-  .item {
-    //margin: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  & .item {
+    display: grid;
+    grid-template-rows: 8vh;
+    grid-template-columns: 8vh auto 8vh;
+    margin: 1vh;
+    background-color: silver;
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.6);
+    border: 1px solid black;
 
-    .name {
-      border: 1px solid black;
-      border-radius: 5px;
-      width: 500px;
-      flex-grow: 1;
-      margin: 5px 5px 0 5px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      height: 50px;
-      display:flex;
-      align-items: center;
-      padding: 0 5px 0 5px;
+    & .name {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      font-size: 5vh;
+      padding: 0.5vh 1vw;
     }
 
-    .edit {
-      margin-right: 10px;
-      img {
-        width: 30px;
-      }
-    }
-
-    .delete {
-      margin-right: 5px;
-      img {
-        width: 30px;
-      }
+    & .button.delete {
+      font-size: min(6vh, 3vw);
     }
   }
 }

@@ -1,4 +1,30 @@
-.set-as-zero, .go-to-zero {
-  margin-top: 30px;
-  margin-left: 70px;
+.infobox {
+  display: grid;
+  grid-template-columns: repeat(3, (100vw / 7)-0.5vw);
+  grid-template-rows: repeat(3, (80vh / 7)-0.5vh);
+
+  border: 1px solid black;
+  border-radius: 1vh;
+  margin: 0.5vh 0.5vw;
+
+  font-size: min(6vh, 4vw);
+
+  & img {
+    width: min(6vh, 6vw);
+  }
+  & .button{
+    font-size: min(3vh, 1.5vw);
+  }
+}
+
+.button.set-as-zero {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row: 3;
+}
+
+.button.go-to-zero {
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row: 3;
 }

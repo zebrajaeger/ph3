@@ -42,13 +42,13 @@ public class DelayStompController {
         delayService.publishDelayChange();
     }
 
-    @MessageMapping("/delay/waitBetweenShotsMs")
+    @MessageMapping("/delay/waitAfterShotMs")
     public void delayWaitAfterShot(int waitAfterShot) {
         delayService.getDelay().setWaitAfterShot(waitAfterShot);
         delayService.publishDelayChange();
     }
 
-    @MessageMapping("/delay/waitAfterShotMs")
+    @MessageMapping("/delay/waitBetweenShotsMs")
     public void delayWaitBetweenShots(int waitBetweenShots) {
         delayService.getDelay().setWaitBetweenShots(waitBetweenShots);
         delayService.publishDelayChange();

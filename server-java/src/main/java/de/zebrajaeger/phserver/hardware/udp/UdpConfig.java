@@ -28,6 +28,8 @@ public class UdpConfig {
     private int port; // Port, auf dem der Server hört
     private final ApplicationEventPublisher applicationEventPublisher;
 
+    private UdpStatusEvent lastEvent = null;
+
     public UdpConfig(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
@@ -60,6 +62,10 @@ public class UdpConfig {
             try {
                 UdpStatusEvent event = new UdpStatusEvent((byte[]) message.getPayload());
 //                applicationEventPublisher.publishEvent(event);
+                if(lastEvent!=null && lastEvent.equals(event)){
+                    return;
+                }
+                lastEvent = event;
 
                 ActorStatus data = new ActorStatus();
 

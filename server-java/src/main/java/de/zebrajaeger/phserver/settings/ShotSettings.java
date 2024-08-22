@@ -23,4 +23,8 @@ public class ShotSettings implements SettingsValue<ShotSettings> {
         focusTimeMs = value.getFocusTimeMs();
         triggerTimeMs = value.getTriggerTimeMs();
     }
+
+    public boolean isZero() {
+        return focusTimeMs == 0 && triggerTimeMs == 0;
+    }
 }

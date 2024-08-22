@@ -158,7 +158,12 @@ public class RecordSMService extends StateMachineListenerAdapter<States, Events>
         log.info("[onShot] {}", stateMachine.getState().getIds().toString());
         TakeShotCommand tsc = (TakeShotCommand) currentCommand;
         ShotSettings shot = tsc.getShot();
-        panoHeadService.shot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+
+        if(!shot.isZero()) {
+            panoHeadService.shot(shot.getFocusTimeMs(), shot.getTriggerTimeMs());
+        }else{
+            sendEvent(Events.SHOT_DONE);
+        }
 
         if (tsc.getId() != null) {
             // shot time to papywizard

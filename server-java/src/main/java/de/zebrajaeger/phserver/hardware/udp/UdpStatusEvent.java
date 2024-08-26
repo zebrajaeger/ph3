@@ -1,12 +1,12 @@
 package de.zebrajaeger.phserver.hardware.udp;
 
+import de.zebrajaeger.phserver.data.ActorStatus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.text.ParseException;
 import java.util.BitSet;
 
@@ -19,13 +19,10 @@ public class UdpStatusEvent {
     boolean xActive;
     boolean yActive;
 
-    public UdpStatusEvent(byte[] msg) throws ParseException {
-        ByteBuffer buffer = ByteBuffer.wrap(msg).order(ByteOrder.LITTLE_ENDIAN);
+    public UdpStatusEvent(ByteBuffer buffer) throws ParseException {
+        // [1, 0, 0, 0,    0, 1, 0, 0,   0,   -109, 110, -120]
+        // x(4) y(4) active(1) unused(3)
         try {
-            // must start with ph5
-            if (buffer.get() != 'p' || buffer.get() != 'h' || buffer.get() != '5' || buffer.get() != 0) {
-                throw new ParseException("Not a 'ph5' message", -1);
-            }
             x = buffer.getInt();
             y = buffer.getInt();
             byte b = buffer.get();
@@ -35,5 +32,18 @@ public class UdpStatusEvent {
         } catch (BufferUnderflowException e) {
             throw new ParseException("Message to short", -1);
         }
+    }
+
+    public ActorStatus toActorStatus() {
+        ActorStatus data = new ActorStatus();
+
+        data.getX().setMoving(isXActive());
+        data.getX().setSpeed(0);
+        data.getX().setPos(getX());
+
+        data.getY().setMoving(isYActive());
+        data.getY().setSpeed(0);
+        data.getY().setPos(getY());
+        return data;
     }
 }

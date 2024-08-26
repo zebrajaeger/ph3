@@ -2,6 +2,23 @@
   display: grid;
 }
 
+.edit-preset-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: aliceblue;
+
+  display: flex;
+  flex-direction: column;
+
+  & .headline {
+    font-size: 3vh;
+    font-weight: bold;
+  }
+}
+
 @media all and (orientation:landscape) {
   :host {
     grid-template-columns: 40vw 20vw 40vw;

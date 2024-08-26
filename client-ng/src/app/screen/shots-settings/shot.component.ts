@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Shot} from "../../../data/camera";
 import { OkCancelDialogComponent } from 'src/app/ui/ok-cancel-dialog.component';
+import { ModalService } from 'src/app/ui/modal.service';
 
 @Component({
     selector: 'shot',
@@ -21,6 +22,9 @@ export class ShotComponent {
     public edit: string | undefined = undefined;
     public temp!: number;
     
+    constructor(public modalService: ModalService){
+        
+    }
     _onDown() {
         this.onDown.emit(this.index);
     }
@@ -36,14 +40,16 @@ export class ShotComponent {
     _onEditFocus() {
         this.edit = 'f';
         this.temp = this.shot.focusTimeMs / 1000;
+        this.modalService.open('shot');
     }
 
     _onEditTrigger() {
         this.edit = 't';
         this.temp = this.shot.triggerTimeMs / 1000;
+        this.modalService.open('shot');
     }
 
-    _onOk() {
+    onEditorClose() {
         if (this.edit === 'f') {
             this.shot.focusTimeMs = this.temp * 1000;
             this.onChange.emit(this.index)
@@ -52,9 +58,5 @@ export class ShotComponent {
             this.onChange.emit(this.index)
         }
         this.edit = undefined;
-    }
-
-    _onCancel() {
-        this.edit = undefined;
-    }
+        }
 }

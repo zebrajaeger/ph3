@@ -1,5 +1,6 @@
 package de.zebrajaeger.phserver.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class ShotSettings implements SettingsValue<ShotSettings> {
         triggerTimeMs = value.getTriggerTimeMs();
     }
 
+    @JsonIgnore
     public boolean isZero() {
         return focusTimeMs == 0 && triggerTimeMs == 0;
     }

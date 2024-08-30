@@ -7,25 +7,28 @@ import { RxStompConfig } from '@stomp/rx-stomp';
 })
 export class RxStompService extends RxStomp {
   rxStompConfig: RxStompConfig = {
-    brokerURL: 'ws://127.0.0.1:8080/ph',
-
     heartbeatIncoming: 0,
-    heartbeatOutgoing: 10000,
-    reconnectDelay: 1000
-
-    // debug: (msg: string): void => {
-    //   console.log(new Date(), msg);
-    // }
+    heartbeatOutgoing: 1000,
+    reconnectDelay: 1000,
+    logRawCommunication: true
   };
 
   constructor() {
     super();
+
     let ssl = window.location.protocol === "https:";
     if (ssl) {
-      this.rxStompConfig.brokerURL = `wss://${window.location.hostname}:8443/ph`
+      this.rxStompConfig.brokerURL = `wss://${window.location.hostname}:8443/ws`
     } else {
-      this.rxStompConfig.brokerURL = `ws://${window.location.hostname}:8080/ph`
+      this.rxStompConfig.brokerURL = `ws://${window.location.hostname}:8080/ws`
     }
+
+    const debug = new URLSearchParams(window.location.search).get("debug");
+    if (debug === "1" || debug?.toLowerCase() == "true") {
+      this.rxStompConfig.debug = (msg: string): void => { console.log("[RXStomp]", msg); }
+      console.log("[WS Config]", this.rxStompConfig)
+    }
+
     this.configure(this.rxStompConfig);
     this.activate();
   }

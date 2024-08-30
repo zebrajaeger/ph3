@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { Camera, CameraShotResult, Shot } from '../../data/camera';
+import { Camera, CameraShotResult, CCApi, Shot } from '../../data/camera';
 import { RxStompService } from "./rx-stomp.service";
 import { RxStompRPCService } from "./rx-stomp-rpc.service";
 
@@ -26,24 +26,44 @@ export class CameraService {
     this.rxStompService.publish({ destination: '/camera/shot', body: JSON.stringify(data) });
   }
 
+  
   subscribeCamera(cb: (fov: Camera) => void): Subscription {
     return this.rxStompService
-      .watch('/topic/camera')
-      .pipe(map(msg => JSON.parse(msg.body) as Camera))
-      .subscribe(cb);
+    .watch('/topic/camera')
+    .pipe(map(msg => JSON.parse(msg.body) as Camera))
+    .subscribe(cb);
   }
 
   public requestCamera(cb: (actor: Camera) => void): Subscription {
     return this.rxStompRPCService
-      .rpc({ destination: '/rpc/camera' })
-      .pipe(map(msg => JSON.parse(msg.body) as Camera))
-      .subscribe(cb);
+    .rpc({ destination: '/rpc/camera' })
+    .pipe(map(msg => JSON.parse(msg.body) as Camera))
+    .subscribe(cb);
   }
-
+  
   public requestShot( cb: (actor: CameraShotResult) => void): Subscription {
     return this.rxStompRPCService
-      .rpc({ destination: '/rpc/camera/shot' })
-      .pipe(map(msg => JSON.parse(msg.body) as CameraShotResult))
-      .subscribe(cb);
+    .rpc({ destination: '/rpc/camera/shot' })
+    .pipe(map(msg => JSON.parse(msg.body) as CameraShotResult))
+    .subscribe(cb);
+  }
+  
+  // CCAPI
+  setCCApiUrl(ccapi: CCApi): void {
+    this.rxStompService.publish({ destination: '/ccapi', body: JSON.stringify(ccapi) });
+  }
+  
+  public requestCCApiUrl( cb: (ccapi: CCApi) => void): Subscription {
+    return this.rxStompRPCService
+    .rpc({ destination: '/rpc/ccapi' })
+    .pipe(map(msg => JSON.parse(msg.body) as CCApi))
+    .subscribe(cb);
+  }
+
+  subscribeCCApiUrl(cb: (ccapi: CCApi) => void): Subscription {
+    return this.rxStompService
+    .watch('/topic/ccapi')
+    .pipe(map(msg => JSON.parse(msg.body) as CCApi))
+    .subscribe(cb);
   }
 }

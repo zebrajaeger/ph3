@@ -1,4 +1,13 @@
 <div class="button" (click)="onFocus()">Focus</div>
 <div class="button" (click)="onTrigger()">Trigger</div>
 <div class="button" (click)="onShot()">Shot</div>
-<div class="status">{{statusText}}</div>
+<div class="status box left-center-contect">
+    <div class="label">Status</div>
+    <span class="content">{{statusText}}</span> 
+</div>
+<div class="url box left-center-content" (click)="onEditUrl()">
+    <div class="label"><span class="edit symbol-edit"></span> Url </div> 
+    <span class="content">{{ccapi?.url}}</span> 
+</div>
+
+<app-keyboard-dialog #keyboard class="keyboard-dialog" (onOk)="onKeyboardOk($event)" />

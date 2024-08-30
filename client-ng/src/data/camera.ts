@@ -23,8 +23,8 @@ export class Shot {
 
 export class CameraShotResult {
     public successfully!: boolean ;
-    public message!: String;
-    public exception!: String ;
+    public message!: string;
+    public exception!: string ;
 }
 
 export class Shots extends Array<Shot> {
@@ -62,4 +62,8 @@ export class ShotsPresets extends Map<string, Shots> {
         })
         return r;
     }
+}
+
+export class CCApi {
+    public url!: string ;
 }

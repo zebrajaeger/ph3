@@ -6,7 +6,7 @@ import lombok.Data;
 public class ActorAxisStatus {
 
   private int pos = 0;
-  private int speed = 0;
+//  private int speed = 0;
   private boolean isMoving = false;
-  private boolean atTargetPos = false;
+//  private boolean atTargetPos = false;
 }

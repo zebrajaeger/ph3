@@ -1,11 +1,11 @@
 package de.zebrajaeger.phserver.hardware.actor;
 
 import de.zebrajaeger.phserver.data.CameraStatus;
+import de.zebrajaeger.phserver.service.SettingsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,20 +16,27 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-//@Profile({"ccapi-cam"})
-@ConditionalOnProperty("enable.camera.ccapi")
 @Service
 @Slf4j
+@ConditionalOnProperty("enable.camera.ccapi")
 public class CcApiCamera implements Camera {
     @Value("${camera.ccapi.timeout:4000}")
     private int requestTimeout;
 
-    @Value("${camera.ccapi.url:http://192.168.8.149:8080/ccapi}")
-    private String apiUrl;
+    private final SettingsService settingsService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public CcApiCamera(ApplicationEventPublisher applicationEventPublisher) {
+    public CcApiCamera(SettingsService settingsService, ApplicationEventPublisher applicationEventPublisher) {
+        this.settingsService = settingsService;
         this.applicationEventPublisher = applicationEventPublisher;
+    }
+
+    private String getUrl() {
+        String url = settingsService.getSettingsStore().getSettings().getCcapi().getUrl();
+        if (url == null) {
+            throw new IllegalStateException("CCAPi url is null");
+        }
+        return url;
     }
 
     @Override
@@ -73,7 +80,7 @@ public class CcApiCamera implements Camera {
 
     private String get(String id) throws IOException, InterruptedException {
         try (HttpClient client = HttpClient.newHttpClient()) {
-            URI uri = URI.create(apiUrl + id);
+            URI uri = URI.create(getUrl() + id);
             log.debug("GET {}", uri);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(uri)
@@ -86,7 +93,7 @@ public class CcApiCamera implements Camera {
 
     private String post(String id, String body) throws IOException, InterruptedException {
         try (HttpClient client = HttpClient.newHttpClient()) {
-            URI uri = URI.create(apiUrl + id);
+            URI uri = URI.create(getUrl() + id);
             log.info("POST {}: {}", uri, body);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(uri)

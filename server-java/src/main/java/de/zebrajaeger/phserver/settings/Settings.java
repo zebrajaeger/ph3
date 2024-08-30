@@ -13,6 +13,7 @@ public class Settings implements SettingsValue<Settings> {
     private ShotsSettings shots = new ShotsSettings();
     private DelaySettings delay = new DelaySettings();
     private PanoSettings pano = new PanoSettings();
+    private CCApiSettings ccapi = new CCApiSettings();
 
     @Override
     public void read(Settings value) {
@@ -22,6 +23,7 @@ public class Settings implements SettingsValue<Settings> {
         shots.read(value.getShots());
         delay.read(value.getDelay());
         pano.read(value.getPano());
+        ccapi.read(value.getCcapi());
     }
 
     @Override
@@ -32,5 +34,6 @@ public class Settings implements SettingsValue<Settings> {
         value.getShots().read(shots);
         value.getDelay().read(delay);
         value.getPano().read(pano);
+        value.getCcapi().read(ccapi);
     }
 }

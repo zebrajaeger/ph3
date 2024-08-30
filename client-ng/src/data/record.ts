@@ -67,7 +67,7 @@ export class RecordState {
   commandCount!: number;
 
   constructor(body: string) {
-    console.log(body)
+    // console.log(body)
     const o = JSON.parse(body);
     this.states = o.states;
     this.command = o.command;

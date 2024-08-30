@@ -19,14 +19,16 @@ public class UdpStatusEvent {
     boolean xActive;
     boolean yActive;
 
+    public static UdpStatusEvent of(ByteBuffer buffer) throws ParseException {
+        return new UdpStatusEvent(buffer);
+    }
+
     public UdpStatusEvent(ByteBuffer buffer) throws ParseException {
-        // [1, 0, 0, 0,    0, 1, 0, 0,   0,   -109, 110, -120]
-        // x(4) y(4) active(1) unused(3)
+        // x(4) y(4) active(4)
         try {
             x = buffer.getInt();
             y = buffer.getInt();
-            byte b = buffer.get();
-            BitSet bitSet = BitSet.valueOf(new byte[]{b});
+            BitSet bitSet = BitSet.valueOf(buffer);
             xActive = bitSet.get(0);
             yActive = bitSet.get(1);
         } catch (BufferUnderflowException e) {
@@ -38,11 +40,11 @@ public class UdpStatusEvent {
         ActorStatus data = new ActorStatus();
 
         data.getX().setMoving(isXActive());
-        data.getX().setSpeed(0);
+//        data.getX().setSpeed(0);
         data.getX().setPos(getX());
 
         data.getY().setMoving(isYActive());
-        data.getY().setSpeed(0);
+//        data.getY().setSpeed(0);
         data.getY().setPos(getY());
         return data;
     }

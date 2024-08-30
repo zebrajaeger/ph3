@@ -20,7 +20,7 @@ import java.text.ParseException;
 @ConditionalOnProperty("enable.actor.unicast.status.receiver")
 public class UnicastConfig {
 
-    @Value("${actor.status.udp.port:12345}")
+    @Value("${actor.unicast.port:1667}")
     private int port;
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -35,10 +35,21 @@ public class UnicastConfig {
         return IntegrationFlow.from(new UnicastReceivingChannelAdapter(port))
                 .handle(message -> {
                     ByteBuffer bb = (ByteBuffer) message.getPayload();
+                    //magic start: 'p','h','5',0
                     boolean isPh5 = bb.get() == 'p' && bb.get() == 'h' && bb.get() == '5' && bb.get() == 0;
                     if (!isPh5) {
                         // not a ph5 message
                         return;
+                    }
+
+                    byte a = bb.get();
+                    byte b = bb.get();
+                    if(a=='s' && b== 0){
+                        // status
+                    }
+
+                    if(a=='c' && b== 0){
+                        // command
                     }
 
                     try {

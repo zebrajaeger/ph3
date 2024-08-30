@@ -34,6 +34,8 @@ public class PanoHeadService {
 
     private long lastManualMove = 0;
     private boolean jogByJoystick = false;
+    private PositionEvent latestPosition;
+
 
     private final BatteryInterpolator batteryInterpolator;
 
@@ -83,15 +85,20 @@ public class PanoHeadService {
         }
     }
 
+
     @EventListener
     public void onAxisChangedEvent(AxisChangedEvent event) {
         // we assume then an update of x before y happens
         if (event.axis().getAxisIndex() == AxisIndex.Y) {
-            applicationEventPublisher.publishEvent(new PositionEvent(
+            PositionEvent newPosition = new PositionEvent(
                     new RawPosition(x.getTargetRawValue(), y.getTargetRawValue()),
                     new Position(x.getTargetDegValue(), y.getTargetDegValue()),
                     new RawPosition(x.getMeasuredRawValue(), y.getMeasuredRawValue()),
-                    new Position(x.getMeasuredDegValue(), y.getMeasuredDegValue())));
+                    new Position(x.getMeasuredDegValue(), y.getMeasuredDegValue()));
+            if (latestPosition == null || !latestPosition.equals(newPosition)) {
+                latestPosition = newPosition;
+                applicationEventPublisher.publishEvent(newPosition);
+            }
         }
     }
 

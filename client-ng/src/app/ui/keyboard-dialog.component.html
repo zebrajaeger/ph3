@@ -1,5 +1,5 @@
-<div class="modal root" *ngIf="isVisible">
-    <input type="text" class="input display" value="{{value}}" placeholder="{{placeholder}}" />
+<div class="modal root background" *ngIf="isVisible">
+    <input type="text" class="input display" [value]="value" placeholder="{{placeholder}}" (input)="onChange($event)"/>
 
     <app-keyboard class="keyboard" [(value)]="value" />
 

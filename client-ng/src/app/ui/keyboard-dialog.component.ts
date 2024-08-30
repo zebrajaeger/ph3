@@ -32,6 +32,10 @@ export class KeyboardDialogComponent {
         this.isVisible = true;
     }
 
+    onChange(e:any) {
+        this.value = (e.target as HTMLInputElement).value;
+    }
+    
     _onOk() {
         if (!this.isOkAvailable) {
             return;

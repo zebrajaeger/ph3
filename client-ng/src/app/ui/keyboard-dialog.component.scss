@@ -1,11 +1,12 @@
 :host {
   width: 0;
   height: 0;
+  z-index: 1000;
 }
 
 .root {
   display:grid;
-  grid-template-columns: 100vw;
+  grid-template-columns: 98vw;
   grid-template-rows: 10vh 58vh 10vh;
   position: absolute;
   top:10vh;
@@ -18,6 +19,19 @@
 
 .keyboard {
   margin-top: 1vh;
+}
+
+.background {
+  padding: 10vh 1vw;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  backdrop-filter: blur(3px) brightness(0.5);
+
+  z-index: 900;
 }
 
 @media all and (orientation:landscape) { 

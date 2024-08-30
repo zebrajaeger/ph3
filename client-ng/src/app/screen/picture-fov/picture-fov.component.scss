@@ -1,3 +1,5 @@
+@use "sass:math";
+
 :host {
   caret-color: transparent;
 }
@@ -37,8 +39,8 @@
 
 .infobox {
   display: grid;
-  grid-template-columns: repeat(3, (100vw / 7)-0.5vw);
-  grid-template-rows: repeat(3, (80vh / 7)-0.5vh);
+  grid-template-columns: repeat(3, math.div(100vw, 7)-0.5vw);
+  grid-template-rows: repeat(3, math.div(80vh, 7)-0.5vh);
 
   border: 1px solid black;
   border-radius: 1vh;

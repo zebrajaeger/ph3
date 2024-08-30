@@ -1,7 +1,9 @@
+@use "sass:math";
+
 :host {
   display: grid;
-  grid-template-columns: repeat(3, (100vw/3));
-  grid-template-rows: repeat(3, (80vh/3));
+  grid-template-columns: repeat(3, math.div(100vw, 3));
+  grid-template-rows: repeat(3, math.div(80vh, 3));
 }
 
 .box {

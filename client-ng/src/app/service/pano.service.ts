@@ -156,7 +156,7 @@ export class PanoService {
     }
 
     requestRecalculatePano(): void {
-        console.log("REQUEST RECALCULATION");
+        // console.log("REQUEST RECALCULATION");
         firstValueFrom(this.rxStompRPCService.rpc({ destination: '/rpc/pano/recalculate' })).then();
     }
 

@@ -26,7 +26,7 @@ public class FakeActor extends PollingActor implements Actor {
     private final ActorStatus actorStatus = new ActorStatus();
     private final FakeActorAxis x = new FakeActorAxis();
     private final FakeActorAxis y = new FakeActorAxis();
-    private final FakeActorAxis z = new FakeActorAxis();
+//    private final FakeActorAxis z = new FakeActorAxis();
 
     public FakeActor(ApplicationEventPublisher applicationEventPublisher) {
         super(applicationEventPublisher);
@@ -40,7 +40,7 @@ public class FakeActor extends PollingActor implements Actor {
     public void reset() {
         x.reset();
         y.reset();
-        z.reset();
+//        z.reset();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class FakeActor extends PollingActor implements Actor {
     public void stopAll() {
         x.setVelocity(0);
         y.setVelocity(0);
-        z.setVelocity(0);
+//        z.setVelocity(0);
     }
 
 //    @Override
@@ -81,14 +81,14 @@ public class FakeActor extends PollingActor implements Actor {
     public void resetPos() {
         x.reset();
         y.reset();
-        z.reset();
+//        z.reset();
     }
 
     private FakeActorAxis getAxis(AxisIndex axisIndex) {
         return switch (axisIndex) {
             case X -> x;
             case Y -> y;
-            case Z -> z;
+//            case Z -> z;
             default -> throw new IllegalArgumentException("Wrong axis index: " + axisIndex);
         };
     }
@@ -97,20 +97,20 @@ public class FakeActor extends PollingActor implements Actor {
         x.update(ticsPerSec);
         ActorAxisStatus dataX = actorStatus.getX();
         dataX.setMoving(x.isMoving());
-        dataX.setAtTargetPos(x.isAtPos());
+//        dataX.setAtTargetPos(x.isAtPos());
         dataX.setPos(x.getPos());
 
         y.update(ticsPerSec);
         ActorAxisStatus dataY = actorStatus.getY();
         dataY.setMoving(y.isMoving());
-        dataY.setAtTargetPos(y.isAtPos());
+//        dataY.setAtTargetPos(y.isAtPos());
         dataY.setPos(y.getPos());
 
-        z.update(ticsPerSec);
-        ActorAxisStatus dataZ = actorStatus.getZ();
-        dataZ.setMoving(z.isMoving());
-        dataZ.setAtTargetPos(z.isAtPos());
-        dataZ.setPos(z.getPos());
+//        z.update(ticsPerSec);
+//        ActorAxisStatus dataZ = actorStatus.getZ();
+//        dataZ.setMoving(z.isMoving());
+//        dataZ.setAtTargetPos(z.isAtPos());
+//        dataZ.setPos(z.getPos());
     }
 
     @Override

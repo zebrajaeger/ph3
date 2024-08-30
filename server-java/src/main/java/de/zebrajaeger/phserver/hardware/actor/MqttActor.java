@@ -3,20 +3,18 @@ package de.zebrajaeger.phserver.hardware.actor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.zebrajaeger.phserver.data.*;
-import de.zebrajaeger.phserver.event.MqttEvent;
 import de.zebrajaeger.phserver.event.ActorStatusEvent;
+import de.zebrajaeger.phserver.event.MqttEvent;
 import de.zebrajaeger.phserver.event.PowerMeasureEvent;
 import de.zebrajaeger.phserver.hardware.mqtt.MqttConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-//@Profile({"mqtt-actor"})
 @Service
 @ConditionalOnProperty("enable.actor.mqtt")
 @Slf4j
@@ -41,12 +39,12 @@ public class MqttActor implements Actor {
 
                 data.getX().setMoving(mqttActorStatus.x().running());
                 // fix for FastAccelStepper::getCurrentSpeedInMilliHz never reaches zero
-                data.getX().setSpeed(mqttActorStatus.x().running() ? mqttActorStatus.x().speed() / 1000 : 0);
+//                data.getX().setSpeed(mqttActorStatus.x().running() ? mqttActorStatus.x().speed() / 1000 : 0);
                 data.getX().setPos(mqttActorStatus.x().pos());
 
                 // fix for FastAccelStepper::getCurrentSpeedInMilliHz never reaches zero
                 data.getY().setMoving(mqttActorStatus.y().running());
-                data.getY().setSpeed(mqttActorStatus.y().running() ? mqttActorStatus.y().speed() / 1000 : 0);
+//                data.getY().setSpeed(mqttActorStatus.y().running() ? mqttActorStatus.y().speed() / 1000 : 0);
                 data.getY().setPos(mqttActorStatus.y().pos());
 
 //                log.info("PHData {}", data);

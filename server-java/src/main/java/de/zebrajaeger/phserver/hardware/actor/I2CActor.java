@@ -51,20 +51,20 @@ public class I2CActor extends PollingCameraActor implements Actor, Camera {
         latestActorStatus = new ActorStatus();
         byte movementRaw = buffer.get();
         latestActorStatus.getX().setPos(checkAndInvertIfNeeded(AxisIndex.X, buffer.getInt()));
-        latestActorStatus.getX().setSpeed(checkAndInvertIfNeeded(AxisIndex.X, buffer.getShort()));
+//        latestActorStatus.getX().setSpeed(checkAndInvertIfNeeded(AxisIndex.X, buffer.getShort()));
         latestActorStatus.getY().setPos(checkAndInvertIfNeeded(AxisIndex.Y, buffer.getInt()));
-        latestActorStatus.getY().setSpeed(checkAndInvertIfNeeded(AxisIndex.Y, buffer.getShort()));
-        latestActorStatus.getZ().setPos(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getInt()));
-        latestActorStatus.getZ().setSpeed(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getShort()));
+//        latestActorStatus.getY().setSpeed(checkAndInvertIfNeeded(AxisIndex.Y, buffer.getShort()));
+//        latestActorStatus.getZ().setPos(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getInt()));
+//        latestActorStatus.getZ().setSpeed(checkAndInvertIfNeeded(AxisIndex.Z, buffer.getShort()));
 
-        latestActorStatus.getX().setAtTargetPos((movementRaw & 0x01) != 0);
+//        latestActorStatus.getX().setAtTargetPos((movementRaw & 0x01) != 0);
         latestActorStatus.getX().setMoving((movementRaw & 0x02) != 0);
 
-        latestActorStatus.getY().setAtTargetPos((movementRaw & 0x04) != 0);
+//        latestActorStatus.getY().setAtTargetPos((movementRaw & 0x04) != 0);
         latestActorStatus.getY().setMoving((movementRaw & 0x08) != 0);
 
-        latestActorStatus.getZ().setAtTargetPos((movementRaw & 0x10) != 0);
-        latestActorStatus.getZ().setMoving((movementRaw & 0x20) != 0);
+//        latestActorStatus.getZ().setAtTargetPos((movementRaw & 0x10) != 0);
+//        latestActorStatus.getZ().setMoving((movementRaw & 0x20) != 0);
 
         // camera
         latestCameraStatus = new CameraStatus();
